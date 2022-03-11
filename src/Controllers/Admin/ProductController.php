@@ -3,6 +3,7 @@
 namespace Aphly\LaravelShop\Controllers\Admin;
 
 use Aphly\Laravel\Exceptions\ApiException;
+use Aphly\LaravelAdmin\Models\Menu;
 use Aphly\LaravelShop\Controllers\Controller;
 use Aphly\LaravelShop\Models\Product;
 use Illuminate\Http\Request;
@@ -14,6 +15,11 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
+//        SELECT product_id,group_concat(case attribute_id when 1 then `value` ELSE null END) AS `gender`,
+//group_concat(case attribute_id when 2 then `value` ELSE null END) AS `size`,
+//group_concat(case attribute_id when 3 then `value` ELSE null END) AS `shape`
+//FROM product_attribute GROUP BY product_id
+
         $res['title']='我的';
         $res['filter']['name'] = $name = $request->query('name',false);
         $res['filter']['status'] = $status = $request->query('status',false);
@@ -42,6 +48,8 @@ class ProductController extends Controller
             }
         }else{
             $res['title']='我的';
+            $res['cate']=(new Menu)->getMenuById(10);
+
             return $this->makeView('laravel-shop::admin.product.add',['res'=>$res]);
         }
     }
@@ -64,6 +72,8 @@ class ProductController extends Controller
         }else{
             $res['title']='我的';
             $res['info'] = Product::find($request->id);
+            $res['cate']=(new Menu)->getMenuById(10);
+            $res['select_ids'] = [$res['info']['cate_id']];
             return $this->makeView('laravel-shop::admin.product.edit',['res'=>$res]);
         }
     }

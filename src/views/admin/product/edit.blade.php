@@ -1,5 +1,6 @@
+<script src='{{ URL::asset('vendor/laravel/js/bootstrap-treeview.js') }}' type='text/javascript'></script>
 <div class="top-bar">
-    <h5 class="nav-title">用户管理</h5>
+    <h5 class="nav-title">商品管理</h5>
 </div>
 <div class="imain">
     <form method="post" action="/shop-admin/product/{{$res['info']['id']}}/edit" class="save_form">
@@ -12,7 +13,11 @@
             </div>
             <div class="form-group">
                 <label for="exampleInputEmail1">分类</label>
-                <input type="text" name="cate_id" class="form-control " value="{{$res['info']['cate_id']}}">
+                <input type="hidden" name="cate_id" class="form-control " value="{{$res['info']['cate_id']}}">
+                <div class="fast_select" id="fast_select">
+                    <div class="form-control select_text"  onclick="show_cate('fast_select')"></div>
+                    <div class="treeview" style="display: none;"></div>
+                </div>
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
@@ -61,6 +66,38 @@
     </form>
 </div>
 
-
+<script>
+    var cate = @json($res['cate']);
+    var select_ids = @json($res['select_ids']);
+    var data = toTree(treeData(cate,select_ids));
+    $(function () {
+        var bTree =$('.fast_select .treeview').treeview({
+            levels: 3,
+            collapseIcon:'uni app-arrow-right-copy',
+            expandIcon:'uni app-arrow-right',
+            selectedBackColor:'#f3faff',
+            selectedColor:'#212529',
+            data,
+            //multiSelect:true,
+            onNodeSelected: function(event, data) {
+                makeInput();
+                $('#fast_select .treeview').toggle();
+            },
+        });
+        var makeInput = function () {
+            let arr = bTree.treeview('getSelected');
+            let html = '';
+            for(let i in arr){
+                html += `<div data-nodeid="${arr[i].nodeId}">${arr[i].text} </div> `
+                $('input[name="cate_id"]').val(arr[i].id);
+            }
+            $("#fast_select .select_text").html(html);
+        }
+        makeInput();
+    })
+    function show_cate() {
+        $('#fast_select .treeview').toggle();
+    }
+</script>
 
 

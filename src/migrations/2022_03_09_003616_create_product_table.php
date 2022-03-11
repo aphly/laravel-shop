@@ -17,15 +17,18 @@ return new class extends Migration
             $table->id();
             $table->integer('cate_id')->unsigned()->index();
             $table->string('name',64)->index();
-            $table->decimal('price',7,2);
-            $table->decimal('old_price',7,2)->nullable();
-            $table->integer('points')->unsigned()->nullable();
-            $table->float('weight',7,3)->nullable();
-            $table->integer('quantity')->default(0);
             $table->tinyInteger('status')->default(1)->index();
-            $table->tinyInteger('is_stock')->default(0);
+            $table->tinyInteger('gender')->default(0);
+            $table->tinyInteger('size')->default(0);
+            $table->tinyInteger('shape')->default(0);
+            $table->string('material',64)->default('');
+            $table->tinyInteger('frame')->default(0);
+            $table->string('color',64)->default('');
+            $table->string('feature',64)->default('');
+            $table->decimal('price',7,2)->index();
             $table->integer('viewed')->unsigned()->default(0);
-            $table->timestamps();
+            $table->integer('createtime')->unsigned()->default(0)->index();
+            $table->string('sku',64)->default('')->index();
         });
     }
 

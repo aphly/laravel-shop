@@ -1,4 +1,4 @@
-
+<script src='{{ URL::asset('vendor/laravel/js/bootstrap-treeview.js') }}' type='text/javascript'></script>
 <div class="top-bar">
     <h5 class="nav-title">商品新增</h5>
 </div>
@@ -13,9 +13,54 @@
             </div>
             <div class="form-group">
                 <label for="exampleInputEmail1">分类</label>
-                <input type="text" name="cate_id" class="form-control " value="">
+                <input type="hidden" name="cate_id" class="form-control " value="">
+                <div class="fast_select" id="fast_select">
+                    <div class="form-control select_text"  onclick="show_cate('fast_select')"></div>
+                    <div class="treeview" style="display: none;"></div>
+                </div>
                 <div class="invalid-feedback"></div>
             </div>
+            <div class="form-group">
+                <label for="">gender</label>
+                <div class="d-flex">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="gender" id="gender1" value="1" checked>
+                        <label class="form-check-label" for="gender1">
+                            Unisex
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="gender" id="gender2" value="2" >
+                        <label class="form-check-label" for="gender2">
+                            Men
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="gender" id="gender3" value="3" >
+                        <label class="form-check-label" for="gender3">
+                            Women
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="gender" id="gender4" value="4" >
+                        <label class="form-check-label" for="gender4">
+                            Kids
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="">gender</label>
+                <div class="d-flex">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="gridCheck1">
+                        <label class="form-check-label" for="gridCheck1">
+                            Example checkbox
+                        </label>
+                    </div>
+                </div>
+            </div>
+
             <div class="form-group">
                 <label for="exampleInputEmail1">现价</label>
                 <input type="text" name="price" class="form-control " value="">
@@ -57,9 +102,42 @@
                 </select>
                 <div class="invalid-feedback"></div>
             </div>
+
             <button class="btn btn-primary" type="submit">保存</button>
         </div>
     </form>
 </div>
+
+<script>
+    var cate = @json($res['cate']);
+    var data = toTree(treeData(cate));
+    $(function () {
+        var bTree =$('.fast_select .treeview').treeview({
+            levels: 3,
+            collapseIcon:'uni app-arrow-right-copy',
+            expandIcon:'uni app-arrow-right',
+            selectedBackColor:'#f3faff',
+            selectedColor:'#212529',
+            data,
+            //multiSelect:true,
+            onNodeSelected: function(event, data) {
+                makeInput();
+                $('#fast_select .treeview').toggle();
+            },
+        });
+        var makeInput = function () {
+            let arr = bTree.treeview('getSelected');
+            let html = '';
+            for(let i in arr){
+                html += `<div data-nodeid="${arr[i].nodeId}">${arr[i].text} </div> `
+                $('input[name="cate_id"]').val(arr[i].id);
+            }
+            $("#fast_select .select_text").html(html);
+        }
+    })
+    function show_cate() {
+        $('#fast_select .treeview').toggle();
+    }
+</script>
 
 

@@ -1,19 +1,33 @@
 <script src='{{ URL::asset('vendor/laravel/js/bootstrap-treeview.js') }}' type='text/javascript'></script>
 <div class="top-bar">
-    <h5 class="nav-title">商品管理</h5>
+    <h5 class="nav-title">商品新增</h5>
 </div>
+<style>
+    .tes{display: flex;flex-wrap: wrap;}
+    .tes .form-group{width: 48%;margin: 0 1% 10px;}
+</style>
 <div class="imain">
     <form method="post" action="/shop-admin/product/{{$res['info']['id']}}/edit" class="save_form">
         @csrf
-        <div class="">
+        <div class="tes">
             <div class="form-group">
                 <label for="exampleInputEmail1">商品名称</label>
                 <input type="text" name="name" class="form-control " value="{{$res['info']['name']}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
+                <label for="exampleInputEmail1">spu</label>
+                <input type="text" name="spu" class="form-control " value="{{$res['info']['spu']}}">
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">sku</label>
+                <input type="text" name="sku" class="form-control " value="{{$res['info']['sku']}}">
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="form-group">
                 <label for="exampleInputEmail1">分类</label>
-                <input type="hidden" name="cate_id" class="form-control " value="{{$res['info']['cate_id']}}">
+                <input type="hidden" name="cate_id" class="form-control " value="">
                 <div class="fast_select" id="fast_select">
                     <div class="form-control select_text"  onclick="show_cate('fast_select')"></div>
                     <div class="treeview" style="display: none;"></div>
@@ -21,48 +35,121 @@
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1">现价</label>
+                <label for="">gender</label>
+                <div class="d-flex libs_input">
+                    {!! \Aphly\Laravel\Libs\Form::checkbox('gender',$res['arr']['gender'],$res['info']['gender']) !!}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">size</label>
+                <input type="text" name="size" class="form-control " value="{{$res['info']['size']}}" readonly>
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">frame_width</label>
+                <input type="text" name="frame_width" class="form-control " value="{{$res['info']['frame_width']}}" >
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">lens_width</label>
+                <input type="text" name="lens_width" class="form-control " value="{{$res['info']['lens_width']}}" >
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">lens_height</label>
+                <input type="text" name="lens_height" class="form-control " value="{{$res['info']['lens_height']}}" >
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">bridge_width</label>
+                <input type="text" name="bridge_width" class="form-control " value="{{$res['info']['bridge_width']}}" >
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">arm_length</label>
+                <input type="text" name="arm_length" class="form-control " value="{{$res['info']['arm_length']}}" >
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="form-group">
+                <label for="">shape</label>
+                <div class="d-flex libs_input">
+                    {!! \Aphly\Laravel\Libs\Form::radio('shape',$res['arr']['shape'],$res['info']['shape']) !!}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="">material</label>
+                <div class="d-flex libs_input">
+                    {!! \Aphly\Laravel\Libs\Form::checkbox('material',$res['arr']['material'],$res['info']['material']) !!}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="">frame</label>
+                <div class="d-flex libs_input">
+                    {!! \Aphly\Laravel\Libs\Form::radio('frame',$res['arr']['frame'],$res['info']['frame']) !!}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="">color</label>
+                <div class="d-flex libs_input">
+                    {!! \Aphly\Laravel\Libs\Form::checkbox('color',$res['arr']['color'],$res['info']['color']) !!}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="">feature</label>
+                <div class="d-flex libs_input">
+                    {!! \Aphly\Laravel\Libs\Form::checkbox('feature',$res['arr']['feature'],$res['info']['feature']) !!}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputEmail1">price</label>
                 <input type="text" name="price" class="form-control " value="{{$res['info']['price']}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1">原价</label>
-                <input type="text" name="old_price" class="form-control " value="{{$res['info']['old_price']}}">
+                <label for="exampleInputEmail1">old_price</label>
+                <input type="text" name="old_price" class="form-control " value="{{$res['info_desc']['old_price']}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
                 <label for="exampleInputEmail1">积分</label>
-                <input type="text" name="points" class="form-control " value="{{$res['info']['points']}}">
+                <input type="text" name="points" class="form-control " value="{{$res['info_desc']['points']}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1">重量kg</label>
-                <input type="text" name="weight" class="form-control " value="{{$res['info']['weight']}}">
+                <label for="exampleInputEmail1">重量g</label>
+                <input type="text" name="weight" class="form-control " value="{{$res['info_desc']['weight']}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
                 <label for="exampleInputEmail1">库存</label>
-                <input type="text" name="quantity" class="form-control " value="{{$res['info']['quantity']}}">
+                <input type="text" name="quantity" class="form-control " value="{{$res['info_desc']['quantity']}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
                 <label for="exampleInputEmail1">是否使用库存</label>
                 <select name="is_stock"  class="form-control">
-                    <option value="1">是</option>
-                    <option value="0">否</option>
+                    <option value="1" @if($res['info']['is_stock']==1) selected @else @endif>是</option>
+                    <option value="0" @if($res['info']['is_stock']==1)  @else selected @endif>否</option>
                 </select>
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
                 <label for="exampleInputEmail1">状态</label>
                 <select name="status"  class="form-control">
-                    <option value="1">上架</option>
-                    <option value="0">下架</option>
+                    <option value="1" @if($res['info']['status']==1) selected @else @endif>上架</option>
+                    <option value="0" @if($res['info']['status']==1)  @else selected @endif>下架</option>
+                </select>
                 </select>
                 <div class="invalid-feedback"></div>
             </div>
-            <button class="btn btn-primary" type="submit">保存</button>
+            <div class="form-group">
+                <label for="exampleInputEmail1">description</label>
+                <textarea type="text" name="description" class="form-control ">{{$res['info_desc']['description']}}</textarea>
+                <div class="invalid-feedback"></div>
+            </div>
         </div>
+        <button class="btn btn-primary" type="submit">保存</button>
     </form>
 </div>
 

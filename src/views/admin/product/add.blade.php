@@ -2,13 +2,27 @@
 <div class="top-bar">
     <h5 class="nav-title">商品新增</h5>
 </div>
+<style>
+    .tes{display: flex;flex-wrap: wrap;}
+    .tes .form-group{width: 48%;margin: 0 1% 10px;}
+</style>
 <div class="imain">
     <form method="post" action="/shop-admin/product/add" class="save_form">
         @csrf
-        <div class="">
+        <div class="tes">
             <div class="form-group">
                 <label for="exampleInputEmail1">商品名称</label>
                 <input type="text" name="name" class="form-control " value="">
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">spu</label>
+                <input type="text" name="spu" class="form-control " value="">
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">sku</label>
+                <input type="text" name="sku" class="form-control " value="">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
@@ -22,52 +36,78 @@
             </div>
             <div class="form-group">
                 <label for="">gender</label>
-                <div class="d-flex">
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="gender" id="gender1" value="1" checked>
-                        <label class="form-check-label" for="gender1">
-                            Unisex
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="gender" id="gender2" value="2" >
-                        <label class="form-check-label" for="gender2">
-                            Men
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="gender" id="gender3" value="3" >
-                        <label class="form-check-label" for="gender3">
-                            Women
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="gender" id="gender4" value="4" >
-                        <label class="form-check-label" for="gender4">
-                            Kids
-                        </label>
-                    </div>
+                <div class="d-flex libs_input">
+                    {!! \Aphly\Laravel\Libs\Form::checkbox('gender',$res['arr']['gender']) !!}
                 </div>
             </div>
             <div class="form-group">
-                <label for="">gender</label>
-                <div class="d-flex">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="gridCheck1">
-                        <label class="form-check-label" for="gridCheck1">
-                            Example checkbox
-                        </label>
-                    </div>
+                <label for="exampleInputEmail1">size</label>
+                <input type="text" name="size" class="form-control " value="" readonly>
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">frame_width</label>
+                <input type="text" name="frame_width" class="form-control " value="" >
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">lens_width</label>
+                <input type="text" name="lens_width" class="form-control " value="" >
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">lens_height</label>
+                <input type="text" name="lens_height" class="form-control " value="" >
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">bridge_width</label>
+                <input type="text" name="bridge_width" class="form-control " value="" >
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">arm_length</label>
+                <input type="text" name="arm_length" class="form-control " value="" >
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="form-group">
+                <label for="">shape</label>
+                <div class="d-flex libs_input">
+                    {!! \Aphly\Laravel\Libs\Form::radio('shape',$res['arr']['shape']) !!}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="">material</label>
+                <div class="d-flex libs_input">
+                    {!! \Aphly\Laravel\Libs\Form::checkbox('material',$res['arr']['material']) !!}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="">frame</label>
+                <div class="d-flex libs_input">
+                    {!! \Aphly\Laravel\Libs\Form::radio('frame',$res['arr']['frame']) !!}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="">color</label>
+                <div class="d-flex libs_input">
+                    {!! \Aphly\Laravel\Libs\Form::checkbox('color',$res['arr']['color']) !!}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="">feature</label>
+                <div class="d-flex libs_input">
+                    {!! \Aphly\Laravel\Libs\Form::checkbox('feature',$res['arr']['feature']) !!}
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="exampleInputEmail1">现价</label>
+                <label for="exampleInputEmail1">price</label>
                 <input type="text" name="price" class="form-control " value="">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1">原价</label>
+                <label for="exampleInputEmail1">old_price</label>
                 <input type="text" name="old_price" class="form-control " value="">
                 <div class="invalid-feedback"></div>
             </div>
@@ -77,7 +117,7 @@
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1">重量kg</label>
+                <label for="exampleInputEmail1">重量g</label>
                 <input type="text" name="weight" class="form-control " value="">
                 <div class="invalid-feedback"></div>
             </div>
@@ -100,11 +140,16 @@
                     <option value="1">上架</option>
                     <option value="0">下架</option>
                 </select>
+                </select>
                 <div class="invalid-feedback"></div>
             </div>
-
-            <button class="btn btn-primary" type="submit">保存</button>
+            <div class="form-group">
+                <label for="exampleInputEmail1">description</label>
+                <textarea type="text" name="description" class="form-control "></textarea>
+                <div class="invalid-feedback"></div>
+            </div>
         </div>
+        <button class="btn btn-primary" type="submit">保存</button>
     </form>
 </div>
 

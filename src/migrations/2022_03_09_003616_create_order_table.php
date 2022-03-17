@@ -13,11 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('product_img', function (Blueprint $table) {
+        Schema::create('order', function (Blueprint $table) {
             $table->id();
             $table->integer('product_id')->unsigned()->index();
-            $table->string('src',255);
-            $table->integer('sort')->unsigned()->nullable()->default(0);
+            $table->tinyInteger('status')->default(1)->index();
         });
     }
 
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product_img');
+        Schema::dropIfExists('order');
     }
 };

@@ -17,10 +17,10 @@ return new class extends Migration
             $table->integer('product_id')->unsigned()->primary();
             $table->text('description');
             $table->decimal('old_price',7,2)->nullable();
-            $table->integer('points')->unsigned()->nullable();
+            $table->integer('points')->unsigned()->nullable()->default(0);
             $table->float('weight',7,3)->nullable();
-            $table->integer('quantity')->default(0);
-            $table->tinyInteger('is_stock')->default(0);
+            $table->integer('quantity')->default(0)->nullable();
+            $table->tinyInteger('is_stock')->default(0)->nullable();
         });
     }
 

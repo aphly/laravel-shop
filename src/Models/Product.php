@@ -31,7 +31,8 @@ class Product extends Model
         'feature',
         'price',
         'viewed',
-        'createtime'
+        'createtime',
+        'sale'
     ];
 
     function desc(){

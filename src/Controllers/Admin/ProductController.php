@@ -68,7 +68,7 @@ class ProductController extends Controller
             $res['dict']= Dictionary::where('status',1)->get();
             $res['arr'] = [];
             foreach ($res['dict'] as $val){
-                $res['arr'][$val['key']] = json_decode($val['json'],true);
+                $res['arr'][$val['name']] = json_decode($val['json'],true);
             }
             return $this->makeView('laravel-shop::admin.product.add',['res'=>$res]);
         }
@@ -106,7 +106,7 @@ class ProductController extends Controller
             $res['dict']= Dictionary::where('status',1)->get();
             $res['arr'] = [];
             foreach ($res['dict'] as $val){
-                $res['arr'][$val['key']] = json_decode($val['json'],true);
+                $res['arr'][$val['name']] = json_decode($val['json'],true);
             }
             return $this->makeView('laravel-shop::admin.product.edit',['res'=>$res]);
         }

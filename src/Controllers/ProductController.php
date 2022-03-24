@@ -3,6 +3,7 @@
 namespace Aphly\LaravelShop\Controllers;
 
 use Aphly\Laravel\Exceptions\ApiException;
+use Aphly\Laravel\Libs\Func;
 use Aphly\Laravel\Models\Dictionary;
 use Aphly\LaravelAdmin\Models\Menu;
 use Aphly\LaravelShop\Models\Product;
@@ -34,17 +35,15 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $res['title']='我的';
-        $res['dict']= Dictionary::where('status',1)->orderBy('sort','desc')->get()->toArray();
+        $res['dict']= Dictionary::where('status',1)->where('pid',13)->orderBy('sort','desc')->get()->toArray();
         $res['arr'] = $res['arr2'] = [];
+        $res['dict'] = Func::array_orderby($res['dict'],'sort',SORT_DESC);
         foreach ($res['dict'] as $val){
-            if($val['pid']==1){
-                $res['arr'][$val['key']] = json_decode($val['json'],true);
-            }else{
-                $res['arr2'][$val['key']] = json_decode($val['json'],true);
-            }
+            $arr = json_decode($val['json'],true);
+            $res['arr'][$val['name']] = Func::array_orderby($arr,'sort',SORT_DESC);
         }
-        $res['filter']['string'] = http_build_query($request->query());
-        $res['filter']['cate_id']  = $cate_id = $request->query('cate_id',false);
+        $res['filter']['param_str'] = http_build_query($request->query());
+        $res['filter']['cate_id']  = $cate_id = intval($request->query('cate_id',0));
         $res['filter']['gender']  = $gender = $request->query('gender',false);
         $res['filter']['size']  = $size = $request->query('size',false);
         $res['filter']['frame_width']  = $frame_width = $request->query('frame_width',false);
@@ -60,18 +59,43 @@ class ProductController extends Controller
 
         $res['filter']['sort']  = $sort = $request->query('sort',false);
 
-        $sub = Product::leftjoin('order','product.id','=','order.product_id')
-            ->whereRaw('product.status=1')
+//        $sub = Product::leftjoin('order','product.id','=','order.product_id')
+//            ->whereRaw('product.status=1')
+//            ->when($cate_id,
+//                function($query,$cate_id) {
+//                    $cate_id=intval($cate_id);
+//                    if($cate_id){
+//                        return $query->whereRaw('product.cate_id='.$cate_id);
+//                    }
+//                })
+//            ->select(DB::raw('any_value(`name`) as `name`,
+//                            any_value(`spu`) as `spu`,
+//                            any_value(`sku`) as `sku`,
+//                            any_value(`gender`) as `gender`,
+//                            any_value(`size`) as `size`,
+//                            any_value(`frame_width`) as `frame_width`,
+//                            any_value(`lens_width`) as `lens_width`,
+//                            any_value(`lens_height`) as `lens_height`,
+//                            any_value(`bridge_width`) as `bridge_width`,
+//                            any_value(`arm_length`) as `arm_length`,
+//                            any_value(`shape`) as `shape`,
+//                            any_value(`material`) as `material`,
+//                            any_value(`frame`) as `frame`,
+//                            any_value(`color`) as `color`,
+//                            any_value(`feature`) as `feature`,
+//                            any_value(`viewed`) as `viewed`,
+//                            any_value(`createtime`) as `createtime`,
+//                            any_value(`price`) as `price`,
+//                            count(`order`.`id`) as sale'))
+//            ->groupBy('product.id');
+//        $res['list'] = DB::table(DB::raw("({$sub->toSql()}) as sub"))
+        $res['list'] = Product::whereRaw('status=1')
             ->when($cate_id,
                 function($query,$cate_id) {
-                    $cate_id=intval($cate_id);
-                    if($cate_id){
-                        return $query->whereRaw('product.cate_id='.$cate_id);
-                    }
+                    return $query->whereRaw('cate_id='.$cate_id);
                 })
             ->select(DB::raw('any_value(`name`) as `name`,
                             any_value(`spu`) as `spu`,
-                            any_value(`sku`) as `sku`,
                             any_value(`gender`) as `gender`,
                             any_value(`size`) as `size`,
                             any_value(`frame_width`) as `frame_width`,
@@ -82,33 +106,13 @@ class ProductController extends Controller
                             any_value(`shape`) as `shape`,
                             any_value(`material`) as `material`,
                             any_value(`frame`) as `frame`,
-                            any_value(`color`) as `color`,
-                            any_value(`feature`) as `feature`,
-                            any_value(`viewed`) as `viewed`,
-                            any_value(`createtime`) as `createtime`,
-                            any_value(`price`) as `price`,
-                            count(`order`.`id`) as sale'))
-            ->groupBy('product.id');
-        $res['list'] = DB::table(DB::raw("({$sub->toSql()}) as sub"))
-            ->select(DB::raw('any_value(`name`) as `name`,
-                            any_value(`spu`) as `spu`,
-                            any_value(`gender`) as `gender`,
-                            any_value(`size`) as `size`,
-                            any_value(`frame_width`) as `frame_width`,
-                            any_value(`lens_width`) as `lens_width`,
-                            any_value(`lens_height`) as `lens_height`,
-                            any_value(`bridge_width`) as `bridge_width`,
-                            any_value(`arm_length`) as `arm_length`,
-                            any_value(`shape`) as `shape`,
-                            any_value(`material`) as `material`,
-                            any_value(`frame`) as `frame`,
-                            any_value(`color`) as `color`,
+                            group_concat(`color`) as `color`,
                             any_value(`feature`) as `feature`,
                             sum(`viewed`) as `viewed`,
                             max(`createtime`) as `createtime`,
                             min(`price`) as `price`,
 				            sum(`sale`) as sale'))
-            ->groupBy('sub.spu')
+            ->groupBy('spu')
             ->when($gender,
                 function($query,$gender) {
                     return $query->havingRaw($this->_orWhere('gender',$gender,1));
@@ -175,9 +179,10 @@ class ProductController extends Controller
                     }
                 })
             ->Paginate(config('shop.perPage'))->withQueryString()->toArray();
+
         $spus = array_column($res['list']['data'],'spu');
         $product = Product::with('desc')->whereIn('spu',$spus)->where(['status'=>1])->get()->toArray();
-        $res['product'] = $res['product_img'] = [];
+        $res['product'] = $res['product_img'] = $product_img_arr = [];
         $product_ids = [];
         foreach ($product as $v){
             $res['product'][$v['spu']][] = $v;
@@ -185,7 +190,10 @@ class ProductController extends Controller
         }
         $product_img = ProductImg::whereIn('product_id',$product_ids)->orderBy('sort','desc')->get()->toArray();
         foreach ($product_img as $v){
-            $res['product_img'][$v['spu']][] = $v;
+            $product_img_arr[$v['product_id']][] = $v;
+        }
+        foreach ($product_img_arr as $k=>$v){
+            $res['product_img'][$k] = array_slice($v,0,2);
         }
         return $this->makeView('laravel-shop::product.index',['res'=>$res]);
     }

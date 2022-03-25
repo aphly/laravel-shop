@@ -1,41 +1,26 @@
 @include('laravel-shop::common.header')
 <style>
-    .filter-wrap{height:54px;border:1px solid #d1d1d1;border-right:0;border-left:0}
-    .filter-menu{padding:16px 18px;text-transform:uppercase;cursor:pointer;border:1px solid transparent;border-top:0;border-bottom:0}
-    .filter-menu .icon-arrow-down{margin-left:8px;display:inline-block;width:12px;height:12px;transform:rotate(180deg);}
-    .filter-down{display:none;position:absolute;left:0;top:53px;z-index:30;padding:23px 20px 16px;border:1px solid #d1d1d1;border-top:0;background-color:#fcfcfc}
-    .filter-down-gender{width:100%;padding:16px 0}
-    .filter-item.active,.filter-item:hover{background-color:#fcfcfc;min-height:53px;margin-bottom:-1px}
-    .filter-item.active .filter-menu,.filter-item:hover .filter-menu{border-color:#d1d1d1}
-    .filter-wrap label{width: 100%;cursor: pointer;}
-    .color-link {color: #3EA0C0;}
-    .filter-icon{padding: 2px;width: 22px;height: 22px;border-radius: 50%;border: 1px solid #fff;}
 
-    @media (min-width: 1200px) {
-        .filter-item:hover .filter-down {
-            display: block;
-        }
-    }
 </style>
 <div class="container">
     <ul class="filter-wrap row flex-lg-nowrap">
-        @foreach($res['arr'] as $key=>$val)
+        @foreach($res['filter_arr'] as $key=>$val)
             <li class="position-relative col-12 col-lg-auto p-0 filter-item ">
                 <div class="filter-menu">
                     <span>{{$key}}</span>
                     <span><a href="#" class="color-link d-lg-none"></a><i class="uni app-xia"></i></span>
                 </div>
-                <div class="filter-down ">
+                <div class="filter-down filter-down-{{$key}}">
                     <div class="row m-0">
                         @foreach($val as $k=>$v)
-                            <div class="col-12 mb-lg-3 mb-4 filter_where @if($res['filter'][$key] && in_array($v['value'],$res['filter'][$key])) checked @endif" data-key="{{$key}}[]" data-val="{{$v['value']}}">
+                            <div class="filter_where @if($res['filter'][$key] && in_array($v['value'],$res['filter'][$key])) checked @endif" data-key="{{$key}}[]" data-val="{{$v['value']}}">
                                 <label>
                                     <input type="checkbox" @if($res['filter'][$key] && in_array($v['value'],$res['filter'][$key])) checked @endif
-                                    class="form-checkbox mt-n1" name="{{$key}}" value="{{$v['value']}}">
+                                    class="form-checkbox" name="{{$key}}" value="{{$v['value']}}">
                                     @if($key=='color')
                                         <div class="filter-icon" style="background-color: {{$v['img']}}"></div>
-{{--                                    @elseif($key=='shape')--}}
-{{--                                        <img src="" alt="">--}}
+                                    @elseif($key=='shape' || $key=='frame')
+                                        <img src="vendor/laravel-shop/img/filter/{{$key}}/{{$v['value']}}.png" alt="">
                                     @endif
                                     {{$v['name']}}
                                 </label>
@@ -45,7 +30,7 @@
                 </div>
             </li>
         @endforeach
-            <li class="position-relative col-12 col-lg-auto p-0 filter-item ">
+            <li class="position-relative col-12 col-lg-auto p-0 filter-item " style="width: 200px;">
                 <div class="filter-menu">
                     <span>sort by
                         <span class="color-link">
@@ -99,8 +84,7 @@
     </ul>
 </div>
 <style>
-    .product-icon-text-style2{background-color: #777620;color: white;font-size: 15px; border-radius: 20px;padding: 1px 8px;margin-bottom: 5px;}
-    .product-img img{width: 100%;}
+
 </style>
 <div class="container">
     <ul class="row">
@@ -112,7 +96,8 @@
                 <div class="product-img">
                     <ul>
                         @foreach($res['product'][$val['spu']] as $k=>$v)
-                            <li data-id="{{$v['id']}}" @if($k) style="display: none" @endif >
+                            <a href="/eyeglasses/{{$v['sku']}}">
+                                <li data-id="{{$v['id']}}" @if($k) style="display: none" @endif >
                                 <div class="d-flex align-items-center ">
                                     <img class="lazy"
                                          @if(isset($res['product_img'][$v['id']][1]))
@@ -123,32 +108,62 @@
                                          @endif
                                          src="vendor/laravel-shop/img/default.png" alt="">
                                 </div>
-                            </li>
+                                </li>
+                            </a>
                         @endforeach
                     </ul>
                 </div>
-                <div class="product-img-list">
+                <div class="product-img-list d-flex justify-content-between">
+                    <div class="">
+                        <ul class="d-flex">
+                            @foreach($res['product'][$val['spu']] as $k=>$v)
+                                <li data-id="{{$v['id']}}" >
+                                    <div class="d-flex ">
+                                        <div>
+                                            {!! \Aphly\LaravelShop\Models\Product::color($res['filter_arr']['color'],$v['color']) !!}
+                                        </div>
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    <div class="">
+                        <ul>
+                            @foreach($res['product'][$val['spu']] as $k=>$v)
+                                <li data-id="{{$v['id']}}" >
+                                    <div class="d-flex ">
+                                        <div @if($k) style="display: none" @endif>
+                                            <i class="uni app-aixin"></i>
+                                        </div>
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+                <div class="">
                     <ul>
                         @foreach($res['product'][$val['spu']] as $k=>$v)
-                            <li>
+                            <li data-id="{{$v['id']}}" @if($k) style="display: none" @endif >
                                 <div class="d-flex justify-content-between">
-
+                                    <div>
+                                        {{$v['name']}}
+                                    </div>
+                                    <div>
+                                        ${{floatval($v['price'])}}
+                                    </div>
                                 </div>
                             </li>
                         @endforeach
                     </ul>
                 </div>
-                <div class="d-flex justify-content-between">
-                    <div>
-                    </div>
-                    <div>
-                    </div>
-                </div>
             </li>
         @endforeach
     </ul>
 </div>
+<style>
 
+</style>
 
 <script>
 $(function () {

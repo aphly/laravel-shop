@@ -14,9 +14,6 @@ use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
-
-    public $index_url='/shop-admin/product/index';
-
     public function _orWhere($field_name,$field,$string=false){
         $str= [];
         foreach ($field as $val){
@@ -35,13 +32,7 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $res['title']='我的';
-        $res['dict']= Dictionary::where('status',1)->where('pid',13)->orderBy('sort','desc')->get()->toArray();
-        $res['arr'] = $res['arr2'] = [];
-        $res['dict'] = Func::array_orderby($res['dict'],'sort',SORT_DESC);
-        foreach ($res['dict'] as $val){
-            $arr = json_decode($val['json'],true);
-            $res['arr'][$val['name']] = Func::array_orderby($arr,'sort',SORT_DESC);
-        }
+        $res['filter_arr'] = $this->getFilter();
         $res['filter']['param_str'] = http_build_query($request->query());
         $res['filter']['cate_id']  = $cate_id = intval($request->query('cate_id',0));
         $res['filter']['gender']  = $gender = $request->query('gender',false);
@@ -198,6 +189,44 @@ class ProductController extends Controller
         return $this->makeView('laravel-shop::product.index',['res'=>$res]);
     }
 
+    function detail(Request $request){
+        $res['product'] = Product::where('sku',$request->sku)->with('desc')->first();
+        $res['title'] = $res['product']->name;
+        $res['product_img'] = $res['product']->img->toArray();
+        $res['spu'] = Product::where('spu',$res['product']->spu)->get()->toArray();
+        $res['filter_arr'] = $this->getFilter();
+        $res['product']['size'] = $this->size($res['product']['size']);
+        $res['product']['color'] = $this->color($res['product']['color'],$res['filter_arr']);
+        return $this->makeView('laravel-shop::product.detail',['res'=>$res]);
+    }
 
+    function size($val){
+        return match ($val) {
+            1 => 'S',
+            2 => 'M',
+            3 => 'L',
+        };
+    }
 
+    function color($val,$filter_arr){
+        $arr = explode(',',$val);
+        $color = [];
+        foreach($arr as $v){
+            if(isset($filter_arr['color'][$v])){
+                $color[] = $filter_arr['color'][$v]['name'];
+            }
+        }
+        return implode('/',$color);
+    }
+
+    function lens(Request $request){
+        $res['product'] = Product::where('sku',$request->sku)->with('desc')->first();
+        $res['title'] = $res['product']->name;
+        $res['product_img'] = $res['product']->img()->orderBy('sort','desc')->first()->toArray();
+        $res['spu'] = Product::where('spu',$res['product']->spu)->get()->toArray();
+        $res['filter_arr'] = $this->getFilter();
+        $res['product']['size'] = $this->size($res['product']['size']);
+        $res['product']['color'] = $this->color($res['product']['color'],$res['filter_arr']);
+        return $this->makeView('laravel-shop::product.lens',['res'=>$res]);
+    }
 }

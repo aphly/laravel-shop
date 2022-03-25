@@ -30,7 +30,7 @@ return new class extends Migration
             $table->decimal('price',7,2)->index();
             $table->integer('viewed')->unsigned()->default(0);
             $table->integer('createtime')->unsigned()->default(0)->index();
-
+            $table->integer('sale')->unsigned()->default(0);
         });
     }
 

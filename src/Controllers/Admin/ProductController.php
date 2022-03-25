@@ -3,6 +3,7 @@
 namespace Aphly\LaravelShop\Controllers\Admin;
 
 use Aphly\Laravel\Exceptions\ApiException;
+use Aphly\Laravel\Libs\Func;
 use Aphly\Laravel\Libs\UploadFile;
 use Aphly\Laravel\Models\Dictionary;
 use Aphly\LaravelAdmin\Models\Menu;
@@ -15,9 +16,7 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-
     public $index_url='/shop-admin/product/index';
-
     public function index(Request $request)
     {
         $res['title']='我的';
@@ -65,11 +64,7 @@ class ProductController extends Controller
         }else{
             $res['title']='我的';
             $res['cate']=(new Menu)->getMenuById(10);
-            $res['dict']= Dictionary::where('status',1)->get();
-            $res['arr'] = [];
-            foreach ($res['dict'] as $val){
-                $res['arr'][$val['name']] = json_decode($val['json'],true);
-            }
+            $res['filter_arr'] = $this->getFilter();
             return $this->makeView('laravel-shop::admin.product.add',['res'=>$res]);
         }
     }
@@ -103,11 +98,7 @@ class ProductController extends Controller
             $res['info_desc'] = ProductDesc::find($request->id);
             $res['cate']=(new Menu)->getMenuById(10);
             $res['select_ids'] = [$res['info']['cate_id']];
-            $res['dict']= Dictionary::where('status',1)->get();
-            $res['arr'] = [];
-            foreach ($res['dict'] as $val){
-                $res['arr'][$val['name']] = json_decode($val['json'],true);
-            }
+            $res['filter_arr'] = $this->getFilter();
             return $this->makeView('laravel-shop::admin.product.edit',['res'=>$res]);
         }
     }

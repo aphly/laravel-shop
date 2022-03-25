@@ -1,0 +1,31 @@
+<svg id="icon" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #0da9c4;
+      }
+
+      .cls-1, .cls-2, .cls-3 {
+        fill-rule: evenodd;
+      }
+
+      .cls-2 {
+        fill: #00a2e1;
+      }
+
+      .cls-3 {
+        fill: none;
+        stroke: #2a2a2a;
+        stroke-width: 2.981px;
+      }
+    </style>
+  </defs>
+  <g id="icon-2" data-name="icon">
+    <path id="形状_968" data-name="形状 968" class="cls-1" d="M48.1,37.611l2.09-2.09,13.3,13.3L61.4,50.911Z"/>
+    <path id="形状_968-2" data-name="形状 968" class="cls-2" d="M43.182,41.561l2.09-2.09L60.051,54.248l-2.09,2.09Z"/>
+    <path id="形状_968-3" data-name="形状 968" class="cls-1" d="M39.232,46.478l2.09-2.09L55.617,58.682l-2.09,2.09Z"/>
+    <path id="形状_968-4" data-name="形状 968" class="cls-1" d="M35.792,51.9l2.09-2.089,13.3,13.3-2.09,2.09Z"/>
+    <path id="椭圆_630" data-name="椭圆 630" class="cls-3" d="M42.943,20.305A22.858,22.858,0,1,1,20.085,43.163,22.858,22.858,0,0,1,42.943,20.305Z"/>
+    <path id="椭圆_630-2" data-name="椭圆 630" class="cls-3" d="M56.837,34.2A22.858,22.858,0,1,1,33.979,57.057,22.858,22.858,0,0,1,56.837,34.2Z"/>
+  </g>
+</svg>

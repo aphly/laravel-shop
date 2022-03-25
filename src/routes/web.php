@@ -31,5 +31,6 @@ Route::middleware(['web'])->group(function () {
     });
 
     Route::get('/eyeglasses', 'Aphly\LaravelShop\Controllers\ProductController@index');
-
+    Route::get('/eyeglasses/{sku}', 'Aphly\LaravelShop\Controllers\ProductController@detail')->where('sku', '[0-9a-zA-Z]+');
+    Route::get('/eyeglasses/{sku}/lens', 'Aphly\LaravelShop\Controllers\ProductController@lens')->where('sku', '[0-9a-zA-Z]+');
 });

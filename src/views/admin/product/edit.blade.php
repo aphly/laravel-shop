@@ -1,10 +1,10 @@
 <script src='{{ URL::asset('vendor/laravel/js/bootstrap-treeview.js') }}' type='text/javascript'></script>
+<link rel="stylesheet" href="{{ URL::asset('vendor/laravel-shop/css/product.css') }}">
 <div class="top-bar">
     <h5 class="nav-title">商品新增</h5>
 </div>
 <style>
-    .tes{display: flex;flex-wrap: wrap;}
-    .tes .form-group{width: 48%;margin: 0 1% 10px;}
+
 </style>
 <div class="imain">
     <form method="post" action="/shop-admin/product/{{$res['info']['id']}}/edit" class="save_form">
@@ -37,7 +37,7 @@
             <div class="form-group">
                 <label for="">gender</label>
                 <div class="d-flex libs_input">
-                    {!! \Aphly\Laravel\Libs\Form::checkbox('gender',$res['arr']['gender'],$res['info']['gender']) !!}
+                    {!! \Aphly\LaravelShop\Models\Product::checkbox('gender',$res['filter_arr']['gender'],$res['info']['gender']) !!}
                 </div>
             </div>
             <div class="form-group">
@@ -73,31 +73,31 @@
             <div class="form-group">
                 <label for="">shape</label>
                 <div class="d-flex libs_input">
-                    {!! \Aphly\Laravel\Libs\Form::radio('shape',$res['arr']['shape'],$res['info']['shape']) !!}
+                    {!! \Aphly\LaravelShop\Models\Product::radio('shape',$res['filter_arr']['shape'],$res['info']['shape']) !!}
                 </div>
             </div>
             <div class="form-group">
                 <label for="">material</label>
                 <div class="d-flex libs_input">
-                    {!! \Aphly\Laravel\Libs\Form::checkbox('material',$res['arr']['material'],$res['info']['material']) !!}
+                    {!! \Aphly\LaravelShop\Models\Product::checkbox('material',$res['filter_arr']['material'],$res['info']['material']) !!}
                 </div>
             </div>
             <div class="form-group">
                 <label for="">frame</label>
                 <div class="d-flex libs_input">
-                    {!! \Aphly\Laravel\Libs\Form::radio('frame',$res['arr']['frame'],$res['info']['frame']) !!}
+                    {!! \Aphly\LaravelShop\Models\Product::radio('frame',$res['filter_arr']['frame'],$res['info']['frame']) !!}
                 </div>
             </div>
             <div class="form-group">
                 <label for="">color</label>
                 <div class="d-flex libs_input">
-                    {!! \Aphly\Laravel\Libs\Form::checkbox('color',$res['arr']['color'],$res['info']['color']) !!}
+                    {!! \Aphly\LaravelShop\Models\Product::checkbox('color',$res['filter_arr']['color'],$res['info']['color']) !!}
                 </div>
             </div>
             <div class="form-group">
                 <label for="">feature</label>
                 <div class="d-flex libs_input">
-                    {!! \Aphly\Laravel\Libs\Form::checkbox('feature',$res['arr']['feature'],$res['info']['feature']) !!}
+                    {!! \Aphly\LaravelShop\Models\Product::checkbox('feature',$res['filter_arr']['feature'],$res['info']['feature']) !!}
                 </div>
             </div>
 

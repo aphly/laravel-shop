@@ -29,7 +29,7 @@ class ShopServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/config/shop.php' => config_path('shop.php'),
         ]);
-//        $this->publishes([__DIR__.'/public' => public_path('vendor/laravel-admin')]);
+        $this->publishes([__DIR__.'/public' => public_path('vendor/laravel-shop')]);
         $this->loadMigrationsFrom(__DIR__.'/migrations');
         $this->loadViewsFrom(__DIR__.'/views', 'laravel-shop');
         $this->loadRoutesFrom(__DIR__.'/routes/web.php');

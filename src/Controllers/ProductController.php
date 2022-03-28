@@ -4,6 +4,7 @@ namespace Aphly\LaravelShop\Controllers;
 
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Libs\Func;
+use Aphly\Laravel\Libs\Helper;
 use Aphly\Laravel\Models\Dictionary;
 use Aphly\LaravelAdmin\Models\Menu;
 use Aphly\LaravelShop\Models\Product;
@@ -223,10 +224,30 @@ class ProductController extends Controller
         $res['product'] = Product::where('sku',$request->sku)->with('desc')->first();
         $res['title'] = $res['product']->name;
         $res['product_img'] = $res['product']->img()->orderBy('sort','desc')->first()->toArray();
-        $res['spu'] = Product::where('spu',$res['product']->spu)->get()->toArray();
+
         $res['filter_arr'] = $this->getFilter();
         $res['product']['size'] = $this->size($res['product']['size']);
         $res['product']['color'] = $this->color($res['product']['color'],$res['filter_arr']);
+        $dictionary = new Dictionary;
+        $res['lens']['usage'] =  $dictionary->getDictionaryTreeById(37);
+        //dd($res['lens']['usage']);
+        $res['lens']['type'] =  $dictionary->getDictionaryTreeById(24);
+        //dd($res['lens']['type']);
+        Helper::getTreeByid([$res['lens']['type']],32,$res['lens']['sunglasses']);
+        $this->getThickness([$res['lens']['type']],$res['lens']['thickness']);
+        $res['lens']['coating'] =  $dictionary->getDictionaryTreeById(15);
+        //dd($res['lens']['coating']);
         return $this->makeView('laravel-shop::product.lens',['res'=>$res]);
+    }
+
+    function getThickness($type,&$res){
+        foreach ($type as $val){
+            if($val['json'] && isset($val['json'][0])){
+                $res[$val['id']]=$val['json'][0];
+            }
+            if(isset($val['child'])){
+                $this->getThickness($val['child'],$res);
+            }
+        }
     }
 }

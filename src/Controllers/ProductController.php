@@ -236,7 +236,11 @@ class ProductController extends Controller
         Helper::getTreeByid([$res['lens']['type']],32,$res['lens']['sunglasses']);
         $this->getThickness([$res['lens']['type']],$res['lens']['thickness']);
         $res['lens']['coating'] =  $dictionary->getDictionaryTreeById(15);
-        //dd($res['lens']['coating']);
+        if(isset($res['lens']['coating']['json'][0])){
+            $res['lens']['coating']['json'] = Func::array_orderby($res['lens']['coating']['json'][0],'sort',SORT_DESC);
+        }
+        $res['lens']['prism'] =  $dictionary->getDictionaryTreeById(42);
+
         return $this->makeView('laravel-shop::product.lens',['res'=>$res]);
     }
 

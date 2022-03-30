@@ -4,7 +4,7 @@ dl,dd{margin:0;}
 .productPreview{display: flex;align-items: center;}
 .productPreview img{width: 100%;max-height: 100%;}
 .carousel{min-height: 500px;}
-.lens_box .img-box{width: 23%;text-align: center;}
+.lens_box .img-box{width: 23%;text-align: center;flex-shrink: 0;}
 
 .usage .img-icon{align-items:center;display:flex;justify-content:center;margin:0 auto;min-height:113px;padding:20px 0;width:100px}
 .usage .content.data-active,.lentype .content.data-active,.lencolors .lencolors-desc.data-active,.lensCoating .content.data-active{background-color:#c4eeff}
@@ -61,6 +61,8 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
 .sub-content dd.data-active,.sub-content .sub-content1.data-active {background-color: #d5f2fe!important;border-color: #d5f2fe;}
 .lentype .sub-content.sub-content0 dd{ height:auto;line-height: 64px;flex-direction: column;align-items: start;}
 .sub-content2{display: none;padding-left: 23%; border-bottom: 1px solid #dadada;}
+
+.lensPackages36 li.lensPackage[data-sort]{display: none}
 </style>
 <div class="container">
     <div class="row">
@@ -89,7 +91,7 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
                                 <div class="sub-content">
                                      <dl>
                                          @foreach($val['json'][0] as $k=>$v)
-                                         <dd class="jump" data-id="{{$val['id']}}-{{$k}}" data-name="{{$val['name']}} - {{$v['name']}}" data-to="1">
+                                         <dd class="jump" data-id="{{$k}}" data-name="{{$v['name']}}" data-to="1">
                                              {{$v['name']}}
                                          </dd>
                                          @endforeach
@@ -246,7 +248,7 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
                             @foreach($res['lens']['type']['child'] as $key=>$val)
                             <li class="lentype">
                                 <section class="content @if($val['json'] && !$val['is_leaf']) @else jump @endif" data-id="{{$val['id']}}" data-name="{{$val['name']}}"
-                                         @if($val['id']==32) data-to="3" @else data-to="4" @endif>
+                                         @if($val['id']==32) data-to="3" @else data-to="4" data-thickness_id="{{$val['id']}}" @endif>
                                     <section class="lentype-desc">
                                         <div class="img-box"><img class="img-icon" src="{{ URL::asset('vendor/laravel-shop/img/lens/'.$val['icon']) }}" alt=""></div>
                                         <div class="text-box">
@@ -263,7 +265,7 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
                                             @foreach($val['json'][0] as $k=>$v)
                                                 @if(isset($val['json'][2]))
                                                     <dd>
-                                                        <div class="sub-content1">
+                                                        <div class="sub-content1" data-id="{{$k}}" data-name="{{$v['name']}}">
                                                             {{$v['name']}}
                                                         </div>
                                                         <div class="sub-content2">
@@ -271,18 +273,18 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
                                                                 <span>Choose Color:</span>
                                                                 <div class="mt-3 chooseColor" style="display: inline-block; white-space: nowrap;">
                                                                     @foreach($val['json'][2] as $k1=>$v1)
-                                                                        <span class="glass-color" style="background-color: {{$v1['img']}};">
-                                                                    <span class="iconfont icon-warning-circle help-tip color-tip"></span>
-                                                                </span>
+                                                                        <span class="glass-color" style="background-color: {{$v1['img']}};" data-name="{{$v1['img']}}" data-id="{{$k1}}">
+                                                                            <span class="iconfont icon-warning-circle help-tip color-tip"></span>
+                                                                        </span>
                                                                     @endforeach
                                                                 </div>
                                                             </div>
-                                                            <div><button type="button" class="glass-submit jump" data-to="4">Confirm</button></div>
+                                                            <div class="glass-submit0"><button type="button" class="glass-submit jump" data-to="4" data-thickness_id="{{$v['value']}}">Confirm</button></div>
                                                         </div>
                                                     </dd>
                                                 @else
                                                     <dd>
-                                                        <div class="jump sub-content1" data-to="4" data-id="{{$val['id']}}-{{$k}}" data-name="{{$val['name']}} - {{$v['name']}}">
+                                                        <div class="jump sub-content1" data-to="4" data-thickness_id="{{$v['value']}}" data-id="{{$k}}" data-name="{{$v['name']}}">
                                                             {{$v['name']}}
                                                         </div>
                                                     </dd>
@@ -299,7 +301,7 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
                         <ul class="lencolors ">
                             @foreach($res['lens']['sunglasses']['child'] as $key=>$val)
                             <li class="lencolor " >
-                                <section class="lencolors-desc sub-boder">
+                                <section class="lencolors-desc sub-boder" data-id="{{$val['id']}}" data-name="{{$val['name']}}">
                                     <div class="img-box d-none d-lg-table-cell">
                                         <img class="img-icon" src="{{ URL::asset('vendor/laravel-shop/img/lens/'.$val['icon']) }}" alt="">
                                     </div>
@@ -313,11 +315,11 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
                                 @if($val['json'])
                                 <div class="colortips">
                                     @if(isset($val['json'][1]))
-                                    <div>
+                                    <div class="chooseColor0">
                                         <span>Choose Color:</span>
                                         <div class="mt-3 chooseColor" style="display: inline-block; white-space: nowrap;">
                                             @foreach($val['json'][1] as $k=>$v)
-                                            <span class="glass-color" style="background-color: {{$v['img']}};">
+                                            <span class="glass-color" data-color="{{$v['img']}}" data-color_id="{{$k}}" data-color_value="{{$v['value']}}" style="background-color: {{$v['img']}};">
                                                 <span class="iconfont icon-warning-circle help-tip color-tip"></span>
                                             </span>
                                             @endforeach
@@ -328,12 +330,12 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
                                     <div class="strength">
                                         <span>Tint Strength:</span>
                                         @foreach($val['json'][2] as $k=>$v)
-                                            <span class="color-opacity">{{$v['value']}}</span>
+                                            <span class="color-opacity" data-opacity_id="{{$k}}" data-opacity="{{$v['value']}}">{{$v['value']}}</span>
                                         @endforeach
                                     </div>
                                     @endif
-                                    <div>
-                                        <button type="button" data-normal="" class="glass-submit">Confirm</button>
+                                    <div class="glass-submit0">
+                                        <button type="button" class="glass-submit jump" data-to="4" data-thickness_id="{{$val['id']}}">Confirm</button>
                                     </div>
                                 </div>
                                 @endif
@@ -343,10 +345,10 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
                     </div>
                     <div class="carousel-item 4 lensPackagSelect">
                         @foreach($res['lens']['thickness'] as $key=>$val)
-                        <ul class="lensPackages" data-id="{{$key}}" @if($key!=25) style="display: none;" @endif>
+                        <ul class="lensPackages lensPackages{{$key}}" data-id="{{$key}}" style="display: none;">
                             @foreach($val as $k=>$v)
                                 @if($v['img'])
-                                <li class="lensPackage">
+                                <li class="lensPackage" data-sort="{{$v['sort']}}" >
                                     <section class="content">
                                         <section class="lensPackage-desc">
                                             <div class="img-box"><img src="/vendor/laravel-shop/img/lens/package2.svg" alt=""></div>
@@ -355,15 +357,26 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
                                                     <span class="font-weight-bold">{{$v['img']}}</span>
                                                     <div class="lenTitleDescrip"><span>&nbsp;-&nbsp;</span>
                                                         <span class="price">${{$v['value']}}</span>
-                                                        <span class="thinner">(Up to 15% thinner)</span>
+                                                        <?php $thickness = substr($v['name'],0,4); ?>
+                                                        @if($thickness=='1.50')
+                                                        @elseif($thickness=='1.57')
+                                                            <span class="thinner">(Up to 15% thinner)</span>
+                                                        @elseif($thickness=='1.59')
+                                                            <span class="thinner">(Up to 20% thinner)</span>
+                                                        @elseif($thickness=='1.61')
+                                                            <span class="thinner">(Up to 25% thinner)</span>
+                                                        @elseif($thickness=='1.67')
+                                                            <span class="thinner">(Up to 30% thinner)</span>
+                                                        @elseif($thickness=='1.74')
+                                                            <span class="thinner">(Up to 35% thinner)</span>
+                                                        @endif
                                                     </div>
                                                 </div>
                                                 <div class="thinner d-inline-block d-lg-none">
                                                     (Up to 15% thinner)
                                                 </div>
                                                 <div>
-                                                    <span>{{$v['name']}}, </span>
-                                                    <span>Gradient Tint, </span>
+                                                    <span>{{ substr($v['name'],0,4)}}, </span>
                                                     <span>Anti-Scratch, </span>
                                                     <span>Anti-Reflective, </span>
                                                     <span>UV Coating</span>
@@ -437,15 +450,18 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
                     <p class="sku"><a href="/eyeglasses/{{$res['product']['sku']}}" title="{{$res['product']['name']}}">{{$res['product']['name']}}</a></p>
                     <p>{{$res['product']['color']}}</p>
                     <p class="total-price"><span>Total: </span><span class="total-price-style">${{$res['product']['price']}}</span></p>
-                    <div class="usage_res d-none justify-content-between" ><span>Usage</span> <span class="res_val"></span></div>
-                    <div class="lensType_res d-none justify-content-between" ><span>lensType</span> <span class="res_val"></span></div>
+                    <div class="lens_cart"></div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 <script>
-let lens = {};
+let lens = {
+    'usages':{},
+    'lensType':{},
+    'sunglasses': {}
+};
 
 let sph = px_arr(-1600,1000);
 let cyl = px_arr(-600,600);
@@ -456,15 +472,16 @@ let xx = px_arr(50,500,50,false);
 $(function () {
     //0
     $('.usage').on('click','.content',function () {
+        lens['usages']['id'] = $(this).attr('data-id')
+        lens['usages']['name'] = $(this).attr('data-name')
+        delete lens['usages']['child_id']
+        delete lens['usages']['child_name']
+        lensCart()
         $('.usage dd').removeClass('data-active')
         if($(this).hasClass('data-active')){
             $(this).removeClass('data-active')
-            $('.usage_res').removeClass('d-flex').addClass('d-none')
-            $('.usage_res .res_val').html('').removeAttr('data-usage')
         }else{
             $(this).addClass('data-active')
-            $('.usage_res').removeClass('d-none').addClass('d-flex')
-            $('.usage_res .res_val').html($(this).attr('data-name')).attr('data-usage',$(this).attr('data-id'))
         }
         $('.usage .content').not($(this)).removeClass('data-active')
         let next = $(this).next();
@@ -474,11 +491,13 @@ $(function () {
     $('.usage').on('click','dd',function () {
         $('.usage dd').removeClass('data-active')
         if($(this).hasClass('data-active')){
-            $(this).removeClass('data-active')
+            //$(this).removeClass('data-active')
         }else{
             $(this).addClass('data-active')
         }
-        $('.usage_res .res_val').html($(this).attr('data-name')).attr('data-usage',$(this).attr('data-id'))
+        lens['usages']['child_id'] = $(this).attr('data-id')
+        lens['usages']['child_name'] = $(this).attr('data-name')
+        lensCart()
     })
 
     //1
@@ -505,29 +524,37 @@ $(function () {
 
     //2
     $('.lentypes').on('click','.content',function () {
+        lensReset(3)
+        lens['lensType']['id'] = $(this).attr('data-id')
+        lens['lensType']['name'] = $(this).attr('data-name')
+        delete lens['lensType']['child1_id']
+        delete lens['lensType']['child1_name']
+        delete lens['lensType']['child2_id']
+        delete lens['lensType']['child2_name']
+        lensCart()
         $('.lentypes .sub-content1').removeClass('data-active')
+        $('.lentypes .sub-content2').css('display','none')
         if($(this).hasClass('data-active')){
-            $(this).removeClass('data-active')
-            $('.lensType_res').removeClass('d-flex').addClass('d-none')
-            $('.lensType_res .res_val').html('').removeAttr('data-lensType')
+            //$(this).removeClass('data-active')
         }else{
             $(this).addClass('data-active')
-            if($(this).hasClass('jump')) {
-                $('.lensType_res').removeClass('d-none').addClass('d-flex')
-                $('.lensType_res .res_val').html($(this).attr('data-name')).attr('data-lensType', $(this).attr('data-id'))
-            }else{
-                $('.lensType_res').removeClass('d-flex').addClass('d-none')
-                $('.lensType_res .res_val').html('').removeAttr('data-lensType')
-            }
         }
         $('.lentypes .content').not($(this)).removeClass('data-active')
         let next = $(this).next();
         next.toggle('normal')
         $(".lentypes .sub-content").not(next).slideUp()
     })
+
     $('.lentypes').on('click','.sub-content1',function () {
+        lens['lensType']['child1_id'] = $(this).attr('data-id')
+        lens['lensType']['child1_name'] = $(this).attr('data-name')
+        delete lens['lensType']['child2_id']
+        delete lens['lensType']['child2_name']
+        if($(this).hasClass('jump')){
+            lensCart()
+        }
         if($(this).hasClass('data-active')){
-            $(this).removeClass('data-active')
+            //$(this).removeClass('data-active')
         }else{
             $(this).addClass('data-active')
         }
@@ -536,30 +563,51 @@ $(function () {
             let next = $(this).next();
             next.toggle('normal')
             $(".lentypes .sub-content2").not(next).slideUp()
-        }else{
-            $('.lensType_res').removeClass('d-none').addClass('d-flex')
-            $('.lensType_res .res_val').html($(this).attr('data-name')).attr('data-lensType',$(this).attr('data-id'))
         }
     })
 
-    $('.lencolors').on('click','.lencolors-desc',function () {
+    $('.lentypes .chooseColor').on('click','.glass-color',function () {
+        lens['lensType']['child2_id'] = $(this).attr('data-id')
+        lens['lensType']['child2_name'] = $(this).attr('data-name')
+        lensCart()
+        $(this).addClass('data-active')
+        $('.lentypes .chooseColor .glass-color').not($(this)).removeClass('data-active')
+    })
+
+    //3
+    $('.sunglasseColor .lencolors').on('click','.lencolors-desc',function () {
         $(this).addClass('data-active')
         $('.lencolors .lencolors-desc').not($(this)).removeClass('data-active')
         let next = $(this).next();
         next.toggle('normal')
         $(".lencolors .colortips").not(next).slideUp()
+        lens['sunglasses']['id'] = $(this).data('id')
+        lens['sunglasses']['name'] = $(this).data('name')
+        delete lens['sunglasses']['color_id']
+        delete lens['sunglasses']['color']
+        delete lens['sunglasses']['color_value']
+        delete lens['sunglasses']['opacity_id']
+        delete lens['sunglasses']['opacity']
     })
 
-    $('.chooseColor').on('click','.glass-color',function () {
+    $('.sunglasseColor .chooseColor').on('click','.glass-color',function () {
         $(this).addClass('data-active')
-        $('.chooseColor .glass-color').not($(this)).removeClass('data-active')
+        $(this).closest('.chooseColor').children().not($(this)).removeClass('data-active')
+        lens['sunglasses']['color_id'] = $(this).data('color_id')
+        lens['sunglasses']['color'] = $(this).data('color')
+        lens['sunglasses']['color_value'] = $(this).data('color_value')
+        lensCart()
     })
 
-    $('.strength').on('click','.color-opacity',function () {
+    $('.sunglasseColor .strength').on('click','.color-opacity',function () {
         $(this).addClass('data-active')
-        $('.strength .color-opacity').not($(this)).removeClass('data-active')
+        $('.sunglasseColor .strength .color-opacity').not($(this)).removeClass('data-active')
+        lens['sunglasses']['opacity_id'] = $(this).data('opacity_id')
+        lens['sunglasses']['opacity'] = $(this).data('opacity')
+        lensCart()
     })
 
+    //4
     $('.lensCoatings').on('click','.content',function () {
         $(this).addClass('data-active')
         $('.lensCoatings .content').not($(this)).removeClass('data-active')
@@ -595,9 +643,26 @@ $(function () {
     })
 
     $('#carouselLens').on('click','.jump',function () {
-        $('#carouselLens').carousel($(this).data('to'))
+        let to = $(this).data('to')
+        let thickness_id = $(this).attr('data-thickness_id')
+        $('.lensPackages').hide()
+        if(to===4 && thickness_id){
+            $('.lensPackages'+thickness_id).show()
+            if(thickness_id===(36+'')){
+                $('.lensPackages'+thickness_id+' li.lensPackage[data-sort]').hide()
+                let sorts = lens.sunglasses.color_value
+                if(sorts){
+                    let arr = sorts.split(',')
+                    arr.forEach(i=>{
+                        $('.lensPackages'+thickness_id+' li.lensPackage[data-sort="'+i+'"]').show()
+                    })
+                }
+            }
+        }
+        $('#carouselLens').carousel(to)
     })
 })
+
 function px_arr(i,e,step=25,flag=true){
     let arr = []
     while (i<=e){
@@ -611,6 +676,54 @@ function px_arr(i,e,step=25,flag=true){
             return (i/100).toFixed(2)
         }
     })
+}
+
+function lensReset(step) {
+    if(step===3){
+        lens['sunglasses']={}
+        $('.sunglasseColor .glass-color').removeClass('data-active');
+        $('.sunglasseColor .color-opacity').removeClass('data-active');
+        $('.sunglasseColor .lencolors-desc').removeClass('data-active');
+        $('.sunglasseColor .colortips').hide();
+    }
+
+}
+
+function lensCart() {
+    let html = '';
+    for(let i in lens){
+        let obj = lens[i]
+        if(!$.isEmptyObject(obj)){
+            html += `<div class="${i}_res cart_res ">`
+            if(i==='usages'){
+                if("child_id" in obj){
+                    html += `<div class="d-flex justify-content-between"><span>${i}</span><span class="res_val">${obj.name} - ${obj.child_name}</span></div>`
+                }else{
+                    html += `<div class="d-flex justify-content-between"><span>${i}</span><span class="res_val">${obj.name}</span></div>`
+                }
+            }else if(i==='lensType'){
+                if("child2_id" in obj){
+                    html += `<div class="d-flex justify-content-between"><span>${i}</span><span class="res_val">${obj.name}</span></div>`
+                    html += `<div class="d-flex justify-content-between"><span>${obj.child1_name}</span><span class="res_val">${obj.child2_name}</span></div>`
+                }else{
+                    if("child1_id" in obj){
+                        html += `<div class="d-flex justify-content-between"><span>${i}</span><span class="res_val">${obj.name} - ${obj.child1_name}</span></div>`
+                    }else{
+                        html += `<div class="d-flex justify-content-between"><span>${i}</span><span class="res_val">${obj.name}</span></div>`
+                    }
+                }
+            }else if(i==='sunglasses'){
+                if("opacity_id" in obj){
+                    html += `<div class="d-flex justify-content-between"><span>${obj.name}</span><span class="res_val">${obj.color} - ${obj.opacity}</span></div>`
+                }else{
+                    html += `<div class="d-flex justify-content-between"><span>${obj.name}</span><span class="res_val">${obj.color}</span></div>`
+                }
+            }
+            html += `</div>`
+        }
+    }
+    $('.lens_cart').html(html)
+    console.log(lens);
 }
 </script>
 @include('laravel-shop::common.footer')

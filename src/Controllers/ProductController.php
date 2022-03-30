@@ -240,14 +240,13 @@ class ProductController extends Controller
             $res['lens']['coating']['json'] = Func::array_orderby($res['lens']['coating']['json'][0],'sort',SORT_DESC);
         }
         $res['lens']['prism'] =  $dictionary->getDictionaryTreeById(42);
-
         return $this->makeView('laravel-shop::product.lens',['res'=>$res]);
     }
 
     function getThickness($type,&$res){
         foreach ($type as $val){
             if($val['json'] && isset($val['json'][0])){
-                $res[$val['id']]=$val['json'][0];
+                $res[$val['id']]=Func::array_orderby($val['json'][0],'sort',SORT_DESC);
             }
             if(isset($val['child'])){
                 $this->getThickness($val['child'],$res);

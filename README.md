@@ -1,7 +1,7 @@
 **laravel Shop**<br>
 
 环境<br>
-php7.3+<br>
+php8.0+<br>
 laravel8.37+<br>
 mysql5.7+<br>
 

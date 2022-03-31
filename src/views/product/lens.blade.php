@@ -7,7 +7,7 @@ dl,dd{margin:0;}
 .lens_box .img-box{width: 23%;text-align: center;flex-shrink: 0;}
 
 .usage .img-icon{align-items:center;display:flex;justify-content:center;margin:0 auto;min-height:113px;padding:20px 0;width:100px}
-.usage .content.data-active,.lentype .content.data-active,.lencolors .lencolors-desc.data-active,.lensCoating .content.data-active{background-color:#c4eeff}
+.usage .content.data-active,.lentype .content.data-active,.lencolors .lencolors-desc.data-active,.lensCoating .content.data-active,.lensCoatings .content.data-active,.lensPackages .content.data-active{background-color:#c4eeff}
 .lensPackag .content,.lentype .content,.usage .content{font-size:14px}
 .usage .glass-desc{border-bottom:1px solid #dadada;display:flex;position:relative;vertical-align:middle;width:100%}
 .usage .glass-desc div{vertical-align:middle}
@@ -17,7 +17,7 @@ dl,dd{margin:0;}
 .lentype .sub-content dd .sub-content1{align-items:center;border-bottom:1px solid #dadada;display:flex;height:64px;line-height:64px;padding-left:23%;}
 .lentype-desc,.lencolors-desc,.lensPackage-desc,.lensCoating-desc{cursor:pointer;display:flex;position:relative;vertical-align:middle;width:100%;height: 140px;border-bottom: 1px solid #dadada;}
 .lentype .sub-content .lentypeSub>li:first-child,.lentype .sub-content>header:first-child,.lentype-desc{border-bottom:1px solid #dadada}
-.lentype .content:not(.data-active):hover,.usage .content:not(.data-active):hover,.lencolors .lencolors-desc:not(.data-active):hover {background-color: #f0fbff;}
+.lentype .content:not(.data-active):hover,.usage .content:not(.data-active):hover,.lencolors .lencolors-desc:not(.data-active):hover,.lensCoatings .content:not(.data-active):hover,.lensPackages .content:not(.data-active):hover {background-color: #f0fbff;}
 .lentype .sub-content dd:hover, .usage .sub-content dd:hover {background-color: #f0fbff;}
 
 .chooseColor .glass-color{background-repeat:no-repeat;border:2px solid #fff;border-radius:100%;box-shadow:0 0 0 1px #d1d1d1;cursor:pointer;display:inline-block;height:30px;margin:2px 6px;position:relative;vertical-align:middle;width:30px}
@@ -57,12 +57,12 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
 .ProductPrice .sku a {color: #000;font-size: 24px;font-weight: 600;}
 .total-price{font-weight: 600;font-size: 16px;color: #333;}
 .ProductPrice .total-price .total-price-style {font-size: 24px;}
-
 .sub-content dd.data-active,.sub-content .sub-content1.data-active {background-color: #d5f2fe!important;border-color: #d5f2fe;}
 .lentype .sub-content.sub-content0 dd{ height:auto;line-height: 64px;flex-direction: column;align-items: start;}
 .sub-content2{display: none;padding-left: 23%; border-bottom: 1px solid #dadada;}
-
 .lensPackages36 li.lensPackage[data-sort]{display: none}
+.customizeLens {color: #7f7f7f; padding-left: 10px;}
+.recommended-icon{background:url(/vendor/laravel-shop/img/lens/recommend2.svg) no-repeat 50%;background-size:24px 24px;display:inline-block;height:24px;margin-left:10px;vertical-align:text-bottom;width:24px}
 </style>
 <div class="container">
     <div class="row">
@@ -347,16 +347,32 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
                         @foreach($res['lens']['thickness'] as $key=>$val)
                         <ul class="lensPackages lensPackages{{$key}}" data-id="{{$key}}" style="display: none;">
                             @foreach($val as $k=>$v)
-                                @if($v['img'])
-                                <li class="lensPackage" data-sort="{{$v['sort']}}" >
-                                    <section class="content">
+                                @if($v['ext1'])
+                                    <?php $price = floatval($v['price'])+(floatval($res['lens']['coating']['json']['usyxbeqe']['price'])+floatval($res['lens']['coating']['json']['rivvvcmn']['price'])+floatval($res['lens']['coating']['json']['qoyogomx']['price'])); ?>
+                                <li class="lensPackage" data-sort="{{$v['sort']}}">
+                                    <section class="content" data-id="{{$k}}" data-name="{{$v['name']}}" data-price="{{floatval($v['price'])}}" data-sum="{{$price}}"
+                                        data-coating1_id="usyxbeqe"
+                                        data-coating1_name="{{$res['lens']['coating']['json']['usyxbeqe']['name']}}"
+                                        data-coating1_price="{{$res['lens']['coating']['json']['usyxbeqe']['price']}}"
+                                         data-coating2_id="rivvvcmn"
+                                         data-coating2_name="{{$res['lens']['coating']['json']['rivvvcmn']['name']}}"
+                                         data-coating2_price="{{$res['lens']['coating']['json']['rivvvcmn']['price']}}"
+                                         data-coating3_id="qoyogomx"
+                                         data-coating3_name="{{$res['lens']['coating']['json']['qoyogomx']['name']}}"
+                                         data-coating3_price="{{$res['lens']['coating']['json']['qoyogomx']['price']}}"
+                                        @if($key==27)
+                                             data-coating4_id="rriveqdk"
+                                             data-coating4_name="{{$res['lens']['coating']['json']['rriveqdk']['name']}}"
+                                             data-coating4_price="{{$res['lens']['coating']['json']['rriveqdk']['price']}}"
+                                        @endif
+                                    >
                                         <section class="lensPackage-desc">
                                             <div class="img-box"><img src="/vendor/laravel-shop/img/lens/package2.svg" alt=""></div>
                                             <div class="text-box">
                                                 <div class="box-title">
-                                                    <span class="font-weight-bold">{{$v['img']}}</span>
+                                                    <span class="font-weight-bold">{{$v['ext1']}}</span>
                                                     <div class="lenTitleDescrip"><span>&nbsp;-&nbsp;</span>
-                                                        <span class="price">${{$v['value']}}</span>
+                                                        <span class="price">${{$price}}</span>
                                                         <?php $thickness = substr($v['name'],0,4); ?>
                                                         @if($thickness=='1.50')
                                                         @elseif($thickness=='1.57')
@@ -370,16 +386,22 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
                                                         @elseif($thickness=='1.74')
                                                             <span class="thinner">(Up to 35% thinner)</span>
                                                         @endif
+                                                        @if($v['ext2'])
+                                                        <i class="recommended-icon"></i>
+                                                        @endif
                                                     </div>
                                                 </div>
                                                 <div class="thinner d-inline-block d-lg-none">
                                                     (Up to 15% thinner)
                                                 </div>
                                                 <div>
-                                                    <span>{{ substr($v['name'],0,4)}}, </span>
+                                                    <span>{{ $v['name'] }}, </span>
                                                     <span>Anti-Scratch, </span>
                                                     <span>Anti-Reflective, </span>
                                                     <span>UV Coating</span>
+                                                    @if($key==27)
+                                                        <span>, Water Resistant Coating</span>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </section>
@@ -387,8 +409,8 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
                                 </li>
                                 @endif
                             @endforeach
-                            <li class="lensPackage">
-                                <section class="content">
+                            <li class="lensPackage jump" data-to="5" data-thickness_id="{{$key}}">
+                                <section class="content" data-res="1">
                                     <section class="lensPackage-desc">
                                         <div class="img-box "><img src="/vendor/laravel-shop/img/lens/package2.svg" alt=""></div>
                                         <div class="text-box">
@@ -405,7 +427,7 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
                     </div>
                     <div class="carousel-item 5 customize">
                         @foreach($res['lens']['thickness'] as $key=>$val)
-                            <ul class="lensCoatings" data-id="{{$key}}" @if($key!=25) style="display: none;" @endif>
+                            <ul class="lensCoatings lensCoatings{{$key}}" data-id="{{$key}}" style="display: none;">
                                 @foreach($val as $k=>$v)
                                     <li class="lensCoating">
                                         <section class="content" data-id="{{$key}}-{{$k}}" data-price="{{$v['value']}}">
@@ -413,9 +435,13 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
                                                 <div class="text-box">
                                                     <div class="box-title pb-0">
                                                         <div class="font-weight-bold">
-                                                            {{$v['name']}} Blue Blocker Pro
+                                                            {{$v['name']}}
                                                             <span>&nbsp;-&nbsp;</span>
-                                                            <span>${{$v['value']}}</span>
+                                                            @if($v['price'])
+                                                                <span>${{$v['price']}}</span>
+                                                            @else
+                                                                <span>Free</span>
+                                                            @endif
                                                         </div>
                                                         <span data-toggle="modal" class="iconfont icon-warning-circle help-tip"></span>
                                                     </div>
@@ -444,7 +470,9 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
         <div class="col-4">
             <div>
                 <div class="productPreview">
-                    <img src="{{Storage::url($res['product_img']['src'])}}" alt="">
+                    @if($res['product_img'])
+                        <img src="{{Storage::url($res['product_img']['src'])}}" alt="">
+                    @endif
                 </div>
                 <div class="ProductPrice">
                     <p class="sku"><a href="/eyeglasses/{{$res['product']['sku']}}" title="{{$res['product']['name']}}">{{$res['product']['name']}}</a></p>
@@ -460,9 +488,12 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
 let lens = {
     'usages':{},
     'lensType':{},
-    'sunglasses': {}
+    'sunglasses': {},
+    'lensPackagSelect':{},
+    'customize':{}
 };
 
+let cart = {}
 let sph = px_arr(-1600,1000);
 let cyl = px_arr(-600,600);
 let add = px_arr(100,350);
@@ -488,6 +519,7 @@ $(function () {
         next.toggle('normal')
         $(".usage .sub-content").not(next).slideUp('normal')
     })
+
     $('.usage').on('click','dd',function () {
         $('.usage dd').removeClass('data-active')
         if($(this).hasClass('data-active')){
@@ -608,16 +640,46 @@ $(function () {
     })
 
     //4
-    $('.lensCoatings').on('click','.content',function () {
+    $('.lensPackagSelect .lensPackage').on('click','.content',function () {
         $(this).addClass('data-active')
-        $('.lensCoatings .content').not($(this)).removeClass('data-active')
+        $('.lensPackagSelect .lensPackage .content').not($(this)).removeClass('data-active')
+        if($(this).data('res')) {
+            lens.customize['title'] = 'customize Lenses'
+            lens.lensPackagSelect = {}
+        }else{
+            lens.lensPackagSelect['id']=$(this).data('id')
+            lens.lensPackagSelect['name']=$(this).data('name')
+            lens.lensPackagSelect['price']=$(this).data('price')
+            lens.lensPackagSelect['sum']=$(this).data('sum')
+            lens.lensPackagSelect['coating1_id']=$(this).data('coating1_id')
+            lens.lensPackagSelect['coating1_name']=$(this).data('coating1_name')
+            lens.lensPackagSelect['coating1_price']=$(this).data('coating1_price')
+            lens.lensPackagSelect['coating2_id']=$(this).data('coating2_id')
+            lens.lensPackagSelect['coating2_name']=$(this).data('coating2_name')
+            lens.lensPackagSelect['coating2_price']=$(this).data('coating2_price')
+            lens.lensPackagSelect['coating3_id']=$(this).data('coating3_id')
+            lens.lensPackagSelect['coating3_name']=$(this).data('coating3_name')
+            lens.lensPackagSelect['coating3_price']=$(this).data('coating3_price')
+            if($(this).data('coating4_id')){
+                lens.lensPackagSelect['coating4_id']=$(this).data('coating4_id')
+                lens.lensPackagSelect['coating4_name']=$(this).data('coating4_name')
+                lens.lensPackagSelect['coating4_price']=$(this).data('coating4_price')
+            }
+        }
+        lensCart()
+    })
+
+    //5
+    $('.customize .lensCoatings').on('click','.content',function () {
+        $(this).addClass('data-active')
+        $('.customize .lensCoatings .content').not($(this)).removeClass('data-active')
         let html = `<div class="table">
                         @foreach($res['lens']['coating']['json'] as $k=>$v)
-                        <ul data-id="{{$k}}" @if($v['img']) data-select="true" @endif data-price="{{$v['value']}}" class="tr" style="cursor: pointer;">
+                        <ul data-id="{{$k}}" @if($v['ext1']) data-select="true" @endif data-price="{{$v['price']}}" class="tr" style="cursor: pointer;">
                             <li class="td table-raido" style="width: 7%;">
                                 <div class="checkbox-attr uni app-check2"></div>
                             </li>
-                            <li class="td" style="width: 15%;">  @if($v['value']) ${{$v['value']}} @else Free @endif</li>
+                            <li class="td" style="width: 15%;">  @if($v['price']) ${{$v['price']}} @else Free @endif</li>
                             <li class="td" style="width: 50%;">
                                 {{$v['name']}}
                                 <span data-toggle="modal" class="iconfont icon-warning-circle help-tip"></span>
@@ -630,11 +692,11 @@ $(function () {
                     </div>`
         let next = $(this).next();
         next.html(html).toggle('normal')
-        $(".lensCoatings .glass-table").not(next).slideUp('normal',function () {
+        $(".customize .lensCoatings .glass-table").not(next).slideUp('normal',function () {
             $(this).html('')
         })
     })
-    $('.lensCoatings .glass-table').on('click','.tr',function () {
+    $('.customize .lensCoatings .glass-table').on('click','.tr',function () {
         if($(this).attr('data-select')){
             $(this).removeAttr('data-select')
         }else{
@@ -645,9 +707,8 @@ $(function () {
     $('#carouselLens').on('click','.jump',function () {
         let to = $(this).data('to')
         let thickness_id = $(this).attr('data-thickness_id')
-        $('.lensPackages').hide()
         if(to===4 && thickness_id){
-            $('.lensPackages'+thickness_id).show()
+            $('.lensPackages'+thickness_id).css('display','block')
             if(thickness_id===(36+'')){
                 $('.lensPackages'+thickness_id+' li.lensPackage[data-sort]').hide()
                 let sorts = lens.sunglasses.color_value
@@ -658,6 +719,8 @@ $(function () {
                     })
                 }
             }
+        }else if(to===5 && thickness_id){
+            $('.lensCoatings'+thickness_id).show()
         }
         $('#carouselLens').carousel(to)
     })
@@ -685,8 +748,13 @@ function lensReset(step) {
         $('.sunglasseColor .color-opacity').removeClass('data-active');
         $('.sunglasseColor .lencolors-desc').removeClass('data-active');
         $('.sunglasseColor .colortips').hide();
-    }
 
+        lens['lensPackagSelect']={}
+        $('.lensPackagSelect .content').removeClass('data-active');
+
+        $('.lensPackages').hide()
+        $('.lensCoatings').hide()
+    }
 }
 
 function lensCart() {
@@ -718,6 +786,17 @@ function lensCart() {
                 }else{
                     html += `<div class="d-flex justify-content-between"><span>${obj.name}</span><span class="res_val">${obj.color}</span></div>`
                 }
+            }else if(i==='lensPackagSelect'){
+                html += `<div class="d-flex justify-content-between"><span>Lenses</span><span class="res_val">$${obj.sum}</span></div>`
+                html += `<div class="d-flex justify-content-between"><span class="customizeLens">--${obj.name}</span><span class="res_val">$${obj.price}</span></div>`
+                html += `<div class="d-flex justify-content-between"><span class="customizeLens">--${obj.coating1_name}</span><span class="res_val">${obj.coating1_price?'$'+obj.coating1_price:'Free'}</span></div>`
+                html += `<div class="d-flex justify-content-between"><span class="customizeLens">--${obj.coating2_name}</span><span class="res_val">$${obj.coating2_price}</span></div>`
+                html += `<div class="d-flex justify-content-between"><span class="customizeLens">--${obj.coating3_name}</span><span class="res_val">$${obj.coating3_price}</span></div>`
+                if('coating4_name' in obj){
+                    html += `<div class="d-flex justify-content-between"><span class="customizeLens">--${obj.coating4_name}</span><span class="res_val">$${obj.coating4_price}</span></div>`
+                }
+            }else if(i==='customize'){
+                html += `<div class="d-flex justify-content-between"><span>${obj.title}</span><span class="res_val">${('sum' in obj)?'$'+obj.sum:''}</span></div>`
             }
             html += `</div>`
         }

@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,4 +34,12 @@ Route::middleware(['web'])->group(function () {
     Route::get('/eyeglasses', 'Aphly\LaravelShop\Controllers\ProductController@index');
     Route::get('/eyeglasses/{sku}', 'Aphly\LaravelShop\Controllers\ProductController@detail')->where('sku', '[0-9a-zA-Z]+');
     Route::get('/eyeglasses/{sku}/lens', 'Aphly\LaravelShop\Controllers\ProductController@lens')->where('sku', '[0-9a-zA-Z]+');
+
+
+});
+Route::get('/sql',function (){
+    set_time_limit(0);
+    for($i=1;$i<100000;$i++){
+        DB::insert("INSERT INTO `product` (`id`, `sku`, `spu`, `cate_id`, `name`, `status`, `gender`, `size`, `frame_width`, `lens_width`, `lens_height`, `bridge_width`, `arm_length`, `shape`, `material`, `frame`, `color`, `feature`, `price`, `viewed`, `createtime`, `sale`) VALUES (".$i.", 'sku".$i."', 'spu".$i."', 14, 'Kissimmee', 1, '2,3', 3, 142, 51, 41, 21, 149, 6, '6', 1, '23,15', '3', 12.95, 0, 1647504759, 0);");
+    }
 });

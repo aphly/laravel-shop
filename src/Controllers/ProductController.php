@@ -223,8 +223,8 @@ class ProductController extends Controller
     function lens(Request $request){
         $res['product'] = Product::where('sku',$request->sku)->with('desc')->first();
         $res['title'] = $res['product']->name;
-        $res['product_img'] = $res['product']->img()->orderBy('sort','desc')->first()->toArray();
-
+        $res['product_img'] = $res['product']->img()->orderBy('sort','desc')->first();
+        $res['product_img'] =  !is_null($res['product_img']) ? $res['product_img']->toArray() : [];
         $res['filter_arr'] = $this->getFilter();
         $res['product']['size'] = $this->size($res['product']['size']);
         $res['product']['color'] = $this->color($res['product']['color'],$res['filter_arr']);
@@ -232,7 +232,6 @@ class ProductController extends Controller
         $res['lens']['usage'] =  $dictionary->getDictionaryTreeById(37);
         //dd($res['lens']['usage']);
         $res['lens']['type'] =  $dictionary->getDictionaryTreeById(24);
-        //dd($res['lens']['type']);
         Helper::getTreeByid([$res['lens']['type']],32,$res['lens']['sunglasses']);
         $this->getThickness([$res['lens']['type']],$res['lens']['thickness']);
         $res['lens']['coating'] =  $dictionary->getDictionaryTreeById(15);
@@ -240,6 +239,7 @@ class ProductController extends Controller
             $res['lens']['coating']['json'] = Func::array_orderby($res['lens']['coating']['json'][0],'sort',SORT_DESC);
         }
         $res['lens']['prism'] =  $dictionary->getDictionaryTreeById(42);
+        //dd($res['lens']['thickness']);
         return $this->makeView('laravel-shop::product.lens',['res'=>$res]);
     }
 

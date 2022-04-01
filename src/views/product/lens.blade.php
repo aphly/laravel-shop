@@ -1,6 +1,9 @@
 @include('laravel-shop::common.header')
 <style>
 dl,dd{margin:0;}
+.lens_box1{width: 62%;}
+.lens_box2{width: 36%;}
+
 .productPreview{display: flex;align-items: center;}
 .productPreview img{width: 100%;max-height: 100%;}
 .carousel{min-height: 500px;}
@@ -63,18 +66,40 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
 .lensPackages36 li.lensPackage[data-sort]{display: none}
 .customizeLens {color: #7f7f7f; padding-left: 10px;}
 .recommended-icon{background:url(/vendor/laravel-shop/img/lens/recommend2.svg) no-repeat 50%;background-size:24px 24px;display:inline-block;height:24px;margin-left:10px;vertical-align:text-bottom;width:24px}
+.toCart{background-color:#0da9c4;border:1px solid #0000;border-radius:3px;color:#fff;font-size:14px;line-height:42px;outline:none;padding:0;text-align:center;width:200px}
+.rowText{vertical-align:middle!important}
+.colspanTitle{font-weight:700}
+.carousel_prev{display: none;}
+.prescription .prescription-table input:focus, .prescription .prescription-table select:focus, .prescription .prescription-table textarea:focus {speak: none;border-color: #0da9c4;outline: none;}
 </style>
+<script>
+    function carousel_prev() {
+        let id = $('#carouselLens .carousel-inner .carousel-item.active').data('id')
+        if(id){
+            if(id===2 && lens.usages.name==="Non-prescription") {
+                $('#carouselLens').carousel(0)
+            }else if(id===4 && lens.lensType.name!=="Sunglasses"){
+                $('#carouselLens').carousel(2)
+            }else{
+                $('#carouselLens').carousel('prev')
+            }
+        }
+    }
+</script>
 <div class="container">
-    <div class="row">
-        <div class="col-8 lens_box">
+    <div class="d-flex justify-content-between">
+        <div class="lens_box1 lens_box">
             <div id="carouselLens" class="carousel slide" data-ride="carousel" data-interval="false">
-                <ol class="">
-                    <li data-target="#carouselLens" data-slide-to="0" class="active">usages</li>
-                    <li data-target="#carouselLens" data-slide-to="1">prescription</li>
-                    <li data-target="#carouselLens" data-slide-to="2">lensTypeSelect</li>
-                </ol>
+                <div class="d-flex justify-content-between">
+                    <div class="carousel_prev" onclick="carousel_prev()"><</div>
+                    <ol class="d-flex">
+                        <li data-target="#carouselLens" data-slide-to="0" class="active">usages</li>
+                        <li data-target="#carouselLens" data-slide-to="1">prescription</li>
+                        <li data-target="#carouselLens" data-slide-to="2">lensTypeSelect</li>
+                    </ol>
+                </div>
                 <div class="carousel-inner">
-                    <div class="carousel-item active usages 0">
+                    <div data-id="0" class="carousel-item active usages">
                         <ul class="" >
                             @foreach($res['lens']['usage']['child'] as $key=>$val)
                             <li class="usage">
@@ -102,7 +127,7 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
                             @endforeach
                         </ul>
                     </div>
-                    <div class="carousel-item 1 prescription">
+                    <div data-id="1" class="carousel-item prescription" >
                         <div class="tab-content">
                             <div class="tab-pane fade active show">
                                 <div class="prescription-table default">
@@ -141,20 +166,20 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
                                                 </li>
                                                 <li class="td">
                                                     <label class="select">
-                                                        <select class="sph_js"></select>
+                                                        <select class="sph_js prescription_select" data-name="od_sph"></select>
                                                     </label>
                                                 </li>
                                                 <li class="td">
                                                     <label class="select">
-                                                        <select class="cyl_js"></select>
+                                                        <select class="cyl_js prescription_select" data-name="od_cyl"></select>
                                                     </label>
                                                 </li>
                                                 <li data-disabled="true" class="td mobileLi">
-                                                    <label><input type="number" pattern="\d*" size="3"></label>
+                                                    <label><input type="number" pattern="\d*" size="3" class="prescription_select" data-name="od_axis"></label>
                                                 </li>
                                                 <li data-border-left="" data-disabled="true" class="td mobileLi">
                                                     <label class="select">
-                                                        <select data-disabled="true" class="add_js">
+                                                        <select data-disabled="true" class="add_js prescription_select" data-name="od_add">
                                                             <option value="">n/a</option>
                                                         </select>
                                                     </label>
@@ -169,20 +194,20 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
                                                 </li>
                                                 <li class="td">
                                                     <label class="select">
-                                                        <select class="sph_js"></select>
+                                                        <select class="sph_js prescription_select" data-name="os_sph"></select>
                                                     </label>
                                                 </li>
                                                 <li class="td">
                                                     <label class="select">
-                                                        <select class="cyl_js"></select>
+                                                        <select class="cyl_js prescription_select" data-name="os_cyl"></select>
                                                     </label>
                                                 </li>
                                                 <li data-disabled="true" class="td mobileLi">
-                                                    <label><input type="number" pattern="\d*" size="3"></label>
+                                                    <label><input type="number" pattern="\d*" size="3" class="prescription_select" data-name="os_axis"></label>
                                                 </li>
                                                 <li data-disabled="true" data-border-left="" class="td mobileLi">
                                                     <label class="select">
-                                                        <select data-disabled="true" class="add_js">
+                                                        <select data-disabled="true" class="add_js prescription_select" data-name="os_add">
                                                             <option value="">n/a</option>
                                                         </select>
                                                     </label>
@@ -243,7 +268,7 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
                             </div>
                         </div>
                     </div>
-                    <div class="carousel-item 2 lensTypeSelect">
+                    <div data-id="2" class="carousel-item lensTypeSelect" >
                         <ul class="lentypes clearfix" data-mobile="true">
                             @foreach($res['lens']['type']['child'] as $key=>$val)
                             <li class="lentype">
@@ -297,7 +322,7 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
                             @endforeach
                         </ul>
                     </div>
-                    <div class="carousel-item 3 sunglasseColor">
+                    <div data-id="3" class="carousel-item sunglasseColor">
                         <ul class="lencolors ">
                             @foreach($res['lens']['sunglasses']['child'] as $key=>$val)
                             <li class="lencolor " >
@@ -343,29 +368,14 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
                             @endforeach
                         </ul>
                     </div>
-                    <div class="carousel-item 4 lensPackagSelect">
+                    <div data-id="4" class="carousel-item lensPackagSelect">
                         @foreach($res['lens']['thickness'] as $key=>$val)
                         <ul class="lensPackages lensPackages{{$key}}" data-id="{{$key}}" style="display: none;">
                             @foreach($val as $k=>$v)
                                 @if($v['ext1'])
                                     <?php $price = floatval($v['price'])+(floatval($res['lens']['coating']['json']['usyxbeqe']['price'])+floatval($res['lens']['coating']['json']['rivvvcmn']['price'])+floatval($res['lens']['coating']['json']['qoyogomx']['price'])); ?>
                                 <li class="lensPackage" data-sort="{{$v['sort']}}">
-                                    <section class="content" data-id="{{$k}}" data-name="{{$v['name']}}" data-price="{{floatval($v['price'])}}" data-sum="{{$price}}"
-                                        data-coating1_id="usyxbeqe"
-                                        data-coating1_name="{{$res['lens']['coating']['json']['usyxbeqe']['name']}}"
-                                        data-coating1_price="{{$res['lens']['coating']['json']['usyxbeqe']['price']}}"
-                                         data-coating2_id="rivvvcmn"
-                                         data-coating2_name="{{$res['lens']['coating']['json']['rivvvcmn']['name']}}"
-                                         data-coating2_price="{{$res['lens']['coating']['json']['rivvvcmn']['price']}}"
-                                         data-coating3_id="qoyogomx"
-                                         data-coating3_name="{{$res['lens']['coating']['json']['qoyogomx']['name']}}"
-                                         data-coating3_price="{{$res['lens']['coating']['json']['qoyogomx']['price']}}"
-                                        @if($key==27)
-                                             data-coating4_id="rriveqdk"
-                                             data-coating4_name="{{$res['lens']['coating']['json']['rriveqdk']['name']}}"
-                                             data-coating4_price="{{$res['lens']['coating']['json']['rriveqdk']['price']}}"
-                                        @endif
-                                    >
+                                    <section class="content" data-id="{{$k}}" data-name="{{$v['name']}}" data-price="{{floatval($v['price'])}}" data-sum="{{$price}}">
                                         <section class="lensPackage-desc">
                                             <div class="img-box"><img src="/vendor/laravel-shop/img/lens/package2.svg" alt=""></div>
                                             <div class="text-box">
@@ -394,13 +404,13 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
                                                 <div class="thinner d-inline-block d-lg-none">
                                                     (Up to 15% thinner)
                                                 </div>
-                                                <div>
-                                                    <span>{{ $v['name'] }}, </span>
-                                                    <span>Anti-Scratch, </span>
-                                                    <span>Anti-Reflective, </span>
-                                                    <span>UV Coating</span>
+                                                <div class="lensPackage_coating">
+                                                    <span>{{ $v['name'] }}</span>
+                                                    <span data-id="usyxbeqe" data-name="{{$res['lens']['coating']['json']['usyxbeqe']['name']}}" data-price="{{$res['lens']['coating']['json']['usyxbeqe']['price']}}">, Anti-Scratch</span>
+                                                    <span data-id="rivvvcmn" data-name="{{$res['lens']['coating']['json']['rivvvcmn']['name']}}" data-price="{{$res['lens']['coating']['json']['rivvvcmn']['price']}}">, Anti-Reflective</span>
+                                                    <span data-id="qoyogomx" data-name="{{$res['lens']['coating']['json']['qoyogomx']['name']}}" data-price="{{$res['lens']['coating']['json']['qoyogomx']['price']}}">, UV Coating</span>
                                                     @if($key==27)
-                                                        <span>, Water Resistant Coating</span>
+                                                        <span data-id="rriveqdk" data-name="{{$res['lens']['coating']['json']['rriveqdk']['name']}}" data-price="{{$res['lens']['coating']['json']['rriveqdk']['price']}}">, Water Resistant Coating</span>
                                                     @endif
                                                 </div>
                                             </div>
@@ -425,12 +435,12 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
                         </ul>
                         @endforeach
                     </div>
-                    <div class="carousel-item 5 customize">
+                    <div data-id="5" class="carousel-item customize">
                         @foreach($res['lens']['thickness'] as $key=>$val)
                             <ul class="lensCoatings lensCoatings{{$key}}" data-id="{{$key}}" style="display: none;">
                                 @foreach($val as $k=>$v)
                                     <li class="lensCoating">
-                                        <section class="content" data-id="{{$key}}-{{$k}}" data-price="{{$v['value']}}">
+                                        <section class="content" data-id="{{$k}}" data-price="{{$v['price']}}" data-name="{{$v['name']}}">
                                             <section class="lensCoating-desc">
                                                 <div class="text-box">
                                                     <div class="box-title pb-0">
@@ -455,19 +465,10 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
                         @endforeach
                     </div>
                 </div>
-                <div class="product-detail-img_btn d-none">
-                    <button class="carousel-control-prev" type="button" data-target="#carouselLens" data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-target="#carouselLens" data-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
-                    </button>
-                </div>
+
             </div>
         </div>
-        <div class="col-4">
+        <div class="lens_box2">
             <div>
                 <div class="productPreview">
                     @if($res['product_img'])
@@ -477,7 +478,7 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
                 <div class="ProductPrice">
                     <p class="sku"><a href="/eyeglasses/{{$res['product']['sku']}}" title="{{$res['product']['name']}}">{{$res['product']['name']}}</a></p>
                     <p>{{$res['product']['color']}}</p>
-                    <p class="total-price"><span>Total: </span><span class="total-price-style">${{$res['product']['price']}}</span></p>
+                    <p class="total-price"><span>Total: </span><span class="total-price-style frame_price">${{$res['product']['price']}}</span></p>
                     <div class="lens_cart"></div>
                 </div>
             </div>
@@ -487,13 +488,23 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
 <script>
 let lens = {
     'usages':{},
+    'prescription':{
+        od_add: "+1.25",
+        od_axis: "1",
+        od_cyl: "-4.75",
+        od_sph: "-5.25",
+        os_add: "+1.50",
+        os_axis: "1",
+        os_cyl: "-5.25",
+        os_sph: "-15.25"
+    },
     'lensType':{},
     'sunglasses': {},
-    'lensPackagSelect':{},
-    'customize':{}
+    'lensPackagSelect':{arr:[]},
+    'customize':{arr:[]}
 };
 
-let cart = {}
+let frame_price = {{$res['product']['price']}};
 let sph = px_arr(-1600,1000);
 let cyl = px_arr(-600,600);
 let add = px_arr(100,350);
@@ -510,7 +521,7 @@ $(function () {
         lensCart()
         $('.usage dd').removeClass('data-active')
         if($(this).hasClass('data-active')){
-            $(this).removeClass('data-active')
+            //$(this).removeClass('data-active')
         }else{
             $(this).addClass('data-active')
         }
@@ -533,25 +544,79 @@ $(function () {
     })
 
     //1
-    $('.sph_js').html(function () {
+    $('.prescription_select[data-name="od_sph"]').html(function () {
         return sph.map(i=>{
-            return `<option value="${i}">${i}</option>`
+            if(i==lens.prescription.od_sph){
+                return `<option value="${i}" selected="selected">${i}</option>`
+            }else{
+                return `<option value="${i}">${i}</option>`
+            }
         })
     })
-    $('.cyl_js').html(function () {
+    $('.prescription_select[data-name="od_cyl"]').html(function () {
         return cyl.map(i=>{
-            return `<option value="${i}">${i}</option>`
+            if(i==lens.prescription.od_cyl){
+                return `<option value="${i}" selected="selected">${i}</option>`
+            }else{
+                return `<option value="${i}">${i}</option>`
+            }
         })
     })
-    $('.add_js').append(function () {
+    $('.prescription_select[data-name="od_cyl"]').html(function () {
+        return cyl.map(i=>{
+            if(i==lens.prescription.od_cyl){
+                return `<option value="${i}" selected="selected">${i}</option>`
+            }else{
+                return `<option value="${i}">${i}</option>`
+            }
+        })
+    })
+    $('.prescription_select[data-name="od_add"]').html(function () {
         return add.map(i=>{
-            return `<option value="${i}">${i}</option>`
+            if(i==lens.prescription.od_add){
+                return `<option value="${i}" selected="selected">${i}</option>`
+            }else{
+                return `<option value="${i}">${i}</option>`
+            }
         })
     })
+
     $('.pd_js').html(function () {
         return pd.map(i=>{
             return `<option value="${i}">${i}</option>`
         })
+    })
+    $('.prescription_select[data-name="os_sph"]').html(function () {
+        return sph.map(i=>{
+            if(i==lens.prescription.os_sph){
+                return `<option value="${i}" selected="selected">${i}</option>`
+            }else{
+                return `<option value="${i}">${i}</option>`
+            }
+        })
+    })
+    $('.prescription_select[data-name="os_cyl"]').html(function () {
+        return cyl.map(i=>{
+            if(i==lens.prescription.os_cyl){
+                return `<option value="${i}" selected="selected">${i}</option>`
+            }else{
+                return `<option value="${i}">${i}</option>`
+            }
+        })
+    })
+    $('.prescription_select[data-name="os_add"]').html(function () {
+        return add.map(i=>{
+            if(i==lens.prescription.os_add){
+                return `<option value="${i}" selected="selected">${i}</option>`
+            }else{
+                return `<option value="${i}">${i}</option>`
+            }
+        })
+    })
+    $('.prescription_select').change(function () {
+        let name = $(this).data('name')
+        lens.prescription[name] = $(this).val()
+        console.log(lens)
     })
 
     //2
@@ -641,41 +706,35 @@ $(function () {
 
     //4
     $('.lensPackagSelect .lensPackage').on('click','.content',function () {
+        lens.lensPackagSelect = {arr:[]}
         $(this).addClass('data-active')
         $('.lensPackagSelect .lensPackage .content').not($(this)).removeClass('data-active')
         if($(this).data('res')) {
             lens.customize['title'] = 'customize Lenses'
-            lens.lensPackagSelect = {}
         }else{
             lens.lensPackagSelect['id']=$(this).data('id')
             lens.lensPackagSelect['name']=$(this).data('name')
             lens.lensPackagSelect['price']=$(this).data('price')
             lens.lensPackagSelect['sum']=$(this).data('sum')
-            lens.lensPackagSelect['coating1_id']=$(this).data('coating1_id')
-            lens.lensPackagSelect['coating1_name']=$(this).data('coating1_name')
-            lens.lensPackagSelect['coating1_price']=$(this).data('coating1_price')
-            lens.lensPackagSelect['coating2_id']=$(this).data('coating2_id')
-            lens.lensPackagSelect['coating2_name']=$(this).data('coating2_name')
-            lens.lensPackagSelect['coating2_price']=$(this).data('coating2_price')
-            lens.lensPackagSelect['coating3_id']=$(this).data('coating3_id')
-            lens.lensPackagSelect['coating3_name']=$(this).data('coating3_name')
-            lens.lensPackagSelect['coating3_price']=$(this).data('coating3_price')
-            if($(this).data('coating4_id')){
-                lens.lensPackagSelect['coating4_id']=$(this).data('coating4_id')
-                lens.lensPackagSelect['coating4_name']=$(this).data('coating4_name')
-                lens.lensPackagSelect['coating4_price']=$(this).data('coating4_price')
-            }
+            let select = $(this).children('.lensPackage-desc').children('.text-box').children('.lensPackage_coating').children('span[data-id]')
+            select.map(i=>{
+                lens.lensPackagSelect.arr.push({'id':$(select[i]).data('id'),'name':$(select[i]).data('name'),'price':$(select[i]).data('price')})
+            })
+            lens.customize={arr:[]}
         }
         lensCart()
     })
 
     //5
     $('.customize .lensCoatings').on('click','.content',function () {
+        lens.customize['id'] = $(this).data('id')
+        lens.customize['name'] = $(this).data('name')
+        lens.customize['price'] = $(this).data('price')
         $(this).addClass('data-active')
         $('.customize .lensCoatings .content').not($(this)).removeClass('data-active')
         let html = `<div class="table">
                         @foreach($res['lens']['coating']['json'] as $k=>$v)
-                        <ul data-id="{{$k}}" @if($v['ext1']) data-select="true" @endif data-price="{{$v['price']}}" class="tr" style="cursor: pointer;">
+                        <ul data-id="{{$k}}" @if($v['ext1']) data-select="true" @endif data-price="{{$v['price']}}" data-name="{{$v['name']}}" class="tr" style="cursor: pointer;">
                             <li class="td table-raido" style="width: 7%;">
                                 <div class="checkbox-attr uni app-check2"></div>
                             </li>
@@ -700,8 +759,20 @@ $(function () {
         if($(this).attr('data-select')){
             $(this).removeAttr('data-select')
         }else{
+            lens.customize.arr = []
             $(this).attr('data-select','true')
         }
+    })
+    $('.customize .lensCoatings .glass-table').on('click','.glass-submit',function () {
+        let select = $(this).closest('.table').children('ul[data-select="true"]')
+        let sum = 0;
+        select.map(i=>{
+            let price = $(select[i]).data('price')
+            sum += Number(price)*100
+            lens.customize.arr.push({'id':$(select[i]).data('id'),'name':$(select[i]).data('name'),price})
+        })
+        lens.customize.sum = (sum+ lens.customize.price*100)/100;
+        lensCart()
     })
 
     $('#carouselLens').on('click','.jump',function () {
@@ -720,9 +791,23 @@ $(function () {
                 }
             }
         }else if(to===5 && thickness_id){
+            lens.lensPackagSelect = {arr:[]}
             $('.lensCoatings'+thickness_id).show()
         }
-        $('#carouselLens').carousel(to)
+        if(to){
+           $('.carousel_prev').show()
+           $('#carouselLens').carousel(to)
+        }
+    })
+
+    $('#carouselLens').on('slide.bs.carousel', function (event) {
+        // let hoder = $('#carouselLens').find('.carousel-item'),
+        //     items = $(event.relatedTarget);
+        // let getIndex= hoder.index(items);
+        // console.log(getIndex)
+        // console.log(event.direction)
+        // console.log(event.from)
+        // console.log(event.to)
     })
 })
 
@@ -749,7 +834,7 @@ function lensReset(step) {
         $('.sunglasseColor .lencolors-desc').removeClass('data-active');
         $('.sunglasseColor .colortips').hide();
 
-        lens['lensPackagSelect']={}
+        lens.lensPackagSelect={arr:[]}
         $('.lensPackagSelect .content').removeClass('data-active');
 
         $('.lensPackages').hide()
@@ -758,6 +843,7 @@ function lensReset(step) {
 }
 
 function lensCart() {
+    lens.prescription={'id':1}
     let html = '';
     for(let i in lens){
         let obj = lens[i]
@@ -769,6 +855,19 @@ function lensCart() {
                 }else{
                     html += `<div class="d-flex justify-content-between"><span>${i}</span><span class="res_val">${obj.name}</span></div>`
                 }
+            }else if(i==='prescription'){
+                html += `<div class="d-flex justify-content-between"><span>Your Prescription</span><span class="res_val"></span></div>`
+                html += `<table class="table table-bordered text-center table-content">
+                            <thead><tr><th>RX</th> <th>SPH</th> <th>CYL</th> <th>Axis</th> <th>ADD</th> <th>PD</th></tr></thead>
+                            <tbody>
+                                <tr><td class="colspanTitle">OD</td> <td>0.00</td> <td>0.00</td> <td></td> <td></td> <td rowspan="2" class="rowText">63.00</td></tr>
+                                <tr><td class="colspanTitle">OS</td> <td>0.00</td> <td>0.00</td> <td></td> <td></td></tr>
+                            </tbody>
+                        </table>`
+                html += `<table class="table table-bordered text-center table-content">
+                            <thead><tr><th></th> <th>Vertical (Δ)</th> <th>Base Direction</th> <th>Horizontal (Δ)</th> <th>Base Direction</th></tr></thead>
+                            <tbody><tr><td class="colspanTitle">OD</td> <td>1.00</td> <td>up</td> <td>1.50</td> <td>in</td></tr>
+                                <tr><td class="colspanTitle">OS</td> <td>1.50</td> <td>up</td> <td></td> <td></td></tr></tbody></table>`
             }else if(i==='lensType'){
                 if("child2_id" in obj){
                     html += `<div class="d-flex justify-content-between"><span>${i}</span><span class="res_val">${obj.name}</span></div>`
@@ -787,19 +886,41 @@ function lensCart() {
                     html += `<div class="d-flex justify-content-between"><span>${obj.name}</span><span class="res_val">${obj.color}</span></div>`
                 }
             }else if(i==='lensPackagSelect'){
-                html += `<div class="d-flex justify-content-between"><span>Lenses</span><span class="res_val">$${obj.sum}</span></div>`
-                html += `<div class="d-flex justify-content-between"><span class="customizeLens">--${obj.name}</span><span class="res_val">$${obj.price}</span></div>`
-                html += `<div class="d-flex justify-content-between"><span class="customizeLens">--${obj.coating1_name}</span><span class="res_val">${obj.coating1_price?'$'+obj.coating1_price:'Free'}</span></div>`
-                html += `<div class="d-flex justify-content-between"><span class="customizeLens">--${obj.coating2_name}</span><span class="res_val">$${obj.coating2_price}</span></div>`
-                html += `<div class="d-flex justify-content-between"><span class="customizeLens">--${obj.coating3_name}</span><span class="res_val">$${obj.coating3_price}</span></div>`
-                if('coating4_name' in obj){
-                    html += `<div class="d-flex justify-content-between"><span class="customizeLens">--${obj.coating4_name}</span><span class="res_val">$${obj.coating4_price}</span></div>`
+                if('sum' in obj){
+                    html += `<div class="d-flex justify-content-between"><span>Lenses</span><span class="res_val">$${obj.sum}</span></div>`
+                    html += `<div class="d-flex justify-content-between"><span class="customizeLens">--${obj.name}</span><span class="res_val">$${obj.price}</span></div>`
+                }
+                if(obj.arr.length>0){
+                    obj.arr.forEach(i=>{
+                        html += `<div class="d-flex justify-content-between"><span class="customizeLens">--${i.name}</span><span class="res_val">${i.price?'$'+i.price:'Free'}</span></div>`
+                    })
                 }
             }else if(i==='customize'){
-                html += `<div class="d-flex justify-content-between"><span>${obj.title}</span><span class="res_val">${('sum' in obj)?'$'+obj.sum:''}</span></div>`
+                if('title' in obj){
+                    html += `<div class="d-flex justify-content-between"><span>${obj.title}</span><span class="res_val">${('sum' in obj)?'$'+obj.sum:''}</span></div>`
+                }
+                if('name' in obj){
+                    html += `<div class="d-flex justify-content-between"><span class="customizeLens">--${obj.name}</span><span class="res_val">${obj.price?'$'+obj.price:'Free'}</span></div>`
+                }
+                if(obj.arr.length>0) {
+                    obj.arr.forEach(i => {
+                        html += `<div class="d-flex justify-content-between"><span class="customizeLens">--${i.name}</span><span class="res_val">${i.price ? '$' + i.price : 'Free'}</span></div>`
+                    })
+                }
             }
             html += `</div>`
         }
+    }
+    if(('sum' in lens.lensPackagSelect) || ('sum' in lens.customize)){
+        let total = Number(frame_price)*100
+        if('sum' in lens.lensPackagSelect){
+            total = (total+lens.lensPackagSelect.sum*100)/100
+        }
+        if('sum' in lens.customize){
+            total = (total+lens.customize.sum*100)/100
+        }
+        html +=`<div class="d-flex justify-content-between Subtotal"><span class="">Subtotal</span><span class="res_val">$${total}</span></div>`
+        html +=`<div class="d-flex justify-content-between "><button type="button" class="toCart add-to-cart">Add To Cart</button></div>`
     }
     $('.lens_cart').html(html)
     console.log(lens);

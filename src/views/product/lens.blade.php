@@ -70,7 +70,14 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
 .rowText{vertical-align:middle!important}
 .colspanTitle{font-weight:700}
 .carousel_prev{display: none;}
+.mobileInput {width: 340px!important;}
+.checkbox-attr.data-active{background: none;background-color: #0da9c4; border-color: #0da9c4;color: #fff;}
 .prescription .prescription-table input:focus, .prescription .prescription-table select:focus, .prescription .prescription-table textarea:focus {speak: none;border-color: #0da9c4;outline: none;}
+.glass-pd{display: flex;align-items: end;}
+.pd_l_r{width: 35% !important;}
+.pd_l_r label{width: 46%;margin: 0 4px;}
+.pd_all{margin-left: 4px !important;}
+.rx-extra-title {width: 30%!important;}
 </style>
 <script>
     function carousel_prev() {
@@ -223,14 +230,23 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
                                                     </a><br>
                                                     <span>(Pupillary Distance)</span>
                                                 </li>
-                                                <li class="td single">
+                                                <li class="td single pd_all">
                                                     <label class="select">
-                                                        <select class="pd_js"></select>
+                                                        <select class="pd_js prescription_select" data-name="pd_all">
+                                                        </select>
+                                                    </label>
+                                                </li>
+                                                <li class="td single pd_l_r d-none">
+                                                    <label class="select">
+                                                        <select class="pd_js prescription_select" data-name="l_pd"></select>
+                                                    </label>
+                                                    <label class="select ">
+                                                        <select class="pd_js prescription_select" data-name="r_pd"></select>
                                                     </label>
                                                 </li>
                                                 <li class="td isTowTd">
                                                     <label style="white-space: nowrap; display: inline-block; transform: translateY(5px); width: auto; font-weight: normal;">
-                                                        <div class="checkbox-attr checkPd"></div>
+                                                        <div class="checkbox-attr uni app-check2 "></div>
                                                         <span class="checkPd">Two PD numbers</span>
                                                     </label>
                                                 </li>
@@ -489,6 +505,7 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
 let lens = {
     'usages':{},
     'prescription':{
+        status: false,
         od_add: "+1.25",
         od_axis: "1",
         od_cyl: "-4.75",
@@ -496,7 +513,20 @@ let lens = {
         os_add: "+1.50",
         os_axis: "1",
         os_cyl: "-5.25",
-        os_sph: "-15.25"
+        os_sph: "-15.25",
+        l_pd:'40.00',
+        r_pd:'40.00',
+        pd_all:'63.00',
+        pd_status:false,
+        prism:false,
+        od_v: "+1.25",
+        od_vb: "1",
+        od_h: "-4.75",
+        od_hv: "-5.25",
+        os_v: "+1.25",
+        os_vb: "1",
+        os_h: "-4.75",
+        os_hv: "-5.25",
     },
     'lensType':{},
     'sunglasses': {},
@@ -508,8 +538,9 @@ let frame_price = {{$res['product']['price']}};
 let sph = px_arr(-1600,1000);
 let cyl = px_arr(-600,600);
 let add = px_arr(100,350);
-let pd = px_arr(4000,8000,100,false);
-let xx = px_arr(50,500,50,false);
+let pd = px_arr(2200,4000,100,false);
+let pd_all = px_arr(4000,8000,100,false);
+let prism = px_arr(50,500,50,false);
 
 $(function () {
     //0
@@ -580,12 +611,38 @@ $(function () {
             }
         })
     })
-
-    $('.pd_js').html(function () {
-        return pd.map(i=>{
-            return `<option value="${i}">${i}</option>`
+    $('.prescription_select[data-name="l_pd"]').html(function () {
+        let l_pd =`<option value="0">Left</option>`
+        l_pd += pd.map(i=>{
+            if(i==lens.prescription.l_pd){
+                return `<option value="${i}" selected="selected">${i}</option>`
+            }else{
+                return `<option value="${i}">${i}</option>`
+            }
+        })
+        return l_pd;
+    })
+    $('.prescription_select[data-name="r_pd"]').html(function () {
+        let r_pd =`<option value="0">Right</option>`
+        r_pd += pd.map(i=>{
+            if(i==lens.prescription.r_pd){
+                return `<option value="${i}" selected="selected">${i}</option>`
+            }else{
+                return `<option value="${i}">${i}</option>`
+            }
+        })
+        return r_pd;
+    })
+    $('.prescription_select[data-name="pd_all"]').html(function () {
+        return pd_all.map(i=>{
+            if(i==lens.prescription.pd_all){
+                return `<option value="${i}" selected="selected">${i}</option>`
+            }else{
+                return `<option value="${i}">${i}</option>`
+            }
         })
     })
+
     $('.prescription_select[data-name="os_sph"]').html(function () {
         return sph.map(i=>{
             if(i==lens.prescription.os_sph){
@@ -613,10 +670,27 @@ $(function () {
             }
         })
     })
+    $('.isTowTd').on('click','.checkbox-attr',function () {
+        if($(this).hasClass('data-active')){
+            lens.prescription.pd_status=false;
+            $(this).removeClass('data-active')
+            $('.pd_all').show()
+            $('.pd_l_r').addClass('d-none').removeClass('d-flex')
+        }else{
+            lens.prescription.pd_status=true;
+            $(this).addClass('data-active')
+            $('.pd_all').hide()
+            $('.pd_l_r').addClass('d-flex').removeClass('d-none')
+        }
+    })
     $('.prescription_select').change(function () {
         let name = $(this).data('name')
         lens.prescription[name] = $(this).val()
-        console.log(lens)
+    })
+
+    $('.prescription').on('click','.jump',function () {
+        lens.prescription.status = true;
+        lensCart()
     })
 
     //2
@@ -843,7 +917,6 @@ function lensReset(step) {
 }
 
 function lensCart() {
-    lens.prescription={'id':1}
     let html = '';
     for(let i in lens){
         let obj = lens[i]
@@ -856,18 +929,34 @@ function lensCart() {
                     html += `<div class="d-flex justify-content-between"><span>${i}</span><span class="res_val">${obj.name}</span></div>`
                 }
             }else if(i==='prescription'){
-                html += `<div class="d-flex justify-content-between"><span>Your Prescription</span><span class="res_val"></span></div>`
-                html += `<table class="table table-bordered text-center table-content">
-                            <thead><tr><th>RX</th> <th>SPH</th> <th>CYL</th> <th>Axis</th> <th>ADD</th> <th>PD</th></tr></thead>
+                if(obj.status){
+                    html += `<div class="d-flex justify-content-between"><span>Your Prescription</span><span class="res_val"></span></div>`
+                    if(obj.pd_status){
+                        html += `<table class="table table-bordered text-center table-content">
+                            <thead><tr><th>RX</th><th>SPH</th><th>CYL</th><th>Axis</th><th>ADD</th><th>PD</th></tr></thead>
                             <tbody>
-                                <tr><td class="colspanTitle">OD</td> <td>0.00</td> <td>0.00</td> <td></td> <td></td> <td rowspan="2" class="rowText">63.00</td></tr>
-                                <tr><td class="colspanTitle">OS</td> <td>0.00</td> <td>0.00</td> <td></td> <td></td></tr>
+                                <tr><td class="colspanTitle">OS</td> <td>${obj.os_sph}</td> <td>${obj.os_cyl}</td> <td>${obj.os_axis}</td><td>${obj.os_add}</td><td class="rowText">${obj.l_pd}</td></tr>
+                                <tr><td class="colspanTitle">OD</td> <td>${obj.od_sph}</td> <td>${obj.od_cyl}</td> <td>${obj.od_axis}</td><td>${obj.od_add}</td><td class="rowText">${obj.r_pd}</td></tr>
                             </tbody>
                         </table>`
-                html += `<table class="table table-bordered text-center table-content">
+                    }else{
+                        html += `<table class="table table-bordered text-center table-content">
+                            <thead><tr><th>RX</th><th>SPH</th><th>CYL</th><th>Axis</th><th>ADD</th><th>PD</th></tr></thead>
+                            <tbody>
+                                <tr><td class="colspanTitle">OS</td> <td>${obj.os_sph}</td> <td>${obj.os_cyl}</td> <td>${obj.os_axis}</td><td>${obj.os_add}</td><td class="rowText">${obj.pd_all}</td></tr>
+                                <tr><td class="colspanTitle">OD</td> <td>${obj.od_sph}</td> <td>${obj.od_cyl}</td> <td>${obj.od_axis}</td><td>${obj.od_add}</td></tr>
+                            </tbody>
+                        </table>`
+                    }
+                    if(obj.prism){
+                        html += `<table class="table table-bordered text-center table-content">
                             <thead><tr><th></th> <th>Vertical (Δ)</th> <th>Base Direction</th> <th>Horizontal (Δ)</th> <th>Base Direction</th></tr></thead>
-                            <tbody><tr><td class="colspanTitle">OD</td> <td>1.00</td> <td>up</td> <td>1.50</td> <td>in</td></tr>
-                                <tr><td class="colspanTitle">OS</td> <td>1.50</td> <td>up</td> <td></td> <td></td></tr></tbody></table>`
+                            <tbody><tr><td class="colspanTitle">OS</td> <td>${obj.os_v}</td> <td>up</td> <td>${obj.os_h}</td> <td></td></tr><tr>
+                                <td class="colspanTitle">OD</td> <td>${obj.od_v}</td> <td>up</td> <td>${obj.od_h}</td> <td>in</td></tr>
+                                </tbody></table>`
+                    }
+
+                }
             }else if(i==='lensType'){
                 if("child2_id" in obj){
                     html += `<div class="d-flex justify-content-between"><span>${i}</span><span class="res_val">${obj.name}</span></div>`

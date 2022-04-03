@@ -78,6 +78,7 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
 .pd_l_r label{width: 46%;margin: 0 4px;}
 .pd_all{margin-left: 4px !important;}
 .rx-extra-title {width: 30%!important;}
+.prism_table{display: none;}
 </style>
 <script>
     function carousel_prev() {
@@ -258,13 +259,13 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
                                                 <li class="td rx-extra-title">
                                                     Save Prescription As
                                                 </li>
-                                                <li class="td mobileInput"><input></li>
+                                                <li class="td mobileInput"><input id="save"></li>
                                             </ul>
                                             <ul class="tr pt-3 rx-extra">
                                                 <li class="td rx-extra-title">
                                                     Any Extra Information
                                                 </li>
-                                                <li class="td mobileInput mt-3"><textarea rows="2"></textarea></li>
+                                                <li class="td mobileInput mt-3"><textarea id="ext" rows="2"></textarea></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -272,10 +273,81 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
                                 <div style="">
                                     <div class="addPrism">
                                         <label style="transform: translateY(-2px); white-space: nowrap; font-size: 13px; font-weight: inherit; width: auto; display: inline-block;">
-                                            <div class="checkbox-attr"></div>
+                                            <div class="checkbox-attr uni app-check2"></div>
                                             <span class="pr-2 font-14" data-id="{{$res['lens']['prism']['id']}}">Add Prism ${{$res['lens']['prism']['value']}}</span>
                                         </label>
                                         <span class="iconfont icon-warning-circle help-tip popper-help"></span>
+                                    </div>
+                                    <div class="prescription-table prism_table">
+                                        <div class="table">
+                                            <div class="thead">
+                                                <ul class="tr">
+                                                    <li class="th tableTitle"></li>
+                                                    <li class="th"><span class="rx-name-title">Vertical (Δ)</span></li>
+                                                    <li class="th"><span class="rx-name-title">Base Direction</span>
+                                                    </li>
+                                                    <li class="th d-none d-lg-inline-block"><span class="rx-name-title">Horizontal (Δ)</span>
+                                                    </li>
+                                                    <li class="th d-none d-lg-inline-block"><span class="rx-name-title">Base Direction</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="tbody">
+                                                <ul class="tr">
+                                                    <li class="td tableTitle"><span class="add-rx-title">
+                                                                OS<br> <span>(Left eye)</span></span></li>
+                                                    <li class="td"><label class="select"><select class="prescription_select" data-name="os_v"></select></label></li>
+                                                    <li class="td"><label class="select"><select class="prescription_select" data-name="os_vb"></select></label></li>
+                                                    <li class="td d-none d-lg-inline-block"><label
+                                                            class="select"><select class="prescription_select" data-name="os_h"></select></label></li>
+                                                    <li class="td d-none d-lg-inline-block"><label
+                                                            class="select"><select class="prescription_select" data-name="os_hb"></select></label></li>
+                                                </ul>
+                                                <ul class="tr">
+                                                    <li class="td tableTitle">
+                                                        <span class="add-rx-title">OD<br> <span>(Right eye)</span></span>
+                                                    </li>
+                                                    <li class="td"><label class="select"><select class="prescription_select" data-name="od_v"></select></label></li>
+                                                    <li class="td"><label class="select"><select class="prescription_select" data-name="od_vb"></select></label></li>
+                                                    <li class="td d-none d-lg-inline-block"><label class="select"><select class="prescription_select" data-name="od_h"></select></label></li>
+                                                    <li class="td d-none d-lg-inline-block"><label
+                                                            class="select"><select class="prescription_select" data-name="od_hb"></select></label></li>
+                                                </ul>
+                                                <ul class="d-lg-none">
+                                                    <li class="td tableTitle"></li>
+                                                    <li class="th"><span class="rx-name-title">Horizontal (Δ)</span>
+                                                    </li>
+                                                    <li class="th"><span class="rx-name-title">Base Direction</span>
+                                                    </li>
+                                                </ul>
+                                                <ul class="d-lg-none">
+                                                    <li data-border-right="" class="td tableTitle"><span
+                                                            class="add-rx-title">
+                                                                OD<br> <span>(Right eye)</span></span></li>
+                                                    <li class="td"><label class="select"><select>
+                                                                <option value="">n/a</option>
+                                                            </select></label></li>
+                                                    <li class="td"><label class="select"><select>
+                                                                <option value="">n/a</option>
+                                                                <option value="in">In</option>
+                                                                <option value="out">Out</option>
+                                                            </select></label></li>
+                                                </ul>
+                                                <ul class="d-lg-none">
+                                                    <li data-border-right="" class="td tableTitle"><span
+                                                            class="add-rx-title">
+                                                                OS<br> <span>(Left eye)</span></span></li>
+                                                    <li class="td"><label class="select"><select>
+                                                                <option value="">n/a</option>
+                                                            </select></label></li>
+                                                    <li class="td"><label class="select"><select>
+                                                                <option value="">n/a</option>
+                                                                <option value="in">In</option>
+                                                                <option value="out">Out</option>
+                                                            </select></label></li>
+                                                </ul>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="confirmBtn">
@@ -506,27 +578,29 @@ let lens = {
     'usages':{},
     'prescription':{
         status: false,
-        od_add: "+1.25",
-        od_axis: "1",
-        od_cyl: "-4.75",
-        od_sph: "-5.25",
         os_add: "+1.50",
         os_axis: "1",
         os_cyl: "-5.25",
         os_sph: "-15.25",
+        od_add: "+1.25",
+        od_axis: "1",
+        od_cyl: "-4.75",
+        od_sph: "-5.25",
         l_pd:'40.00',
         r_pd:'40.00',
         pd_all:'63.00',
         pd_status:false,
         prism:false,
-        od_v: "+1.25",
-        od_vb: "1",
-        od_h: "-4.75",
-        od_hv: "-5.25",
-        os_v: "+1.25",
-        os_vb: "1",
-        os_h: "-4.75",
-        os_hv: "-5.25",
+        os_v: "1.00",
+        os_vb: "up",
+        os_h: "4.00",
+        os_hb: "in",
+        od_v: "0",
+        od_vb: "up",
+        od_h: "4.00",
+        od_hb: "in",
+        save:'',
+        ext:''
     },
     'lensType':{},
     'sunglasses': {},
@@ -541,6 +615,8 @@ let add = px_arr(100,350);
 let pd = px_arr(2200,4000,100,false);
 let pd_all = px_arr(4000,8000,100,false);
 let prism = px_arr(50,500,50,false);
+let vb = ['up','down'];
+let hb = ['in','out'];
 
 $(function () {
     //0
@@ -670,6 +746,95 @@ $(function () {
             }
         })
     })
+    $('.prescription_select[data-name="od_v"]').html(function () {
+        let top =`<option value="0">n/a</option>`
+        top += prism.map(i=>{
+            if(i==lens.prescription.od_v){
+                return `<option value="${i}" selected="selected">${i}</option>`
+            }else{
+                return `<option value="${i}">${i}</option>`
+            }
+        })
+        return top
+    })
+    $('.prescription_select[data-name="od_vb"]').html(function () {
+        let top =`<option value="0">n/a</option>`
+        top += vb.map(i=>{
+            if(i==lens.prescription.od_vb){
+                return `<option value="${i}" selected="selected">${i}</option>`
+            }else{
+                return `<option value="${i}">${i}</option>`
+            }
+        })
+        return top
+    })
+    $('.prescription_select[data-name="od_h"]').html(function () {
+        let top =`<option value="0">n/a</option>`
+        top += prism.map(i=>{
+            if(i==lens.prescription.od_h){
+                return `<option value="${i}" selected="selected">${i}</option>`
+            }else{
+                return `<option value="${i}">${i}</option>`
+            }
+        })
+        return top
+    })
+    $('.prescription_select[data-name="od_hb"]').html(function () {
+        let top =`<option value="0">n/a</option>`
+        top += hb.map(i=>{
+            if(i==lens.prescription.od_hb){
+                return `<option value="${i}" selected="selected">${i}</option>`
+            }else{
+                return `<option value="${i}">${i}</option>`
+            }
+        })
+        return top
+    })
+    $('.prescription_select[data-name="os_v"]').html(function () {
+        let top =`<option value="0">n/a</option>`
+        top += prism.map(i=>{
+            if(i==lens.prescription.os_v){
+                return `<option value="${i}" selected="selected">${i}</option>`
+            }else{
+                return `<option value="${i}">${i}</option>`
+            }
+        })
+        return top
+    })
+    $('.prescription_select[data-name="os_vb"]').html(function () {
+        let top =`<option value="0">n/a</option>`
+        top += vb.map(i=>{
+            if(i==lens.prescription.os_vb){
+                return `<option value="${i}" selected="selected">${i}</option>`
+            }else{
+                return `<option value="${i}">${i}</option>`
+            }
+        })
+        return top
+    })
+    $('.prescription_select[data-name="os_h"]').html(function () {
+        let top =`<option value="0">n/a</option>`
+        top += prism.map(i=>{
+            if(i==lens.prescription.os_h){
+                return `<option value="${i}" selected="selected">${i}</option>`
+            }else{
+                return `<option value="${i}">${i}</option>`
+            }
+        })
+        return top
+    })
+    $('.prescription_select[data-name="os_hb"]').html(function () {
+        let top =`<option value="0">n/a</option>`
+        top += hb.map(i=>{
+            if(i==lens.prescription.os_hb){
+                return `<option value="${i}" selected="selected">${i}</option>`
+            }else{
+                return `<option value="${i}">${i}</option>`
+            }
+        })
+        return top
+    })
+
     $('.isTowTd').on('click','.checkbox-attr',function () {
         if($(this).hasClass('data-active')){
             lens.prescription.pd_status=false;
@@ -688,8 +853,22 @@ $(function () {
         lens.prescription[name] = $(this).val()
     })
 
+    $('.addPrism').on('click','.checkbox-attr',function () {
+        if($(this).hasClass('data-active')){
+            lens.prescription.prism=false;
+            $(this).removeClass('data-active')
+            $('.prism_table').hide()
+        }else{
+            lens.prescription.prism=true;
+            $(this).addClass('data-active')
+            $('.prism_table').show()
+        }
+    })
+
     $('.prescription').on('click','.jump',function () {
         lens.prescription.status = true;
+        lens.prescription.save = $('#save').val()
+        lens.prescription.ext = $('#ext').val()
         lensCart()
     })
 
@@ -943,7 +1122,7 @@ function lensCart() {
                         html += `<table class="table table-bordered text-center table-content">
                             <thead><tr><th>RX</th><th>SPH</th><th>CYL</th><th>Axis</th><th>ADD</th><th>PD</th></tr></thead>
                             <tbody>
-                                <tr><td class="colspanTitle">OS</td> <td>${obj.os_sph}</td> <td>${obj.os_cyl}</td> <td>${obj.os_axis}</td><td>${obj.os_add}</td><td class="rowText">${obj.pd_all}</td></tr>
+                                <tr><td class="colspanTitle">OS</td> <td>${obj.os_sph}</td> <td>${obj.os_cyl}</td> <td>${obj.os_axis}</td><td>${obj.os_add}</td><td rowspan="2" class="rowText">${obj.pd_all}</td></tr>
                                 <tr><td class="colspanTitle">OD</td> <td>${obj.od_sph}</td> <td>${obj.od_cyl}</td> <td>${obj.od_axis}</td><td>${obj.od_add}</td></tr>
                             </tbody>
                         </table>`
@@ -951,8 +1130,8 @@ function lensCart() {
                     if(obj.prism){
                         html += `<table class="table table-bordered text-center table-content">
                             <thead><tr><th></th> <th>Vertical (Δ)</th> <th>Base Direction</th> <th>Horizontal (Δ)</th> <th>Base Direction</th></tr></thead>
-                            <tbody><tr><td class="colspanTitle">OS</td> <td>${obj.os_v}</td> <td>up</td> <td>${obj.os_h}</td> <td></td></tr><tr>
-                                <td class="colspanTitle">OD</td> <td>${obj.od_v}</td> <td>up</td> <td>${obj.od_h}</td> <td>in</td></tr>
+                            <tbody><tr><td class="colspanTitle">OS</td> <td>${obj.os_v}</td> <td>${obj.os_vb}</td> <td>${obj.os_h}</td> <td>${obj.os_hb}</td></tr><tr>
+                                <td class="colspanTitle">OD</td> <td>${obj.od_v}</td> <td>${obj.od_vb}</td> <td>${obj.od_h}</td> <td>${obj.od_hb}</td></tr>
                                 </tbody></table>`
                     }
 

@@ -17,9 +17,10 @@ return new class extends Migration
             $table->id();
             $table->integer('uuid')->unsigned()->index();
             $table->integer('product_id')->unsigned()->index();
+            $table->char('session_id',32)->index();
             $table->tinyInteger('quantity')->default(1);
             $table->json('json')->nullable();
-            $table->integer('createtime')->unsigned()->default(0)->index();
+            $table->integer('createtime')->unsigned();
         });
     }
 

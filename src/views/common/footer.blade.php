@@ -1,4 +1,4 @@
-
+    </div>
 <script src="{{ URL::asset('vendor/laravel/js/bootstrap.bundle.min.js') }}"></script>
 <script>
     var aphly_viewerjs = document.getElementById('aphly_viewerjs');

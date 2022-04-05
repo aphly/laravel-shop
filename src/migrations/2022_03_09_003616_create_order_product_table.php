@@ -15,12 +15,13 @@ return new class extends Migration
     {
         Schema::create('order', function (Blueprint $table) {
             $table->id();
-            $table->integer('uuid')->unsigned()->index();
-            $table->string('firstname',32);
-            $table->string('lastname',32);
-            $table->string('email',255);
-            $table->string('telephone',255);
+            $table->integer('order_id')->unsigned()->index();
+            $table->integer('product_id')->unsigned();
+            $table->string('name',64);
+            $table->integer('quantity')->default(0)->nullable();
+            $table->decimal('price');
             $table->decimal('total');
+            $table->json('json');
             $table->tinyInteger('status')->default(1)->index();
         });
     }

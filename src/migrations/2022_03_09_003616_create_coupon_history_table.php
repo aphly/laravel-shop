@@ -13,15 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('order', function (Blueprint $table) {
+        Schema::create('coupon_history', function (Blueprint $table) {
             $table->id();
-            $table->char('uuid',32)->index();
-            $table->string('firstname',32);
-            $table->string('lastname',32);
-            $table->string('email',255);
-            $table->string('telephone',255);
-            $table->decimal('total');
-            $table->tinyInteger('status')->default(1)->index();
+            $table->integer('coupon_id')->unsigned();
+            $table->integer('order_id')->unsigned();
+            $table->char('uuid',32)->unsigned();
+            $table->decimal('amount');
+            $table->integer('data_add')->unsigned();
         });
     }
 
@@ -32,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('order');
+        Schema::dropIfExists('coupon_history');
     }
 };

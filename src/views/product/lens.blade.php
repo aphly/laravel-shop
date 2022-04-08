@@ -79,6 +79,20 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
 .pd_all{margin-left: 4px !important;}
 .rx-extra-title {width: 30%!important;}
 .prism_table{display: none;}
+
+.glass-slider{margin:auto;max-width:260px;position:relative;white-space:nowrap}
+.glass-slider .glass-status-line{background-color:#d1d1d1;height:2px;margin:0;overflow:hidden;transform:translate(10px,10px);width:100%}
+.glass-slider .glass-status-line div{background-color:#0da9c4;height:inherit;max-width:100%;width:0}
+.glass-slider .glass-status{display:inline-block;margin-right:50px;position:absolute;text-align:center;z-index:30}
+.glass-slider .icon-status.icon-status-hover{border-color:#0da9c4;cursor:pointer}
+.glass-slider .icon-status.icon-status-hover:after{background-color:#0da9c4;border-radius:100%;content:"";display:block;height:6px;margin:5px auto;width:6px}
+.glass-slider .glass-status[disabled]{cursor:not-allowed;pointer-events:none}
+.glass-slider .icon-status{background-color:#fff;background-position:50%;background-repeat:no-repeat;border:2px solid #d1d1d1;border-radius:100%;display:inline-block;height:20px;width:20px}
+.glass-slider .icon-status.icon-status-active{background-image:url(/vendor/laravel-shop/img/lens/select2.svg);background-size:20px 20px;border-color:#0da9c4;cursor:pointer}
+
+.stepTitle{font-size: 24px;font-weight: 700;position: relative;}
+.lenses-tip,.title-tip{color:#0da9c4;cursor:pointer;display:inline-block;font-size:24px;font-weight:400;margin-left:10px;position:absolute;top:50%;transform:translateY(-50%)}
+
 </style>
 <script>
     function carousel_prev() {
@@ -100,14 +114,30 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
             <div id="carouselLens" class="carousel slide" data-ride="carousel" data-interval="false">
                 <div class="d-flex justify-content-between">
                     <div class="carousel_prev" onclick="carousel_prev()"><</div>
-                    <ol class="d-flex">
-                        <li data-target="#carouselLens" data-slide-to="0" class="active">usages</li>
-                        <li data-target="#carouselLens" data-slide-to="1">prescription</li>
-                        <li data-target="#carouselLens" data-slide-to="2">lensTypeSelect</li>
-                    </ol>
+                    <div class="stepTitle">Usage<span data-toggle="modal" data-target="#usageDialog" class="uni app-info1 title-tip" style=""></span></div>
+                    <div></div>
+                </div>
+                <div style="margin-bottom: 38px;">
+                    <aside class="glass-slider mt-4">
+                        <div class="glass-status-line">
+                            <div style="width: 0%;"></div>
+                        </div>
+                        <div class="glass-status" style="left: 0%;" data-target="#carouselLens" data-slide-to="0">
+                            <span class="icon-status icon-status-hover"></span>
+                        </div>
+                        <div class="glass-status" style="left: 32%;" disabled="disabled" data-target="#carouselLens" data-slide-to="1">
+                            <span class="icon-status"></span>
+                        </div>
+                        <div disabled="disabled" class="glass-status" style="left: 64%;" data-target="#carouselLens" data-slide-to="2">
+                            <span class="icon-status"></span>
+                        </div>
+                        <div disabled="disabled" class="glass-status" style="left: 96%;">
+                            <span class="icon-status"></span>
+                        </div>
+                    </aside>
                 </div>
                 <div class="carousel-inner">
-                    <div data-id="0" class="carousel-item active usages">
+                    <div data-id="0" class="carousel-item active usages" data-title="Usage">
                         <ul class="" >
                             @foreach($res['lens']['usage']['child'] as $key=>$val)
                             <li class="usage">
@@ -135,7 +165,7 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
                             @endforeach
                         </ul>
                     </div>
-                    <div data-id="1" class="carousel-item prescription" >
+                    <div data-id="1" class="carousel-item prescription" data-title="Your Prescription">
                         <div class="tab-content">
                             <div class="tab-pane fade active show">
                                 <div class="prescription-table default">
@@ -356,7 +386,7 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
                             </div>
                         </div>
                     </div>
-                    <div data-id="2" class="carousel-item lensTypeSelect" >
+                    <div data-id="2" class="carousel-item lensTypeSelect" data-title="Lens Type">
                         <ul class="lentypes clearfix" data-mobile="true">
                             @foreach($res['lens']['type']['child'] as $key=>$val)
                             <li class="lentype">
@@ -410,7 +440,7 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
                             @endforeach
                         </ul>
                     </div>
-                    <div data-id="3" class="carousel-item sunglasseColor">
+                    <div data-id="3" class="carousel-item sunglasseColor" data-title="Sunglasses">
                         <ul class="lencolors ">
                             @foreach($res['lens']['sunglasses']['child'] as $key=>$val)
                             <li class="lencolor " >
@@ -456,7 +486,7 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
                             @endforeach
                         </ul>
                     </div>
-                    <div data-id="4" class="carousel-item lensPackagSelect">
+                    <div data-id="4" class="carousel-item lensPackagSelect" data-title="Lens Thickness">
                         @foreach($res['lens']['thickness'] as $key=>$val)
                         <ul class="lensPackages lensPackages{{$key}}" data-id="{{$key}}" style="display: none;">
                             @foreach($val as $k=>$v)
@@ -523,7 +553,7 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
                         </ul>
                         @endforeach
                     </div>
-                    <div data-id="5" class="carousel-item customize">
+                    <div data-id="5" class="carousel-item customize" data-title="Review Your Selections">
                         @foreach($res['lens']['thickness'] as $key=>$val)
                             <ul class="lensCoatings lensCoatings{{$key}}" data-id="{{$key}}" style="display: none;">
                                 @foreach($val as $k=>$v)
@@ -566,7 +596,7 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
                 <div class="ProductPrice">
                     <p class="sku"><a href="/eyeglasses/{{$res['product']['sku']}}" title="{{$res['product']['name']}}">{{$res['product']['name']}}</a></p>
                     <p>{{$res['product']['color']}}</p>
-                    <p class="total-price"><span>Total: </span><span class="total-price-style frame_price">${{$res['product']['price']}}</span></p>
+                    <p class="total-price"><span>Frame: </span><span class="total-price-style frame_price">${{$res['product']['price']}}</span></p>
                     <div class="lens_cart"></div>
                 </div>
             </div>
@@ -574,6 +604,7 @@ select{background:url(/vendor/laravel-shop/img/lens/select.svg) no-repeat scroll
     </div>
 </div>
 <script>
+
 let lens = {
     'usages':{},
     'prescription':{
@@ -1057,11 +1088,35 @@ $(function () {
         // let hoder = $('#carouselLens').find('.carousel-item'),
         //     items = $(event.relatedTarget);
         // let getIndex= hoder.index(items);
+        if(event.to===0){
+            $('.stepTitle').html('Usage<span data-toggle="modal" data-target="#usageDialog" class="uni app-info1 title-tip"></span>')
+        }else if(event.to===1){
+            $('.stepTitle').html('Your Prescription')
+        }else if(event.to===2){
+            $('.stepTitle').html('Lens Type')
+        }else if(event.to===3){
+            $('.stepTitle').html('Sunglasses')
+        }else if(event.to===4){
+            $('.stepTitle').html('Lenses Package<span data-toggle="modal" data-target="#popup-lens-package-tips" class="uni app-info1 lenses-tip"></span>')
+        }else if(event.to===5){
+            $('.stepTitle').html('Lens Thickness')
+        }
         // console.log(getIndex)
         // console.log(event.direction)
         // console.log(event.from)
         // console.log(event.to)
     })
+    $('#popup-lens-package-tips').on('click', '.index-text', function (event) {
+        $(this).addClass('active').siblings('.index-text').removeClass('active');
+        let dataIndex = $(this).attr('id');
+        $('.lens-polarity-modular, .index-description-text, .rx-range, .whats-included').each(function () {
+            if($(this).attr('data-index') === dataIndex) {
+                $(this).css('display', 'block');
+            }else{
+                $(this).css('display', 'none');
+            }
+        });
+    });
 })
 
 function px_arr(i,e,step=25,flag=true){
@@ -1194,4 +1249,280 @@ function lensCart() {
     console.log(lens);
 }
 </script>
+
+
+<section>
+    <div id="usageDialog" tabindex="-1" role="dialog" aria-labelledby="usageModalLabel" class="modal" aria-modal="true">
+       <div role="document" class="modal-dialog modal-dialog-centered usageDialog">
+        <div class="modal-content usageMoldalContent">
+         <form id="popup-usage">
+          <div class="modal-header usageDialogHeader">
+           <button type="button" data-dismiss="modal" aria-label="Close" class="close"><i class="uni app-guanbi font-25"></i></button>
+           <div id="loginModalLabel" class="modal-title">
+            Usage
+           </div>
+          </div>
+          <div class="modal-body">
+           <div id="guideModelTitle" class="w-100 text-center">
+            <div id="nav-tab" role="tablist" class="usageNav nav">
+             <a id="single-tab" data-toggle="tab" href="#nav-single" role="tab" aria-controls="nav-single" aria-selected="true" class="active">Distance</a>
+             <a id="progre-tab" data-toggle="tab" href="#nav-progre" role="tab" aria-controls="nav-progre" aria-selected="false" class="">Reading</a>
+             <a id="bifo-tab" data-toggle="tab" href="#nav-bifo" role="tab" aria-controls="nav-bifo" aria-selected="false" class="">Multifocal</a>
+            </div>
+            <div id="nav-tabContent" class="tab-content">
+             <div id="nav-single" role="tabpanel" aria-labelledby="single-tab" class="usageContent tab-pane fade active show">
+              <img src="/vendor/laravel-shop/img/lens/prescription-pic-11.jpg" class="img-fluid" />
+              <div class="usageModalText">
+                When your prescription has a negative ( - ) number and 0 ADD, which means that you need &quot;Distance&quot; lenses. Distance lenses are needed when things up close appear clear, while things further away look blurry. This is called nearsightedness or myopia.
+              </div>
+             </div>
+             <div id="nav-progre" role="tabpanel" aria-labelledby="progre-tab" class="usageContent tab-pane fade">
+              <img src="/vendor/laravel-shop/img/lens/prescription-pic-22.jpg" class="img-fluid" />
+              <div class="usageModalText">
+                &quot;Reading&quot; and &quot;Intermediate&quot; lenses have prescriptions starting with a plus ( + ) sign, which are designed for those who have trouble focusing their eyes while reading. This kind of lenses can help correct farsightedness caused by hyperopia or presbyopia.
+              </div>
+             </div>
+             <div id="nav-bifo" role="tabpanel" aria-labelledby="bifo-tab" class="usageContent tab-pane fade">
+              <div class="bifo-content">
+               <img src="/vendor/laravel-shop/img/lens/prescription-pic-33.jpg" class="img-fluid" />
+               <div class="checkout-img">
+                <div class="left-img active">
+                 <i class="bac-img"></i>
+                 <div>
+                  Progressive
+                 </div>
+                </div>
+                <div class="right-img">
+                 <i class="bac-img"></i>
+                 <div>
+                  Bifocal
+                 </div>
+                </div>
+               </div>
+              </div>
+              <div class="usageModalText">
+                Multifocal lenses are designed to help you focus on things near and far with three viewing areas: distance-, intermediate-, and near-vision. Traditional bifocals and progressive lenses are both supported.
+               <br />
+               <br />
+               <span class="usageModalText-title">Progressive</span> lenses means there is no visible line on the lenses.
+               <br />
+               <span class="usageModalText-title">Bifocal</span> lenses have two viewing areas divided by a visible line: a larger viewing area for distance with a smaller segment for reading.
+              </div>
+             </div>
+            </div>
+           </div>
+          </div>
+         </form>
+        </div>
+       </div>
+      </div>
+    <div id="popup-lens-package-tips" tabindex="-1" role="dialog" aria-labelledby="help-popup-drawer-title" class="modal"  aria-modal="true">
+       <div role="document" class="modal-dialog comp-help-popup">
+        <div class="modal-content">
+         <div class="modal-header">
+          <h3 id="index-help-popup-drawer-title" class="help-popup-drawer-title"> How to Choose a Lens Index </h3>
+          <button type="button" data-dismiss="modal" aria-label="Close" class="close"><i class="uni app-guanbi font-25"></i></button>
+         </div>
+         <div class="modal-body pl-xl-5 pr-xl-5">
+          <div id="lens-index-tints-view-container" class="tabs-view-container">
+           <div class="lens-index-view-container">
+            <div id="lens-polarity" class="mb-4">
+             <div data-index="1.57" class="lens-polarity-modular" style="display: block;">
+              <div class="lens-polarity">
+               <span class="polarity-container"><img src="/vendor/laravel-shop/img/lens-popup-tips/index-polarity/negative/157.jpg" alt="" class="polarity-img" /> <p>-15%<br />( - )</p></span>
+               <span class="polarity-container"><img src="/vendor/laravel-shop/img/lens-popup-tips/index-polarity/positive/p157.jpg" alt="" class="polarity-img" /> <p>-15%<br />( + )</p></span>
+              </div>
+             </div>
+             <div data-index="1.61" class="lens-polarity-modular" style="">
+              <div class="lens-polarity">
+               <span class="polarity-container"><img src="/vendor/laravel-shop/img/lens-popup-tips/index-polarity/negative/161.jpg" alt="" class="polarity-img" /> <p>-25%<br />( - )</p></span>
+               <span class="polarity-container"><img src="/vendor/laravel-shop/img/lens-popup-tips/index-polarity/positive/p161.jpg" alt="" class="polarity-img" /> <p>-25%<br />( + )</p></span>
+              </div>
+             </div>
+             <div data-index="1.67" class="lens-polarity-modular" style="">
+              <div class="lens-polarity">
+               <span class="polarity-container"><img src="/vendor/laravel-shop/img/lens-popup-tips/index-polarity/negative/167.jpg" alt="" class="polarity-img" /> <p>-30%<br />( - )</p></span>
+               <span class="polarity-container"><img src="/vendor/laravel-shop/img/lens-popup-tips/index-polarity/positive/p167.jpg" alt="" class="polarity-img" /> <p>-30%<br />( + )</p></span>
+              </div>
+             </div>
+             <div data-index="1.74" class="lens-polarity-modular" style="">
+              <div class="lens-polarity">
+               <span class="polarity-container"><img src="/vendor/laravel-shop/img/lens-popup-tips/index-polarity/negative/174.jpg" alt="" class="polarity-img" /> <p>-5%<br />( - )</p></span>
+               <span class="polarity-container"><img src="/vendor/laravel-shop/img/lens-popup-tips/index-polarity/positive/p174.jpg" alt="" class="polarity-img" /> <p>-35%<br />( + )</p></span>
+              </div>
+             </div>
+             <div data-index="1.59" class="lens-polarity-modular" style="">
+              <div class="lens-polarity">
+               <span class="polarity-container"><img src="/vendor/laravel-shop/img/lens-popup-tips/index-polarity/negative/159.jpg" alt="" class="polarity-img" /> <p>-20%<br />( - )</p></span>
+               <span class="polarity-container"><img src="/vendor/laravel-shop/img/lens-popup-tips/index-polarity/positive/p159.jpg" alt="" class="polarity-img" /> <p>-20%<br />( + )</p></span>
+              </div>
+             </div>
+            </div>
+            <div id="index-tab-slider" class="mb-4">
+             <div id="index-container">
+              <button value="1.57" id="1.57" class="index-text active"> 1.57 </button>
+              <button value="1.61" id="1.61" class="index-text"> 1.61 </button>
+              <button value="1.67" id="1.67" class="index-text"> 1.67 </button>
+              <button value="1.74" id="1.74" class="index-text"> 1.74 </button>
+              <button value="1.59" id="1.59" class="index-text"> 1.59 </button>
+             </div>
+             <div id="index-indicate">
+              <div id="line"></div>
+             </div>
+            </div>
+            <div id="index-description" class="mb-4">
+             <div data-index="1.57" class="index-description-text pl-xl-4 pr-xl-4" style="display: block;">
+              <h5>1.57 Mid Index</h5>
+              <p>Most suitable for Low prescriptions, If your prescription is higher, we recommend that you upgrade your lens.</p>
+             </div>
+             <div data-index="1.61" class="index-description-text pl-xl-4 pr-xl-4" style="">
+              <h5>1.61 High Index - Super Thin</h5>
+              <p>Thin &amp; Light lenses offer the best value for people who have moderate<br /> prescriptions and want a light lens.</p>
+             </div>
+             <div data-index="1.67" class="index-description-text pl-xl-4 pr-xl-4" style="">
+              <h5>1.67 High Index - Ultra Thin</h5>
+              <p>These lenses are great for people with moderate-to-high prescriptions.</p>
+             </div>
+             <div data-index="1.74" class="index-description-text pl-xl-4 pr-xl-4" style="">
+              <h5>1.74 High Index - As thin as possible</h5>
+              <p>The thinnest and lightest lenses available on the optical market.</p>
+             </div>
+             <div data-index="1.59" class="index-description-text pl-xl-4 pr-xl-4" style="">
+              <h5>1.59 Polycarbonate Impact Resistant</h5>
+              <p>These lenses are made of special Polycarbonate material.Most durable and<br /> impact-resistant lenses! Kids and outdoor aficionados were made for these lenses.</p>
+             </div>
+            </div>
+            <div id="rx-range" class="mb-4">
+             <div data-index="1.57" class="rx-range pl-xl-4 pr-xl-4" style="display: block;">
+              <h5 class="lens-index-drawer-section-title">Recommend Rx Range</h5>
+              <p>SPH (0 to +/-2.0) CYL (0 to +/-1.5)</p>
+             </div>
+             <div data-index="1.61" class="rx-range pl-xl-4 pr-xl-4" style="">
+              <h5 class="lens-index-drawer-section-title">Recommend Rx Range</h5>
+              <p>SPH (+/-4.0 to +/-6.0) CYL(+/-2.25 to +/-3.0)</p>
+             </div>
+             <div data-index="1.67" class="rx-range pl-xl-4 pr-xl-4" style="">
+              <h5 class="lens-index-drawer-section-title">Recommend Rx Range</h5>
+              <p>SPH (+/-6.0 to +/-9.0) CYL (+/-3.25 to +/-4.0) for the best results.</p>
+             </div>
+             <div data-index="1.74" class="rx-range pl-xl-4 pr-xl-4" style="">
+              <h5 class="lens-index-drawer-section-title">Recommend Rx Range</h5>
+              <p>SPH above +/-9.0 CYL above +/-4.25</p>
+             </div>
+             <div data-index="1.59" class="rx-range pl-xl-4 pr-xl-4" style="">
+              <h5 class="lens-index-drawer-section-title">Recommend Rx Range</h5>
+              <p>SPH (+/-2.0 to +/-4.0) CYL (+/-1.5 to +/-2.0)</p>
+             </div>
+            </div>
+            <div id="whats-included" class="mb-4">
+             <div data-index="1.57" class="whats-included pl-xl-4 pr-xl-4" style="display: block;">
+              <h5 class="lens-index-drawer-section-title">What's Included</h5>
+              <div class="whats-included-icons-container">
+               <span class="icon-container" style="flex-basis: 26%;"><img src="/vendor/laravel-shop/img/lens-popup-tips/coatings/anti-scratch.jpg" alt="" class="included-icon img-fluid" /> <p class="icon-caption">Anti-Scratch Coating</p></span>
+               <span class="icon-container" style="flex-basis: 26%;"><img src="/vendor/laravel-shop/img/lens-popup-tips/coatings/anti-reflective.jpg" alt="" class="included-icon img-fluid" /> <p class="icon-caption">Anti-Reflective Coating</p></span>
+               <span class="icon-container" style="flex-basis: 26%;"><img src="/vendor/laravel-shop/img/lens-popup-tips/coatings/uv.jpg" alt="" class="included-icon img-fluid" /> <p class="icon-caption">UV Coating</p></span>
+              </div>
+             </div>
+             <div data-index="1.61" class="whats-included pl-xl-4 pr-xl-4" style="">
+              <h5 class="lens-index-drawer-section-title">What's Included</h5>
+              <div class="whats-included-icons-container">
+               <span class="icon-container" style="flex-basis: 26%;"><img src="/vendor/laravel-shop/img/lens-popup-tips/coatings/anti-scratch.jpg" alt="" class="included-icon img-fluid" /> <p class="icon-caption">Anti-Scratch Coating</p></span>
+               <span class="icon-container" style="flex-basis: 26%;"><img src="/vendor/laravel-shop/img/lens-popup-tips/coatings/anti-reflective.jpg" alt="" class="included-icon img-fluid" /> <p class="icon-caption">Anti-Reflective Coating</p></span>
+               <span class="icon-container" style="flex-basis: 26%;"><img src="/vendor/laravel-shop/img/lens-popup-tips/coatings/uv.jpg" alt="" class="included-icon img-fluid" /> <p class="icon-caption">UV Coating</p></span>
+              </div>
+             </div>
+             <div data-index="1.67" class="whats-included pl-xl-4 pr-xl-4" style="">
+              <h5 class="lens-index-drawer-section-title">What's Included</h5>
+              <div class="whats-included-icons-container">
+               <span class="icon-container" style="flex-basis: 26%;"><img src="/vendor/laravel-shop/img/lens-popup-tips/coatings/anti-scratch.jpg" alt="" class="included-icon img-fluid" /> <p class="icon-caption">Anti-Scratch Coating</p></span>
+               <span class="icon-container" style="flex-basis: 26%;"><img src="/vendor/laravel-shop/img/lens-popup-tips/coatings/anti-reflective.jpg" alt="" class="included-icon img-fluid" /> <p class="icon-caption">Anti-Reflective Coating</p></span>
+               <span class="icon-container" style="flex-basis: 26%;"><img src="/vendor/laravel-shop/img/lens-popup-tips/coatings/uv.jpg" alt="" class="included-icon img-fluid" /> <p class="icon-caption">UV Coating</p></span>
+              </div>
+             </div>
+             <div data-index="1.74" class="whats-included pl-xl-4 pr-xl-4" style="">
+              <h5 class="lens-index-drawer-section-title">What's Included</h5>
+              <div class="whats-included-icons-container">
+               <span class="icon-container" style="flex-basis: 26%;"><img src="/vendor/laravel-shop/img/lens-popup-tips/coatings/anti-scratch.jpg" alt="" class="included-icon img-fluid" /> <p class="icon-caption">Anti-Scratch Coating</p></span>
+               <span class="icon-container" style="flex-basis: 26%;"><img src="/vendor/laravel-shop/img/lens-popup-tips/coatings/anti-reflective.jpg" alt="" class="included-icon img-fluid" /> <p class="icon-caption">Anti-Reflective Coating</p></span>
+               <span class="icon-container" style="flex-basis: 26%;"><img src="/vendor/laravel-shop/img/lens-popup-tips/coatings/uv.jpg" alt="" class="included-icon img-fluid" /> <p class="icon-caption">UV Coating</p></span>
+              </div>
+             </div>
+             <div data-index="1.59" class="whats-included pl-xl-4 pr-xl-4" style="">
+              <h5 class="lens-index-drawer-section-title">What's Included</h5>
+              <div class="whats-included-icons-container">
+               <span class="icon-container" style="flex-basis: 26%;"><img src="/vendor/laravel-shop/img/lens-popup-tips/coatings/anti-scratch.jpg" alt="" class="included-icon img-fluid" /> <p class="icon-caption">Anti-Scratch Coating</p></span>
+               <span class="icon-container" style="flex-basis: 26%;"><img src="/vendor/laravel-shop/img/lens-popup-tips/coatings/anti-reflective.jpg" alt="" class="included-icon img-fluid" /> <p class="icon-caption">Anti-Reflective Coating</p></span>
+               <span class="icon-container" style="flex-basis: 26%;"><img src="/vendor/laravel-shop/img/lens-popup-tips/coatings/uv.jpg" alt="" class="included-icon img-fluid" /> <p class="icon-caption">UV Coating</p></span>
+              </div>
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+    <div id="popup-lens-type-tips" tabindex="-1" role="dialog" aria-labelledby="help-popup-drawer-title" class="modal " aria-modal="true">
+       <div role="document" class="modal-dialog comp-help-popup">
+        <div class="modal-content">
+         <div class="modal-header">
+          <h3 id="index-help-popup-drawer-title" class="help-popup-drawer-title">How to Choose a Lens Index</h3>
+          <button type="button" data-dismiss="modal" aria-label="Close" class="close"><i class="uni app-guanbi font-25"></i></button>
+         </div>
+         <div class="modal-body pl-xl-5 pr-xl-5">
+          <div id="lens-index-tints-view-container" class="tabs-view-container">
+           <div class="lens-index-view-container">
+            <div id="lens-polarity" class="mb-5">
+             <div data-index="1.50" style="display: block;">
+              <div class="lens-polarity">
+               <span class="polarity-container"><img src="/vendor/laravel-shop/img/lens-popup-tips/index-polarity/negative/157.jpg" alt="" class="polarity-img" /> <p>-15%<br />( - )</p></span>
+               <span class="polarity-container"><img src="/vendor/laravel-shop/img/lens-popup-tips/index-polarity/positive/p157.jpg" alt="" class="polarity-img" /> <p>-15%<br />( - )</p></span>
+              </div>
+             </div>
+            </div>
+            <div id="index-description" class="mb-5">
+             <div data-index="1.50" class="pl-xl-4 pr-xl-4" style="display: block;">
+              <b>1.57 Mid Index</b>
+              <p>Most suitable for Low prescriptions, If your prescription is higher, we recommend that you upgrade your lens.</p>
+             </div>
+            </div>
+            <div id="rx-range" class="mb-5">
+             <div data-index="1.50" class="pl-xl-4 pr-xl-4" style="display: block;">
+              <h5 class="lens-index-drawer-section-title">Recommend Rx Range</h5>
+              <p>SPH (0 to +/-2.0) CYL (0 to +/-1.5)</p>
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+</section>
+<style>
+    .rxDialogHeader,.usageDialogHeader{border:none;padding:25px 10px 10px;z-index:9999}
+    .comp-help-popup .close,.rxDialog .close,.usageDialog .close{margin:15px;padding:0;position:absolute;right:0;top:0}
+    .usageNav{justify-content:space-around;padding:0 20px}
+    #bifo-tab.active,#progre-tab.active,#single-tab.active{border-bottom:2px solid #0da9c4}
+    #bifo-tab,#progre-tab,#single-tab{color:#333;padding:0 0 5px}
+    #bifo-tab,#progre-tab,#single-tab,.modal-title{font-size:16px;font-weight:700;margin:auto}
+    .rxContent,.usageContent{padding:18px 0 30px}
+    .rxModalText,.usageModalText{font-size:14px;font-weight:400;margin-top:20px;min-height:85px;text-align:left}
+
+    .comp-help-popup .modal-content .lens-polarity{display:flex;justify-content:center;margin:0 auto}
+    .comp-help-popup .modal-content .lens-polarity .polarity-container{margin:0 60px;text-align:center}
+    .comp-help-popup .modal-content #index-tab-slider{height:70px;position:relative;text-align:center;width:100%}
+    .comp-help-popup .modal-content #index-tab-slider #index-container{position:absolute;width:100%;z-index:100}
+    .comp-help-popup .modal-content #index-tab-slider #index-container button.active{background-color:#0da9c4}
+    .comp-help-popup .modal-content #index-tab-slider #index-container button{background-color:#949494;border:none;border-radius:50%;color:#fff;cursor:pointer;font-size:14px;line-height:50px;margin:10px;outline:0;padding:0;text-align:center;width:50px}
+    .comp-help-popup .modal-content #index-tab-slider #index-indicate{position:absolute;top:50%;transform:translateY(-50%);width:100%;z-index:10}
+    .comp-help-popup .modal-content #index-tab-slider #index-indicate #line{background-color:#949494;height:3px;width:100%}
+    .comp-help-popup .modal-content #index-description{display:flex;margin:15px auto}
+    .comp-help-popup .modal-content #index-description .index-description-text{flex:1;font-size:14px}
+    .comp-help-popup h5{font-size:14px;font-weight:700}
+    .comp-help-popup .modal-content .whats-included-icons-container{display:flex;flex-wrap:wrap;justify-content:space-around;margin:20px auto 15px}
+    .comp-help-popup .modal-content .icon-container{flex-basis:26%;text-align:center}
+    .comp-help-popup .modal-content .index-description-text,.comp-help-popup .modal-content .lens-polarity-modular,.comp-help-popup .modal-content .rx-range,.comp-help-popup .modal-content .whats-included{display:none}
+
+</style>
 @include('laravel-shop::common.footer')

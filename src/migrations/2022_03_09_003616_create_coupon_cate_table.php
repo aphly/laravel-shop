@@ -13,11 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('attribute', function (Blueprint $table) {
-            $table->id();
-            $table->string('name',64);
-            $table->integer('attribute_group_id')->unsigned();
-            $table->integer('sort')->unsigned();
+        Schema::create('coupon_cate', function (Blueprint $table) {
+            $table->integer('coupon_id')->unsigned();
+            $table->integer('cate_id')->unsigned();
+            $table->primary(['coupon_id','cate_id']);
         });
     }
 
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('attribute');
+        Schema::dropIfExists('coupon_cate');
     }
 };

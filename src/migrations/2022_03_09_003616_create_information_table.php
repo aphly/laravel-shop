@@ -13,15 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('order', function (Blueprint $table) {
+        Schema::create('information', function (Blueprint $table) {
             $table->id();
-            $table->char('uuid',32)->index();
-            $table->string('firstname',32);
-            $table->string('lastname',32);
-            $table->string('email',255);
-            $table->string('telephone',255);
-            $table->decimal('total');
-            $table->tinyInteger('status')->default(1)->index();
+            $table->string('title',64);
+            $table->integer('sort')->unsigned();
+            $table->tinyInteger('status');
+            $table->text('description');
+            $table->string('meta_title',255);
+            $table->string('meta_keyword',255);
+            $table->string('meta_description',255);
         });
     }
 
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('order');
+        Schema::dropIfExists('information');
     }
 };

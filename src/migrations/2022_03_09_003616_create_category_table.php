@@ -13,11 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('attribute', function (Blueprint $table) {
+        Schema::create('category', function (Blueprint $table) {
             $table->id();
             $table->string('name',64);
-            $table->integer('attribute_group_id')->unsigned();
+            $table->string('image',255);
+            $table->integer('pid')->unsigned()->index();
             $table->integer('sort')->unsigned();
+            $table->tinyInteger('status');
+            $table->text('description');
+            $table->string('meta_title',255);
+            $table->string('meta_keyword',255);
+            $table->string('meta_description',255);
         });
     }
 
@@ -28,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('attribute');
+        Schema::dropIfExists('category');
     }
 };

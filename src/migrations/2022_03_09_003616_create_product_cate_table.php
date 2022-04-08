@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('attribute', function (Blueprint $table) {
-            $table->id();
-            $table->string('name',64);
-            $table->integer('attribute_group_id')->unsigned();
-            $table->integer('sort')->unsigned();
+        Schema::create('product_cate', function (Blueprint $table) {
+            $table->integer('product_id')->unsigned();
+            $table->integer('cate_id')->unsigned();
+            $table->primary(['product_id','cate_id']);
+            $table->index('cate_id');
         });
     }
 
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('attribute');
+        Schema::dropIfExists('product_cate');
     }
 };

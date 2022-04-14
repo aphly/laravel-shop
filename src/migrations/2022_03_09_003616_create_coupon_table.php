@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('coupon', function (Blueprint $table) {
+        Schema::create('shop_coupon', function (Blueprint $table) {
             $table->id();
             $table->string('name',64);
             $table->string('code',16);
@@ -22,8 +22,8 @@ return new class extends Migration
             $table->tinyInteger('is_login')->default(1);
             $table->tinyInteger('shipping')->default(1);
             $table->decimal('total');
-            $table->integer('data_start')->unsigned();
-            $table->integer('data_end')->unsigned();
+            $table->integer('date_start')->unsigned();
+            $table->integer('date_end')->unsigned();
             $table->integer('uses_total')->unsigned();
             $table->integer('uses_user')->unsigned();
             $table->tinyInteger('status')->default(1);
@@ -38,6 +38,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('coupon');
+        Schema::dropIfExists('shop_coupon');
     }
 };

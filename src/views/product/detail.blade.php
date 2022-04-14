@@ -48,7 +48,7 @@
                 <ul class="product-colors d-flex">
                     @foreach($res['spu'] as $v)
                         <li class="product-color large @if($v['sku']==$res['product']['sku']) active @endif" title="Champagne" >
-                            <a href="/eyeglasses/{{$v['sku']}}">{!! \Aphly\LaravelShop\Models\Product::color($res['filter_arr']['color'],$v['color']) !!}</a>
+                            <a href="/eyeglasses/{{$v['sku']}}">{!! \Aphly\LaravelShop\Models\Product\Product::color($res['filter_arr']['color'],$v['color']) !!}</a>
                         </li>
                     @endforeach
                 </ul>

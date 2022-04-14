@@ -1,6 +1,6 @@
 <?php
 
-namespace Aphly\LaravelShop\Models;
+namespace Aphly\LaravelShop\Models\Product;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ProductDesc extends Model
 {
     use HasFactory;
-    protected $table = 'product_desc';
+    protected $table = 'shop_product_desc';
     protected $primaryKey = 'product_id';
     public $timestamps = false;
 
@@ -16,10 +16,6 @@ class ProductDesc extends Model
         'product_id',
         'description',
         'old_price',
-        'points',
-        'weight',
-        'quantity',
-        'is_stock'
     ];
 
 }

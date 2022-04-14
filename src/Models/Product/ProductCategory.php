@@ -1,20 +1,20 @@
 <?php
 
-namespace Aphly\LaravelShop\Models;
+namespace Aphly\LaravelShop\Models\Product;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ProductImg extends Model
+class ProductCategory extends Model
 {
     use HasFactory;
-    protected $table = 'product_img';
+    protected $table = 'shop_product_category';
+    protected $primaryKey = ['product_id','category_id'];
     public $timestamps = false;
 
     protected $fillable = [
         'product_id',
-        'src',
-        'sort'
+        'category_id'
     ];
 
 }

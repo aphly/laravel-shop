@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('attribute', function (Blueprint $table) {
+        Schema::create('shop_attribute', function (Blueprint $table) {
             $table->id();
             $table->string('name',64);
             $table->integer('attribute_group_id')->unsigned();
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('attribute');
+        Schema::dropIfExists('shop_attribute');
     }
 };

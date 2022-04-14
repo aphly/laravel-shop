@@ -13,15 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('shop_order', function (Blueprint $table) {
+        Schema::create('shop_return', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('uuid')->index();
+            $table->integer('order_id')->unsigned()->index();
+            $table->integer('product_id')->unsigned()->index();
+            $table->char('uuid')->index();
             $table->string('firstname',32);
             $table->string('lastname',32);
-            $table->string('email',255);
-            $table->string('telephone',255);
-            $table->decimal('total');
-            $table->tinyInteger('status')->default(1)->index();
+            $table->string('email',128);
+            $table->string('telephone',32);
+            $table->string('product',255);
+            $table->integer('quantity')->unsigned();
+            $table->text('comment');
         });
     }
 
@@ -32,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shop_order');
+        Schema::dropIfExists('shop_return');
     }
 };

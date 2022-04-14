@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('shop_coupon_product', function (Blueprint $table) {
+        Schema::create('shop_review_image', function (Blueprint $table) {
             $table->id();
-            $table->integer('coupon_id')->unsigned();
-            $table->integer('product_id')->unsigned();
+            $table->integer('review_id')->unsigned()->index();
+            $table->string('image',255);
         });
     }
 
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shop_coupon_product');
+        Schema::dropIfExists('shop_review_image');
     }
 };

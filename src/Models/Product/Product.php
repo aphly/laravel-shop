@@ -1,6 +1,6 @@
 <?php
 
-namespace Aphly\LaravelShop\Models;
+namespace Aphly\LaravelShop\Models\Product;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -9,31 +9,14 @@ use Illuminate\Support\Facades\URL;
 class Product extends Model
 {
     use HasFactory;
-    protected $table = 'product';
+    protected $table = 'shop_product';
     public $timestamps = false;
 
     protected $fillable = [
-        'spu',
-        'sku',
-        'cate_id',
-        'name',
-        'status',
-        'gender',
-        'size',
-        'frame_width',
-        'lens_width',
-        'lens_height',
-        'bridge_width',
-        'arm_length',
-        'shape',
-        'material',
-        'frame',
-        'color',
-        'feature',
-        'price',
-        'viewed',
-        'createtime',
-        'sale'
+        'sku','name','quantity','image','price',
+        'shipping','points','stock_status_id','weight','weight_class_id',
+        'length','width','height','length_class_id','subtract',
+        'minimum','status','viewed','sale','sort','date_add'
     ];
 
     function desc(){

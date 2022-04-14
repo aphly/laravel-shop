@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('attribute_group', function (Blueprint $table) {
+        Schema::create('shop_attribute_group', function (Blueprint $table) {
             $table->id();
             $table->string('name',64);
             $table->integer('sort')->unsigned();
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('attribute_group');
+        Schema::dropIfExists('shop_attribute_group');
     }
 };

@@ -37,7 +37,7 @@
             <div class="form-group">
                 <label for="">gender</label>
                 <div class="d-flex libs_input">
-                    {!! \Aphly\LaravelShop\Models\Product::checkbox('gender',$res['filter_arr']['gender']) !!}
+                    {!! \Aphly\LaravelShop\Models\Product\Product::checkbox('gender',$res['filter_arr']['gender']) !!}
                 </div>
             </div>
             <div class="form-group">
@@ -73,31 +73,31 @@
             <div class="form-group">
                 <label for="">shape</label>
                 <div class="d-flex libs_input">
-                    {!! \Aphly\LaravelShop\Models\Product::radio('shape',$res['filter_arr']['shape']) !!}
+                    {!! \Aphly\LaravelShop\Models\Product\Product::radio('shape',$res['filter_arr']['shape']) !!}
                 </div>
             </div>
             <div class="form-group">
                 <label for="">material</label>
                 <div class="d-flex libs_input">
-                    {!! \Aphly\LaravelShop\Models\Product::checkbox('material',$res['filter_arr']['material']) !!}
+                    {!! \Aphly\LaravelShop\Models\Product\Product::checkbox('material',$res['filter_arr']['material']) !!}
                 </div>
             </div>
             <div class="form-group">
                 <label for="">frame</label>
                 <div class="d-flex libs_input">
-                    {!! \Aphly\LaravelShop\Models\Product::radio('frame',$res['filter_arr']['frame']) !!}
+                    {!! \Aphly\LaravelShop\Models\Product\Product::radio('frame',$res['filter_arr']['frame']) !!}
                 </div>
             </div>
             <div class="form-group">
                 <label for="">color</label>
                 <div class="d-flex libs_input">
-                    {!! \Aphly\LaravelShop\Models\Product::checkbox('color',$res['filter_arr']['color']) !!}
+                    {!! \Aphly\LaravelShop\Models\Product\Product::checkbox('color',$res['filter_arr']['color']) !!}
                 </div>
             </div>
             <div class="form-group">
                 <label for="">feature</label>
                 <div class="d-flex libs_input">
-                    {!! \Aphly\LaravelShop\Models\Product::checkbox('feature',$res['filter_arr']['feature']) !!}
+                    {!! \Aphly\LaravelShop\Models\Product\Product::checkbox('feature',$res['filter_arr']['feature']) !!}
                 </div>
             </div>
 

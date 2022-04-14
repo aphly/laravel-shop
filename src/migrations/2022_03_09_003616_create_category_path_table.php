@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('product_cate', function (Blueprint $table) {
-            $table->integer('product_id')->unsigned();
-            $table->integer('cate_id')->unsigned();
-            $table->primary(['product_id','cate_id']);
-            $table->index('cate_id');
+        Schema::create('shop_category_path', function (Blueprint $table) {
+            $table->integer('category_id')->unsigned();
+            $table->integer('path_id')->unsigned();
+            $table->integer('level')->unsigned();
+            $table->primary(['category_id','path_id']);
         });
     }
 
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product_cate');
+        Schema::dropIfExists('shop_category_path');
     }
 };

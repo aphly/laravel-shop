@@ -13,10 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('shop_coupon_product', function (Blueprint $table) {
-            $table->id();
-            $table->integer('coupon_id')->unsigned();
+        Schema::create('shop_customer_wishlist', function (Blueprint $table) {
+            $table->unsignedBigInteger('uuid');
             $table->integer('product_id')->unsigned();
+            $table->integer('date_add')->unsigned();
+            $table->primary(['uuid','product_id']);
         });
     }
 
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shop_coupon_product');
+        Schema::dropIfExists('shop_customer_wishlist');
     }
 };

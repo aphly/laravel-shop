@@ -3,14 +3,12 @@
 namespace Aphly\LaravelShop\Controllers\Admin;
 
 use Aphly\Laravel\Exceptions\ApiException;
-use Aphly\Laravel\Libs\Func;
 use Aphly\Laravel\Libs\UploadFile;
-use Aphly\Laravel\Models\Dictionary;
 use Aphly\LaravelAdmin\Models\Menu;
 use Aphly\LaravelShop\Controllers\Controller;
-use Aphly\LaravelShop\Models\Product;
-use Aphly\LaravelShop\Models\ProductDesc;
-use Aphly\LaravelShop\Models\ProductImg;
+use Aphly\LaravelShop\Models\Product\Product;
+use Aphly\LaravelShop\Models\Product\ProductDesc;
+use Aphly\LaravelShop\Models\Product\ProductImg;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -19,7 +17,7 @@ class ProductController extends Controller
     public $index_url='/shop-admin/product/index';
     public function index(Request $request)
     {
-        $res['title']='我的';
+        $res['title'] = '';
         $res['filter']['name'] = $name = $request->query('name',false);
         $res['filter']['status'] = $status = $request->query('status',false);
         $res['filter']['string'] = http_build_query($request->query());
@@ -62,7 +60,7 @@ class ProductController extends Controller
                 throw new ApiException(['code'=>1,'msg'=>'添加失败']);
             }
         }else{
-            $res['title']='我的';
+            $res['title'] = '';
             $res['cate']=(new Menu)->getMenuById(10);
             $res['filter_arr'] = $this->getFilter();
             return $this->makeView('laravel-shop::admin.product.add',['res'=>$res]);
@@ -93,7 +91,7 @@ class ProductController extends Controller
                 throw new ApiException(['code'=>1,'msg'=>'修改失败']);
             }
         }else{
-            $res['title']='我的';
+            $res['title'] = '';
             $res['info'] = Product::find($request->id);
             $res['info_desc'] = ProductDesc::find($request->id);
             $res['cate']=(new Menu)->getMenuById(10);
@@ -133,7 +131,7 @@ class ProductController extends Controller
             }
             throw new ApiException(['code'=>2,'data'=>'','msg'=>'上传错误']);
         }else{
-            $res['title']='我的';
+            $res['title'] = '';
             return $this->makeView('laravel-shop::admin.product.img',['res'=>$res]);
         }
     }

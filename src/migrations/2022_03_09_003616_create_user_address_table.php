@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('user_address', function (Blueprint $table) {
+        Schema::create('shop_user_address', function (Blueprint $table) {
             $table->id();
-            $table->char('uuid',32);
+            $table->unsignedBigInteger('uuid');
             $table->string('firstname',32);
             $table->string('lastname',32);
             $table->string('address',255);
@@ -34,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_address');
+        Schema::dropIfExists('shop_user_address');
     }
 };

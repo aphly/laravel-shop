@@ -1,17 +1,16 @@
 <?php
 
-namespace Aphly\LaravelShop\Controllers;
+namespace Aphly\LaravelShop\Controllers\Front\Product;
 
-use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Libs\Func;
 use Aphly\Laravel\Libs\Helper;
 use Aphly\Laravel\Models\Dictionary;
-use Aphly\LaravelAdmin\Models\Menu;
-use Aphly\LaravelShop\Models\Product;
-use Aphly\LaravelShop\Models\ProductDesc;
-use Aphly\LaravelShop\Models\ProductImg;
+use Aphly\LaravelShop\Controllers\Controller;
+use Aphly\LaravelShop\Models\Product\Product;
+use Aphly\LaravelShop\Models\Product\ProductImg;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use function config;
 
 class ProductController extends Controller
 {
@@ -32,7 +31,7 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
-        $res['title']='我的';
+        $res['title'] = '';
         $res['filter_arr'] = $this->getFilter();
         $res['filter']['param_str'] = http_build_query($request->query());
         $res['filter']['cate_id']  = $cate_id = intval($request->query('cate_id',0));

@@ -120,7 +120,7 @@
                                 <li data-id="{{$v['id']}}" >
                                     <div class="d-flex ">
                                         <div>
-                                            {!! \Aphly\LaravelShop\Models\Product::color($res['filter_arr']['color'],$v['color']) !!}
+                                            {!! \Aphly\LaravelShop\Models\Product\Product::color($res['filter_arr']['color'],$v['color']) !!}
                                         </div>
                                     </div>
                                 </li>

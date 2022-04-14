@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('country', function (Blueprint $table) {
+        Schema::create('shop_country', function (Blueprint $table) {
             $table->id();
             $table->string('name',128);
             $table->string('iso_code_2',2);
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('country');
+        Schema::dropIfExists('shop_country');
     }
 };

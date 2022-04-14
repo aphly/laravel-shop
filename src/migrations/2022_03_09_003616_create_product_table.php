@@ -13,24 +13,30 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('product', function (Blueprint $table) {
+        Schema::create('shop_product', function (Blueprint $table) {
             $table->id();
-            $table->integer('cate_id')->unsigned()->index();
-            $table->string('spu',64)->default('')->index();
             $table->string('sku',64)->default('')->index();
             $table->string('name',64);
+            $table->integer('quantity')->unsigned();
+            $table->string('image',255);
+            $table->decimal('price');
+            $table->tinyInteger('shipping')->default(1);
+            $table->integer('points')->unsigned();
+            $table->tinyInteger('stock_status_id');
+            $table->float('weight');
+            $table->tinyInteger('weight_class_id');
+            $table->float('length');
+            $table->float('width');
+            $table->float('height');
+            $table->tinyInteger('length_class_id');
+            $table->tinyInteger('subtract')->default(1);
+            $table->tinyInteger('minimum')->default(1);
             $table->tinyInteger('status')->default(1)->index();
-            $table->string('gender',64)->default('');
-            $table->tinyInteger('size')->default(0);
-            $table->tinyInteger('shape')->default(0);
-            $table->string('material',64)->default('');
-            $table->tinyInteger('frame')->default(0);
-            $table->string('color',64)->default('');
-            $table->string('feature',64)->default('');
-            $table->decimal('price',7,2)->index();
             $table->integer('viewed')->unsigned()->default(0);
-            $table->integer('createtime')->unsigned()->default(0)->index();
             $table->integer('sale')->unsigned()->default(0);
+            $table->integer('sort')->unsigned();
+            $table->integer('date_add')->unsigned();
+
         });
     }
 
@@ -41,6 +47,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product');
+        Schema::dropIfExists('shop_product');
     }
 };

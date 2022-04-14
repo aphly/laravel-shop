@@ -13,14 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('cart', function (Blueprint $table) {
+        Schema::create('shop_cart', function (Blueprint $table) {
             $table->id();
-            $table->integer('uuid')->unsigned()->index();
+            $table->unsignedInteger('uuid')->index();
             $table->integer('product_id')->unsigned()->index();
             $table->char('session_id',32)->index();
-            $table->tinyInteger('quantity')->default(1);
+            $table->unsignedInteger('quantity')->default(1);
             $table->json('json')->nullable();
-            $table->integer('createtime')->unsigned();
+            $table->integer('date_add')->unsigned();
         });
     }
 
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product');
+        Schema::dropIfExists('shop_cart');
     }
 };

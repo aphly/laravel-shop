@@ -13,13 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('shop_coupon_history', function (Blueprint $table) {
+        Schema::create('shop_review', function (Blueprint $table) {
             $table->id();
-            $table->integer('coupon_id')->unsigned();
-            $table->integer('order_id')->unsigned();
-            $table->unsignedBigInteger('uuid');
-            $table->decimal('amount');
+            $table->integer('product_id')->unsigned()->index();
+            $table->unsignedBigInteger('uuid')->index();
+            $table->string('author',64);
+            $table->text('text');
+            $table->tinyInteger('rating');
+            $table->tinyInteger('status')->index();
             $table->integer('date_add')->unsigned();
+            $table->integer('date_edit')->unsigned();
         });
     }
 
@@ -30,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shop_coupon_history');
+        Schema::dropIfExists('shop_review');
     }
 };

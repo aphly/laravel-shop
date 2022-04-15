@@ -13,17 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('shop_user_address', function (Blueprint $table) {
+        Schema::create('shop_returns', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('uuid');
+            $table->integer('order_id')->unsigned()->index();
+            $table->integer('product_id')->unsigned()->index();
+            $table->char('uuid')->index();
             $table->string('firstname',32);
             $table->string('lastname',32);
-            $table->string('address',255);
-            $table->string('city',128);
-            $table->string('postcode',10);
-            $table->integer('country_id');
-            $table->integer('zone_id');
-            $table->timestamps();
+            $table->string('email',128);
+            $table->string('telephone',32);
+            $table->string('product',255);
+            $table->integer('quantity')->unsigned();
+            $table->text('comment');
         });
     }
 
@@ -34,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shop_user_address');
+        Schema::dropIfExists('shop_returns');
     }
 };

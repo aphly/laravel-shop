@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,27 +18,31 @@ use Illuminate\Support\Facades\Route;
 //
 Route::middleware(['web'])->group(function () {
 
-    Route::prefix('shop-admin')->middleware(['managerAuth'])->group(function () {
-        Route::middleware(['rbac'])->group(function () {
-            Route::get('/product/index', 'Aphly\LaravelShop\Controllers\Admin\ProductController@index');
-            Route::match(['get', 'post'],'/product/add', 'Aphly\LaravelShop\Controllers\Admin\ProductController@add');
-            Route::match(['get', 'post'],'/product/{id}/edit', 'Aphly\LaravelShop\Controllers\Admin\ProductController@edit')->where('id', '[0-9]+');
-            Route::post('/product/del', 'Aphly\LaravelShop\Controllers\Admin\ProductController@del');
-            Route::match(['get', 'post'],'/product/{id}/img', 'Aphly\LaravelShop\Controllers\Admin\ProductController@img')->where('id', '[0-9]+');
-            Route::match(['post'],'/product/{id}/imgsave', 'Aphly\LaravelShop\Controllers\Admin\ProductController@imgSave')->where('id', '[0-9]+');
-            Route::match(['get'],'/product-img/{id}/del', 'Aphly\LaravelShop\Controllers\Admin\ProductController@imgDel')->where('id', '[0-9]+');
+    Route::get('/userauth/{id}/verify/{token}', 'Aphly\LaravelShop\Controllers\Front\HomeController@mailVerifyCheck');
+
+    Route::match(['get', 'post'],'/forget', 'Aphly\LaravelShop\Controllers\Front\HomeController@forget');
+    Route::match(['get', 'post'],'/forget-password/{token}', 'Aphly\LaravelShop\Controllers\Front\HomeController@forgetPassword');
+
+    Route::get('/index', 'Aphly\LaravelShop\Controllers\Front\HomeController@index');
+    Route::match(['get'],'/autologin/{token}', 'Aphly\LaravelShop\Controllers\Front\HomeController@autoLogin');
+
+    Route::middleware(['userAuth'])->group(function () {
+        Route::match(['get'],'/email/verify', 'Aphly\LaravelShop\Controllers\Front\HomeController@mailVerify');
+
+        Route::match(['get', 'post'],'/register', 'Aphly\LaravelShop\Controllers\Front\HomeController@register');
+        Route::match(['get', 'post'],'/login', 'Aphly\LaravelShop\Controllers\Front\HomeController@login');
+
+        Route::get('/logout', 'Aphly\LaravelShop\Controllers\Front\HomeController@logout');
+
+        Route::prefix('account')->group(function () {
+            Route::get('/customer', 'Aphly\LaravelShop\Controllers\Front\Account\CustomerController@index');
         });
     });
 
-    Route::get('/eyeglasses', 'Aphly\LaravelShop\Controllers\ProductController@index');
-    Route::get('/eyeglasses/{sku}', 'Aphly\LaravelShop\Controllers\ProductController@detail')->where('sku', '[0-9a-zA-Z]+');
-    Route::get('/eyeglasses/{sku}/lens', 'Aphly\LaravelShop\Controllers\ProductController@lens')->where('sku', '[0-9a-zA-Z]+');
 
+//    Route::get('/eyeglasses', 'Aphly\LaravelShop\Controllers\ProductController@index');
+//    Route::get('/eyeglasses/{sku}', 'Aphly\LaravelShop\Controllers\ProductController@detail')->where('sku', '[0-9a-zA-Z]+');
+//    Route::get('/eyeglasses/{sku}/lens', 'Aphly\LaravelShop\Controllers\ProductController@lens')->where('sku', '[0-9a-zA-Z]+');
 
 });
-Route::get('/sql',function (){
-    set_time_limit(0);
-    for($i=1;$i<100000;$i++){
-        DB::insert("INSERT INTO `product` (`id`, `sku`, `spu`, `cate_id`, `name`, `status`, `gender`, `size`, `frame_width`, `lens_width`, `lens_height`, `bridge_width`, `arm_length`, `shape`, `material`, `frame`, `color`, `feature`, `price`, `viewed`, `createtime`, `sale`) VALUES (".$i.", 'sku".$i."', 'spu".$i."', 14, 'Kissimmee', 1, '2,3', 3, 142, 51, 41, 21, 149, 6, '6', 1, '23,15', '3', 12.95, 0, 1647504759, 0);");
-    }
-});
+

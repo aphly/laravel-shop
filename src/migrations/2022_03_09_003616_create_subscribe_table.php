@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('shop_customer', function (Blueprint $table) {
-            $table->unsignedBigInteger('uuid')->primary();
-            $table->unsignedInteger('address_id')->nullable()->default(0);
-            $table->integer('role_id')->unsigned()->index();
+        Schema::create('shop_subscribe', function (Blueprint $table) {
+            $table->string('email',255)->primary();
+            $table->tinyInteger('status');
+            $table->timestamps();
         });
     }
 
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shop_customer');
+        Schema::dropIfExists('shop_subscribe');
     }
 };

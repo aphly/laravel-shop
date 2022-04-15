@@ -1,5 +1,5 @@
-@include('laravel-admin::common.header')
-<link rel="stylesheet" href="{{ URL::asset('vendor/laravel-admin/css/login.css') }}">
+@include('laravel-shop::common.header')
+<link rel="stylesheet" href="{{ URL::asset('vendor/laravel/css/login.css') }}">
 <section class="login d-flex" >
     <div class="login1">
         <span>
@@ -7,24 +7,22 @@
         </span>
     </div>
     <div class="login2">
-        <form method="post" action="/admin/login" id="login" class="login_form">
+        <form method="post" action="/forget-password/{{$res['token']}}" id="login" class="login_form">
             @csrf
             <div class="login_title">
-                <span class="text-center">后台登录</span>
+                <span class="text-center">忘记密码</span>
             </div>
+
             <h3 class="" style="">
-                登录
+                忘记密码
                 <span style="font-size:16px">
-                    没有帐号?
-                    <a href="">注册</a>
+                    已有帐号?
+                    <a href="/login">登录</a>
                 </span>
             </h3>
+
             <div class="form-group">
-                <input type="text" name="username" class="form-control" placeholder="用户名" value="">
-                <div class="invalid-feedback"></div>
-            </div>
-            <div class="form-group">
-                <input type="password" name="password" class="form-control " placeholder="密码" value="">
+                <input type="text" name="credential" class="form-control" placeholder="new password" value="">
                 <div class="invalid-feedback"></div>
             </div>
 
@@ -34,8 +32,9 @@
             </div>
 
             <div class="alert alert-warning d-none" id="msg"></div>
+
             <div class="login_btn">
-                <button class="btn btn-primary " type="submit">登录</button>
+                <button class="btn btn-primary " type="submit">提交</button>
             </div>
 
         </form>
@@ -72,16 +71,6 @@ $(function (){
                         $('#login input.form-control').addClass('is-valid');
                         if(!res.code) {
                             location.href = res.data.redirect
-                        }else if(res.code===11000){
-                            for(var item in res.data){
-                                let str = ''
-                                res.data[item].forEach((elem, index)=>{
-                                    str = str+elem+'<br>'
-                                })
-                                let obj = $('#login input[name="'+item+'"]');
-                                obj.removeClass('is-valid').addClass('is-invalid');
-                                obj.next('.invalid-feedback').html(str);
-                            }
                         }else{
                             $("#msg").text(res.msg).removeClass('d-none');
                         }
@@ -98,4 +87,4 @@ $(function (){
     })
 });
 </script>
-@include('laravel-admin::common.footer')
+@include('laravel-shop::common.footer')

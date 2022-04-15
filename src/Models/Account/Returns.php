@@ -5,17 +5,14 @@ namespace Aphly\LaravelShop\Models\Account;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Customer extends Model
+class Returns extends Model
 {
     use HasFactory;
-    protected $table = 'shop_customer';
-    protected $primaryKey = 'uuid';
+    protected $table = 'shop_returns';
     public $timestamps = false;
 
-    const ROLE_ID = 4;
-
     protected $fillable = [
-        'uuid','address_id','role_id'
+        'uuid','firstname','lastname','email','telephone','total','status'
     ];
 
 

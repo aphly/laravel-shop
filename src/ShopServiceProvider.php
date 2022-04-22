@@ -24,10 +24,12 @@ class ShopServiceProvider extends ServiceProvider
      *
      * @return void
      */
+
     public function boot()
     {
         $this->publishes([
             __DIR__.'/config/shop.php' => config_path('shop.php'),
+            __DIR__.'/config/shop_init.sql' => storage_path('app/private/shop_init.sql'),
         ]);
         $this->publishes([__DIR__.'/public' => public_path('vendor/laravel-shop')]);
         $this->loadMigrationsFrom(__DIR__.'/migrations');

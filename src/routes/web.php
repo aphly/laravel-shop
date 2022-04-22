@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Route;
 ////Route::get('/admin/init', 'Aphly\LaravelShop\Controllers\InitController@index');
 //
 Route::middleware(['web'])->group(function () {
+    //安装
+    Route::get('/shop_install', 'Aphly\LaravelShop\Controllers\Front\InstallController@index');
 
     Route::get('/userauth/{id}/verify/{token}', 'Aphly\LaravelShop\Controllers\Front\HomeController@mailVerifyCheck');
 
@@ -46,3 +48,12 @@ Route::middleware(['web'])->group(function () {
 
 });
 
+
+Route::middleware(['web'])->group(function () {
+
+    Route::get('/test', function (){
+        dd((new \Aphly\LaravelShop\Models\Common\Currency)->getCurrencies());
+    });
+
+
+});

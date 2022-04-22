@@ -16,12 +16,12 @@ return new class extends Migration
         Schema::create('shop_currency', function (Blueprint $table) {
             $table->id();
             $table->string('title',32);
-            $table->string('code',3);
+            $table->string('code',3)->index();
             $table->string('symbol_left',12);
             $table->string('symbol_right',12);
             $table->char('decimal_place',1);
             $table->decimal('value',15,8);
-            $table->tinyInteger('status');
+            $table->tinyInteger('status')->index();
             $table->timestamps();
         });
     }

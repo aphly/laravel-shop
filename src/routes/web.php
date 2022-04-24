@@ -1,5 +1,6 @@
 <?php
 
+use Aphly\LaravelShop\Models\Common\Country;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,10 +37,16 @@ Route::middleware(['web'])->group(function () {
 
         Route::get('/logout', 'Aphly\LaravelShop\Controllers\Front\HomeController@logout');
 
+        //account
         Route::prefix('account')->group(function () {
-            Route::get('/customer', 'Aphly\LaravelShop\Controllers\Front\Account\CustomerController@index');
+            Route::get('customer', 'Aphly\LaravelShop\Controllers\Front\Account\CustomerController@index');
+            Route::get('wishlist', 'Aphly\LaravelShop\Controllers\Front\Account\CustomerWishlistController@index');
+
         });
     });
+
+
+
 
 
 //    Route::get('/eyeglasses', 'Aphly\LaravelShop\Controllers\ProductController@index');
@@ -52,7 +59,7 @@ Route::middleware(['web'])->group(function () {
 Route::middleware(['web'])->group(function () {
 
     Route::get('/test', function (){
-        dd((new \Aphly\LaravelShop\Models\Common\Currency)->getCurrencies());
+
     });
 
 

@@ -11,8 +11,7 @@ class CustomerController extends Controller
     public function index(Request $request)
     {
         $res['title'] = '';
-        $res['user'] = session('user');
-
+        //$res['user'] = session('user');
         return $this->makeView('laravel-shop::account.index',['res'=>$res]);
     }
 

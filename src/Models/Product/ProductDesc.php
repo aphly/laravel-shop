@@ -3,7 +3,7 @@
 namespace Aphly\LaravelShop\Models\Product;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Aphly\Laravel\Models\Model;
 
 class ProductDesc extends Model
 {

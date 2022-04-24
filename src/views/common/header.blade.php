@@ -38,7 +38,7 @@
                             <div class="nav_num">0</div>
                         </div></a>
                         @if($user = session('user'))
-                            <a href="/account" class="nav-r">
+                            <a href="/account/customer" class="nav-r">
                                 <i class="uni app-login"></i>
                             </a>
                         @else

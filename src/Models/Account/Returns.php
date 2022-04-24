@@ -3,7 +3,7 @@
 namespace Aphly\LaravelShop\Models\Account;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Aphly\Laravel\Models\Model;
 
 class Returns extends Model
 {

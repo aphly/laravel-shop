@@ -2,8 +2,8 @@
 
 namespace Aphly\LaravelShop\Models\Common;
 
+use Aphly\Laravel\Models\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 
 class Currency extends Model
@@ -16,12 +16,12 @@ class Currency extends Model
         'title','code','symbol_left','symbol_right','decimal_place','value','status'
     ];
 
-    public function getByCode($currency) {
-        $res = self::where('code', $currency)->first();
+    public function findOneByCode($code) {
+        $res = self::where('code', $code)->first();
         return $res?$res->toArray():[];
     }
 
-    public function getCurrencies() {
+    public function findAllStatus() {
         return Cache::rememberForever('currency', function (){
             return self::where('status', 1)->get()->keyBy('code')->toArray();
         });

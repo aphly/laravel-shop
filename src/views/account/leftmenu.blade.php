@@ -1,14 +1,27 @@
-<div>
-    <ul>
-        <li>
-            <div>
-                My Account
-                <dl>
-                    <a href="/account/customer"><dd @if('account/customer'==request()->path()) class="huis" @endif>Dashboard</dd></a>
-                    <a href="/account/customer"><dd @if('account/customer'==request()->path()) class="huis" @endif>Dashboard</dd></a>
-                    <a href="/account/customer"><dd @if('account/customer'==request()->path()) class="huis" @endif>Dashboard</dd></a>
-                </dl>
+<link rel="stylesheet" href="{{ URL::asset('vendor/laravel-shop/css/account.css') }}">
+<div class="sidebar-menu" id="sidebar-menu">
+    <div class="sidebar-menu-list js-sidebar-menu clearfix">
+        <div class="sidebar-menu-title">My Account Information</div>
+        <ul class="sidebar-menu-content">
+            <li><a href="/account/customer" @if('account/customer'==request()->path()) class="current" @endif>Dashboard</a></li>
+            <li class="none"><a href="index.php?route=account/account" class="current">My Try On</a></li>
+            <li><a href="/account/wishlist">My Wishlist</a></li>
+        </ul>
+
+        <div class="sidebar-menu-title">Order Details</div>
+        <ul class="sidebar-menu-content">
+            <li><a href="/account/order">My Orders</a></li>
+            <li><a href="/account/address">My Address Book</a></li>
+            <li class="none"><a href="/account/account" class="current">Track My Order </a></li>
+        </ul>
+        <div class="sidebar-menu-title last-title">Customer Service</div>
+        <div class="sidebar-menu-content last-content" style="">
+            <span>Need help? We're here to help you:</span>
+            <div class="phone">
+                <b>{{ config('shop.email') }}</b> <br>
+                <span>9:00 AM to 6:00 PM Mon to Fri. (EST)</span>
             </div>
-        </li>
-    </ul>
+        </div>
+
+    </div>
 </div>

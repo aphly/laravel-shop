@@ -15,10 +15,11 @@ return new class extends Migration
     {
         Schema::create('shop_address', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('uuid');
+            $table->unsignedBigInteger('uuid')->index();
             $table->string('firstname',32);
             $table->string('lastname',32);
-            $table->string('address',255);
+            $table->string('address_1',255);
+            $table->string('address_2',255)->nullable();
             $table->string('city',128);
             $table->string('postcode',10);
             $table->string('telephone',32);

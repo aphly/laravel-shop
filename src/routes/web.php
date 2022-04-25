@@ -40,13 +40,13 @@ Route::middleware(['web'])->group(function () {
         //account
         Route::prefix('account')->group(function () {
             Route::get('customer', 'Aphly\LaravelShop\Controllers\Front\Account\CustomerController@index');
-            Route::get('wishlist', 'Aphly\LaravelShop\Controllers\Front\Account\CustomerWishlistController@index');
-
+            Route::get('wishlist', 'Aphly\LaravelShop\Controllers\Front\Account\WishlistController@index');
+            Route::get('address', 'Aphly\LaravelShop\Controllers\Front\Account\AddressController@index');
+            Route::match(['get', 'post'],'address/add', 'Aphly\LaravelShop\Controllers\Front\Account\AddressController@add');
+            Route::match(['get', 'post'],'address/{id}/edit', 'Aphly\LaravelShop\Controllers\Front\Account\AddressController@edit')->where('id', '[0-9]+');
+            Route::get('address/country/{id}', 'Aphly\LaravelShop\Controllers\Front\Account\AddressController@country')->where('id', '[0-9]+');
         });
     });
-
-
-
 
 
 //    Route::get('/eyeglasses', 'Aphly\LaravelShop\Controllers\ProductController@index');

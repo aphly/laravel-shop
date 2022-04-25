@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('shop_zone', function (Blueprint $table) {
             $table->id();
-            $table->integer('country_id')->unsigned();
-            $table->string('name',128);
+            $table->integer('country_id')->unsigned()->index();
+            $table->string('name',128)->index();
             $table->string('code',32);
             $table->tinyInteger('status')->default(1)->index();
         });

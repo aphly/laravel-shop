@@ -15,3 +15,12 @@
     <link rel="stylesheet" href="{{ URL::asset('vendor/laravel-shop/css/product.css') }}">
 </head>
 <body>
+<style>
+    @font-face {
+        font-family: "Poppins-Regular";
+        src: url("{{ URL::asset('vendor/laravel-shop/font/Poppins-Regular.woff') }}") format('woff');
+    }
+    body{background: #fafafa;font-family: "Poppins-Regular";}
+    .breadcrumb-wrapper{background-color:transparent;line-height:50px;font-size:12px}
+    .breadcrumb-wrapper a {color: #4c4c4c;}
+</style>

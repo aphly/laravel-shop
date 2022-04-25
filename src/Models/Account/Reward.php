@@ -5,15 +5,15 @@ namespace Aphly\LaravelShop\Models\Account;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;
 
-class CustomerWishlist extends Model
+class Reward extends Model
 {
     use HasFactory;
-    protected $table = 'shop_customer_wishlist';
-    protected $primaryKey = ['uuid','product_id'];
+    protected $table = 'shop_customer_reward';
     public $timestamps = false;
 
     protected $fillable = [
-        'uuid','product_id','date_add'
+        'uuid','order_id','description',
+        'points','date_add'
     ];
 
 }

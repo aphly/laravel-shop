@@ -18,7 +18,7 @@ class Zone extends Model
 
     public function getListOpenCache($country_id) {
         return Cache::rememberForever('zone_open'. (int)$country_id, function () use ($country_id){
-            return self::where('country_id', $country_id)->where('status',1)->get()->keyBy('id')->toArray();
+            return self::where('country_id', $country_id)->where('status',1)->orderBy('name','asc')->get()->keyBy('id')->toArray();
         });
     }
 

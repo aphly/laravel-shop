@@ -14,7 +14,7 @@ class Address extends Model
     protected $table = 'shop_address';
 
     protected $fillable = [
-        'uuid','firstname','lastname','address','city','postcode','country_id','zone_id','telephone'
+        'uuid','firstname','lastname','address_1','address_2','city','postcode','country_id','zone_id','telephone'
     ];
 
     public function getAddress($address_id) {

@@ -3,9 +3,9 @@
     <div class="top-bar">
         <h5 class="nav-title">首页</h5>
     </div>
-    <div class="d-flex">
+    <div class="d-flex  justify-content-between">
         @include('laravel-shop::account.leftmenu')
-        <div>
+        <div class="main-section">
             你好
             @if(session('user'))
                 {{session('user')['nickname']}}

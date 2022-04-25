@@ -18,7 +18,7 @@ class Country extends Model
 
     public function getListOpenCache() {
         return Cache::rememberForever('country_open', function (){
-            return self::where('status', 1)->get()->keyBy('id')->toArray();
+            return self::where('status', 1)->orderBy('name','asc')->get()->keyBy('id')->toArray();
         });
     }
 

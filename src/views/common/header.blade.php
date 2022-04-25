@@ -6,14 +6,14 @@
     .top_left img{max-height: 100%;width: 150px;}
     .top_left ul li{}
     .nav_num{display:inline-block;vertical-align:text-bottom;width:26px;height:26px;line-height:26px;border-radius:100%;background:#3ea0c0;overflow:hidden;white-space:nowrap;color:#fff;text-align:center;}
-    .nav-r i{ color: #333;font-size: 26px;}
-
+    .nav-r i{ color: #333;font-size: 26px;margin-right: 5px;}
+    .nav-r{margin: 0 10px;}
 </style>
     <div class="fixed-top">
         <div class="container">
             <div class="d-flex justify-content-between">
                 <div class="d-flex top_left">
-                    <img class="" src="//d22qih3asjv3x0.cloudfront.net/1/static/public/statics/images/gs-logo-2021.svg" alt="logo">
+                    <img class="" src="" alt="logo">
                     <ul class="d-flex">
                         <li>Eyeglasses</li>
                         <li>Sunglasses</li>
@@ -21,7 +21,7 @@
                         <li>Sale</li>
                     </ul>
                 </div>
-                <div class="d-flex">
+                <div class="d-flex align-items-center" >
                     <div></div>
                     <div class="d-flex">
                         <form class="d-flex" method="get" action="/search">
@@ -29,11 +29,11 @@
                             <button class="uni app-ai-search" type="button"></button>
                             <button class="uni app-guanbi" type="button"></button>
                         </form>
-                        <a href=""><div class="d-flex nav-heart nav-r">
+                        <a href=""><div class="d-flex nav-heart nav-r  align-items-center">
                             <i class="uni app-aixin"></i>
                             <div class="nav_num">0</div>
                         </div></a>
-                        <a href=""><div class="d-flex nav-cart nav-r">
+                        <a href=""><div class="d-flex nav-cart nav-r  align-items-center">
                             <i class="uni app-gouwuche"></i>
                             <div class="nav_num">0</div>
                         </div></a>

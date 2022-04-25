@@ -1,0 +1,155 @@
+@include('laravel-shop::common.header')
+
+<div class="container">
+    <nav aria-label="breadcrumb" class="row col-12 mt-lg-3">
+        <ol class="breadcrumb breadcrumb-wrapper col-12 m-0 pt-0 pb-0 font-14">
+            <li class="breadcrumb-item"><a href="/index"><i class="fa fa-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="/account/account">Account</a></li>
+            <li class="breadcrumb-item"><a href="/account/address">Address Book</a></li>
+            <li class="breadcrumb-item"><a href="/account/address/add">Add Address</a></li>
+        </ol>
+    </nav>
+    <div class="d-flex justify-content-between">
+        @include('laravel-shop::account.leftmenu')
+        <div class="main-section">
+            <div class="gs-account">
+                <div class="top-desc text-left">
+                    <h1 class="mb-5 d-lg-block d-none">
+                        Edit Address
+                    </h1>
+                </div>
+                <div class="account-info">
+                    <form method="post" action="#" id="address_form" class="form-horizontal bv-form address_form">
+                        @csrf
+                        <div class="form-group">
+                            <label class="col-12 col-lg-2">First Name: <b>*</b></label>
+                            <div class="col-12 col-lg-9">
+                                <input type="text" name="firstname" required="" id="firstname" value="" placeholder="First Name" class="control" >
+                                <div class="invalid-feedback"></div>
+                            </div>
+                        <div class="form-group">
+                            <div class="col-12 col-sm-9">
+                                <p>Last Name: <b>*</b></p>
+                                <input type="text" name="lastname" required="" id="lastname" value="" placeholder="Last Name" class="control">
+                                <div class="invalid-feedback"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-xs-12 col-sm-9">
+                                <p>Address Line1: <b>*</b></p>
+                                <input id="address1" required="" name="address_1" type="text" class="control address1" value="" placeholder="Address 1" >
+                                <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-12 col-sm-9">
+                                <p>Address Line2: </p>
+                                <input id="address2" name="address_2" type="text" class="control address2" value="" placeholder="Address 2">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-12 col-sm-9">
+                                <p>City: <b>*</b></p>
+                                <input id="city" required="" name="city" type="text" class="control city" value="" placeholder="City" >
+                                <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-12 col-sm-9">
+                                <p>Post Code: <b>*</b></p>
+                                <input id="postcode" required="" name="postcode" value="" placeholder="Post Code" type="text" class="control postcode">
+                                <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-12 col-sm-9">
+                                <p>Country: <b>*</b></p>
+                                <select name="country_id" id="input-country" class="control country">
+                                    <option value=""> --- Please Select --- </option>
+                                    @foreach($res['country'] as $val)
+                                        <option value="{{$val['id']}}">{{$val['name']}}</option>
+                                    @endforeach
+                                </select>
+                                <div class="invalid-feedback"></div>
+                            </div>
+                        </div>
+                        <div class="form-group is-valid">
+                            <div class="col-xs-12 col-sm-9">
+                                <p>State / Province: <b>*</b></p>
+                                <select name="zone_id" required="" id="input-zone" class="control country is-valid">
+                                    <option value=""> --- None --- </option>
+                                </select>
+                                <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-12 col-sm-9">
+                                <p>Telephone: <b>*</b></p>
+                                <input required="" name="telephone" type="text" class="control " value="">
+                                <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-12 col-sm-9">
+                                <input type="checkbox" name="default" value="1" checked="checked" readonly=""> Set as
+                                primary address
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-12 col-sm-9">
+                                <button id="save-address" class="btn-default w120" onclick="saveAddress()">Save</button>
+                                <a href="/account/address">
+                                    <button type="button" class="btn-primary w120 ml30 btn-cancel">Cancel</button>
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function saveAddress() {
+        $.ajax({
+            url:'/account/address/add',
+            dataType:'json',
+            data:$('#address_form').serialize(),
+            success:function (res) {
+                if(!res.code) {
+                    location.href = res.data.redirect
+                }else if(res.code===11000){
+                    // for(var item in res.data){
+                    //     let str = ''
+                    //     res.data[item].forEach((elem, index)=>{
+                    //         str = str+elem+'<br>'
+                    //     })
+                    //     let obj = $('#login input[name="'+item+'"]');
+                    //     obj.removeClass('is-valid').addClass('is-invalid');
+                    //     obj.next('.invalid-feedback').html(str);
+                    // }
+                }else{
+                    //$("#msg").text(res.msg).removeClass('d-none');
+                }
+            }
+        })
+    }
+
+    $(function () {
+        $('#input-country').change(function () {
+            let country_id = $(this).val();
+            if(country_id){
+                $.ajax({
+                    url:'/account/address/country/'+country_id,
+                    dataType: "json",
+                    success: function(res){
+                        let html = '<option value=""> --- Please Select --- </option>';
+                        for(let i in res.data){
+                            html += '<option value="'+res.data[i].id+'">'+res.data[i].name+'</option>';
+                        }
+                        $('#input-zone').html(html)
+                    }
+                })
+            }else{
+                let html = '<option value=""> --- None --- </option>';
+                $('#input-zone').html(html)
+            }
+        })
+    })
+</script>
+@include('laravel-shop::common.footer')

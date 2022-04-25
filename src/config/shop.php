@@ -4,4 +4,5 @@ return [
     'name'=>'eyeglasses',
     'perPage'=>'10',
     'url'=>'http://www.test1.com/',
+    'email'=>'viewnerservice@aol.com'
 ];

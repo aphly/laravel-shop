@@ -19,44 +19,50 @@
                     </h1>
                 </div>
                 <div class="account-info">
-                    <form method="post" action="#" id="address_form" class="form-horizontal bv-form address_form">
+                    <form method="post" action="" id="address_form" class="form-horizontal bv-form address_form">
                         @csrf
+                        <input type="hidden" name="address_id" value="{{request()->query('address_id')??0}}">
                         <div class="form-group">
                             <label class="col-12 col-lg-2">First Name: <b>*</b></label>
                             <div class="col-12 col-lg-9">
-                                <input type="text" name="firstname" required="" id="firstname" value="" placeholder="First Name" class="control" >
+                                <input type="text" name="firstname" required="" value="{{$res['info']->firstname}}" placeholder="First Name" class="control" >
                                 <div class="invalid-feedback"></div>
                             </div>
+                        </div>
                         <div class="form-group">
                             <div class="col-12 col-sm-9">
                                 <p>Last Name: <b>*</b></p>
-                                <input type="text" name="lastname" required="" id="lastname" value="" placeholder="Last Name" class="control">
+                                <input type="text" name="lastname" required="" value="{{$res['info']->lastname}}" placeholder="Last Name" class="control">
                                 <div class="invalid-feedback"></div>
+                            </div>
                         </div>
 
                         <div class="form-group">
                             <div class="col-xs-12 col-sm-9">
                                 <p>Address Line1: <b>*</b></p>
-                                <input id="address1" required="" name="address_1" type="text" class="control address1" value="" placeholder="Address 1" >
+                                <input required="" name="address_1" type="text" class="control address1" value="{{$res['info']->address_1}}" placeholder="Address 1" >
                                 <div class="invalid-feedback"></div>
+                            </div>
                         </div>
                         <div class="form-group">
                             <div class="col-xs-12 col-sm-9">
                                 <p>Address Line2: </p>
-                                <input id="address2" name="address_2" type="text" class="control address2" value="" placeholder="Address 2">
+                                <input name="address_2" type="text" class="control address2" value="{{$res['info']->address_2}}" placeholder="Address 2">
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-xs-12 col-sm-9">
                                 <p>City: <b>*</b></p>
-                                <input id="city" required="" name="city" type="text" class="control city" value="" placeholder="City" >
+                                <input required="" name="city" type="text" class="control city" value="{{$res['info']->city}}" placeholder="City" >
                                 <div class="invalid-feedback"></div>
+                            </div>
                         </div>
                         <div class="form-group">
                             <div class="col-xs-12 col-sm-9">
                                 <p>Post Code: <b>*</b></p>
-                                <input id="postcode" required="" name="postcode" value="" placeholder="Post Code" type="text" class="control postcode">
+                                <input required="" name="postcode" value="{{$res['info']->postcode}}" placeholder="Post Code" type="text" class="control postcode">
                                 <div class="invalid-feedback"></div>
+                            </div>
                         </div>
                         <div class="form-group">
                             <div class="col-12 col-sm-9">
@@ -64,7 +70,7 @@
                                 <select name="country_id" id="input-country" class="control country">
                                     <option value=""> --- Please Select --- </option>
                                     @foreach($res['country'] as $val)
-                                        <option value="{{$val['id']}}">{{$val['name']}}</option>
+                                        <option value="{{$val['id']}}" @if($val['id']==$res['info']->country_id) selected @endif>{{$val['name']}}</option>
                                     @endforeach
                                 </select>
                                 <div class="invalid-feedback"></div>
@@ -73,32 +79,42 @@
                         <div class="form-group is-valid">
                             <div class="col-xs-12 col-sm-9">
                                 <p>State / Province: <b>*</b></p>
-                                <select name="zone_id" required="" id="input-zone" class="control country is-valid">
-                                    <option value=""> --- None --- </option>
+                                <select name="zone_id" required="" id="input-zone" class="control country ">
+                                    @if($res['zone'])
+                                        <option value=""> --- Please Select --- </option>
+                                        @foreach($res['zone'] as $val)
+                                            <option value="{{$val['id']}}" @if($val['id']==$res['info']->zone_id) selected @endif>{{$val['name']}}</option>
+                                        @endforeach
+                                    @else
+                                        <option value=""> --- None --- </option>
+                                    @endif
                                 </select>
                                 <div class="invalid-feedback"></div>
+                            </div>
                         </div>
                         <div class="form-group">
                             <div class="col-xs-12 col-sm-9">
                                 <p>Telephone: <b>*</b></p>
-                                <input required="" name="telephone" type="text" class="control " value="">
+                                <input required="" name="telephone" type="text" class="control " placeholder="Telephone" value="{{$res['info']->telephone}}">
                                 <div class="invalid-feedback"></div>
+                            </div>
                         </div>
                         <div class="form-group">
                             <div class="col-xs-12 col-sm-9">
-                                <input type="checkbox" name="default" value="1" checked="checked" readonly=""> Set as
+                                <input type="checkbox" name="default" value="1" @if($res['customer']['address_id'] == $res['info']->id) checked="checked" @endif> Set as
                                 primary address
                             </div>
                         </div>
-                        <div class="form-group">
-                            <div class="col-xs-12 col-sm-9">
-                                <button id="save-address" class="btn-default w120" onclick="saveAddress()">Save</button>
-                                <a href="/account/address">
-                                    <button type="button" class="btn-primary w120 ml30 btn-cancel">Cancel</button>
-                                </a>
-                            </div>
-                        </div>
+
                     </form>
+                    <div class="form-group">
+                        <div class="col-xs-12 col-sm-9">
+                            <button id="save-address" class="btn-default w120" onclick="saveAddress()">Save</button>
+                            <a href="/account/address">
+                                <button type="button" class="btn-primary w120 ml30 btn-cancel">Cancel</button>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -106,50 +122,60 @@
 </div>
 <script>
     function saveAddress() {
+        let url = '/account/address/save?address_id={{request()->query('address_id')??0}}';
         $.ajax({
-            url:'/account/address/add',
+            url,
             dataType:'json',
+            type:'post',
             data:$('#address_form').serialize(),
             success:function (res) {
                 if(!res.code) {
                     location.href = res.data.redirect
                 }else if(res.code===11000){
-                    // for(var item in res.data){
-                    //     let str = ''
-                    //     res.data[item].forEach((elem, index)=>{
-                    //         str = str+elem+'<br>'
-                    //     })
-                    //     let obj = $('#login input[name="'+item+'"]');
-                    //     obj.removeClass('is-valid').addClass('is-invalid');
-                    //     obj.next('.invalid-feedback').html(str);
-                    // }
+                    for(var item in res.data){
+                        let str = ''
+                        res.data[item].forEach((elem, index)=>{
+                            str = str+elem+'<br>'
+                        })
+                        let obj = $('#login input[name="'+item+'"]');
+                        obj.removeClass('is-valid').addClass('is-invalid');
+                        obj.next('.invalid-feedback').html(str);
+                    }
                 }else{
-                    //$("#msg").text(res.msg).removeClass('d-none');
+                    alert_msg(res)
                 }
             }
         })
     }
-
+    let country_zone = {};
     $(function () {
         $('#input-country').change(function () {
             let country_id = $(this).val();
-            if(country_id){
-                $.ajax({
-                    url:'/account/address/country/'+country_id,
-                    dataType: "json",
-                    success: function(res){
-                        let html = '<option value=""> --- Please Select --- </option>';
-                        for(let i in res.data){
-                            html += '<option value="'+res.data[i].id+'">'+res.data[i].name+'</option>';
-                        }
-                        $('#input-zone').html(html)
-                    }
-                })
+            if(country_id in country_zone){
+                makeZone(country_zone[country_id])
             }else{
-                let html = '<option value=""> --- None --- </option>';
-                $('#input-zone').html(html)
+                if(country_id){
+                    $.ajax({
+                        url:'/account/address/country/'+country_id,
+                        dataType: "json",
+                        success: function(res){
+                            country_zone[country_id] = res.data;
+                            makeZone(country_zone[country_id])
+                        }
+                    })
+                }else{
+                    let html = '<option value=""> --- None --- </option>';
+                    $('#input-zone').html(html)
+                }
             }
         })
     })
+    function makeZone(data){
+        let html = '<option value=""> --- Please Select --- </option>';
+        for(let i in data){
+            html += '<option value="'+data[i].id+'">'+data[i].name+'</option>';
+        }
+        $('#input-zone').html(html)
+    }
 </script>
 @include('laravel-shop::common.footer')

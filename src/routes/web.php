@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 ////Route::get('/admin/init', 'Aphly\LaravelShop\Controllers\InitController@index');
 //
 Route::middleware(['web'])->group(function () {
-    //安装
+    //install
     Route::get('/shop_install', 'Aphly\LaravelShop\Controllers\Front\InstallController@index');
 
     Route::get('/userauth/{id}/verify/{token}', 'Aphly\LaravelShop\Controllers\Front\HomeController@mailVerifyCheck');
@@ -40,12 +40,19 @@ Route::middleware(['web'])->group(function () {
         //account
         Route::prefix('account')->group(function () {
             Route::get('customer', 'Aphly\LaravelShop\Controllers\Front\Account\CustomerController@index');
+
             Route::get('wishlist', 'Aphly\LaravelShop\Controllers\Front\Account\WishlistController@index');
+            Route::get('wishlist/product/{id}', 'Aphly\LaravelShop\Controllers\Front\Account\WishlistController@product')->where('id', '[0-9]+');
+
             Route::get('address', 'Aphly\LaravelShop\Controllers\Front\Account\AddressController@index');
-            Route::match(['get', 'post'],'address/add', 'Aphly\LaravelShop\Controllers\Front\Account\AddressController@add');
-            Route::match(['get', 'post'],'address/{id}/edit', 'Aphly\LaravelShop\Controllers\Front\Account\AddressController@edit')->where('id', '[0-9]+');
+            Route::match(['get', 'post'],'address/save', 'Aphly\LaravelShop\Controllers\Front\Account\AddressController@save');
+            Route::get('address/remove/{id}', 'Aphly\LaravelShop\Controllers\Front\Account\AddressController@remove')->where('id', '[0-9]+');
             Route::get('address/country/{id}', 'Aphly\LaravelShop\Controllers\Front\Account\AddressController@country')->where('id', '[0-9]+');
+
+
         });
+
+
     });
 
 

@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('shop_customer_wishlist', function (Blueprint $table) {
-            $table->unsignedBigInteger('uuid');
+            $table->unsignedBigInteger('uuid')->index();
             $table->integer('product_id')->unsigned();
             $table->integer('date_add')->unsigned();
             $table->primary(['uuid','product_id']);

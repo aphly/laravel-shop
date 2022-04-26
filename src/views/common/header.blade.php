@@ -37,7 +37,7 @@
                             <i class="uni app-gouwuche"></i>
                             <div class="nav_num">0</div>
                         </div></a>
-                        @if($user = session('user'))
+                        @if(session('user'))
                             <a href="/account/customer" class="nav-r">
                                 <i class="uni app-login"></i>
                             </a>

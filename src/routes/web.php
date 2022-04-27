@@ -1,6 +1,8 @@
 <?php
 
+use Aphly\LaravelAdmin\Models\Menu;
 use Aphly\LaravelShop\Models\Common\Country;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 //
 Route::middleware(['web'])->group(function () {
     //install
-    Route::get('/shop_install', 'Aphly\LaravelShop\Controllers\Front\InstallController@index');
+    Route::get('/shop/install', 'Aphly\LaravelShop\Controllers\Front\InstallController@index');
 
     Route::get('/userauth/{id}/verify/{token}', 'Aphly\LaravelShop\Controllers\Front\HomeController@mailVerifyCheck');
 
@@ -66,8 +68,25 @@ Route::middleware(['web'])->group(function () {
 Route::middleware(['web'])->group(function () {
 
     Route::get('/test', function (){
-
+        $data = Menu::where('status',1)->orderBy('sort', 'desc')->get();
     });
 
+});
 
+
+Route::middleware(['web'])->group(function () {
+
+    Route::prefix('shop-admin')->middleware(['managerAuth'])->group(function () {
+        Route::middleware(['rbac'])->group(function () {
+            Route::get('/product/index', 'Aphly\LaravelShop\Controllers\Admin\ProductController@index');
+            Route::match(['get', 'post'],'/product/add', 'Aphly\LaravelShop\Controllers\Admin\ProductController@add');
+            Route::match(['get', 'post'],'/product/{id}/edit', 'Aphly\LaravelShop\Controllers\Admin\ProductController@edit')->where('id', '[0-9]+');
+            Route::post('/product/del', 'Aphly\LaravelShop\Controllers\Admin\ProductController@del');
+            Route::match(['get', 'post'],'/product/{id}/img', 'Aphly\LaravelShop\Controllers\Admin\ProductController@img')->where('id', '[0-9]+');
+            Route::match(['post'],'/product/{id}/imgsave', 'Aphly\LaravelShop\Controllers\Admin\ProductController@imgSave')->where('id', '[0-9]+');
+            Route::match(['get'],'/product-img/{id}/del', 'Aphly\LaravelShop\Controllers\Admin\ProductController@imgDel')->where('id', '[0-9]+');
+
+            Route::get('/category/index', 'Aphly\LaravelShop\Controllers\Admin\Catalog\CategoryController@index');
+        });
+    });
 });

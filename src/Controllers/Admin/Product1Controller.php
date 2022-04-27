@@ -8,7 +8,7 @@ use Aphly\LaravelAdmin\Models\Menu;
 use Aphly\LaravelShop\Controllers\Controller;
 use Aphly\LaravelShop\Models\Product\Product;
 use Aphly\LaravelShop\Models\Product\ProductDesc;
-use Aphly\LaravelShop\Models\Product\ProductImage;
+use Aphly\LaravelShop\Models\Product\ProductImg;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->decimal('price');
             $table->tinyInteger('shipping')->default(1);
             $table->integer('points')->unsigned();
+            $table->integer('tax_class_id')->unsigned();
             $table->tinyInteger('stock_status_id');
             $table->float('weight');
             $table->tinyInteger('weight_class_id');

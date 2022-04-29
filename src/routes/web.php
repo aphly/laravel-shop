@@ -1,6 +1,8 @@
 <?php
 
 use Aphly\LaravelAdmin\Models\Menu;
+use Aphly\LaravelShop\Models\Common\Category;
+use Aphly\LaravelShop\Models\Common\CategoryPath;
 use Aphly\LaravelShop\Models\Common\Country;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -68,7 +70,7 @@ Route::middleware(['web'])->group(function () {
 Route::middleware(['web'])->group(function () {
 
     Route::get('/test', function (){
-        $data = Menu::where('status',1)->orderBy('sort', 'desc')->get();
+        (new CategoryPath)->add(4,2);
     });
 
 });
@@ -87,6 +89,14 @@ Route::middleware(['web'])->group(function () {
             Route::match(['get'],'/product-img/{id}/del', 'Aphly\LaravelShop\Controllers\Admin\ProductController@imgDel')->where('id', '[0-9]+');
 
             Route::get('/category/index', 'Aphly\LaravelShop\Controllers\Admin\Catalog\CategoryController@index');
+            Route::post('/category/del', 'Aphly\LaravelShop\Controllers\Admin\Catalog\CategoryController@del');
+            Route::get('/category/show', 'Aphly\LaravelShop\Controllers\Admin\Catalog\CategoryController@show');
+            Route::post('/category/save', 'Aphly\LaravelShop\Controllers\Admin\Catalog\CategoryController@save');
+
+            Route::get('/filter/index', 'Aphly\LaravelShop\Controllers\Admin\Catalog\FilterController@index');
+            Route::get('/filter/form', 'Aphly\LaravelShop\Controllers\Admin\Catalog\FilterController@form');
+            Route::post('/filter/save', 'Aphly\LaravelShop\Controllers\Admin\Catalog\FilterController@save');
+            Route::post('/filter/del', 'Aphly\LaravelShop\Controllers\Admin\Catalog\FilterController@del');
         });
     });
 });

@@ -1,4 +1,4 @@
-@include('laravel-shop::common.header')
+@include('laravel-shop::Front.common.header')
 <style>
     .gs-reg-form{margin-top: 70px;width: 49%;box-sizing: border-box;}
     .gs-reg-form .form-control{height: 50px;font-size: 16px;}
@@ -249,4 +249,4 @@
         })
     });
 </script>
-@include('laravel-shop::common.footer')
+@include('laravel-shop::Front.common.footer')

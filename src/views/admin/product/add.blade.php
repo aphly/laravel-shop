@@ -11,22 +11,22 @@
         @csrf
         <div class="tes">
             <div class="form-group">
-                <label for="exampleInputEmail1">商品名称</label>
+                <label for="">商品名称</label>
                 <input type="text" name="name" class="form-control " value="">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1">spu</label>
+                <label for="">spu</label>
                 <input type="text" name="spu" class="form-control " value="">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1">sku</label>
+                <label for="">sku</label>
                 <input type="text" name="sku" class="form-control " value="">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1">分类</label>
+                <label for="">分类</label>
                 <input type="hidden" name="cate_id" class="form-control " value="">
                 <div class="fast_select" id="fast_select">
                     <div class="form-control select_text"  onclick="show_cate('fast_select')"></div>
@@ -41,32 +41,32 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1">size</label>
+                <label for="">size</label>
                 <input type="text" name="size" class="form-control " value="" readonly>
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1">frame_width</label>
+                <label for="">frame_width</label>
                 <input type="text" name="frame_width" class="form-control " value="" >
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1">lens_width</label>
+                <label for="">lens_width</label>
                 <input type="text" name="lens_width" class="form-control " value="" >
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1">lens_height</label>
+                <label for="">lens_height</label>
                 <input type="text" name="lens_height" class="form-control " value="" >
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1">bridge_width</label>
+                <label for="">bridge_width</label>
                 <input type="text" name="bridge_width" class="form-control " value="" >
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1">arm_length</label>
+                <label for="">arm_length</label>
                 <input type="text" name="arm_length" class="form-control " value="" >
                 <div class="invalid-feedback"></div>
             </div>
@@ -102,32 +102,32 @@
             </div>
 
             <div class="form-group">
-                <label for="exampleInputEmail1">price</label>
+                <label for="">price</label>
                 <input type="text" name="price" class="form-control " value="">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1">old_price</label>
+                <label for="">old_price</label>
                 <input type="text" name="old_price" class="form-control " value="">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1">积分</label>
+                <label for="">积分</label>
                 <input type="text" name="points" class="form-control " value="">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1">重量g</label>
+                <label for="">重量g</label>
                 <input type="text" name="weight" class="form-control " value="">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1">库存</label>
+                <label for="">库存</label>
                 <input type="text" name="quantity" class="form-control " value="">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1">是否使用库存</label>
+                <label for="">是否使用库存</label>
                 <select name="is_stock"  class="form-control">
                     <option value="1">是</option>
                     <option value="0">否</option>
@@ -135,7 +135,7 @@
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1">状态</label>
+                <label for="">状态</label>
                 <select name="status"  class="form-control">
                     <option value="1">上架</option>
                     <option value="0">下架</option>
@@ -144,7 +144,7 @@
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1">description</label>
+                <label for="">description</label>
                 <textarea type="text" name="description" class="form-control "></textarea>
                 <div class="invalid-feedback"></div>
             </div>

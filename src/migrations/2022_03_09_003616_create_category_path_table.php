@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('shop_category_path', function (Blueprint $table) {
-            $table->integer('category_id')->unsigned();
-            $table->integer('path_id')->unsigned();
+            $table->integer('category_id')->unsigned()->index();
+            $table->integer('path_id')->unsigned()->index();
             $table->integer('level')->unsigned();
             $table->primary(['category_id','path_id']);
         });

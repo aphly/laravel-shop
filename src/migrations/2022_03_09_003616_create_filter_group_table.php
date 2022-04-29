@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name',32);
             $table->integer('sort')->default(1)->index();
+            $table->tinyInteger('status')->default(1)->index();
         });
     }
 

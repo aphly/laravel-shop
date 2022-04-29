@@ -1,4 +1,4 @@
-@include('laravel-shop::common.header')
+@include('laravel-shop::Front.common.header')
 
 <div class="container">
     <nav aria-label="breadcrumb" class="row col-12 mt-lg-3">
@@ -10,7 +10,7 @@
         </ol>
     </nav>
     <div class="d-flex justify-content-between">
-        @include('laravel-shop::account.leftmenu')
+        @include('laravel-shop::Front.account.leftmenu')
         <div class="main-section">
             <div class="gs-account">
                 <div class="top-desc text-left">
@@ -178,4 +178,4 @@
         $('#input-zone').html(html)
     }
 </script>
-@include('laravel-shop::common.footer')
+@include('laravel-shop::Front.common.footer')

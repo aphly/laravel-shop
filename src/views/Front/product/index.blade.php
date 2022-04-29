@@ -1,4 +1,4 @@
-@include('laravel-shop::common.header')
+@include('laravel-shop::Front.common.header')
 <style>
 </style>
 
@@ -50,4 +50,4 @@ $(function () {
 })
 </script>
 
-@include('laravel-shop::common.footer')
+@include('laravel-shop::Front.common.footer')

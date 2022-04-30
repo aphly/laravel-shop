@@ -4,13 +4,13 @@ namespace Aphly\LaravelShop\Controllers\Admin\Catalog;
 
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\LaravelShop\Controllers\Controller;
-use Aphly\LaravelShop\Models\Common\Filter;
-use Aphly\LaravelShop\Models\Common\FilterGroup;
+use Aphly\LaravelShop\Models\Common\Attribute;
+use Aphly\LaravelShop\Models\Common\AttributeGroup;
 use Illuminate\Http\Request;
 
-class FilterController extends Controller
+class AttributeController extends Controller
 {
-    public $index_url='/shop-admin/filter/index';
+    public $index_url='/shop-admin/attribute/index';
 
     public function index(Request $request)
     {
@@ -18,7 +18,7 @@ class FilterController extends Controller
         $res['filter']['name'] = $name = $request->query('name',false);
         $res['filter']['status'] = $status = $request->query('status',false);
         $res['filter']['string'] = http_build_query($request->query());
-        $res['list'] = FilterGroup::when($name,
+        $res['list'] = AttributeGroup::when($name,
                 function($query,$name) {
                     return $query->where('name', 'like', '%'.$name.'%');
                 })
@@ -28,25 +28,24 @@ class FilterController extends Controller
                 })
             ->orderBy('id','desc')
             ->Paginate(config('admin.perPage'))->withQueryString();
-        //$res['fast_save'] = Category::where('status',1)->orderBy('sort', 'desc')->get()->toArray();
-        return $this->makeView('laravel-shop::admin.catalog.filter.index',['res'=>$res]);
+        return $this->makeView('laravel-shop::admin.catalog.attribute.index',['res'=>$res]);
     }
 
     public function form(Request $request)
     {
-        $res['filter'] = [];
-        $res['filterGroup'] = FilterGroup::where('id',$request->query('id',0))->firstOrNew();
-        if($res['filterGroup']->id){
-            $res['filter'] = Filter::where('filter_group_id',$res['filterGroup']->id)->orderBy('sort','desc')->get();
+        $res['attribute'] = [];
+        $res['attributeGroup'] = AttributeGroup::where('id',$request->query('id',0))->firstOrNew();
+        if($res['attributeGroup']->id){
+            $res['attribute'] = Attribute::where('attribute_group_id',$res['attributeGroup']->id)->orderBy('sort','desc')->get();
         }
-        return $this->makeView('laravel-shop::admin.catalog.filter.form',['res'=>$res]);
+        return $this->makeView('laravel-shop::admin.catalog.attribute.form',['res'=>$res]);
     }
 
     public function save(Request $request){
         $id = $request->query('id',0);
-        $filterGroup = FilterGroup::updateOrCreate(['id'=>$id],$request->all());
-        if($filterGroup->id){
-            $filter = Filter::where('filter_group_id',$filterGroup->id)->pluck('id')->toArray();
+        $attributeGroup = AttributeGroup::updateOrCreate(['id'=>$id],$request->all());
+        if($attributeGroup->id){
+            $filter = Attribute::where('attribute_group_id',$attributeGroup->id)->pluck('id')->toArray();
             $val_arr = $request->input('value');
             $val_arr_keys = array_keys($val_arr);
             $update_arr = $delete_arr = [];
@@ -55,15 +54,15 @@ class FilterController extends Controller
                     $delete_arr[] = $val;
                 }
             }
-            Filter::whereIn('id',$delete_arr)->delete();
+            Attribute::whereIn('id',$delete_arr)->delete();
             foreach ($val_arr as $key=>$val){
                 foreach ($val as $k=>$v){
                     $update_arr[$key][$k]=$v;
                 }
                 $update_arr[$key]['id'] = intval($key);
-                $update_arr[$key]['filter_group_id'] = $filterGroup->id;
+                $update_arr[$key]['attribute_group_id'] = $attributeGroup->id;
             }
-            Filter::upsert($update_arr,['id'],['filter_group_id','name','sort']);
+            Attribute::upsert($update_arr,['id'],['attribute_group_id','name','sort']);
         }
         throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
     }
@@ -74,8 +73,8 @@ class FilterController extends Controller
         $redirect = $query?$this->index_url.'?'.http_build_query($query):$this->index_url;
         $post = $request->input('delete');
         if(!empty($post)){
-            FilterGroup::whereIn('id',$post)->delete();
-            Filter::whereIn('filter_group_id',$post)->delete();
+            AttributeGroup::whereIn('id',$post)->delete();
+            Attribute::whereIn('attribute_group_id',$post)->delete();
             throw new ApiException(['code'=>0,'msg'=>'操作成功','data'=>['redirect'=>$redirect]]);
         }
     }

@@ -1,39 +1,39 @@
 
 <div class="top-bar">
-    <h5 class="nav-title">filter</h5>
+    <h5 class="nav-title">attribute</h5>
 </div>
 <div class="imain">
-    <form method="post" @if($res['filterGroup']->id) action="/shop-admin/filter/save?id={{$res['filterGroup']->id}}" @else action="/shop-admin/filter/save" @endif class="save_form">
+    <form method="post" @if($res['attributeGroup']->id) action="/shop-admin/attribute/save?id={{$res['attributeGroup']->id}}" @else action="/shop-admin/attribute/save" @endif class="save_form">
         @csrf
         <div class="">
             <div class="form-group">
                 <label for="">名称</label>
-                <input type="text" name="name" class="form-control " value="{{$res['filterGroup']->name}}">
+                <input type="text" name="name" class="form-control " value="{{$res['attributeGroup']->name}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
                 <label for="">状态</label>
                 <select name="status" class="form-control">
-                    <option value="1" @if($res['filterGroup']->status) selected @endif>开启</option>
-                    <option value="0" @if(!$res['filterGroup']->status) selected @endif>关闭</option>
+                    <option value="1" @if($res['attributeGroup']->status) selected @endif>开启</option>
+                    <option value="0" @if(!$res['attributeGroup']->status) selected @endif>关闭</option>
                 </select>
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
                 <label for="">排序</label>
-                <input type="number" name="sort" class="form-control " value="{{$res['filterGroup']->sort??0}}">
+                <input type="number" name="sort" class="form-control " value="{{$res['attributeGroup']->sort??0}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group filter">
-                <div onclick="filter_addDiv()" class="add_div_btn"><i class="uni app-jia"></i> Filter Values</div>
+                <div onclick="filter_addDiv()" class="add_div_btn"><i class="uni app-jia"></i> Attribute Values</div>
                 <div class="add_div">
                     <ul class="add_div_ul">
                         <li class="d-flex">
                             <div class="filter1">名称</div>
                             <div class="filter2">排序</div>
                         </li>
-                        @if($res['filter'])
-                            @foreach($res['filter'] as $key=>$val)
+                        @if($res['attribute'])
+                            @foreach($res['attribute'] as $key=>$val)
                                 <li class="d-flex">
                                     <div class="filter1"><input type="text" name="value[{{$val->id}}][name]" value="{{$val->name}}"></div>
                                     <div class="filter2"><input type="number" name="value[{{$val->id}}][sort]" value="{{$val->sort}}"></div>

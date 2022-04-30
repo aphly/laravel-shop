@@ -8,7 +8,7 @@
     <div class="itop ">
         <form method="get" action="/shop-admin/filter/index" class="select_form">
         <div class="filter ">
-            <input type="search" name="name" placeholder="cateory name" value="{{$res['filter']['name']}}">
+            <input type="search" name="name" placeholder="filter name" value="{{$res['filter']['name']}}">
             <select name="status" >
                 <option value ="1" @if($res['filter']['status']==1) selected @endif>正常</option>
                 <option value ="2" @if($res['filter']['status']==2) selected @endif>冻结</option>
@@ -46,7 +46,7 @@
                         </li>
                         <li>{{$v['status']}}</li>
                         <li>
-                            <a class="badge badge-info ajax_get" data-href="/shop-admin/filter/{{$v['id']}}/edit">编辑</a>
+                            <a class="badge badge-info ajax_get" data-href="/shop-admin/filter/form?id={{$v['id']}}">编辑</a>
                         </li>
                     </ul>
                     @endforeach

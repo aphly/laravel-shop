@@ -1,10 +1,8 @@
 <?php
 
-use Aphly\LaravelAdmin\Models\Menu;
-use Aphly\LaravelShop\Models\Common\Category;
-use Aphly\LaravelShop\Models\Common\CategoryPath;
-use Aphly\LaravelShop\Models\Common\Country;
-use Illuminate\Support\Facades\DB;
+
+use Aphly\LaravelShop\Models\Common\Filter;
+use Aphly\LaravelShop\Models\Common\FilterGroup;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -70,7 +68,7 @@ Route::middleware(['web'])->group(function () {
 Route::middleware(['web'])->group(function () {
 
     Route::get('/test', function (){
-        (new CategoryPath)->add(4,2);
+
     });
 
 });
@@ -97,6 +95,27 @@ Route::middleware(['web'])->group(function () {
             Route::get('/filter/form', 'Aphly\LaravelShop\Controllers\Admin\Catalog\FilterController@form');
             Route::post('/filter/save', 'Aphly\LaravelShop\Controllers\Admin\Catalog\FilterController@save');
             Route::post('/filter/del', 'Aphly\LaravelShop\Controllers\Admin\Catalog\FilterController@del');
+
+            Route::get('/country/index', 'Aphly\LaravelShop\Controllers\Admin\Setting\CountryController@index');
+            Route::get('/country/form', 'Aphly\LaravelShop\Controllers\Admin\Setting\CountryController@form');
+            Route::post('/country/save', 'Aphly\LaravelShop\Controllers\Admin\Setting\CountryController@save');
+            Route::post('/country/del', 'Aphly\LaravelShop\Controllers\Admin\Setting\CountryController@del');
+
+            Route::get('/zone/index', 'Aphly\LaravelShop\Controllers\Admin\Setting\ZoneController@index');
+            Route::get('/zone/form', 'Aphly\LaravelShop\Controllers\Admin\Setting\ZoneController@form');
+            Route::post('/zone/save', 'Aphly\LaravelShop\Controllers\Admin\Setting\ZoneController@save');
+            Route::post('/zone/del', 'Aphly\LaravelShop\Controllers\Admin\Setting\ZoneController@del');
+
+            Route::get('/currency/index', 'Aphly\LaravelShop\Controllers\Admin\Setting\CurrencyController@index');
+            Route::get('/currency/form', 'Aphly\LaravelShop\Controllers\Admin\Setting\CurrencyController@form');
+            Route::post('/currency/save', 'Aphly\LaravelShop\Controllers\Admin\Setting\CurrencyController@save');
+            Route::post('/currency/del', 'Aphly\LaravelShop\Controllers\Admin\Setting\CurrencyController@del');
+
+            Route::get('/attribute/index', 'Aphly\LaravelShop\Controllers\Admin\Catalog\AttributeController@index');
+            Route::get('/attribute/form', 'Aphly\LaravelShop\Controllers\Admin\Catalog\AttributeController@form');
+            Route::post('/attribute/save', 'Aphly\LaravelShop\Controllers\Admin\Catalog\AttributeController@save');
+            Route::post('/attribute/del', 'Aphly\LaravelShop\Controllers\Admin\Catalog\AttributeController@del');
+
         });
     });
 });

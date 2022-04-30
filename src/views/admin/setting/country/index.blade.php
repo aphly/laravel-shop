@@ -1,14 +1,14 @@
 <div class="top-bar">
-    <h5 class="nav-title">category</h5>
+    <h5 class="nav-title">country</h5>
 </div>
 <style>
     .table_scroll .table_header li:nth-child(2),.table_scroll .table_tbody li:nth-child(2){flex: 0 0 300px;}
 </style>
 <div class="imain">
     <div class="itop ">
-        <form method="get" action="/shop-admin/category/index" class="select_form">
+        <form method="get" action="/shop-admin/country/index" class="select_form">
         <div class="filter ">
-            <input type="search" name="name" placeholder="category name" value="{{$res['filter']['name']}}">
+            <input type="search" name="name" placeholder="country name" value="{{$res['filter']['name']}}">
             <select name="status" >
                 <option value ="1" @if($res['filter']['status']==1) selected @endif>正常</option>
                 <option value ="2" @if($res['filter']['status']==2) selected @endif>冻结</option>
@@ -17,19 +17,19 @@
         </div>
         </form>
         <div class="">
-            <a class="badge badge-primary ajax_get show_all0_btn" data-href="/shop-admin/category/show">浏览</a>
+            <a class="badge badge-primary ajax_get show_all0_btn" data-href="/shop-admin/country/form">添加</a>
         </div>
     </div>
 
-    <form method="post"  @if($res['filter']['string']) action="/shop-admin/category/del?{{$res['filter']['string']}}" @else action="/shop-admin/category/del" @endif  class="del_form">
+    <form method="post"  @if($res['filter']['string']) action="/shop-admin/country/del?{{$res['filter']['string']}}" @else action="/shop-admin/country/del" @endif  class="del_form">
     @csrf
         <div class="table_scroll">
             <div class="table">
                 <ul class="table_header">
                     <li >ID</li>
-                    <li >cateory name</li>
-                    <li >sort</li>
-                    <li ></li>
+                    <li >country name</li>
+                    <li >iso_code_2</li>
+                    <li >iso_code_3</li>
                     <li >状态</li>
                     <li >操作</li>
                 </ul>
@@ -37,16 +37,16 @@
                     @foreach($res['list'] as $v)
                     <ul class="table_tbody">
                         <li><input type="checkbox" class="delete_box" name="delete[]" value="{{$v['id']}}">{{$v['id']}}</li>
-                        <li>{!! $v['name'] !!}</li>
+                        <li>{{ $v['name'] }}</li>
                         <li>
-                            {{$v['sort']}}
+                            {{$v['iso_code_2']}}
                         </li>
                         <li>
-
+                            {{$v['iso_code_3']}}
                         </li>
                         <li>{{$v['status']}}</li>
                         <li>
-{{--                            <a class="badge badge-info ajax_get" data-href="/shop-admin/category/{{$v['id']}}/edit">编辑</a>--}}
+                            <a class="badge badge-info ajax_get" data-href="/shop-admin/country/form?id={{$v['id']}}">编辑</a>
                         </li>
                     </ul>
                     @endforeach
@@ -55,7 +55,7 @@
                             <input type="checkbox" class="delete_box deleteboxall"  onclick="checkAll(this)">
                             <button class="badge badge-danger del" type="submit">删除</button>
                         </li>
-                        <li>
+                        <li >
                             {{$res['list']->links('laravel-admin::common.pagination')}}
                         </li>
                     </ul>

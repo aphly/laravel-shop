@@ -12,7 +12,7 @@ class AttributeGroup extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'name','sort'
+        'name','sort','status'
     ];
 
 

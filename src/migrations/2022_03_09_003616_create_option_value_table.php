@@ -13,14 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('shop_country', function (Blueprint $table) {
+        Schema::create('shop_option_value', function (Blueprint $table) {
             $table->id();
-            $table->string('name',128);
-            $table->string('iso_code_2',2);
-            $table->string('iso_code_3',3);
-            $table->string('address_format',255)->nullable();
-            $table->tinyInteger('postcode_required');
-            $table->tinyInteger('status')->default(1)->index();
+            $table->integer('option_id')->unsigned();
+            $table->string('name',64);
+            $table->string('image',255);
+            $table->integer('sort')->unsigned();
         });
     }
 
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shop_country');
+        Schema::dropIfExists('shop_option_value');
     }
 };

@@ -116,6 +116,13 @@ Route::middleware(['web'])->group(function () {
             Route::post('/attribute/save', 'Aphly\LaravelShop\Controllers\Admin\Catalog\AttributeController@save');
             Route::post('/attribute/del', 'Aphly\LaravelShop\Controllers\Admin\Catalog\AttributeController@del');
 
+            $route_arr = [['option','\Catalog\OptionController']];
+            foreach ($route_arr as $val){
+                Route::get('/'.$val[0].'/index', 'Aphly\LaravelShop\Controllers\Admin'.$val[1].'@index');
+                Route::get('/'.$val[0].'/form', 'Aphly\LaravelShop\Controllers\Admin'.$val[1].'@form');
+                Route::post('/'.$val[0].'/save', 'Aphly\LaravelShop\Controllers\Admin'.$val[1].'@save');
+                Route::post('/'.$val[0].'/del', 'Aphly\LaravelShop\Controllers\Admin'.$val[1].'@del');
+            }
         });
     });
 });

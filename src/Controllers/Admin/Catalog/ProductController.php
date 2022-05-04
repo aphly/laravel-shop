@@ -1,6 +1,6 @@
 <?php
 
-namespace Aphly\LaravelShop\Controllers\Admin;
+namespace Aphly\LaravelShop\Controllers\Admin\Catalog;
 
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Libs\UploadFile;
@@ -21,16 +21,27 @@ class ProductController extends Controller
         $res['filter']['name'] = $name = $request->query('name',false);
         $res['filter']['status'] = $status = $request->query('status',false);
         $res['filter']['string'] = http_build_query($request->query());
-        $res['data'] = Product::when($name,
+        $res['list'] = Product::when($name,
             function($query,$name) {
                 return $query->where('name', 'like', '%'.$name.'%');
             })
             ->when($status,
                 function($query,$status) {
-                    return $query->where('status', '=', $status);
+                    return $query->where('status', $status);
                 })
             ->Paginate(config('admin.perPage'))->withQueryString();
-        return $this->makeView('laravel-shop::admin.product.index',['res'=>$res]);
+        return $this->makeView('laravel-shop::admin.catalog.product.index',['res'=>$res]);
+    }
+
+    public function form(Request $request)
+    {
+        $res['product'] = Product::where('id',$request->query('id',0))->firstOrNew();
+        $res['dict'] = (new \Aphly\LaravelAdmin\Models\Dict)->getByKey();
+        return $this->makeView('laravel-shop::admin.catalog.product.form',['res'=>$res]);
+    }
+
+    public function save(Request $request){
+
     }
 
     public function add(Request $request)

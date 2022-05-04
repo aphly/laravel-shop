@@ -47,7 +47,7 @@ class FilterController extends Controller
         $filterGroup = FilterGroup::updateOrCreate(['id'=>$id],$request->all());
         if($filterGroup->id){
             $filter = Filter::where('filter_group_id',$filterGroup->id)->pluck('id')->toArray();
-            $val_arr = $request->input('value');
+            $val_arr = $request->input('value',[]);
             $val_arr_keys = array_keys($val_arr);
             $update_arr = $delete_arr = [];
             foreach ($filter as $val){

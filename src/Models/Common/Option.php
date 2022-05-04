@@ -12,7 +12,7 @@ class Option extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'name','sort','status','type'
+        'name','sort','status','type','status'
     ];
 
 

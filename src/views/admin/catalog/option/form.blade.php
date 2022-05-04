@@ -3,7 +3,7 @@
     <h5 class="nav-title">option</h5>
 </div>
 <div class="imain">
-    <form method="post" @if($res['option']->id) action="/shop-admin/option/save?id={{$res['filterGroup']->id}}" @else action="/shop-admin/option/save" @endif class="save_form">
+    <form method="post" id="option_form" @if($res['option']->id) action="/shop-admin/option/save?id={{$res['option']->id}}" @else action="/shop-admin/option/save" @endif >
         @csrf
         <div class="">
             <div class="form-group">
@@ -41,12 +41,24 @@
                     <ul class="add_div_ul">
                         <li class="d-flex">
                             <div class="filter1">名称</div>
+                            <div class="filter11">图片</div>
                             <div class="filter2">排序</div>
                         </li>
                         @if($res['optionValue'])
                             @foreach($res['optionValue'] as $key=>$val)
                                 <li class="d-flex">
                                     <div class="filter1"><input type="text" name="value[{{$val->id}}][name]" value="{{$val->name}}"></div>
+                                    <div class="filter11">
+                                        <label class="" data-id="{{$val->id}}">
+                                            @if($val->image)
+                                                <input type="text" class="fileUpload_text" value="{{$val->image}}" name="value[{{$val->id}}][image]" >
+                                                <div class="imglist"><img src="{{Storage::url($val->image)}}"></div>
+                                            @else
+                                                <input type="file" class="fileUpload" accept="image/gif,image/jpeg,image/jpg,image/png"  name="value[{{$val->id}}][image]" >
+                                                <div class="imglist">+</div>
+                                            @endif
+                                        </label>
+                                    </div>
                                     <div class="filter2"><input type="number" name="value[{{$val->id}}][sort]" value="{{$val->sort}}"></div>
                                     <div class="filter3" onclick="filter_delDiv(this)"><i class="uni app-lajitong"></i></div>
                                 </li>
@@ -55,22 +67,59 @@
                     </ul>
                 </div>
             </div>
-            <button class="btn btn-primary" type="submit">保存</button>
+
         </div>
     </form>
-
+    <button class="btn btn-primary" type="submit" onclick="optionSave()">保存</button>
 </div>
 <style>
-    .filter .filter1{width: 50%;margin: 5px 2%;}
-    .filter .filter2{width: 30%;margin: 5px 2%;}
+    .filter .filter1{width: 40%;margin: 5px 2%;}
+    .filter .filter11{width: 10%;margin: 5px 2%;}
+    .filter .filter2{width: 20%;margin: 5px 2%;}
     .filter .filter3{display: flex;align-items: center;cursor: pointer;}
     .filter .filter3:hover{color: red;}
+    .fileUpload,.fileUpload_text{display: none;}
+    .imglist{border:1px solid #ddd;width: 32px;height: 32px;display: flex;align-items: center;justify-content: center;cursor: pointer;}
+    .imglist img{width: 100%;height: 100%;}
 </style>
 <script>
+    var option_form = '#option_form'
+    function optionSave() {
+        let formData = new FormData();
+        $(option_form).find('input,select').each(function(){
+            if($(this).attr('type')!='file'){
+                formData.append($(this).attr('name'), $(this).val());
+            }else{
+                formData.append($(this).attr('name'), $(this)[0].files[0]);
+            }
+        });
+        let url = $(option_form).attr("action");
+        $.ajax({
+            url,
+            type:"post",
+            data:formData,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            success: function(res){
+                alert_msg(res)
+                if(!res.code && res.data.redirect) {
+                    iload(res.data.redirect);
+                }
+            }
+        })
+    }
+
     function filter_addDiv() {
         let id = randomId(8);
         let html = `<li class="d-flex" data-id="${id}">
                         <div class="filter1"><input type="text" name="value[${id}][name]"></div>
+                        <div class="filter11">
+                            <label>
+                                <input type="file" class="fileUpload" accept="image/gif,image/jpeg,image/jpg,image/png"  name="value[${id}][image]" >
+                                <div class="imglist">+</div>
+                            </label>
+                        </div>
                         <div class="filter2"><input type="number" name="value[${id}][sort]" value="0"></div>
                         <div class="filter3" onclick="filter_delDiv(this)"><i class="uni app-lajitong"></i></div>
                     </li>`;
@@ -79,4 +128,25 @@
     function filter_delDiv(_this) {
         $(_this).parent().remove()
     }
+    $(function () {
+        $(option_form).on('change',".fileUpload",function (e) {
+            e.stopPropagation();
+            let img_html = ''
+            let img_obj = $(this)[0];
+            for (let i = 0; i < img_obj.files.length; i++) {
+                let src = URL.createObjectURL(img_obj.files[i]);
+                img_html += `<img data-file_id="i" src="${src}">`
+            }
+            $(this).next().html(img_html);
+        })
+        $(option_form).on('click',".fileUpload_text",function (e) {
+            e.stopPropagation()
+            let p = $(this).parent();
+            let img_html = `<input type="file" class="fileUpload" accept="image/gif,image/jpeg,image/jpg,image/png"  name="value[${p.data('id')}][image]" >
+                                                <div class="imglist">+</div>`
+            p.html(img_html);
+        })
+
+    })
+
 </script>

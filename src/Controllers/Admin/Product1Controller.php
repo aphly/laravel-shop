@@ -8,7 +8,7 @@ use Aphly\LaravelAdmin\Models\Menu;
 use Aphly\LaravelShop\Controllers\Controller;
 use Aphly\LaravelShop\Models\Product\Product;
 use Aphly\LaravelShop\Models\Product\ProductDesc;
-use Aphly\LaravelShop\Models\Product\ProductImg;
+use Aphly\LaravelShop\Models\Product\ProductImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -115,14 +115,14 @@ class ProductController extends Controller
     public function img(Request $request)
     {
         $res['info'] = Product::find($request->id);
-        $res['info_img'] = ProductImg::where('product_id',$request->id)->orderBy('sort','desc')->get()->toArray();
+        $res['info_img'] = ProductImage::where('product_id',$request->id)->orderBy('sort','desc')->get()->toArray();
         if($request->isMethod('post')) {
             if($request->hasFile('file')) {
                 $file_path = $img_src = [];
                 foreach ($request->file('file') as $file) {
-                    $src = UploadFile::upload($file, 'public/product_img');
+                    $src = UploadFile::img($file, 'public/product_img');
                     $img_src[] = Storage::url($src);
-                    $file_path[] = new ProductImg(['src'=>$src]);
+                    $file_path[] = new ProductImage(['src'=>$src]);
                 }
                 if ($file_path) {
                     $res['info']->img()->saveMany($file_path);

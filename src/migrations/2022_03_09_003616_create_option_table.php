@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('type',64);
             $table->string('name',64);
             $table->integer('sort')->unsigned();
+            $table->tinyInteger('status')->default(1)->index();
         });
     }
 

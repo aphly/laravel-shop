@@ -46,7 +46,7 @@ class AttributeController extends Controller
         $attributeGroup = AttributeGroup::updateOrCreate(['id'=>$id],$request->all());
         if($attributeGroup->id){
             $filter = Attribute::where('attribute_group_id',$attributeGroup->id)->pluck('id')->toArray();
-            $val_arr = $request->input('value');
+            $val_arr = $request->input('value',[]);
             $val_arr_keys = array_keys($val_arr);
             $update_arr = $delete_arr = [];
             foreach ($filter as $val){

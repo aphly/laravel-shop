@@ -28,7 +28,7 @@ class HomeController extends Controller
     {
         $res['title'] = '';
         $res['user'] = session('user');
-        return $this->makeView('laravel-shop::home.index',['res'=>$res]);
+        return $this->makeView('laravel-shop::front.home.index',['res'=>$res]);
     }
 
     public function autoLogin(Request $request)
@@ -84,7 +84,7 @@ class HomeController extends Controller
             throw new ApiException(['code'=>1,'msg'=>'邮箱或密码错误','data'=>['redirect'=>'/index']]);
         }else{
             $res['title'] = '';
-            return $this->makeView('laravel-shop::home.login',['res'=>$res]);
+            return $this->makeView('laravel-shop::front.home.login',['res'=>$res]);
         }
     }
 
@@ -121,7 +121,7 @@ class HomeController extends Controller
             }
         }else{
             $res['title'] = '';
-            return $this->makeView('laravel-shop::home.register',['res'=>$res]);
+            return $this->makeView('laravel-shop::front.home.login',['res'=>$res]);
         }
     }
 
@@ -177,7 +177,7 @@ class HomeController extends Controller
             }
         }else{
             $res['title'] = '';
-            return $this->makeView('laravel-shop::home.forget',['res'=>$res]);
+            return $this->makeView('laravel-shop::front.home.forget',['res'=>$res]);
         }
     }
 

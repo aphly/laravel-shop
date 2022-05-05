@@ -1,6 +1,6 @@
 <?php
 
-namespace Aphly\LaravelShop\Controllers\Admin\Setting;
+namespace Aphly\LaravelShop\Controllers\Admin\System;
 
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\LaravelShop\Controllers\Controller;
@@ -28,14 +28,14 @@ class ZoneController extends Controller
             ->orderBy('id','desc')
             ->Paginate(config('admin.perPage'))->withQueryString();
         $res['country'] = Country::get()->keyBy('id')->toArray();
-        return $this->makeView('laravel-shop::admin.setting.zone.index',['res'=>$res]);
+        return $this->makeView('laravel-shop::admin.system.zone.index',['res'=>$res]);
     }
 
     public function form(Request $request)
     {
         $res['zone'] = Zone::where('id',$request->query('id',0))->firstOrNew();
         $res['country'] = Country::get()->keyBy('id')->toArray();
-        return $this->makeView('laravel-shop::admin.setting.zone.form',['res'=>$res]);
+        return $this->makeView('laravel-shop::admin.system.zone.form',['res'=>$res]);
     }
 
     public function save(Request $request){

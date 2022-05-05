@@ -1,6 +1,6 @@
 <?php
 
-namespace Aphly\LaravelShop\Controllers\Admin\Setting;
+namespace Aphly\LaravelShop\Controllers\Admin\System;
 
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\LaravelShop\Controllers\Controller;
@@ -26,13 +26,13 @@ class CurrencyController extends Controller
                 })
             ->orderBy('id','desc')
             ->Paginate(config('admin.perPage'))->withQueryString();
-        return $this->makeView('laravel-shop::admin.setting.currency.index',['res'=>$res]);
+        return $this->makeView('laravel-shop::admin.system.currency.index',['res'=>$res]);
     }
 
     public function form(Request $request)
     {
         $res['currency'] = Currency::where('id',$request->query('id',0))->firstOrNew();
-        return $this->makeView('laravel-shop::admin.setting.currency.form',['res'=>$res]);
+        return $this->makeView('laravel-shop::admin.system.currency.form',['res'=>$res]);
     }
 
     public function save(Request $request){

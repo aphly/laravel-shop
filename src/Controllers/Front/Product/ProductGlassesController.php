@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use function config;
 
-class ProductController extends Controller
+class ProductGlassesController extends Controller
 {
     public function _orWhere($field_name,$field,$string=false){
         $str= [];

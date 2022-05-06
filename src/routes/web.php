@@ -20,8 +20,6 @@ use Illuminate\Support\Facades\Route;
 ////Route::get('/admin/init', 'Aphly\LaravelShop\Controllers\InitController@index');
 //
 Route::middleware(['web'])->group(function () {
-    //install
-    Route::get('/shop/install', 'Aphly\LaravelShop\Controllers\Front\InstallController@index');
 
     Route::get('/userauth/{id}/verify/{token}', 'Aphly\LaravelShop\Controllers\Front\HomeController@mailVerifyCheck');
 
@@ -95,8 +93,8 @@ Route::middleware(['web'])->group(function () {
             Route::post('/category/save', 'Aphly\LaravelShop\Controllers\Admin\Catalog\CategoryController@save');
 
             $route_arr = [
-                    ['filter','\Catalog\FilterController'],['country','\Setting\CountryController'],
-                    ['zone','\Setting\ZoneController'],['currency','\Setting\CurrencyController'],
+                    ['filter','\Catalog\FilterController'],['country','\System\CountryController'],
+                    ['zone','\System\ZoneController'],['currency','\System\CurrencyController'],
                     ['attribute','\Catalog\AttributeController'],['option','\Catalog\OptionController'],
                 ];
             foreach ($route_arr as $val){

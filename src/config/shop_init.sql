@@ -1,4 +1,4 @@
-INSERT INTO `shop_currency` (`id`, `title`, `code`, `symbol_left`, `symbol_right`, `decimal_place`, `value`, `status`) VALUES
+INSERT INTO `shop_currency` (`id`, `name`, `code`, `symbol_left`, `symbol_right`, `decimal_place`, `value`, `status`) VALUES
 	(1, 'Pound Sterling', 'GBP', '£', '', '2', 0.61250001, 1),
 	(2, 'US Dollar', 'USD', '$', '', '2', 1.00000000, 1),
 	(3, 'Euro', 'EUR', '', '€', '2', 0.78460002, 1);

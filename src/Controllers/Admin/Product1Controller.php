@@ -12,7 +12,7 @@ use Aphly\LaravelShop\Models\Product\ProductImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class ProductController extends Controller
+class Product1Controller extends Controller
 {
     public $index_url='/shop-admin/product/index';
     public function index(Request $request)

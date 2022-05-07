@@ -18,11 +18,11 @@ return new class extends Migration
             $table->string('sku',64)->default('')->index();
             $table->string('name',64);
             $table->integer('quantity')->unsigned();
-            $table->string('image',255);
+            $table->string('image',255)->nullable();
             $table->decimal('price');
             $table->tinyInteger('shipping')->default(1);
             $table->integer('points')->unsigned();
-            $table->integer('tax_class_id')->unsigned();
+            $table->integer('tax_class_id')->unsigned()->nullable();
             $table->tinyInteger('stock_status_id');
             $table->float('weight');
             $table->tinyInteger('weight_class_id');
@@ -35,7 +35,7 @@ return new class extends Migration
             $table->tinyInteger('status')->default(1)->index();
             $table->integer('viewed')->unsigned()->default(0);
             $table->integer('sale')->unsigned()->default(0);
-            $table->integer('sort')->unsigned();
+            $table->integer('sort')->unsigned()->nullable();
             $table->integer('date_add')->unsigned();
 
         });

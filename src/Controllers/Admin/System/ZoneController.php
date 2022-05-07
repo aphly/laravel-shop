@@ -10,20 +10,15 @@ use Illuminate\Http\Request;
 
 class ZoneController extends Controller
 {
-    public $index_url='/shop-admin/zone/index';
+    public $index_url='/shop_admin/zone/index';
 
     public function index(Request $request)
     {
         $res['filter']['name'] = $name = $request->query('name',false);
-        $res['filter']['status'] = $status = $request->query('status',false);
         $res['filter']['string'] = http_build_query($request->query());
         $res['list'] = Zone::when($name,
                 function($query,$name) {
                     return $query->where('name', 'like', '%'.$name.'%');
-                })
-            ->when($status,
-                function($query,$status) {
-                    return $query->where('status', $status);
                 })
             ->orderBy('id','desc')
             ->Paginate(config('admin.perPage'))->withQueryString();

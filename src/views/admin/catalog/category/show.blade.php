@@ -87,9 +87,9 @@
     var listById = @json($res['listById']);
     var data = toTree(selectData(list,false))
     var id = 0;
-    var fast_save_url = '/shop-admin/category/save';
-    var fast_del_url = '/shop-admin/category/del';
-    var fast_del_url_return = '/shop-admin/category/show';
+    var fast_save_url = '/shop_admin/category/save';
+    var fast_del_url = '/shop_admin/category/del';
+    var fast_del_url_return = '/shop_admin/category/show';
     var _token = '{{csrf_token()}}';
 
     $(function () {

@@ -3,7 +3,7 @@
     <h5 class="nav-title">zone</h5>
 </div>
 <div class="imain">
-    <form method="post" @if($res['zone']->id) action="/shop-admin/zone/save?id={{$res['zone']->id}}" @else action="/shop-admin/zone/save" @endif class="save_form">
+    <form method="post" @if($res['zone']->id) action="/shop_admin/zone/save?id={{$res['zone']->id}}" @else action="/shop_admin/zone/save" @endif class="save_form">
         @csrf
         <div class="">
             <div class="form-group">
@@ -28,8 +28,11 @@
             <div class="form-group">
                 <label for="">状态</label>
                 <select name="status" class="form-control">
-                    <option value="1" @if($res['zone']->status) selected @endif>开启</option>
-                    <option value="0" @if(!$res['zone']->status) selected @endif>关闭</option>
+                    @if(isset($dict['status']))
+                        @foreach($dict['status'] as $key=>$val)
+                            <option value="{{$key}}" @if($res['zone']->status==$key) selected @endif>{{$val}}</option>
+                        @endforeach
+                    @endif
                 </select>
                 <div class="invalid-feedback"></div>
             </div>

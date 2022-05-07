@@ -16,7 +16,9 @@ return new class extends Migration
         Schema::create('shop_product_desc', function (Blueprint $table) {
             $table->integer('product_id')->unsigned()->primary();
             $table->text('description');
-            $table->decimal('old_price',7,2)->nullable();
+            $table->string('meta_title',255)->nullable();
+            $table->string('meta_description',255)->nullable();
+            $table->string('meta_keyword',255)->nullable();
         });
     }
 

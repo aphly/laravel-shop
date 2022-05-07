@@ -6,22 +6,18 @@
 </style>
 <div class="imain">
     <div class="itop ">
-        <form method="get" action="/shop-admin/currency/index" class="select_form">
+        <form method="get" action="/shop_admin/currency/index" class="select_form">
         <div class="filter ">
-            <input type="search" name="name" placeholder="zone name" value="{{$res['filter']['name']}}">
-            <select name="status" >
-                <option value ="1" @if($res['filter']['status']==1) selected @endif>正常</option>
-                <option value ="2" @if($res['filter']['status']==2) selected @endif>冻结</option>
-            </select>
+            <input type="search" name="name" placeholder="currency name" value="{{$res['filter']['name']}}">
             <button class="" type="submit">搜索</button>
         </div>
         </form>
         <div class="">
-            <a class="badge badge-primary ajax_get show_all0_btn" data-href="/shop-admin/currency/form">添加</a>
+            <a class="badge badge-primary ajax_get show_all0_btn" data-href="/shop_admin/currency/form">添加</a>
         </div>
     </div>
 
-    <form method="post"  @if($res['filter']['string']) action="/shop-admin/currency/del?{{$res['filter']['string']}}" @else action="/shop-admin/currency/del" @endif  class="del_form">
+    <form method="post"  @if($res['filter']['string']) action="/shop_admin/currency/del?{{$res['filter']['string']}}" @else action="/shop_admin/currency/del" @endif  class="del_form">
     @csrf
         <div class="table_scroll">
             <div class="table">
@@ -44,9 +40,17 @@
                         <li>
                             {{$v['value']}}
                         </li>
-                        <li>{{$v['status']}}</li>
                         <li>
-                            <a class="badge badge-info ajax_get" data-href="/shop-admin/currency/form?id={{$v['id']}}">编辑</a>
+                            @if($dict['status'])
+                                @if($v->status==1)
+                                    <span class="badge badge-success">{{$dict['status'][$v->status]}}</span>
+                                @else
+                                    <span class="badge badge-secondary">{{$dict['status'][$v->status]}}</span>
+                                @endif
+                            @endif
+                        </li>
+                        <li>
+                            <a class="badge badge-info ajax_get" data-href="/shop_admin/currency/form?id={{$v['id']}}">编辑</a>
                         </li>
                     </ul>
                     @endforeach

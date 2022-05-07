@@ -3,7 +3,7 @@
 </div>
 <div class="imain">
     <input type="file" style="margin-bottom: 20px;" accept="image/gif,image/jpeg,image/jpg,image/png" id="img" multiple="multiple" class="form-control-file" onchange="uploadImg(this)">
-    <form method="post" action="/shop-admin/product/{{$res['info']['id']}}/imgsave" class="save_form" >
+    <form method="post" action="/shop_admin/product/{{$res['info']['id']}}/img_save" class="save_form" >
         @csrf
         <ul class="d-flex flex-wrap product_img">
             @foreach($res['info_img'] as $v)
@@ -28,7 +28,7 @@
 </style>
 <script>
     function removeImg(id,_this){
-        let url = '/shop-admin/product-img/'+id+'/del';
+        let url = '/shop_admin/product_img/'+id+'/del';
         $.ajax({
             url,
             dataType: "json",
@@ -46,7 +46,7 @@
             formData.append("file[]", $(_this)[0].files[i]);
         }
         formData.append('_token', '{{csrf_token()}}');
-        let url = '/shop-admin/product/{{$res['info']['id']}}/img';
+        let url = '/shop_admin/product/{{$res['info']['id']}}/img';
         let type = 'post';
         if(url && type){
             $.ajax({

@@ -7,20 +7,24 @@
 </style>
 <div class="imain">
     <div class="itop ">
-        <form method="get" action="/shop-admin/product/index" class="select_form">
+        <form method="get" action="/shop_admin/product/index" class="select_form">
         <div class="filter ">
             <input type="search" name="name" placeholder="商品名称" value="{{$res['filter']['name']}}">
             <select name="status" >
-                <option value ="1" @if($res['filter']['status']==1) selected @endif>正常</option>
-                <option value ="2" @if($res['filter']['status']==2) selected @endif>冻结</option>
+                @if(isset($dict['product_status']))
+                    <option value="0" @if(!$res['filter']['status']) selected @endif>全部</option>
+                    @foreach($dict['product_status'] as $key=>$val)
+                        <option value="{{$key}}" @if($res['filter']['status']==$key) selected @endif>{{$val}}</option>
+                    @endforeach
+                @endif
             </select>
             <button class="" type="submit">搜索</button>
         </div>
         </form>
-        <div class=""><a data-href="/shop-admin/product/form" class="badge badge-info ajax_get add">新增</a></div>
+        <div class=""><a data-href="/shop_admin/product/form" class="badge badge-info ajax_get add">新增</a></div>
     </div>
 
-    <form method="post"  @if($res['filter']['string']) action="/shop-admin/product/del?{{$res['filter']['string']}}" @else action="/shop-admin/product/del" @endif  class="del_form">
+    <form method="post"  @if($res['filter']['string']) action="/shop_admin/product/del?{{$res['filter']['string']}}" @else action="/shop_admin/product/del" @endif  class="del_form">
     @csrf
         <div class="table_scroll">
             <div class="table">
@@ -43,10 +47,19 @@
                         <li>
                             搜索
                         </li>
-                        <li>{{$v['status']}}</li>
                         <li>
-                            <a class="badge badge-info ajax_get" data-href="/shop-admin/product/{{$v['id']}}/edit">编辑</a>
-                            <a class="badge badge-info ajax_get" data-href="/shop-admin/product/{{$v['id']}}/img">图片</a>
+                            @if($dict['product_status'])
+                                @if($v->status==1)
+                                    <span class="badge badge-success">{{$dict['product_status'][$v->status]}}</span>
+                                @else
+                                    <span class="badge badge-secondary">{{$dict['product_status'][$v->status]}}</span>
+                                @endif
+                            @endif
+                        </li>
+                        <li>
+                            <a class="badge badge-info ajax_get" data-href="/shop_admin/product/form?id={{$v['id']}}">编辑</a>
+                            <a class="badge badge-info ajax_get" data-href="/shop_admin/product/desc_form?product_id={{$v['id']}}">描述</a>
+                            <a class="badge badge-info ajax_get" data-href="/shop_admin/product/{{$v['id']}}/img">图片</a>
                         </li>
                     </ul>
                     @endforeach

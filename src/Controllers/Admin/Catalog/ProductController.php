@@ -4,7 +4,6 @@ namespace Aphly\LaravelShop\Controllers\Admin\Catalog;
 
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Libs\UploadFile;
-use Aphly\LaravelAdmin\Models\Menu;
 use Aphly\LaravelShop\Controllers\Controller;
 use Aphly\LaravelShop\Models\Product\Product;
 use Aphly\LaravelShop\Models\Product\ProductDesc;
@@ -14,10 +13,10 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    public $index_url='/shop-admin/product/index';
+    public $index_url='/shop_admin/product/index';
+
     public function index(Request $request)
     {
-        $res['title'] = '';
         $res['filter']['name'] = $name = $request->query('name',false);
         $res['filter']['status'] = $status = $request->query('status',false);
         $res['filter']['string'] = http_build_query($request->query());
@@ -36,80 +35,15 @@ class ProductController extends Controller
     public function form(Request $request)
     {
         $res['product'] = Product::where('id',$request->query('id',0))->firstOrNew();
-        $res['dict'] = (new \Aphly\LaravelAdmin\Models\Dict)->getByKey();
+
         return $this->makeView('laravel-shop::admin.catalog.product.form',['res'=>$res]);
     }
 
     public function save(Request $request){
-
-    }
-
-    public function add(Request $request)
-    {
-        if($request->isMethod('post')){
-            $post = $arr = $request->all();
-            $post['createtime'] = time();
-            if($post['frame_width']>=110 && $post['frame_width']<=135){
-                $post['size']=1;
-            }else if($post['frame_width']>=136 && $post['frame_width']<=140){
-                $post['size']=2;
-            }else if($post['frame_width']>=141){
-                $post['size']=3;
-            }else{
-                $post['size']=0;
-            }
-            $post['gender']= $post['gender']?implode(',',$post['gender']):'';
-            $post['material']= $post['material']?implode(',',$post['material']):'';
-            $post['color']= $post['color']?implode(',',$post['color']):'';
-            $post['feature']= $post['feature']?implode(',',$post['feature']):'';
-            $product = Product::create($post);
-            if($product->id){
-                $arr['product_id'] = $product->id;
-                ProductDesc::create($arr);
-                throw new ApiException(['code'=>0,'msg'=>'添加成功','data'=>['redirect'=>$this->index_url]]);
-            }else{
-                throw new ApiException(['code'=>1,'msg'=>'添加失败']);
-            }
-        }else{
-            $res['title'] = '';
-            $res['cate']=(new Menu)->getMenuById(10);
-            $res['filter_arr'] = $this->getFilter();
-            return $this->makeView('laravel-shop::admin.product.add',['res'=>$res]);
-        }
-    }
-
-    public function edit(Request $request)
-    {
-        if($request->isMethod('post')) {
-            $product = Product::find($request->id);
-            $post = $arr = $request->all();
-            if($post['frame_width']>=110 && $post['frame_width']<=135){
-                $post['size']=1;
-            }else if($post['frame_width']>=136 && $post['frame_width']<=140){
-                $post['size']=2;
-            }else if($post['frame_width']>=141){
-                $post['size']=3;
-            }else{
-                $post['size']=0;
-            }
-            $post['material']= $post['material']?implode(',',$post['material']):'';
-            $post['color']= $post['color']?implode(',',$post['color']):'';
-            $post['feature']= $post['feature']?implode(',',$post['feature']):'';
-            if($product->update($post)){
-                ProductDesc::find($request->id)->update($arr);
-                throw new ApiException(['code'=>0,'msg'=>'修改成功','data'=>['redirect'=>$this->index_url]]);
-            }else{
-                throw new ApiException(['code'=>1,'msg'=>'修改失败']);
-            }
-        }else{
-            $res['title'] = '';
-            $res['info'] = Product::find($request->id);
-            $res['info_desc'] = ProductDesc::find($request->id);
-            $res['cate']=(new Menu)->getMenuById(10);
-            $res['select_ids'] = [$res['info']['cate_id']];
-            $res['filter_arr'] = $this->getFilter();
-            return $this->makeView('laravel-shop::admin.product.edit',['res'=>$res]);
-        }
+        $input = $request->all();
+        $input['date_add'] = time();
+        $product = Product::updateOrCreate(['id'=>$request->query('id',0)],$input);
+        throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
     }
 
     public function del(Request $request)
@@ -119,31 +53,48 @@ class ProductController extends Controller
         $post = $request->input('delete');
         if(!empty($post)){
             Product::destroy($post);
+            ProductDesc::destroy($post);
             throw new ApiException(['code'=>0,'msg'=>'操作成功','data'=>['redirect'=>$redirect]]);
         }
+    }
+
+    public function descForm(Request $request)
+    {
+        $product_id = $request->query('product_id',0);
+        $res['product'] = Product::where('id',$product_id)->first();
+        if($res['product']){
+            $res['product_desc'] = ProductDesc::where('product_id',$product_id)->firstOrNew();
+        }
+        return $this->makeView('laravel-shop::admin.catalog.product.desc_form',['res'=>$res]);
+    }
+
+    public function descSave(Request $request){
+        $input = $request->all();
+        ProductDesc::updateOrCreate(['product_id'=>$request->query('product_id',0)],$input);
+        throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
     }
 
     public function img(Request $request)
     {
         $res['info'] = Product::find($request->id);
-        $res['info_img'] = ProductImg::where('product_id',$request->id)->orderBy('sort','desc')->get()->toArray();
+        $res['info_img'] = ProductImage::where('product_id',$request->id)->orderBy('sort','desc')->get()->toArray();
         if($request->isMethod('post')) {
             if($request->hasFile('file')) {
                 $file_path = $img_src = [];
                 foreach ($request->file('file') as $file) {
                     $src = UploadFile::upload($file, 'public/product_img');
                     $img_src[] = Storage::url($src);
-                    $file_path[] = new ProductImg(['src'=>$src]);
+                    $file_path[] = new ProductImage(['src'=>$src]);
                 }
                 if ($file_path) {
                     $res['info']->img()->saveMany($file_path);
-                    throw new ApiException(['code' => 0, 'msg' => '上传成功', 'data' => ['redirect' => '/shop-admin/product/'.$request->id.'/img','imgs'=>$img_src]]);
+                    throw new ApiException(['code' => 0, 'msg' => '上传成功', 'data' => ['redirect' => '/shop_admin/product/'.$request->id.'/img','imgs'=>$img_src]]);
                 }
             }
             throw new ApiException(['code'=>2,'data'=>'','msg'=>'上传错误']);
         }else{
             $res['title'] = '';
-            return $this->makeView('laravel-shop::admin.product.img',['res'=>$res]);
+            return $this->makeView('laravel-shop::admin.catalog.product.img',['res'=>$res]);
         }
     }
 
@@ -151,14 +102,14 @@ class ProductController extends Controller
     {
         $post = $request->input('sort');
         foreach ($post as $k=>$v){
-            ProductImg::find($k)->update(['sort'=>$v]);
+            ProductImage::find($k)->update(['sort'=>$v]);
         }
-        throw new ApiException(['code' => 0, 'msg' => '更新成功', 'data' => ['redirect' => '/shop-admin/product/'.$request->id.'/img']]);
+        throw new ApiException(['code' => 0, 'msg' => '更新成功', 'data' => ['redirect' => '/shop_admin/product/'.$request->id.'/img']]);
     }
 
     public function imgDel(Request $request)
     {
-        $info = ProductImg::find($request->id);
+        $info = ProductImage::find($request->id);
         if($info->delete()){
             Storage::delete($info->src);
         }

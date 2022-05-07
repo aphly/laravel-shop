@@ -2,11 +2,9 @@
 <div class="top-bar">
     <h5 class="nav-title">商品</h5>
 </div>
-<style>
 
-</style>
 <div class="imain">
-    <form method="post" action="/shop-admin/product/add" class="save_form">
+    <form method="post" @if($res['product']->id) action="/shop_admin/product/save?id={{$res['product']->id}}" @else action="/shop_admin/product/save" @endif class="save_form">
         @csrf
         <div class="tes">
             <div class="form-group">
@@ -32,8 +30,11 @@
             <div class="form-group">
                 <label for="">需要配送</label>
                 <select name="shipping"  class="form-control">
-                    <option value="1">是</option>
-                    <option value="0">否</option>
+                    @if(isset($dict['yes_no']))
+                        @foreach($dict['yes_no'] as $key=>$val)
+                            <option value="{{$key}}" @if($res['product']->shipping==$key) selected @endif>{{$val}}</option>
+                        @endforeach
+                    @endif
                 </select>
                 <div class="invalid-feedback"></div>
             </div>
@@ -45,9 +46,9 @@
             <div class="form-group">
                 <label for="">缺货时状态</label>
                 <select name="stock_status_id"  class="form-control">
-                    @if(isset($res['dict']['stock_status']))
-                        @foreach($res['dict']['stock_status'] as $val)
-                        <option value="{{$val['value']}}">{{$val['name']}}</option>
+                    @if(isset($dict['stock_status']))
+                        @foreach($dict['stock_status'] as $key=>$val)
+                            <option value="{{$key}}" @if($res['product']->stock_status_id==$key) selected @endif>{{$val}}</option>
                         @endforeach
                     @endif
                 </select>
@@ -56,33 +57,61 @@
             <div class="form-group">
                 <label for="">weight</label>
                 <input type="text" name="weight" class="form-control " value="{{$res['product']->weight}}">
+
                 <select name="weight_class_id"  class="form-control">
-                    @if(isset($res['dict']['weight_class']))
-                        @foreach($res['dict']['weight_class'] as $val)
-                            <option value="{{$val['value']}}">{{$val['name']}}</option>
+                    @if(isset($dict['weight_class']))
+                        @foreach($dict['weight_class'] as $key=>$val)
+                            <option value="{{$key}}" @if($res['product']->weight_class_id==$key) selected @endif>{{$val}}</option>
+                        @endforeach
+                    @endif
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="">length</label>
+                <input type="text" name="length" class="form-control " value="{{$res['product']->length}}">
+                <label for="">width</label>
+                <input type="text" name="width" class="form-control " value="{{$res['product']->width}}">
+                <label for="">height</label>
+                <input type="text" name="height" class="form-control " value="{{$res['product']->height}}">
+
+                <select name="length_class_id"  class="form-control">
+                    @if(isset($dict['length_class']))
+                        @foreach($dict['length_class'] as $key=>$val)
+                            <option value="{{$key}}" @if($res['product']->length_class_id==$key) selected @endif>{{$val}}</option>
                         @endforeach
                     @endif
                 </select>
             </div>
             <div class="form-group">
                 <label for="">是否使用库存</label>
-                <select name="is_stock"  class="form-control">
-                    <option value="1">是</option>
-                    <option value="0">否</option>
+                <select name="subtract" class="form-control">
+                    @if(isset($dict['yes_no']))
+                        @foreach($dict['yes_no'] as $key=>$val)
+                            <option value="{{$key}}" @if($res['product']->subtract==$key) selected @endif>{{$val}}</option>
+                        @endforeach
+                    @endif
                 </select>
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="form-group">
+                <label for="">最小购买数量</label>
+                <input type="number" name="minimum" class="form-control " value="{{$res['product']->minimum}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
                 <label for="">状态</label>
                 <select name="status"  class="form-control">
-                    <option value="1">上架</option>
-                    <option value="0">下架</option>
+                    @if(isset($dict['product_status']))
+                        @foreach($dict['product_status'] as $key=>$val)
+                            <option value="{{$key}}" @if($res['product']->status==$key) selected @endif>{{$val}}</option>
+                        @endforeach
+                    @endif
                 </select>
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">description</label>
-                <textarea type="text" name="description" class="form-control "></textarea>
+                <label for="">排序</label>
+                <input type="number" name="sort"  class="form-control " value="{{$res['product']->sort??0}}">
                 <div class="invalid-feedback"></div>
             </div>
         </div>

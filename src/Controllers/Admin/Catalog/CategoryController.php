@@ -10,13 +10,11 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    public $index_url='/shop-admin/category/index';
+    public $index_url='/shop_admin/category/index';
 
     public function index(Request $request)
     {
-        $res['title'] = '';
         $res['filter']['name'] = $name = $request->query('name',false);
-        $res['filter']['status'] = $status = $request->query('status',false);
         $res['filter']['string'] = http_build_query($request->query());
         $res['list'] = CategoryPath::leftJoin('shop_category as c1','c1.id','=','shop_category_path.category_id')
             ->leftJoin('shop_category as c2','c2.id','=','shop_category_path.path_id')
@@ -24,12 +22,8 @@ class CategoryController extends Controller
                 function($query,$name) {
                     return $query->where('c1.name', 'like', '%'.$name.'%');
                 })
-            ->when($status,
-                function($query,$status) {
-                    return $query->where('c1.status', $status);
-                })
             ->groupBy('category_id')
-            ->selectRaw('any_value(shop_category_path.`category_id`) AS category_id,
+            ->selectRaw('any_value(c1.`id`) AS id,any_value(shop_category_path.`category_id`) AS category_id,
                 GROUP_CONCAT(c2.`name` ORDER BY shop_category_path.level SEPARATOR \'&nbsp;&nbsp;&gt;&nbsp;&nbsp;\') AS name,
                 any_value(c1.`status`) AS status,
                 any_value(c1.`sort`) AS sort')
@@ -51,7 +45,7 @@ class CategoryController extends Controller
         $id = $request->query('id',0);
         $category = Category::updateOrCreate(['id'=>$id,'pid'=>$request->input('pid',0),],$request->all());
         (new CategoryPath)->add($category->id,$category->pid);
-        throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>'/shop-admin/category/show']]);
+        throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>'/shop_admin/category/show']]);
     }
 
     public function del(Request $request)

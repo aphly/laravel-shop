@@ -3,7 +3,7 @@
     <h5 class="nav-title">country</h5>
 </div>
 <div class="imain">
-    <form method="post" @if($res['country']->id) action="/shop-admin/country/save?id={{$res['country']->id}}" @else action="/shop-admin/country/save" @endif class="save_form">
+    <form method="post" @if($res['country']->id) action="/shop_admin/country/save?id={{$res['country']->id}}" @else action="/shop_admin/country/save" @endif class="save_form">
         @csrf
         <div class="">
             <div class="form-group">

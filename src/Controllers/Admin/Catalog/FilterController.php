@@ -10,21 +10,15 @@ use Illuminate\Http\Request;
 
 class FilterController extends Controller
 {
-    public $index_url='/shop-admin/filter/index';
+    public $index_url='/shop_admin/filter/index';
 
     public function index(Request $request)
     {
-        $res['title'] = '';
         $res['filter']['name'] = $name = $request->query('name',false);
-        $res['filter']['status'] = $status = $request->query('status',false);
         $res['filter']['string'] = http_build_query($request->query());
         $res['list'] = FilterGroup::when($name,
                 function($query,$name) {
                     return $query->where('name', 'like', '%'.$name.'%');
-                })
-            ->when($status,
-                function($query,$status) {
-                    return $query->where('status', $status);
                 })
             ->orderBy('id','desc')
             ->Paginate(config('admin.perPage'))->withQueryString();

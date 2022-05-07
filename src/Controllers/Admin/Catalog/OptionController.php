@@ -12,21 +12,15 @@ use Illuminate\Support\Facades\Storage;
 
 class OptionController extends Controller
 {
-    public $index_url='/shop-admin/option/index';
+    public $index_url='/shop_admin/option/index';
 
     public function index(Request $request)
     {
-        $res['title'] = '';
         $res['filter']['name'] = $name = $request->query('name',false);
-        $res['filter']['status'] = $status = $request->query('status',false);
         $res['filter']['string'] = http_build_query($request->query());
         $res['list'] = Option::when($name,
                 function($query,$name) {
                     return $query->where('name', 'like', '%'.$name.'%');
-                })
-            ->when($status,
-                function($query,$status) {
-                    return $query->where('status', $status);
                 })
             ->orderBy('id','desc')
             ->Paginate(config('admin.perPage'))->withQueryString();
@@ -72,13 +66,13 @@ class OptionController extends Controller
                             $update_arr[$key]['image'] = '';
                         }
                     }else{
-                        $update_arr[$key]['image'] = UploadFile::img($files[$key]['image'], 'public/shop/option');
+                        $update_arr[$key]['image'] = isset($files[$key]['image'])?UploadFile::img($files[$key]['image'], 'public/shop/option'):'';
                         if($update_arr[$key]['image']){
                             Storage::delete($optionValue[$key_i]['image']);
                         }
                     }
                 }else{
-                    $update_arr[$key]['image'] = UploadFile::img($files[$key]['image'], 'public/shop/option');
+                    $update_arr[$key]['image'] = isset($files[$key]['image'])?UploadFile::img($files[$key]['image'], 'public/shop/option'):'';
                 }
             }
             OptionValue::upsert($update_arr,['id'],['option_id','name','image','sort']);

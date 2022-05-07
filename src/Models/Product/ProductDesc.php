@@ -15,7 +15,7 @@ class ProductDesc extends Model
     protected $fillable = [
         'product_id',
         'description',
-        'old_price',
+        'meta_title','meta_description','meta_keyword'
     ];
 
 }

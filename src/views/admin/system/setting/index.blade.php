@@ -6,7 +6,7 @@
 </style>
 <div class="imain">
 
-    <form method="post"  @if($res['filter']['string']) action="/shop-admin/country/del?{{$res['filter']['string']}}" @else action="/shop-admin/country/del" @endif  class="del_form">
+    <form method="post"  @if($res['filter']['string']) action="/shop_admin/country/del?{{$res['filter']['string']}}" @else action="/shop_admin/country/del" @endif  class="del_form">
     @csrf
         <div class="table_scroll">
             <div class="table">
@@ -29,9 +29,17 @@
                         <li>
                             {{$v['iso_code_3']}}
                         </li>
-                        <li>{{$v['status']}}</li>
                         <li>
-                            <a class="badge badge-info ajax_get" data-href="/shop-admin/country/form?id={{$v['id']}}">编辑</a>
+                            @if($dict['status'])
+                                @if($v->status==1)
+                                    <span class="badge badge-success">{{$dict['status'][$v->status]}}</span>
+                                @else
+                                    <span class="badge badge-secondary">{{$dict['status'][$v->status]}}</span>
+                                @endif
+                            @endif
+                        </li>
+                        <li>
+                            <a class="badge badge-info ajax_get" data-href="/shop_admin/country/form?id={{$v['id']}}">编辑</a>
                         </li>
                     </ul>
                     @endforeach

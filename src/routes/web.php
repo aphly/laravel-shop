@@ -77,16 +77,13 @@ Route::middleware(['web'])->group(function () {
 
 Route::middleware(['web'])->group(function () {
 
-    Route::prefix('shop-admin')->middleware(['managerAuth'])->group(function () {
+    Route::prefix('shop_admin')->middleware(['managerAuth'])->group(function () {
         Route::middleware(['rbac'])->group(function () {
 //            Route::get('/product/index', 'Aphly\LaravelShop\Controllers\Admin\ProductController@index');
 //            Route::match(['get', 'post'],'/product/add', 'Aphly\LaravelShop\Controllers\Admin\ProductController@add');
 //            Route::match(['get', 'post'],'/product/{id}/edit', 'Aphly\LaravelShop\Controllers\Admin\ProductController@edit')->where('id', '[0-9]+');
 //            Route::post('/product/del', 'Aphly\LaravelShop\Controllers\Admin\ProductController@del');
-//            Route::match(['get', 'post'],'/product/{id}/img', 'Aphly\LaravelShop\Controllers\Admin\ProductController@img')->where('id', '[0-9]+');
-//            Route::match(['post'],'/product/{id}/imgsave', 'Aphly\LaravelShop\Controllers\Admin\ProductController@imgSave')->where('id', '[0-9]+');
-//            Route::match(['get'],'/product-img/{id}/del', 'Aphly\LaravelShop\Controllers\Admin\ProductController@imgDel')->where('id', '[0-9]+');
-
+//
             Route::get('/category/index', 'Aphly\LaravelShop\Controllers\Admin\Catalog\CategoryController@index');
             Route::post('/category/del', 'Aphly\LaravelShop\Controllers\Admin\Catalog\CategoryController@del');
             Route::get('/category/show', 'Aphly\LaravelShop\Controllers\Admin\Catalog\CategoryController@show');
@@ -107,6 +104,12 @@ Route::middleware(['web'])->group(function () {
             Route::get('/product/index', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@index');
             Route::get('/product/form', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@form');
             Route::post('/product/save', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@save');
+            Route::get('/product/desc_form', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@descForm');
+            Route::post('/product/desc_save', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@descSave');
+            Route::match(['get', 'post'],'/product/{id}/img', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@img')->where('id', '[0-9]+');
+            Route::match(['post'],'/product/{id}/img_save', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@imgSave')->where('id', '[0-9]+');
+            Route::match(['get'],'/product_img/{id}/del', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@imgDel')->where('id', '[0-9]+');
+
         });
     });
 });

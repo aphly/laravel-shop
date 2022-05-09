@@ -80,15 +80,16 @@ class ProductController extends Controller
         $res['info_img'] = ProductImage::where('product_id',$request->id)->orderBy('sort','desc')->get()->toArray();
         if($request->isMethod('post')) {
             if($request->hasFile('file')) {
-                $file_path = $img_src = [];
-                foreach ($request->file('file') as $file) {
-                    $src = UploadFile::upload($file, 'public/product_img');
-                    $img_src[] = Storage::url($src);
-                    $file_path[] = new ProductImage(['src'=>$src]);
+                $file_path = UploadFile::imgs($request->file('file'), 'public/shop/product/image',2);
+                $img_src = $insertData = [];
+                foreach ($file_path as $key=>$val) {
+                    $img_src[] = Storage::url($val);
+                    $insertData[] = ['product_id'=>$res['info']->id,'image'=>$val,'sort'=>$key];
                 }
-                if ($file_path) {
-                    $res['info']->img()->saveMany($file_path);
-                    throw new ApiException(['code' => 0, 'msg' => '上传成功', 'data' => ['redirect' => '/shop_admin/product/'.$request->id.'/img','imgs'=>$img_src]]);
+                if ($insertData) {
+                    ProductImage::insert($insertData);
+                    $this->updateImg($request->product_id);
+                    throw new ApiException(['code' => 0, 'msg' => '上传成功', 'data' => ['redirect' => '/shop_admin/product/'.$res['info']->id.'/img','imgs'=>$img_src]]);
                 }
             }
             throw new ApiException(['code'=>2,'data'=>'','msg'=>'上传错误']);
@@ -101,18 +102,34 @@ class ProductController extends Controller
     public function imgSave(Request $request)
     {
         $post = $request->input('sort');
+        $max = max($post);
         foreach ($post as $k=>$v){
-            ProductImage::find($k)->update(['sort'=>$v]);
+            $productImage = ProductImage::find($k);
+            $productImage->update(['sort'=>$v]);
+            if($v==$max){
+                Product::find($productImage->product_id)->update(['image'=>$productImage->image]);
+            }
         }
         throw new ApiException(['code' => 0, 'msg' => '更新成功', 'data' => ['redirect' => '/shop_admin/product/'.$request->id.'/img']]);
     }
 
     public function imgDel(Request $request)
     {
-        $info = ProductImage::find($request->id);
-        if($info->delete()){
-            Storage::delete($info->src);
+        $info_obj = ProductImage::where('id',$request->id);
+        $info = $info_obj->first();
+        if($info_obj->delete()){
+            Storage::delete($info->image);
         }
+        $this->updateImg($info->product_id);
         throw new ApiException(['code'=>0,'msg'=>'操作成功']);
+    }
+
+    function updateImg($product_id){
+        $productImg = ProductImage::where('product_id',$product_id)->orderBy('sort','desc')->first();
+        if($productImg){
+            Product::find($productImg->product_id)->update(['image'=>$productImg->image]);
+        }else{
+            Product::where(['id'=>$product_id])->update(['image'=>'']);
+        }
     }
 }

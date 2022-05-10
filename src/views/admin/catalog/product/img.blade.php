@@ -15,7 +15,6 @@
 </style>
 <div class="imain">
     <div style="margin-bottom: 50px;">
-        <img style="width: 50px;height: 50px;" src="{{Storage::url($res['info']->image)}}" >
         <label>
             <div class="btn btn-primary">
                 选择图片

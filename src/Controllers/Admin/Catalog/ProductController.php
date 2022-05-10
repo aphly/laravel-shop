@@ -5,9 +5,13 @@ namespace Aphly\LaravelShop\Controllers\Admin\Catalog;
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Libs\UploadFile;
 use Aphly\LaravelShop\Controllers\Controller;
+use Aphly\LaravelShop\Models\Common\Attribute;
+use Aphly\LaravelShop\Models\Common\AttributeGroup;
 use Aphly\LaravelShop\Models\Product\Product;
+use Aphly\LaravelShop\Models\Product\ProductAttribute;
 use Aphly\LaravelShop\Models\Product\ProductDesc;
 use Aphly\LaravelShop\Models\Product\ProductImage;
+use Aphly\LaravelShop\Models\Product\ProductOption;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -58,20 +62,20 @@ class ProductController extends Controller
         }
     }
 
-    public function descForm(Request $request)
+    public function desc(Request $request)
     {
-        $product_id = $request->query('product_id',0);
-        $res['product'] = Product::where('id',$product_id)->first();
-        if($res['product']){
-            $res['product_desc'] = ProductDesc::where('product_id',$product_id)->firstOrNew();
+        if($request->isMethod('post')) {
+            $input = $request->all();
+            ProductDesc::updateOrCreate(['product_id'=>$request->query('product_id',0)],$input);
+            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
+        }else{
+            $product_id = $request->query('product_id',0);
+            $res['product'] = Product::where('id',$product_id)->first();
+            if($res['product']){
+                $res['product_desc'] = ProductDesc::where('product_id',$product_id)->firstOrNew();
+            }
+            return $this->makeView('laravel-shop::admin.catalog.product.desc',['res'=>$res]);
         }
-        return $this->makeView('laravel-shop::admin.catalog.product.desc_form',['res'=>$res]);
-    }
-
-    public function descSave(Request $request){
-        $input = $request->all();
-        ProductDesc::updateOrCreate(['product_id'=>$request->query('product_id',0)],$input);
-        throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
     }
 
     public function img(Request $request)
@@ -88,7 +92,7 @@ class ProductController extends Controller
                 }
                 if ($insertData) {
                     ProductImage::insert($insertData);
-                    $this->updateImg($request->product_id);
+                    $this->updateImg($request->id);
                     throw new ApiException(['code' => 0, 'msg' => '上传成功', 'data' => ['redirect' => '/shop_admin/product/'.$res['info']->id.'/img','imgs'=>$img_src]]);
                 }
             }
@@ -124,12 +128,94 @@ class ProductController extends Controller
         throw new ApiException(['code'=>0,'msg'=>'操作成功']);
     }
 
-    function updateImg($product_id){
+    public function updateImg($product_id){
         $productImg = ProductImage::where('product_id',$product_id)->orderBy('sort','desc')->first();
         if($productImg){
             Product::find($productImg->product_id)->update(['image'=>$productImg->image]);
         }else{
             Product::where(['id'=>$product_id])->update(['image'=>'']);
         }
+    }
+
+    public function attribute(Request $request)
+    {
+        if($request->isMethod('post')) {
+            $product_id = $request->input('product_id',0);
+            if($product_id){
+                ProductAttribute::where('product_id',$product_id)->delete();
+                $attribute_arr = $request->input('attribute',[]);
+                $update_arr = [];
+                foreach ($attribute_arr as $key=>$val){
+                    $update_arr[] = ['attribute_id'=>$key,'text'=>$val,'product_id'=>$product_id];
+                }
+                ProductAttribute::insert($update_arr);
+                throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
+            }
+        }else{
+            $product_id = $request->query('product_id',0);
+            $res['product'] = Product::where('id',$product_id)->first();
+            if($res['product']){
+                $res['product_attribute'] = ProductAttribute::where('product_id',$product_id)->with('attribute')->get()->toArray();
+
+            }
+            return $this->makeView('laravel-shop::admin.catalog.product.attribute',['res'=>$res]);
+        }
+    }
+
+    public function attributeAjax(Request $request){
+        $name = $request->query('name',false);
+        $list = AttributeGroup::leftJoin('shop_attribute','shop_attribute_group.id','=','shop_attribute.attribute_group_id')
+            ->when($name,function($query,$name) {
+                return $query->where('shop_attribute.name', 'like', '%'.$name.'%');
+            })
+            ->select('shop_attribute.*','shop_attribute_group.name as groupname')
+            ->where('shop_attribute_group.status',1)->get()->toArray();
+        $attr_res = [];
+        foreach ($list as $val){
+            $attr_res[$val['attribute_group_id']]['groupname'] = $val['groupname'];
+            $attr_res[$val['attribute_group_id']]['child'][$val['id']] = $val['name'];
+        }
+        throw new ApiException(['code'=>0,'msg'=>'success','data'=>['list'=>$attr_res]]);
+    }
+
+    public function option(Request $request)
+    {
+        if($request->isMethod('post')) {
+            $product_id = $request->input('product_id',0);
+            if($product_id){
+                ProductAttribute::where('product_id',$product_id)->delete();
+                $attribute_arr = $request->input('attribute',[]);
+                $update_arr = [];
+                foreach ($attribute_arr as $key=>$val){
+                    $update_arr[] = ['attribute_id'=>$key,'text'=>$val,'product_id'=>$product_id];
+                }
+                ProductAttribute::insert($update_arr);
+                throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
+            }
+        }else{
+            $product_id = $request->query('product_id',0);
+            $res['product'] = Product::where('id',$product_id)->first();
+            if($res['product']){
+                $res['product_attribute'] = ProductOption::where('product_id',$product_id)->with('attribute')->get()->toArray();
+
+            }
+            return $this->makeView('laravel-shop::admin.catalog.product.attribute',['res'=>$res]);
+        }
+    }
+
+    public function optionAjax(Request $request){
+        $name = $request->query('name',false);
+        $list = Attribute::leftJoin('shop_attribute_group','shop_attribute_group.id','=','shop_attribute.attribute_group_id')
+            ->when($name,function($query,$name) {
+                return $query->where('shop_attribute.name', 'like', '%'.$name.'%');
+            })
+            ->select('shop_attribute.*','shop_attribute_group.name as groupname')
+            ->where('shop_attribute_group.status',1)->get()->toArray();
+        $attr_res = [];
+        foreach ($list as $val){
+            $attr_res[$val['attribute_group_id']]['groupname'] = $val['groupname'];
+            $attr_res[$val['attribute_group_id']]['child'][$val['id']] = $val['name'];
+        }
+        throw new ApiException(['code'=>0,'msg'=>'success','data'=>['list'=>$attr_res]]);
     }
 }

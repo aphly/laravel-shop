@@ -15,5 +15,7 @@ class Attribute extends Model
         'name','attribute_group_id','sort'
     ];
 
-
+    function group(){
+        return $this->hasOne(AttributeGroup::class,'id','attribute_group_id');
+    }
 }

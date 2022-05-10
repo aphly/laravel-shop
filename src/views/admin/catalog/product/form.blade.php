@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="{{ URL::asset('vendor/laravel-shop/css/product.css') }}">
+<link rel="stylesheet" href="{{ URL::asset('vendor/laravel-shop/css/product_admin.css') }}">
 <div class="top-bar">
     <h5 class="nav-title">商品</h5>
 </div>
@@ -6,7 +6,7 @@
 <div class="imain">
     <form method="post" @if($res['product']->id) action="/shop_admin/product/save?id={{$res['product']->id}}" @else action="/shop_admin/product/save" @endif class="save_form">
         @csrf
-        <div class="tes">
+        <div class="">
             <div class="form-group">
                 <label for="">商品名称</label>
                 <input type="text" name="name" class="form-control " value="{{$res['product']->name}}">

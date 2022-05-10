@@ -1,0 +1,24 @@
+/*product-admin*/
+.filter-icon{padding:2px;width:16px;height:16px;border-radius:50%;border:1px solid #fff;margin-right:10px}
+.tes{display: flex;flex-wrap: wrap;}
+.tes .form-group{width: 48%;margin: 0 1% 10px;}
+.libs_input label{display: flex;align-items: center;}
+
+
+
+.add_div_attribute .search{position: relative;width: 30%;}
+.add_div_attribute .text{width: 50%;padding: 0 10px;}
+.add_div_attribute .text textarea{width: 100%;min-height: 100px;padding:5px 10px;border: 1px solid #999;}
+.search_delDiv{width: 20%;height: 44px;line-height: 44px;}
+.add_div_attribute .search_input{outline: none;height: 44px;line-height: 44px;width: 100%;padding: 0 10px;border: 1px solid #999;border-radius: 4px}
+.add_div_attribute .text input{width: 100%;padding: 0 10px;}
+.search_res{z-index: 1;min-height: 100px;display: none; border-radius: 3px;position: absolute;top: 50px;left: 0;width: 100%;border: 1px solid rgba(0, 0, 0, 0.15);box-shadow: 0 6px 12px rgb(0 0 0 / 18%);background: #fff;}
+.search_res_item .groupname{color: #999;padding: 3px 20px;}
+.search_res_item  ul{}
+.search_res_item  ul li{padding: 5px 20px 5px 30px;line-height: 30px;cursor: pointer;}
+.search_res_item  ul li:hover{background: #f1f1f1;}
+.add_div_attribute .item input[readonly]{background: #f1f1f1;}
+.add_div_attribute .item .app-lajitong:hover{color:darkred}
+.add_div_attribute .item .app-lajitong{cursor: pointer;}
+.add_div_attribute .item{margin-bottom: 10px}
+.add_div_btn{padding:10px 0;}

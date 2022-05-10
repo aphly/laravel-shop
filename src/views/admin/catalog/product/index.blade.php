@@ -2,8 +2,8 @@
     <h5 class="nav-title">商品管理</h5>
 </div>
 <style>
-    .table_scroll .table_header li:nth-child(4),.table_scroll .table_tbody li:nth-child(4){flex: 0 0 300px;}
-    .manager_role{background: #2878a7; color: #fff; border-radius: 4px; padding: 0 2px;}
+    .table_scroll .table_header li:nth-child(2),.table_scroll .table_tbody li:nth-child(2){flex: 0 0 200px;}
+    .table ul.table_header li:last-child, .table ul.table_tbody li:last-child{flex: 0 0 500px;}
 </style>
 <div class="imain">
     <div class="itop ">
@@ -32,7 +32,6 @@
                     <li >ID</li>
                     <li >商品名称</li>
                     <li >图片</li>
-                    <li ></li>
                     <li >状态</li>
                     <li >操作</li>
                 </ul>
@@ -42,10 +41,9 @@
                         <li><input type="checkbox" class="delete_box" name="delete[]" value="{{$v['id']}}">{{$v['id']}}</li>
                         <li>{{$v['name']}}</li>
                         <li>
-
-                        </li>
-                        <li>
-                            搜索
+                            @if($v['image'])
+                                <img style="width: 30px;height: 30px;" src="{{Storage::url($v['image'])}}" />
+                            @endif
                         </li>
                         <li>
                             @if($dict['product_status'])
@@ -58,8 +56,10 @@
                         </li>
                         <li>
                             <a class="badge badge-info ajax_get" data-href="/shop_admin/product/form?id={{$v['id']}}">编辑</a>
-                            <a class="badge badge-info ajax_get" data-href="/shop_admin/product/desc_form?product_id={{$v['id']}}">描述</a>
+                            <a class="badge badge-info ajax_get" data-href="/shop_admin/product/desc?product_id={{$v['id']}}">描述</a>
                             <a class="badge badge-info ajax_get" data-href="/shop_admin/product/{{$v['id']}}/img">图片</a>
+                            <a class="badge badge-info ajax_get" data-href="/shop_admin/product/attribute?product_id={{$v['id']}}">属性</a>
+                            <a class="badge badge-info ajax_get" data-href="/shop_admin/product/option?product_id={{$v['id']}}">选项</a>
                         </li>
                     </ul>
                     @endforeach

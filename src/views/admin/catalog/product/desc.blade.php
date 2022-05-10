@@ -1,11 +1,11 @@
-<link rel="stylesheet" href="{{ URL::asset('vendor/laravel-shop/css/product.css') }}">
+<link rel="stylesheet" href="{{ URL::asset('vendor/laravel-shop/css/product_admin.css') }}">
 <div class="top-bar">
     <h5 class="nav-title">商品 - {{$res['product']->name}}</h5>
 </div>
 <div class="imain">
-    <form method="post" @if($res['product']->id) action="/shop_admin/product/desc_save?product_id={{$res['product']->id}}" @else action="/shop_admin/product/desc_save" @endif class="save_form">
+    <form method="post" @if($res['product']->id) action="/shop_admin/product/desc?product_id={{$res['product']->id}}" @else action="/shop_admin/product/desc" @endif class="save_form">
         @csrf
-        <div class="tes">
+        <div class="">
             <div class="form-group">
                 <label for="">商品描述</label>
                 <textarea name="description" class="form-control " rows="20">{{$res['product_desc']->description}}</textarea>

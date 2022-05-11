@@ -72,6 +72,7 @@ Route::middleware(['web'])->group(function () {
         $list = Option::where('status',1)->when($name,function($query,$name) {
             return $query->where('name', 'like', '%'.$name.'%');
         })->with('value')->get()->keyBy('id')->toArray();
+        
         dd($list);
         return view('welcome');
     });

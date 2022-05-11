@@ -3,9 +3,12 @@
     <h5 class="nav-title">商品 - {{$res['product']->name}} - 选项</h5>
 </div>
 <style>
+    .option{margin-bottom: 20px;}
     .option .search{position: relative}
     .option_name{width: 200px}
     .option_value{}
+    .option_name .search_input{outline: none;height: 44px;line-height: 44px;width: 100%;padding: 0 10px;border: 1px solid #999;border-radius: 4px}
+    .option_name .search_res ul li{padding: 5px 20px 5px 30px;line-height: 30px;cursor: pointer;}
 </style>
 <div class="imain">
     <form method="post" action="/shop_admin/product/option" class="save_form">
@@ -46,7 +49,8 @@
                 let arr = res.data.list;
                 let html = ``
                 for(let i in arr){
-                    html += `<div class="search_res_item"><div class="name">${arr[i]['name']}</div>`
+                    html += `<div class="search_res_item">
+                        <div class="name">${arr[i]['name']}</div>`
 
                     html += `</div>`
                 }

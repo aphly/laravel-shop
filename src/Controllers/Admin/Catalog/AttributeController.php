@@ -39,24 +39,26 @@ class AttributeController extends Controller
         $id = $request->query('id',0);
         $attributeGroup = AttributeGroup::updateOrCreate(['id'=>$id],$request->all());
         if($attributeGroup->id){
-            $filter = Attribute::where('attribute_group_id',$attributeGroup->id)->pluck('id')->toArray();
             $val_arr = $request->input('value',[]);
-            $val_arr_keys = array_keys($val_arr);
-            $update_arr = $delete_arr = [];
-            foreach ($filter as $val){
-                if(!in_array($val,$val_arr_keys)){
-                    $delete_arr[] = $val;
+            if($val_arr){
+                $filter = Attribute::where('attribute_group_id',$attributeGroup->id)->pluck('id')->toArray();
+                $val_arr_keys = array_keys($val_arr);
+                $update_arr = $delete_arr = [];
+                foreach ($filter as $val){
+                    if(!in_array($val,$val_arr_keys)){
+                        $delete_arr[] = $val;
+                    }
                 }
-            }
-            Attribute::whereIn('id',$delete_arr)->delete();
-            foreach ($val_arr as $key=>$val){
-                foreach ($val as $k=>$v){
-                    $update_arr[$key][$k]=$v;
+                Attribute::whereIn('id',$delete_arr)->delete();
+                foreach ($val_arr as $key=>$val){
+                    foreach ($val as $k=>$v){
+                        $update_arr[$key][$k]=$v;
+                    }
+                    $update_arr[$key]['id'] = intval($key);
+                    $update_arr[$key]['attribute_group_id'] = $attributeGroup->id;
                 }
-                $update_arr[$key]['id'] = intval($key);
-                $update_arr[$key]['attribute_group_id'] = $attributeGroup->id;
+                Attribute::upsert($update_arr,['id'],['attribute_group_id','name','sort']);
             }
-            Attribute::upsert($update_arr,['id'],['attribute_group_id','name','sort']);
         }
         throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
     }

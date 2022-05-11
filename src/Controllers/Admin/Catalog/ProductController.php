@@ -7,6 +7,7 @@ use Aphly\Laravel\Libs\UploadFile;
 use Aphly\LaravelShop\Controllers\Controller;
 use Aphly\LaravelShop\Models\Common\Attribute;
 use Aphly\LaravelShop\Models\Common\AttributeGroup;
+use Aphly\LaravelShop\Models\Common\Option;
 use Aphly\LaravelShop\Models\Product\Product;
 use Aphly\LaravelShop\Models\Product\ProductAttribute;
 use Aphly\LaravelShop\Models\Product\ProductDesc;
@@ -196,26 +197,19 @@ class ProductController extends Controller
             $product_id = $request->query('product_id',0);
             $res['product'] = Product::where('id',$product_id)->first();
             if($res['product']){
-                $res['product_attribute'] = ProductOption::where('product_id',$product_id)->with('attribute')->get()->toArray();
+                $res['product_option'] = ProductOption::where('product_id',$product_id)->get()->toArray();
 
             }
-            return $this->makeView('laravel-shop::admin.catalog.product.attribute',['res'=>$res]);
+            return $this->makeView('laravel-shop::admin.catalog.product.option',['res'=>$res]);
         }
     }
 
     public function optionAjax(Request $request){
         $name = $request->query('name',false);
-        $list = Attribute::leftJoin('shop_attribute_group','shop_attribute_group.id','=','shop_attribute.attribute_group_id')
-            ->when($name,function($query,$name) {
-                return $query->where('shop_attribute.name', 'like', '%'.$name.'%');
+        $list = Option::where('status',1)->when($name,function($query,$name) {
+                return $query->where('name', 'like', '%'.$name.'%');
             })
-            ->select('shop_attribute.*','shop_attribute_group.name as groupname')
-            ->where('shop_attribute_group.status',1)->get()->toArray();
-        $attr_res = [];
-        foreach ($list as $val){
-            $attr_res[$val['attribute_group_id']]['groupname'] = $val['groupname'];
-            $attr_res[$val['attribute_group_id']]['child'][$val['id']] = $val['name'];
-        }
-        throw new ApiException(['code'=>0,'msg'=>'success','data'=>['list'=>$attr_res]]);
+            ->with('value')->get()->keyBy('id')->toArray();
+        throw new ApiException(['code'=>0,'msg'=>'success','data'=>['list'=>$list]]);
     }
 }

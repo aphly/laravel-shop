@@ -2,30 +2,32 @@
 <div class="top-bar">
     <h5 class="nav-title">商品 - {{$res['product']->name}} - 选项</h5>
 </div>
+<style>
+    .option .search{position: relative}
+    .option_name{width: 200px}
+    .option_value{}
+</style>
 <div class="imain">
     <form method="post" action="/shop_admin/product/option" class="save_form">
         @csrf
         <div class="">
             <input type="hidden" name="product_id" value="{{$res['product']->id}}">
-            <div onclick="attribute_addDiv()" class="add_div_btn"><i class="uni app-jia"></i> 新增</div>
+            <div class="d-flex option">
+                <div class="option_name">
+                    <ul>
+                        <li></li>
+                    </ul>
+                    <div class="search">
+                        <input class="search_input" oninput="search_ajax(this)">
+                        <div class="search_res"></div>
+                    </div>
+                </div>
+                <div class="option_value">
 
-            <div class="add_div add_div_attribute">
-                <ul>
-                    <li class="item d-flex">
-                        <div class="search">属性</div><div class="text">值</div>
-                    </li>
-                    @foreach($res['product_option'] as $val)
-                        <li class="item d-flex justify-content-between">
-                            <div class="search">
-                                <input class="search_input" readonly value="{{$val['attribute']['name']}}">
-                                <div class="search_res"></div>
-                            </div>
-                            <div class="text"><textarea type="text" name="attribute[{{$val['attribute_id']}}]">{{$val['text']}}</textarea></div>
-                            <div class="search_delDiv" onclick="search_delDiv(this)"><i class="uni app-lajitong"></i></div>
-                        </li>
-                    @endforeach
-                </ul>
+                </div>
             </div>
+
+
         </div>
         <button class="btn btn-primary" type="submit">保存</button>
     </form>
@@ -34,6 +36,27 @@
 
 </style>
 <script>
+    var ajax_res_data = {};
+    function search_ajax(_this) {
+        $.ajax({
+            url:'/shop_admin/product/option_ajax?name='+$(_this).val(),
+            dataType: "json",
+            success:function (res) {
+                ajax_res_data = res.data.list
+                let arr = res.data.list;
+                let html = ``
+                for(let i in arr){
+                    html += `<div class="search_res_item"><div class="name">${arr[i]['name']}</div>`
+
+                    html += `</div>`
+                }
+                $(_this).next().html(html).show()
+            }
+        })
+    }
+
+
+
     function attribute_addDiv() {
         let html = `<li class="item d-flex">
                         <div class="search">
@@ -48,24 +71,7 @@
     function search_delDiv(_this) {
         $(_this).parent().remove()
     }
-    function search_ajax(_this) {
-        $.ajax({
-            url:'/shop_admin/product/attribute_ajax?name='+$(_this).val(),
-            dataType: "json",
-            success:function (res) {
-                let arr = res.data.list;
-                let html = ``
-                for(let i in arr){
-                    html += `<div class="search_res_item"><div class="groupname">${arr[i]['groupname']}</div><ul>`
-                    for(let j in arr[i]['child']){
-                        html += `<li data-id="${j}" data-groupname="${arr[i]['groupname']}" data-name="${arr[i]['child'][j]}" onclick="show_text(this)">${arr[i]['child'][j]}</li>`
-                    }
-                    html += `</ul></div>`
-                }
-                $(_this).next().html(html).show()
-            }
-        })
-    }
+
     function show_text(_this) {
         $(_this).closest('.item').children('.text').html(
             `<textarea type="text" name="attribute[${$(_this).data('id')}]"></textarea>`

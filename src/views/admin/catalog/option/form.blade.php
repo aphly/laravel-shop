@@ -13,11 +13,23 @@
             </div>
             <div class="form-group">
                 <label for="">类型</label>
-                <select name="type" class="form-control">
+                <select name="type" class="form-control" id="type">
                     <optgroup label="选择">
                         <option value="select" @if($res['option']->type=='select') selected @endif>下拉列表</option>
                         <option value="radio" @if($res['option']->type=='radio') selected @endif>单选按钮组</option>
                         <option value="checkbox" @if($res['option']->type=='checkbox') selected @endif>复选框</option>
+                    </optgroup>
+                    <optgroup label="文字录入">
+                        <option value="text" @if($res['option']->type=='text') selected @endif>单行文本</option>
+                        <option value="textarea" @if($res['option']->type=='textarea') selected @endif>多行文本区</option>
+                    </optgroup>
+                    <optgroup label="文件">
+                        <option value="file" @if($res['option']->type=='file') selected @endif>文件</option>
+                    </optgroup>
+                    <optgroup label="日期">
+                        <option value="date" @if($res['option']->type=='date') selected @endif>日期</option>
+                        <option value="time" @if($res['option']->type=='time') selected @endif>时间</option>
+                        <option value="datetime" @if($res['option']->type=='datetime') selected @endif>日期 &amp; 时间</option>
                     </optgroup>
                 </select>
                 <div class="invalid-feedback"></div>
@@ -38,7 +50,14 @@
                 <input type="number" name="sort" class="form-control " value="{{$res['option']->sort??0}}">
                 <div class="invalid-feedback"></div>
             </div>
-            <div class="form-group filter">
+            <div class="form-group filter option_op"
+                 @if($res['option']->type)
+                    @if($res['option']->type=='select' || $res['option']->type=='radio' || $res['option']->type=='checkbox')
+                    @else
+                        style="display: none"
+                    @endif
+                 @endif
+                     >
                 <div onclick="filter_addDiv()" class="add_div_btn"><i class="uni app-jia"></i> option Values</div>
                 <div class="add_div">
                     <ul class="add_div_ul">
@@ -149,7 +168,14 @@
                                                 <div class="imglist">+</div>`
             p.html(img_html);
         })
-
+        $('#type').change(function () {
+            let val = $(this).val()
+            if(val=='select' || val=='radio' || val=='checkbox'){
+                $('.option_op').show();
+            }else{
+                $('.option_op').hide();
+            }
+        })
     })
 
 </script>

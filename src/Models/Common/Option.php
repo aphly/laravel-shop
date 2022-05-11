@@ -15,5 +15,7 @@ class Option extends Model
         'name','sort','status','type','status'
     ];
 
-
+    function value(){
+        return $this->hasMany(OptionValue::class,'option_id');
+    }
 }

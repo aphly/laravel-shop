@@ -40,42 +40,44 @@ class OptionController extends Controller
     public function save(Request $request){
         $option = Option::updateOrCreate(['id'=>$request->query('id',0)],$request->all());
         if($option->id){
-            $optionValue = OptionValue::where('option_id',$option->id)->get()->keyBy('id')->toArray();
             $val_arr = $request->input('value',[]);
-            $val_arr_keys = array_keys($val_arr);
-            $update_arr = $delete_arr = [];
-            foreach ($optionValue as $val){
-                if(!in_array($val['id'],$val_arr_keys)){
-                    $delete_arr[] = $val['id'];
-                    Storage::delete($val['image']);
+            if($val_arr){
+                $optionValue = OptionValue::where('option_id',$option->id)->get()->keyBy('id')->toArray();
+                $val_arr_keys = array_keys($val_arr);
+                $update_arr = $delete_arr = [];
+                foreach ($optionValue as $val){
+                    if(!in_array($val['id'],$val_arr_keys)){
+                        $delete_arr[] = $val['id'];
+                        Storage::delete($val['image']);
+                    }
                 }
-            }
-            OptionValue::whereIn('id',$delete_arr)->delete();
-            $files = $request->file('value');
-            foreach ($val_arr as $key=>$val){
+                OptionValue::whereIn('id',$delete_arr)->delete();
+                $files = $request->file('value');
+                foreach ($val_arr as $key=>$val){
 
-                foreach ($val as $k=>$v){
-                    $update_arr[$key][$k]=$v;
-                }
-                $update_arr[$key]['id'] = intval($key);
-                $update_arr[$key]['option_id'] = $option->id;
-                if($key_i = intval($key)){
-                    if(isset($val['image'])) {
-                        if($val['image'] == 'undefined'){
-                            Storage::delete($optionValue[$key_i]['image']);
-                            $update_arr[$key]['image'] = '';
+                    foreach ($val as $k=>$v){
+                        $update_arr[$key][$k]=$v;
+                    }
+                    $update_arr[$key]['id'] = intval($key);
+                    $update_arr[$key]['option_id'] = $option->id;
+                    if($key_i = intval($key)){
+                        if(isset($val['image'])) {
+                            if($val['image'] == 'undefined'){
+                                Storage::delete($optionValue[$key_i]['image']);
+                                $update_arr[$key]['image'] = '';
+                            }
+                        }else{
+                            $update_arr[$key]['image'] = isset($files[$key]['image'])?UploadFile::img($files[$key]['image'], 'public/shop/option'):'';
+                            if($update_arr[$key]['image']){
+                                Storage::delete($optionValue[$key_i]['image']);
+                            }
                         }
                     }else{
                         $update_arr[$key]['image'] = isset($files[$key]['image'])?UploadFile::img($files[$key]['image'], 'public/shop/option'):'';
-                        if($update_arr[$key]['image']){
-                            Storage::delete($optionValue[$key_i]['image']);
-                        }
                     }
-                }else{
-                    $update_arr[$key]['image'] = isset($files[$key]['image'])?UploadFile::img($files[$key]['image'], 'public/shop/option'):'';
                 }
+                OptionValue::upsert($update_arr,['id'],['option_id','name','image','sort']);
             }
-            OptionValue::upsert($update_arr,['id'],['option_id','name','image','sort']);
         }
         throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
     }

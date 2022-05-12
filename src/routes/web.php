@@ -1,10 +1,5 @@
 <?php
 
-
-use Aphly\LaravelShop\Models\Common\Attribute;
-use Aphly\LaravelShop\Models\Common\Filter;
-use Aphly\LaravelShop\Models\Common\FilterGroup;
-use Aphly\LaravelShop\Models\Common\Option;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -68,12 +63,7 @@ Route::middleware(['web'])->group(function () {
 Route::middleware(['web'])->group(function () {
 
     Route::get('/test', function (){
-        $name = request()->query('name',false);
-        $list = Option::where('status',1)->when($name,function($query,$name) {
-            return $query->where('name', 'like', '%'.$name.'%');
-        })->with('value')->get()->keyBy('id')->toArray();
-        
-        dd($list);
+
         return view('welcome');
     });
 

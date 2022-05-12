@@ -13,6 +13,7 @@ use Aphly\LaravelShop\Models\Product\ProductAttribute;
 use Aphly\LaravelShop\Models\Product\ProductDesc;
 use Aphly\LaravelShop\Models\Product\ProductImage;
 use Aphly\LaravelShop\Models\Product\ProductOption;
+use Aphly\LaravelShop\Models\Product\ProductOptionValue;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -183,22 +184,47 @@ class ProductController extends Controller
     {
         if($request->isMethod('post')) {
             $product_id = $request->input('product_id',0);
-            if($product_id){
-                ProductAttribute::where('product_id',$product_id)->delete();
-                $attribute_arr = $request->input('attribute',[]);
-                $update_arr = [];
-                foreach ($attribute_arr as $key=>$val){
-                    $update_arr[] = ['attribute_id'=>$key,'text'=>$val,'product_id'=>$product_id];
-                }
-                ProductAttribute::insert($update_arr);
-                throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
+            if(!$product_id){
+                throw new ApiException(['code'=>1,'msg'=>'fail','data'=>[]]);
             }
+            $product_option = $request->input('product_option',[]);
+            //dd($request->all());
+            if($product_option){
+                foreach ($product_option as $key => $val){
+                    $arr = $option_value = [];
+                    $arr['product_id'] = $product_id;
+                    foreach ($val as $k=>$v){
+                        $arr['option_id'] = $k;
+                        $arr['value'] = $v['value']??'';
+                        $arr['required'] = $v['required']??0;
+                        $option_value = $v['option_value']??[];
+                    }
+                    $productOption = ProductOption::updateOrCreate(['id'=>$key],$arr);
+                    if($productOption->id){
+                        $product_option_value_update = [];
+                        foreach ($option_value as $k => $v) {
+                            $arr_v = $v;
+                            $arr_v['id'] = intval($k);
+                            $arr_v['product_option_id'] = $productOption->id;
+                            $arr_v['product_id'] = $product_id;
+                            $arr_v['option_id'] = $productOption->option_id;
+                            $product_option_value_update[] = $arr_v;
+                        }
+                        ProductOptionValue::upsert($product_option_value_update,['id'],['product_option_id','product_id','option_id','option_value_id','quantity','subtract','price','points','weight']);
+
+                    }
+                }
+            }
+            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
         }else{
             $product_id = $request->query('product_id',0);
             $res['product'] = Product::where('id',$product_id)->first();
             if($res['product']){
-                $res['product_option'] = ProductOption::where('product_id',$product_id)->get()->toArray();
-
+                $res['product_option'] = ProductOption::where('product_id',$product_id)->with('value')->get()->toArray();
+                $option_ids = array_column($res['product_option'],'option_id');
+                if($option_ids){
+                    $res['option'] = Option::whereIn('id',$option_ids)->with('value')->get()->keyBy('id')->toArray();
+                }
             }
             return $this->makeView('laravel-shop::admin.catalog.product.option',['res'=>$res]);
         }
@@ -210,6 +236,10 @@ class ProductController extends Controller
                 return $query->where('name', 'like', '%'.$name.'%');
             })
             ->with('value')->get()->keyBy('id')->toArray();
-        throw new ApiException(['code'=>0,'msg'=>'success','data'=>['list'=>$list]]);
+        $option_group = [];
+        foreach ($list as $val){
+            $option_group[$val['type']][] = $val;
+        }
+        throw new ApiException(['code'=>0,'msg'=>'success','data'=>['list'=>$list,'option_group'=>$option_group]]);
     }
 }

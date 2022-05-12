@@ -17,4 +17,10 @@ class ProductOption extends Model
         'value','required'
     ];
 
+    function value(){
+        return $this->hasMany(ProductOptionValue::class,'product_option_id','id');
+    }
+
+
+
 }

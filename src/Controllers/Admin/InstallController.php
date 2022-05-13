@@ -28,10 +28,13 @@ class InstallController extends Controller
         $data[] =['id'=>10014,'name' => 'Currency','url' =>'/shop_admin/currency/index','pid'=>10013,'is_leaf'=>1,'module_id'=>2];
         $data[] =['id'=>10015,'name' => 'Country','url' =>'/shop_admin/country/index','pid'=>10013,'is_leaf'=>1,'module_id'=>2];
         $data[] =['id'=>10016,'name' => 'Zone','url' =>'/shop_admin/zone/index','pid'=>10013,'is_leaf'=>1,'module_id'=>2];
+        $data[] =['id'=>10017,'name' => 'Customer','url' =>'','pid'=>10000,'is_leaf'=>0,'module_id'=>2];
+        $data[] =['id'=>10018,'name' => 'Customer','url' =>'/shop_admin/customer/index','pid'=>10017,'is_leaf'=>1,'module_id'=>2];
+        $data[] =['id'=>10019,'name' => 'Group','url' =>'/shop_admin/group/index','pid'=>10017,'is_leaf'=>1,'module_id'=>2];
         DB::table('admin_menu')->insert($data);
 
         $data=[];
-        for($i=10000;$i<=10016;$i++){
+        for($i=10000;$i<=10019;$i++){
             $data[] =['role_id' => 2,'menu_id'=>$i];
         }
         DB::table('admin_role_menu')->insert($data);

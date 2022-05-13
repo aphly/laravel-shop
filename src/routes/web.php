@@ -89,6 +89,13 @@ Route::middleware(['web'])->group(function () {
                 Route::post('/'.$val[0].'/del', 'Aphly\LaravelShop\Controllers\Admin'.$val[1].'@del');
             }
 
+            Route::get('/group/index', 'Aphly\LaravelShop\Controllers\Admin\Customer\GroupController@index');
+            Route::post('/group/del', 'Aphly\LaravelShop\Controllers\Admin\Customer\GroupController@del');
+            Route::get('/group/form', 'Aphly\LaravelShop\Controllers\Admin\Customer\GroupController@form');
+            Route::post('/group/save', 'Aphly\LaravelShop\Controllers\Admin\Customer\GroupController@save');
+
+
+
             Route::get('/product/index', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@index');
             Route::get('/product/form', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@form');
             Route::post('/product/save', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@save');

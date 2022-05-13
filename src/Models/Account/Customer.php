@@ -10,6 +10,7 @@ class Customer extends Model
     use HasFactory;
     protected $table = 'shop_customer';
     protected $primaryKey = 'uuid';
+    public $incrementing = false;
     public $timestamps = false;
 
     const ROLE_ID = 4;

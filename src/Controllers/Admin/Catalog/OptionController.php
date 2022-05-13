@@ -54,7 +54,6 @@ class OptionController extends Controller
                 OptionValue::whereIn('id',$delete_arr)->delete();
                 $files = $request->file('value');
                 foreach ($val_arr as $key=>$val){
-
                     foreach ($val as $k=>$v){
                         $update_arr[$key][$k]=$v;
                     }
@@ -77,6 +76,8 @@ class OptionController extends Controller
                     }
                 }
                 OptionValue::upsert($update_arr,['id'],['option_id','name','image','sort']);
+            }else{
+                OptionValue::where('option_id',$option->id)->delete();
             }
         }
         throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);

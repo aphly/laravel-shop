@@ -15,29 +15,28 @@ return new class extends Migration
     {
         Schema::create('shop_product', function (Blueprint $table) {
             $table->id();
-            $table->string('sku',64)->default('')->index();
-            $table->string('name',64);
-            $table->integer('quantity')->unsigned();
+            $table->string('sku',64)->nullable()->default('')->index();
+            $table->string('name',64)->nullable();
+            $table->unsignedInteger('quantity')->nullable();
             $table->string('image',255)->nullable();
-            $table->decimal('price');
-            $table->tinyInteger('shipping')->default(1);
-            $table->integer('points')->unsigned();
-            $table->integer('tax_class_id')->unsigned()->nullable();
+            $table->decimal('price')->nullable();
+            $table->tinyInteger('shipping')->nullable()->default(1);
+            $table->unsignedInteger('points')->nullable();
+            $table->unsignedInteger('tax_class_id')->nullable();
             $table->tinyInteger('stock_status_id');
-            $table->float('weight');
+            $table->float('weight')->nullable();
             $table->tinyInteger('weight_class_id');
-            $table->float('length');
-            $table->float('width');
-            $table->float('height');
+            $table->float('length')->nullable();
+            $table->float('width')->nullable();
+            $table->float('height')->nullable();
             $table->tinyInteger('length_class_id');
             $table->tinyInteger('subtract')->default(1);
-            $table->tinyInteger('minimum')->default(1);
+            $table->tinyInteger('minimum')->default(1)->nullable();
             $table->tinyInteger('status')->default(1)->index();
-            $table->integer('viewed')->unsigned()->default(0);
-            $table->integer('sale')->unsigned()->default(0);
-            $table->integer('sort')->unsigned()->nullable();
-            $table->integer('date_add')->unsigned();
-
+            $table->unsignedInteger('viewed')->nullable()->default(0);
+            $table->unsignedInteger('sale')->nullable()->default(0);
+            $table->unsignedInteger('sort')->nullable();
+            $table->unsignedInteger('date_add')->nullable();
         });
     }
 

@@ -13,10 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('shop_product_category', function (Blueprint $table) {
-            $table->integer('product_id')->unsigned()->index();
-            $table->integer('category_id')->unsigned()->index();
-            $table->primary(['product_id','category_id']);
+        Schema::create('shop_customer_group', function (Blueprint $table) {
+            $table->id();
+            $table->string('name',64);
+            $table->string('description',255)->nullable();
+            $table->unsignedInteger('sort')->nullable()->index();
         });
     }
 
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shop_product_category');
+        Schema::dropIfExists('shop_customer_group');
     }
 };

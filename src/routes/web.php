@@ -52,11 +52,6 @@ Route::middleware(['web'])->group(function () {
 
     });
 
-
-//    Route::get('/eyeglasses', 'Aphly\LaravelShop\Controllers\ProductController@index');
-//    Route::get('/eyeglasses/{sku}', 'Aphly\LaravelShop\Controllers\ProductController@detail')->where('sku', '[0-9a-zA-Z]+');
-//    Route::get('/eyeglasses/{sku}/lens', 'Aphly\LaravelShop\Controllers\ProductController@lens')->where('sku', '[0-9a-zA-Z]+');
-
 });
 
 
@@ -64,6 +59,7 @@ Route::middleware(['web'])->group(function () {
 
     Route::get('/test', function (){
 
+        dd($list='');
         return view('welcome');
     });
 
@@ -75,11 +71,7 @@ Route::middleware(['web'])->group(function () {
 
     Route::prefix('shop_admin')->middleware(['managerAuth'])->group(function () {
         Route::middleware(['rbac'])->group(function () {
-//            Route::get('/product/index', 'Aphly\LaravelShop\Controllers\Admin\ProductController@index');
-//            Route::match(['get', 'post'],'/product/add', 'Aphly\LaravelShop\Controllers\Admin\ProductController@add');
-//            Route::match(['get', 'post'],'/product/{id}/edit', 'Aphly\LaravelShop\Controllers\Admin\ProductController@edit')->where('id', '[0-9]+');
-//            Route::post('/product/del', 'Aphly\LaravelShop\Controllers\Admin\ProductController@del');
-//
+
             Route::get('/category/index', 'Aphly\LaravelShop\Controllers\Admin\Catalog\CategoryController@index');
             Route::post('/category/del', 'Aphly\LaravelShop\Controllers\Admin\Catalog\CategoryController@del');
             Route::get('/category/show', 'Aphly\LaravelShop\Controllers\Admin\Catalog\CategoryController@show');
@@ -105,6 +97,9 @@ Route::middleware(['web'])->group(function () {
             Route::get('/product/attribute_ajax', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@attributeAjax');
             Route::match(['get', 'post'],'/product/option', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@option');
             Route::get('/product/option_ajax', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@optionAjax');
+            Route::match(['get', 'post'],'/product/links', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@links');
+            Route::get('/product/category_ajax', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@linksCategory');
+            Route::get('/product/filter_ajax', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@linksFilter');
 
             Route::match(['get', 'post'],'/product/{id}/img', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@img')->where('id', '[0-9]+');
             Route::match(['post'],'/product/{id}/img_save', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@imgSave')->where('id', '[0-9]+');

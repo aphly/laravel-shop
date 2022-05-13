@@ -19,11 +19,11 @@ return new class extends Migration
             $table->integer('product_id')->unsigned()->index();
             $table->integer('option_id')->unsigned()->index();
             $table->integer('option_value_id')->unsigned()->index();
-            $table->integer('quantity')->unsigned();
-            $table->tinyInteger('subtract')->unsigned();
-            $table->decimal('price');
-            $table->integer('points')->unsigned();
-            $table->float('weight');
+            $table->integer('quantity')->unsigned()->nullable();
+            $table->tinyInteger('subtract')->unsigned()->nullable();
+            $table->decimal('price')->nullable();
+            $table->integer('points')->unsigned()->nullable();
+            $table->float('weight')->nullable();
         });
     }
 

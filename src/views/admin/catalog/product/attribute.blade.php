@@ -17,7 +17,7 @@
                     @foreach($res['product_attribute'] as $val)
                         <li class="item d-flex justify-content-between">
                             <div class="search">
-                                <input class="search_input" readonly value="{{$val['attribute']['name']}}">
+                                <input class="search_input" readonly value="{{$val['attribute']['name']??''}}">
                                 <div class="search_res"></div>
                             </div>
                             <div class="text"><textarea type="text" name="attribute[{{$val['attribute_id']}}]">{{$val['text']}}</textarea></div>
@@ -37,7 +37,7 @@
     function attribute_addDiv() {
         let html = `<li class="item d-flex">
                         <div class="search">
-                            <input class="search_input" oninput="search_ajax(this)">
+                            <input class="search_input" >
                             <div class="search_res"></div>
                         </div>
                         <div class="text"></div>
@@ -57,8 +57,10 @@
                 let html = ``
                 for(let i in arr){
                     html += `<div class="search_res_item"><div class="groupname">${arr[i]['groupname']}</div><ul>`
-                    for(let j in arr[i]['child']){
-                        html += `<li data-id="${j}" data-groupname="${arr[i]['groupname']}" data-name="${arr[i]['child'][j]}" onclick="show_text(this)">${arr[i]['child'][j]}</li>`
+                    if(arr[i]['child'].length>0){
+                        for(let j in arr[i]['child']){
+                            html += `<li data-id="${j}" data-groupname="${arr[i]['groupname']}" data-name="${arr[i]['child'][j]}" onclick="show_text(this)">${arr[i]['child'][j]}</li>`
+                        }
                     }
                     html += `</ul></div>`
                 }
@@ -83,6 +85,12 @@
         $('.add_div').on('focus', '.search_input', function (e) {
             e.stopPropagation()
             $('.search_res').hide();
+            search_ajax(this)
+        })
+        $('.add_div').on('keyup', '.search_input', function (e) {
+            e.stopPropagation()
+            $('.search_res').hide();
+            search_ajax(this)
         })
     })
 </script>

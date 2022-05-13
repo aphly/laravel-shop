@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer('product_id')->unsigned()->index();
             $table->integer('option_id')->unsigned()->index();
-            $table->text('value');
+            $table->text('value')->nullable();
             $table->tinyInteger('required');
         });
     }

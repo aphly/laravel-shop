@@ -15,5 +15,7 @@ class Filter extends Model
         'filter_group_id','name','sort'
     ];
 
-
+    function group(){
+        return $this->hasOne(FilterGroup::class,'id','filter_group_id');
+    }
 }

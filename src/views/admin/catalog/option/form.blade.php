@@ -29,7 +29,7 @@
                     <optgroup label="日期">
                         <option value="date" @if($res['option']->type=='date') selected @endif>日期</option>
                         <option value="time" @if($res['option']->type=='time') selected @endif>时间</option>
-                        <option value="datetime" @if($res['option']->type=='datetime') selected @endif>日期 &amp; 时间</option>
+                        <option value="datetime-local" @if($res['option']->type=='datetime-local') selected @endif>日期 &amp; 时间</option>
                     </optgroup>
                 </select>
                 <div class="invalid-feedback"></div>

@@ -15,5 +15,7 @@ class FilterGroup extends Model
         'name','sort','status'
     ];
 
-
+    function child(){
+        return $this->hasMany(Filter::class,'filter_group_id','id');
+    }
 }

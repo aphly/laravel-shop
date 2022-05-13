@@ -3,36 +3,7 @@
     <h5 class="nav-title">商品 - {{$res['product']->name}} - 选项</h5>
 </div>
 <style>
-    .option{margin-bottom: 20px;}
-    .option .search{position: relative}
-    .option_name{width: 200px;margin-right: 20px;flex-shrink: 0;}
-    .option_value{width: calc(100% - 220px);}
-    .option_name .search_input{outline: none;height: 44px;line-height: 44px;width: 100%;padding: 0 10px;border: 1px solid #999;border-radius: 4px}
-    .option_name .search_res ul li{padding: 5px 20px 5px 30px;line-height: 30px;cursor: pointer;}
-    .option_name .name{color: #999;padding: 3px 20px;}
-    .option_ul li{margin-bottom: 5px;}
-    .option_ul li.curr{color: #fff; background-color: #1e91cf;border-radius: 4px;}
-    .option_ul li:not(.curr):hover{background-color: #eee;border-radius: 4px;}
-    .search_delDiv{text-align: center;}
-    .search_delDiv i{cursor: pointer;}
-    .option_name .text{line-height: 44px;}
-    .option_name .search{margin-top: 20px;}
-    .option_value_ul_box>li{display:none; }
-    .option_value_ul_box>li.curr{display:block;}
-    .option_value_ul_box>li>span{flex:1;}
-    .option_value_list{}
-    .option_value_list ul li{display: flex;margin-bottom: 10px;}
-    .option_value_list ul li span{flex: 1;text-align: center;line-height: 44px;margin: 0 10px;}
-    .option_value_list ul li span input,.option_value_list ul li span select{outline: none;height: 44px;line-height: 44px;padding: 0 10px; border: 1px solid #999;border-radius: 4px;width: 100%;}
-    .option_value_list ul li span:nth-child(1){flex: 2;}
-    .option_value_list ul li span:nth-child(2){flex: 1;}
-    .option_value_list ul li span:nth-child(3){flex: 1;}
-    .option_value_list ul li span:nth-child(4){flex: 1;}
-    .option_value_list ul li span:nth-child(5){flex: 1;}
-    .option_value_list ul li span:nth-child(6){flex: 1;}
-    .option_value_list ul li span:nth-child(7){flex: 1;}
-    .option_value_list ul li span i{cursor: pointer;}
-    .option_value_list ul li span i:hover{color: #bd0404;}
+
 </style>
 <div class="imain">
     <form method="post" action="/shop_admin/product/option" class="save_form">
@@ -44,7 +15,7 @@
                     <ul class="option_ul">
                         @foreach($res['product_option'] as $key=>$val)
                         <li class="item d-flex @if(!$key) curr @endif" onclick="show_option_value_li({{$val['id']}},this)">
-                            <div class="search_delDiv" onclick="search_delDiv(this)"><i class="uni app-jian"></i></div>
+                            <div class="search_delDiv" onclick="search_delDiv({{$val['id']}},this)"><i class="uni app-jian"></i></div>
                             <div class="text">{{$res['option'][$val['option_id']]['name']}}</div>
                         </li>
                         @endforeach
@@ -59,7 +30,7 @@
                         @foreach($res['product_option'] as $key=>$val)
                         <li @if(!$key) class="curr" @endif data-option_id="{{$val['option_id']}}" data-product_option_id="{{$val['id']}}">
                             <div class="form-group d-flex">
-                                <label class="control-label">必填项</label>
+                                <label class="control-label option_required">必填项</label>
                                 <div class="">
                                     <select name="product_option[{{$val['id']}}][{{$val['option_id']}}][required]" class="form-control">
                                         @foreach($dict['yes_no'] as $k1=>$v1)
@@ -69,11 +40,11 @@
                                 </div>
                             </div>
                             <div class="option_value_list">
-                                @if($res['option'][$val['option_id']]['type']=='radio')
+                                @if($res['option'][$val['option_id']]['type']=='radio' || $res['option'][$val['option_id']]['type']=='select' || $res['option'][$val['option_id']]['type']=='checkbox')
                                 <ul>
                                     <li><span>选项值</span><span>数量</span><span>减少库存</span><span>价格</span>
                                         <span>所需积分</span><span>重量</span><span data-option_id="{{$val['option_id']}}" onclick="add_option_value(this,'{{$val['id']}}')"><i class="uni app-jia"></i></span></li>
-                                    @foreach($val['value'] as $k=>$v)
+                                    @foreach($val['value_arr'] as $k=>$v)
                                         <li>
                                             <span>
                                                 <select name="product_option[{{$val['id']}}][{{$val['option_id']}}][option_value][{{$v['id']}}][option_value_id]" id="">
@@ -93,24 +64,44 @@
                                             <span><input type="text" name="product_option[{{$val['id']}}][{{$val['option_id']}}][option_value][{{$v['id']}}][price]" value="{{$v['price']}}"></span>
                                             <span><input type="number" name="product_option[{{$val['id']}}][{{$val['option_id']}}][option_value][{{$v['id']}}][points]" value="{{$v['points']}}"></span>
                                             <span><input type="text" name="product_option[{{$val['id']}}][{{$val['option_id']}}][option_value][{{$v['id']}}][weight]" value="{{$v['weight']}}"></span>
-                                            <span><i class="uni app-jian"></i></span>
+                                            <span><i class="uni app-jian option_value_jian"></i></span>
                                         </li>
                                     @endforeach
                                 </ul>
                                 @elseif($res['option'][$val['option_id']]['type']=='text')
-
+                                    <div class="form-group">
+                                        <label class="control-label">选项值</label>
+                                        <div class="">
+                                            <input type="text" name="product_option[{{$val['id']}}][{{$val['option_id']}}][value]" value="{{$val['value']}}" placeholder="选项值" class="form-control">
+                                        </div>
+                                    </div>
+                                @elseif($res['option'][$val['option_id']]['type']=='textarea')
+                                    <div class="form-group">
+                                        <label class="control-label">选项值</label>
+                                        <div class="">
+                                            <textarea name="product_option[{{$val['id']}}][{{$val['option_id']}}][value]" rows="5" placeholder="选项值" class="form-control">{{$val['value']}}</textarea>
+                                        </div>
+                                    </div>
+                                @elseif($res['option'][$val['option_id']]['type']=='date' || $res['option'][$val['option_id']]['type']=='time' || $res['option'][$val['option_id']]['type']=='datetime-local')
+                                    <div class="form-group">
+                                        <label class="control-label">选项值</label>
+                                        <div class="">
+                                            <input type="{{$res['option'][$val['option_id']]['type']}}" name="product_option[{{$val['id']}}][{{$val['option_id']}}][value]" value="{{$val['value']}}" placeholder="选项值" class="form-control">
+                                        </div>
+                                    </div>
                                 @endif
                             </div>
                         </li>
                         @endforeach
                     </ul>
-                    <button class="btn btn-primary" type="submit">保存</button>
                 </div>
+
+            </div>
+            <div class="d-flex justify-content-center">
+                <button class="btn btn-primary" type="submit">保存</button>
             </div>
 
-
         </div>
-
     </form>
 </div>
 <style>
@@ -129,8 +120,10 @@
                 for(let i in arr){
                     html += `<div class="search_res_item">
                         <div class="name">${i}</div><ul>`
-                    for(let j in arr[i]){
-                        html += `<li data-id="${arr[i][j]['id']}" data-type="${arr[i][j]['type']}" onclick="add_option(this)">${arr[i][j]['name']}</li>`
+                    if(arr[i].length>0){
+                        for(let j in arr[i]){
+                            html += `<li data-id="${arr[i][j]['id']}" data-type="${arr[i][j]['type']}" onclick="add_option(this)">${arr[i][j]['name']}</li>`
+                        }
                     }
                     html += `</ul></div>`
                 }
@@ -146,6 +139,11 @@
         $('.option_value_ul_box>li[data-product_option_id="'+product_option_id+'"]').addClass('curr')
     }
 
+    function search_delDiv(product_option_id,_this){
+        $(_this).closest('.item').remove();
+        $('.option_value_ul_box>li[data-product_option_id="'+product_option_id+'"]').remove();
+    }
+
     function add_option(_this) {
         let id = randomId(8)
         let name = $(_this).text();
@@ -155,18 +153,18 @@
         $('.option_value_ul_box>li').removeClass('curr')
         $('.option_ul>li').removeClass('curr')
         let option_name = `<li class="item d-flex curr" onclick="show_option_value_li('${id}',this)">
-                                <div class="search_delDiv" onclick="search_delDiv(this)"><i class="uni app-jian"></i></div>
+                                <div class="search_delDiv" onclick="search_delDiv('${id}',this)"><i class="uni app-jian"></i></div>
                                 <div class="text">${name}</div>
                            </li>`;
         $('.option_ul').append(option_name);
         let option_value_li_html = option_value_li(option_type,option_id,id);
         let option_value = `<li data-option_id="${option_id}" data-product_option_id="${id}" class="curr">
-                            <div class="form-group">
-                                <label class="control-label">必填项</label>
+                            <div class="form-group d-flex">
+                                <label class="control-label option_required">必填项</label>
                                 <div class="">
                                     <select name="product_option[${id}][${option_id}][required]" class="form-control">
                                         @foreach($dict['yes_no'] as $key=>$val)
-                                            <option value="{{$key}}">{{$val}}</option>
+                                            <option value="{{$key}}" @if($key==2) selected @endif>{{$val}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -187,12 +185,26 @@
 
                 </ul>`
         }else if(type=='text'){
+            html += `<div class="form-group">
+                        <label class="control-label">选项值</label>
+                        <div class="">
+                            <input type="text" name="product_option[${id}][${option_id}][value]" value="" placeholder="选项值" class="form-control">
+                        </div>
+                    </div>`
         }else if(type=='textarea'){
-        }else if(type=='file'){
-        }else if(type=='date'){
-        }else if(type=='time'){
-        }else if(type=='datetime'){
-
+            html += `<div class="form-group">
+                        <label class="control-label">选项值</label>
+                        <div class="">
+                            <textarea name="product_option[${id}][${option_id}][value]" rows="5" placeholder="选项值" class="form-control"></textarea>
+                        </div>
+                    </div>`
+        }else if(type=='date' || type=='time' || type=='datetime-local'){
+            html += `<div class="form-group">
+                        <label class="control-label">选项值</label>
+                        <div class="">
+                            <input type="${type}" name="product_option[${id}][${option_id}][value]" value="" placeholder="选项值" class="form-control">
+                        </div>
+                    </div>`
         }
         return html;
     }
@@ -221,9 +233,8 @@
                     <span><input type="text" name="product_option[${id}][${option_id}][option_value][${vid}][price]"></span>
                     <span><input type="number" name="product_option[${id}][${option_id}][option_value][${vid}][points]"></span>
                     <span><input type="text" name="product_option[${id}][${option_id}][option_value][${vid}][weight]"></span>
-                    <span><i class="uni app-jian"></i></span>
+                    <span><i class="uni app-jian option_value_jian"></i></span>
                 </li>`
-
         $(_this).closest('ul').append(li);
     }
 
@@ -244,6 +255,11 @@
             e.stopPropagation()
             $('.search_res').hide();
             search_ajax(this)
+        })
+
+        $('.option').on('click', '.option_value_jian', function (e) {
+            e.stopPropagation()
+            $(this).closest('li').remove()
         })
     })
 </script>

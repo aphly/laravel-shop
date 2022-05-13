@@ -5,22 +5,17 @@ namespace Aphly\LaravelShop\Models\Product;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;
 
-class ProductOption extends Model
+class ProductFilter extends Model
 {
     use HasFactory;
-    protected $table = 'shop_product_option';
+    protected $table = 'shop_product_filter';
+    protected $primaryKey = ['product_id','category_id'];
+    public $incrementing = false;
     public $timestamps = false;
 
     protected $fillable = [
         'product_id',
-        'option_id',
-        'value','required'
+        'filter_id'
     ];
-
-    function value_arr(){
-        return $this->hasMany(ProductOptionValue::class,'product_option_id','id');
-    }
-
-
 
 }

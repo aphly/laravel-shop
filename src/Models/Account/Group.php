@@ -2,6 +2,7 @@
 
 namespace Aphly\LaravelShop\Models\Account;
 
+use Aphly\LaravelShop\Models\Product\ProductReward;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;
 
@@ -16,5 +17,8 @@ class Group extends Model
         'name','description','sort'
     ];
 
+    function reward(){
+        return $this->hasOne(ProductReward::class,'group_id');
+    }
 
 }

@@ -13,8 +13,6 @@ class Customer extends Model
     public $incrementing = false;
     public $timestamps = false;
 
-    const ROLE_ID = 4;
-
     protected $fillable = [
         'uuid','address_id','role_id'
     ];

@@ -5,6 +5,7 @@ namespace Aphly\LaravelShop\Controllers\Admin\Catalog;
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Libs\UploadFile;
 use Aphly\LaravelShop\Controllers\Controller;
+use Aphly\LaravelShop\Models\Account\Group;
 use Aphly\LaravelShop\Models\Common\Attribute;
 use Aphly\LaravelShop\Models\Common\AttributeGroup;
 use Aphly\LaravelShop\Models\Common\Category;
@@ -16,10 +17,13 @@ use Aphly\LaravelShop\Models\Product\Product;
 use Aphly\LaravelShop\Models\Product\ProductAttribute;
 use Aphly\LaravelShop\Models\Product\ProductCategory;
 use Aphly\LaravelShop\Models\Product\ProductDesc;
+use Aphly\LaravelShop\Models\Product\ProductDiscount;
 use Aphly\LaravelShop\Models\Product\ProductFilter;
 use Aphly\LaravelShop\Models\Product\ProductImage;
 use Aphly\LaravelShop\Models\Product\ProductOption;
 use Aphly\LaravelShop\Models\Product\ProductOptionValue;
+use Aphly\LaravelShop\Models\Product\ProductReward;
+use Aphly\LaravelShop\Models\Product\ProductSpecial;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -317,6 +321,80 @@ class ProductController extends Controller
         throw new ApiException(['code'=>0,'msg'=>'success','data'=>['list'=>$list]]);
     }
 
+    public function reward(Request $request){
+        $res['product'] = $this->getProductId($request);
+        $product_id = $res['product']->id;
+        if($request->isMethod('post')) {
+            ProductReward::where('product_id',$product_id)->delete();
+            $product_reward = $request->input('product_reward',[]);
+            if($product_reward){
+                $update_arr = [];
+                foreach ($product_reward as $key=>$val){
+                    $update_arr[] = ['group_id'=>$key,'points'=>$val,'product_id'=>$product_id];
+                }
+                ProductReward::insert($update_arr);
+            }
+            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
+        }else{
+            $res['group'] = Group::get()->keyBy('id')->toArray();
+            $res['product_reward'] = ProductReward::where('product_id',$product_id)->get()->keyBy('group_id')->toArray();
+            return $this->makeView('laravel-shop::admin.catalog.product.reward',['res'=>$res]);
+        }
+    }
+
+    public function special(Request $request){
+        $res['product'] = $this->getProductId($request);
+        $product_id = $res['product']->id;
+        if($request->isMethod('post')) {
+            $product_special = $request->input('product_special',[]);
+            $productSpecial_data = ProductSpecial::where('product_id',$product_id)->get()->toArray();
+            $del_arr = $this->getDelArr($productSpecial_data,$product_special);
+            if($del_arr){
+                ProductSpecial::whereIn('id',$del_arr)->delete();
+            }
+            $update = [];
+            foreach ($product_special as $k => $v) {
+                $arr_v = $v;
+                $arr_v['id'] = intval($k);
+                $arr_v['product_id'] = $product_id;
+                $arr_v['date_start'] = strtotime($v['date_start']);
+                $arr_v['date_end'] = strtotime($v['date_end']);
+                $update[] = $arr_v;
+            }
+            ProductSpecial::upsert($update,['id'],['product_id','group_id','price','date_start','date_end']);
+            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
+        }else{
+            $res['group'] = Group::get()->keyBy('id')->toArray();
+            $res['product_special'] = ProductSpecial::where('product_id',$product_id)->get()->toArray();
+            return $this->makeView('laravel-shop::admin.catalog.product.special',['res'=>$res]);
+        }
+    }
+
+    public function discount(Request $request){
+        $res['product'] = $this->getProductId($request);
+        $product_id = $res['product']->id;
+        if($request->isMethod('post')) {
+            $product_discount = $request->input('product_discount',[]);
+            $productDiscount_data = ProductDiscount::where('product_id',$product_id)->get()->toArray();
+            $del_arr = $this->getDelArr($productDiscount_data,$product_discount);
+            if($del_arr){
+                ProductDiscount::whereIn('id',$del_arr)->delete();
+            }
+            $update = [];
+            foreach ($product_discount as $k => $v) {
+                $arr_v = $v;
+                $arr_v['id'] = intval($k);
+                $arr_v['product_id'] = $product_id;
+                $update[] = $arr_v;
+            }
+            ProductDiscount::upsert($update,['id'],['product_id','group_id','price','quantity']);
+            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
+        }else{
+            $res['group'] = Group::get()->keyBy('id')->toArray();
+            $res['product_discount'] = ProductDiscount::where('product_id',$product_id)->get()->toArray();
+            return $this->makeView('laravel-shop::admin.catalog.product.discount',['res'=>$res]);
+        }
+    }
 
     public function getDelArr($data,$input){
         $ids = array_column($data,'id');

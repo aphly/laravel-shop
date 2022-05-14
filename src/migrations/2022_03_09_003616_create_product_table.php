@@ -22,7 +22,7 @@ return new class extends Migration
             $table->decimal('price')->nullable();
             $table->tinyInteger('shipping')->nullable()->default(1);
             $table->unsignedInteger('points')->nullable();
-            $table->unsignedInteger('tax_class_id')->nullable();
+            $table->unsignedInteger('tax_class_id')->nullable()->default(1);
             $table->tinyInteger('stock_status_id');
             $table->float('weight')->nullable();
             $table->tinyInteger('weight_class_id');
@@ -31,12 +31,12 @@ return new class extends Migration
             $table->float('height')->nullable();
             $table->tinyInteger('length_class_id');
             $table->tinyInteger('subtract')->default(1);
-            $table->tinyInteger('minimum')->default(1)->nullable();
+            $table->tinyInteger('minimum')->nullable()->default(1);
             $table->tinyInteger('status')->default(1)->index();
             $table->unsignedInteger('viewed')->nullable()->default(0);
             $table->unsignedInteger('sale')->nullable()->default(0);
             $table->unsignedInteger('sort')->nullable();
-            $table->unsignedInteger('date_add')->nullable();
+            $table->unsignedInteger('date_add');
         });
     }
 

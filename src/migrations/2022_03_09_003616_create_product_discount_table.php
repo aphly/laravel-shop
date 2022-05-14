@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('shop_product_discount', function (Blueprint $table) {
             $table->id();
-            $table->integer('product_id')->unsigned()->index();
-            $table->integer('group_id')->unsigned()->default(0);
-            $table->integer('quantity')->unsigned()->default(0);
-            $table->decimal('percentage')->unsigned()->default(0);
+            $table->unsignedInteger('product_id')->index();
+            $table->unsignedInteger('group_id')->index();
+            $table->unsignedInteger('quantity')->nullable()->default(0);
+            $table->decimal('price')->unsigned()->nullable()->default(0);
         });
     }
 

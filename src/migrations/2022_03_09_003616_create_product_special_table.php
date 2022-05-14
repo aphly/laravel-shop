@@ -15,9 +15,11 @@ return new class extends Migration
     {
         Schema::create('shop_product_special', function (Blueprint $table) {
             $table->id();
-            $table->integer('product_id')->unsigned()->index();
-            $table->integer('group_id')->unsigned()->default(0);
-            $table->decimal('price')->unsigned()->default(0);
+            $table->unsignedInteger('product_id')->index();
+            $table->unsignedInteger('group_id')->index();
+            $table->decimal('price')->default(0);
+            $table->unsignedInteger('date_start')->nullable();
+            $table->unsignedInteger('date_end')->nullable();
         });
     }
 

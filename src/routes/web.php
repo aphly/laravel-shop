@@ -1,5 +1,6 @@
 <?php
 
+use Aphly\LaravelShop\Models\Product\ProductReward;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -58,8 +59,8 @@ Route::middleware(['web'])->group(function () {
 Route::middleware(['web'])->group(function () {
 
     Route::get('/test', function (){
-
-        dd($list='');
+        $list = ProductReward::where('product_id',1)->get()->keyBy('group_id')->toArray();
+        dd($list);
         return view('welcome');
     });
 
@@ -94,8 +95,6 @@ Route::middleware(['web'])->group(function () {
             Route::get('/group/form', 'Aphly\LaravelShop\Controllers\Admin\Customer\GroupController@form');
             Route::post('/group/save', 'Aphly\LaravelShop\Controllers\Admin\Customer\GroupController@save');
 
-
-
             Route::get('/product/index', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@index');
             Route::get('/product/form', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@form');
             Route::post('/product/save', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@save');
@@ -112,6 +111,9 @@ Route::middleware(['web'])->group(function () {
             Route::match(['post'],'/product/{id}/img_save', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@imgSave')->where('id', '[0-9]+');
             Route::match(['get'],'/product_img/{id}/del', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@imgDel')->where('id', '[0-9]+');
 
+            Route::match(['get', 'post'],'/product/reward', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@reward');
+            Route::match(['get', 'post'],'/product/special', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@special');
+            Route::match(['get', 'post'],'/product/discount', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@discount');
 
 
         });

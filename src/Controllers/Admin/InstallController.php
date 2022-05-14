@@ -62,12 +62,16 @@ class InstallController extends Controller
         $data[] =['dict_id' => 10003,'name'=>'下架','value'=>'2','fixed'=>'0'];
         DB::table('admin_dict_value')->insert($data);
 
+        $data=[];
+        $data[] =['name' => 'lv1'];
+        DB::table('shop_customer_group')->insert($data);
         return 'install_ok';
     }
     public function uninstall(){
         DB::table('shop_country')->truncate();
         DB::table('shop_zone')->truncate();
         DB::table('shop_currency')->truncate();
+        DB::table('shop_customer_group')->truncate();
 
         $admin_menu = DB::table('admin_menu')->where('module_id',2);
         $arr = $admin_menu->get()->toArray();

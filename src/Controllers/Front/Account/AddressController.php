@@ -24,7 +24,7 @@ class AddressController extends Controller
         $res['country'] = (new Country)->findAllIds($country_ids);
         $res['zone'] = (new Zone)->findAllIds($zone_ids);
         $res['customer'] = Customer::find(session('user')['uuid']);
-        return $this->makeView('laravel-shop::account.address',['res'=>$res]);
+        return $this->makeView('laravel-shop::front.account.address',['res'=>$res]);
     }
 
     public function save(Request $request){
@@ -51,9 +51,11 @@ class AddressController extends Controller
             $res['info'] = Address::where(['uuid'=>session('user')['uuid'],'id'=>$address_id])->firstOrNew();
             if($res['info'] && in_array($res['info']->country_id,$country_keys)){
                 $res['zone'] = (new Zone)->getListOpenCache($res['info']->country_id);
+            }else{
+                $res['zone'] = [];
             }
             $res['customer'] = Customer::find(session('user')['uuid']);
-            return $this->makeView('laravel-shop::account.address_form',['res'=>$res]);
+            return $this->makeView('laravel-shop::front.account.address_form',['res'=>$res]);
         }
     }
 

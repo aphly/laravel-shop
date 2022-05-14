@@ -12,7 +12,7 @@ class CustomerController extends Controller
     {
         $res['title'] = '';
         //$res['user'] = session('user');
-        return $this->makeView('laravel-shop::account.index',['res'=>$res]);
+        return $this->makeView('laravel-shop::front.account.index',['res'=>$res]);
     }
 
 

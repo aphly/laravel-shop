@@ -112,7 +112,7 @@ class HomeController extends Controller
                 $redirect = $redirect??'/account/index';
 
                 //新增
-                Customer::create(['uuid'=>$userAuth->uuid,'role_id'=>Customer::ROLE_ID]);
+                Customer::create(['uuid'=>$userAuth->uuid,'group_id'=>1]);
 
                 (new MailSend())->do($post['identifier'],new Verify($userAuth));
                 throw new ApiException(['code'=>0,'msg'=>'添加成功','data'=>['redirect'=>$redirect,'user'=>$user_arr]]);

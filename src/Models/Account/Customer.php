@@ -14,7 +14,7 @@ class Customer extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'uuid','address_id','role_id'
+        'uuid','address_id','group_id'
     ];
 
 

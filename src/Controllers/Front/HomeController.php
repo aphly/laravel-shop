@@ -4,11 +4,11 @@ namespace Aphly\LaravelShop\Controllers\Front;
 
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Libs\Helper;
-use Aphly\Laravel\Mail\Forget;
+use Aphly\LaravelShop\Mail\Forget;
 use Aphly\Laravel\Mail\MailSend;
-use Aphly\Laravel\Mail\Verify;
-use Aphly\Laravel\Requests\LoginRequest;
-use Aphly\Laravel\Requests\RegisterRequest;
+use Aphly\LaravelShop\Mail\Verify;
+use Aphly\LaravelShop\Requests\LoginRequest;
+use Aphly\LaravelShop\Requests\RegisterRequest;
 use Aphly\LaravelAdmin\Models\User;
 use Aphly\LaravelAdmin\Models\UserAuth;
 use Aphly\LaravelShop\Controllers\Controller;

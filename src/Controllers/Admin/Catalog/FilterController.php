@@ -74,4 +74,17 @@ class FilterController extends Controller
         }
     }
 
+    public function ajax(Request $request){
+        $name = $request->query('name',false);
+        $list = Filter::leftJoin('shop_filter_group as group','group.id','=','shop_filter.filter_group_id')
+            ->when($name,
+                function($query,$name) {
+                    return $query->where('shop_filter.name', 'like', '%'.$name.'%');
+                })
+            ->where('group.status', 1)
+            ->selectRaw("shop_filter.*,concat(group.name,' \> ',shop_filter.name) as name_all,group.status as status")
+            ->get()->toArray();
+        throw new ApiException(['code'=>0,'msg'=>'success','data'=>['list'=>$list]]);
+    }
+
 }

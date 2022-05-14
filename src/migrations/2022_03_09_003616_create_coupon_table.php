@@ -19,11 +19,11 @@ return new class extends Migration
             $table->string('code',16);
             $table->char('type',1);
             $table->decimal('discount');
-            $table->tinyInteger('is_login')->default(1);
+            $table->tinyInteger('is_login')->default(1)->nullable();
             $table->tinyInteger('shipping')->default(1);
-            $table->decimal('total');
-            $table->integer('date_start')->unsigned();
-            $table->integer('date_end')->unsigned();
+            $table->decimal('total')->nullable()->default(0);
+            $table->integer('date_start')->unsigned()->nullable();
+            $table->integer('date_end')->unsigned()->nullable();
             $table->integer('uses_total')->unsigned();
             $table->integer('uses_user')->unsigned();
             $table->tinyInteger('status')->default(1);

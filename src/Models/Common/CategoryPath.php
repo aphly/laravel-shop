@@ -29,4 +29,14 @@ class CategoryPath extends Model
         $insertData[] = ['category_id'=>$id,'path_id'=>$id,'level'=>$level];
         DB::table($this->table)->upsert($insertData, ['category_id', 'path_id']);
     }
+
+    public function getByIds($ids){
+        return self::leftJoin('shop_category as c1','c1.id','=','shop_category_path.category_id')
+            ->leftJoin('shop_category as c2','c2.id','=','shop_category_path.path_id')
+            ->whereIn('c1.id', $ids)
+            ->groupBy('category_id')
+            ->selectRaw('any_value(c1.`id`) AS id,any_value(shop_category_path.`category_id`) AS category_id,
+            GROUP_CONCAT(c2.`name` ORDER BY shop_category_path.level SEPARATOR \'&nbsp;&nbsp;&gt;&nbsp;&nbsp;\') AS name')
+            ->get()->keyBy('id')->toArray();
+    }
 }

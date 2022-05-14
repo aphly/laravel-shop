@@ -3,26 +3,12 @@
     <h5 class="nav-title">商品 - {{$res['product']->name}}</h5>
 </div>
 <style>
-    .links .search_text{padding: 10px; margin-bottom: 20px;background-color: #f5f5f5;box-shadow: inset 0 1px 1px rgb(0 0 0 / 5%);min-height: 150px;border: 1px solid #e3e3e3;}
-    .links .search{position: relative;}
-    .links .search_input {
-        outline: none;
-        height: 32px;
-        line-height: 32px;
-        width: 100%;
-        padding: 0 10px;
-        border: 1px solid #999;
-        border-radius: 4px;
-    }
-    .links .search_res_item .name{padding: 5px 20px;line-height: 30px;cursor: pointer;}
-    .links .search_res_item .name:hover{background: #f1f1f1;}
-    .links .category_jian:hover{color: #bd0404;}
-    .links .category_jian{cursor: pointer}
+
 </style>
 <div class="imain">
     <form method="post" action="/shop_admin/product/links" class="save_form">
         @csrf
-        <div class="links">
+        <div class="links ajaxData">
             <input type="hidden" name="product_id" value="{{$res['product']->id}}">
             <div class="form-group">
                 <label for="">分类</label>
@@ -62,7 +48,7 @@
 <script>
     function search_ajax(_this,type) {
         $.ajax({
-            url:'/shop_admin/product/'+type+'_ajax?name='+$(_this).val(),
+            url:'/shop_admin/'+type+'/ajax?name='+$(_this).val(),
             dataType: "json",
             success:function (res) {
                 let arr = res.data.list;

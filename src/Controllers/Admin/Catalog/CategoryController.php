@@ -65,4 +65,22 @@ class CategoryController extends Controller
         }
     }
 
+    public function ajax(Request $request){
+        $name = $request->query('name',false);
+        $list = CategoryPath::leftJoin('shop_category as c1','c1.id','=','shop_category_path.category_id')
+            ->leftJoin('shop_category as c2','c2.id','=','shop_category_path.path_id')
+            ->when($name,
+                function($query,$name) {
+                    return $query->where('c1.name', 'like', '%'.$name.'%');
+                })
+            ->where('c1.status', 1)
+            ->groupBy('category_id')
+            ->selectRaw('any_value(c1.`id`) AS id,any_value(shop_category_path.`category_id`) AS category_id,
+                GROUP_CONCAT(c2.`name` ORDER BY shop_category_path.level SEPARATOR \'&nbsp;&nbsp;&gt;&nbsp;&nbsp;\') AS name,
+                any_value(c1.`status`) AS status,
+                any_value(c1.`sort`) AS sort')
+            ->get()->toArray();
+        throw new ApiException(['code'=>0,'msg'=>'success','data'=>['list'=>$list]]);
+    }
+
 }

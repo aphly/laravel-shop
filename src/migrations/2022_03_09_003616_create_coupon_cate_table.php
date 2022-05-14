@@ -14,9 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('shop_coupon_cate', function (Blueprint $table) {
-            $table->integer('coupon_id')->unsigned();
-            $table->integer('cate_id')->unsigned();
-            $table->primary(['coupon_id','cate_id']);
+            $table->unsignedInteger('coupon_id')->index();
+            $table->unsignedInteger('category_id')->index();
+            $table->primary(['coupon_id','category_id']);
         });
     }
 

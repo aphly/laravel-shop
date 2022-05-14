@@ -48,6 +48,19 @@ class ProductController extends Controller
         return $this->makeView('laravel-shop::admin.catalog.product.index',['res'=>$res]);
     }
 
+    public function ajax(Request $request)
+    {
+        $name = $request->query('name',false);
+        $list = Product::when($name,
+                function($query,$name) {
+                    return $query->where('name', 'like', '%'.$name.'%');
+                })
+            ->where('status', 1)
+            ->select('id','name')
+            ->get()->toArray();
+        throw new ApiException(['code'=>0,'msg'=>'success','data'=>['list'=>$list]]);
+    }
+
     public function form(Request $request)
     {
         $res['product'] = Product::where('id',$request->query('id',0))->firstOrNew();
@@ -267,18 +280,11 @@ class ProductController extends Controller
                 }
                 ProductFilter::insert($update_arr);
             }
-
             throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
         }else{
             $res['product_category'] = ProductCategory::where('product_id',$product_id)->get()->toArray();
             $category_ids = array_column($res['product_category'],'category_id');
-            $res['category'] = $category_ids?(CategoryPath::leftJoin('shop_category as c1','c1.id','=','shop_category_path.category_id')
-                ->leftJoin('shop_category as c2','c2.id','=','shop_category_path.path_id')
-                ->whereIn('c1.id', $category_ids)
-                ->groupBy('category_id')
-                ->selectRaw('any_value(c1.`id`) AS id,any_value(shop_category_path.`category_id`) AS category_id,
-            GROUP_CONCAT(c2.`name` ORDER BY shop_category_path.level SEPARATOR \'&nbsp;&nbsp;&gt;&nbsp;&nbsp;\') AS name')
-                ->get()->keyBy('id')->toArray()):[];
+            $res['category'] = (new CategoryPath)->getByIds($category_ids);
 
             $res['product_filter'] = ProductFilter::where('product_id',$product_id)->get()->toArray();
             $filter_ids = array_column($res['product_filter'],'filter_id');
@@ -288,37 +294,6 @@ class ProductController extends Controller
                 ->get()->keyBy('id')->toArray();
             return $this->makeView('laravel-shop::admin.catalog.product.links',['res'=>$res]);
         }
-    }
-
-    public function linksCategory(Request $request){
-        $name = $request->query('name',false);
-        $list = CategoryPath::leftJoin('shop_category as c1','c1.id','=','shop_category_path.category_id')
-            ->leftJoin('shop_category as c2','c2.id','=','shop_category_path.path_id')
-            ->when($name,
-                function($query,$name) {
-                    return $query->where('c1.name', 'like', '%'.$name.'%');
-                })
-            ->where('c1.status', 1)
-            ->groupBy('category_id')
-            ->selectRaw('any_value(c1.`id`) AS id,any_value(shop_category_path.`category_id`) AS category_id,
-                GROUP_CONCAT(c2.`name` ORDER BY shop_category_path.level SEPARATOR \'&nbsp;&nbsp;&gt;&nbsp;&nbsp;\') AS name,
-                any_value(c1.`status`) AS status,
-                any_value(c1.`sort`) AS sort')
-            ->get()->toArray();
-        throw new ApiException(['code'=>0,'msg'=>'success','data'=>['list'=>$list]]);
-    }
-
-    public function linksFilter(Request $request){
-        $name = $request->query('name',false);
-        $list = Filter::leftJoin('shop_filter_group as group','group.id','=','shop_filter.filter_group_id')
-            ->when($name,
-                function($query,$name) {
-                    return $query->where('shop_filter.name', 'like', '%'.$name.'%');
-                })
-            ->where('group.status', 1)
-            ->selectRaw("shop_filter.*,concat(group.name,' \> ',shop_filter.name) as name_all,group.status as status")
-            ->get()->toArray();
-        throw new ApiException(['code'=>0,'msg'=>'success','data'=>['list'=>$list]]);
     }
 
     public function reward(Request $request){

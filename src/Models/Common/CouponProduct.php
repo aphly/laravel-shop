@@ -9,6 +9,8 @@ class CouponProduct extends Model
 {
     use HasFactory;
     protected $table = 'shop_coupon_product';
+    protected $primaryKey = ['coupon_id','category_id'];
+    public $incrementing = false;
     public $timestamps = false;
 
     protected $fillable = [

@@ -8,17 +8,28 @@
     .nav_num{display:inline-block;vertical-align:text-bottom;width:26px;height:26px;line-height:26px;border-radius:100%;background:#3ea0c0;overflow:hidden;white-space:nowrap;color:#fff;text-align:center;}
     .nav-r i{ color: #333;font-size: 26px;margin-right: 5px;}
     .nav-r{margin: 0 10px;}
+
+    .nav > li .dropdown-menu {margin: 0;}
+    .nav > li:hover .dropdown-menu {display: block;}
 </style>
     <div class="fixed-top">
         <div class="container">
             <div class="d-flex justify-content-between">
                 <div class="d-flex top_left">
                     <img class="" src="" alt="logo">
-                    <ul class="d-flex">
-                        <li>Eyeglasses</li>
-                        <li>Sunglasses</li>
-                        <li>Collections</li>
-                        <li>Sale</li>
+                    <ul class="nav nav-pills">
+                        @foreach($category as $val)
+                        <li class="dropdown">
+                            <a href="/product/category/{{$val['id']}}">{{$val['name']}}</a>
+                            @if(isset($val['child']))
+                            <ul class="dropdown-menu">
+                                @foreach($val['child'] as $v)
+                                <li><a href="/product/category/{{$v['id']}}">{{$v['name']}}</a></li>
+                                @endforeach
+                            </ul>
+                            @endif
+                        </li>
+                        @endforeach
                     </ul>
                 </div>
                 <div class="d-flex align-items-center" >

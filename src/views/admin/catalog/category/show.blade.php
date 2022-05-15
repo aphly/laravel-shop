@@ -91,6 +91,7 @@
     var fast_del_url = '/shop_admin/category/del';
     var fast_del_url_return = '/shop_admin/category/show';
     var _token = '{{csrf_token()}}';
+    var hide_id = [];
 
     $(function () {
         fast_show_btn()
@@ -98,8 +99,6 @@
             levels: 3,
             collapseIcon:'uni app-arrow-right-copy',
             expandIcon:'uni app-arrow-right',
-            selectedBackColor:'#f3faff',
-            selectedColor:'#212529',
             data,
             onNodeSelected: function(event, data) {
                 id = data.id

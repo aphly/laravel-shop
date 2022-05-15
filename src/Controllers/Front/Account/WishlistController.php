@@ -3,7 +3,7 @@
 namespace Aphly\LaravelShop\Controllers\Front\Account;
 
 use Aphly\Laravel\Exceptions\ApiException;
-use Aphly\LaravelShop\Controllers\Controller;
+use Aphly\LaravelShop\Controllers\Front\Controller;
 use Aphly\LaravelShop\Models\Account\Wishlist;
 use Aphly\LaravelShop\Models\Product\Product;
 use Illuminate\Http\Request;

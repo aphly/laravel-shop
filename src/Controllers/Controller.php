@@ -5,6 +5,9 @@ namespace Aphly\LaravelShop\Controllers;
 //use Aphly\Laravel\Libs\Func;
 //use Aphly\Laravel\Models\Dictionary;
 
+use Aphly\LaravelAdmin\Models\Dict;
+use Illuminate\Support\Facades\View;
+
 class Controller extends \Aphly\LaravelAdmin\Controllers\Controller
 {
 //    public $filter_id=13;
@@ -22,4 +25,6 @@ class Controller extends \Aphly\LaravelAdmin\Controllers\Controller
 //        }
 //        return $res['arr'];
 //    }
+
+
 }

@@ -11,7 +11,6 @@ use Aphly\LaravelShop\Requests\LoginRequest;
 use Aphly\LaravelShop\Requests\RegisterRequest;
 use Aphly\LaravelAdmin\Models\User;
 use Aphly\LaravelAdmin\Models\UserAuth;
-use Aphly\LaravelShop\Controllers\Controller;
 use Aphly\LaravelShop\Models\Account\Customer;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;

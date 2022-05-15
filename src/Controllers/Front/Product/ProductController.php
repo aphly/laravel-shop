@@ -2,7 +2,7 @@
 
 namespace Aphly\LaravelShop\Controllers\Front\Product;
 
-use Aphly\LaravelShop\Controllers\Controller;
+use Aphly\LaravelShop\Controllers\Front\Controller;
 use Aphly\LaravelShop\Models\Account\Wishlist;
 use Aphly\LaravelShop\Models\Product\Product;
 use Illuminate\Http\Request;

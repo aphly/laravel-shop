@@ -1,7 +1,7 @@
 <?php
 
-use Aphly\LaravelShop\Models\Product\Product;
-use Aphly\LaravelShop\Models\Product\ProductReward;
+
+use Aphly\LaravelShop\Models\Common\Category;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -54,13 +54,18 @@ Route::middleware(['web'])->group(function () {
 
     });
 
+    //分类
+    Route::get('/product/category/{id}', 'Aphly\LaravelShop\Controllers\Front\Product\CategoryController@index');
+
+
+
 });
 
 
 Route::middleware(['web'])->group(function () {
 
     Route::get('/test', function (){
-        $res['product'] = Product::whereIn('id',[])->select('name','id')->get()->keyBy('id')->toArray();
+        $res['product'] = (new Category)->getCategory();
         dd($res['product']);
         return view('welcome');
     });

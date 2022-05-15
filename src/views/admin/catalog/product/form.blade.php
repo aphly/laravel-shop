@@ -19,12 +19,12 @@
             </div>
             <div class="form-group">
                 <label for="">quantity</label>
-                <input type="number" name="quantity" class="form-control " value="{{$res['product']->quantity}}">
+                <input type="number" name="quantity" class="form-control " value="{{$res['product']->quantity??0}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
                 <label for="">price</label>
-                <input type="text" name="price" class="form-control " value="{{$res['product']->price}}">
+                <input type="text" name="price" class="form-control " value="{{$res['product']->price??0}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
@@ -40,7 +40,7 @@
             </div>
             <div class="form-group">
                 <label for="">所需积分</label>
-                <input type="text" name="points" class="form-control " value="{{$res['product']->points}}">
+                <input type="text" name="points" class="form-control " value="{{$res['product']->points??0}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
@@ -56,7 +56,7 @@
             </div>
             <div class="form-group">
                 <label for="">weight</label>
-                <input type="text" name="weight" class="form-control " value="{{$res['product']->weight}}">
+                <input type="text" name="weight" class="form-control " value="{{$res['product']->weight??0}}">
 
                 <select name="weight_class_id"  class="form-control">
                     @if(isset($dict['weight_class']))
@@ -68,11 +68,11 @@
             </div>
             <div class="form-group">
                 <label for="">length</label>
-                <input type="text" name="length" class="form-control " value="{{$res['product']->length}}">
+                <input type="text" name="length" class="form-control " value="{{$res['product']->length??0}}">
                 <label for="">width</label>
-                <input type="text" name="width" class="form-control " value="{{$res['product']->width}}">
+                <input type="text" name="width" class="form-control " value="{{$res['product']->width??0}}">
                 <label for="">height</label>
-                <input type="text" name="height" class="form-control " value="{{$res['product']->height}}">
+                <input type="text" name="height" class="form-control " value="{{$res['product']->height??0}}">
 
                 <select name="length_class_id"  class="form-control">
                     @if(isset($dict['length_class']))
@@ -95,7 +95,7 @@
             </div>
             <div class="form-group">
                 <label for="">最小购买数量</label>
-                <input type="number" name="minimum" class="form-control " value="{{$res['product']->minimum}}">
+                <input type="number" name="minimum" class="form-control " value="{{$res['product']->minimum??0}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">

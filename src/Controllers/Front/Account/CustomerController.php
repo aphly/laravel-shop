@@ -3,7 +3,7 @@
 namespace Aphly\LaravelShop\Controllers\Front\Account;
 
 use Aphly\Laravel\Exceptions\ApiException;
-use Aphly\LaravelShop\Controllers\Controller;
+use Aphly\LaravelShop\Controllers\Front\Controller;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller

@@ -9,7 +9,13 @@
                 <div class="product-text">
                     <span class="product-icon-text-style2">New</span>
                 </div>
-                {{$val['name']}}
+                {{$val->name}}
+                - {{$val->sale}}
+                - {{$val->viewed}}
+                - {{$val->date_available}}
+                - {{$val->price}}
+                - {{$val->rating}}
+                - {{$val->special}}
             </li>
         @endforeach
     </ul>

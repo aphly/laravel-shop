@@ -67,6 +67,10 @@ class HomeController extends Controller
                             $user_arr['identity_type'] = $userAuth->identity_type;
                             $user_arr['identifier'] = $userAuth->identifier;
                             session(['user'=>$user_arr]);
+                            $customer = Customer::where(['uuid'=>$user_arr['uuid']])->first();
+                            if($customer->uuid){
+                                session()->push('customer', ['group_id'=>$customer->group_id,'address_id'=>$customer->address_id]);
+                            }
                             $redirect = Cookie::get('refer');
                             $redirect = $redirect??'/index';
                             throw new ApiException(['code'=>0,'msg'=>'登录成功','data'=>['redirect'=>$redirect,'user'=>$user_arr]]);
@@ -111,8 +115,10 @@ class HomeController extends Controller
                 $redirect = $redirect??'/account/index';
 
                 //新增
-                Customer::create(['uuid'=>$userAuth->uuid,'group_id'=>1]);
-
+                $customer = Customer::create(['uuid'=>$userAuth->uuid,'group_id'=>1]);
+                if($customer->uuid){
+                    session()->push('customer', ['group_id'=>$customer->group_id,'address_id'=>$customer->address_id]);
+                }
                 (new MailSend())->do($post['identifier'],new Verify($userAuth));
                 throw new ApiException(['code'=>0,'msg'=>'添加成功','data'=>['redirect'=>$redirect,'user'=>$user_arr]]);
             }else{

@@ -20,8 +20,7 @@ class CategoryController extends Controller
                 'category_id' => $category_info->id,
                 'filter'      => $request->query('filter')
             ];
-            $res['list'] = Product::where('status',1)->orderBy('date_add','desc')->Paginate(config('shop.perPage'))->withQueryString();
-
+            $res['list'] = (new Product)->getProducts($category_info->id,false,'红');
         }
 
         return $this->makeView('laravel-shop::front.product.category.index',['res'=>$res]);

@@ -99,6 +99,11 @@
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
+                <label for="">上架时间</label>
+                <input type="datetime-local" name="date_available" class="form-control " value="{{$res['product']->date_available?date('Y-m-d',$res['product']->date_available)."T".date('H:i',$res['product']->date_available):0}}">
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="form-group">
                 <label for="">状态</label>
                 <select name="status"  class="form-control">
                     @if(isset($dict['product_status']))

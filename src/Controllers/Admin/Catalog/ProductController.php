@@ -64,13 +64,13 @@ class ProductController extends Controller
     public function form(Request $request)
     {
         $res['product'] = Product::where('id',$request->query('id',0))->firstOrNew();
-
         return $this->makeView('laravel-shop::admin.catalog.product.form',['res'=>$res]);
     }
 
     public function save(Request $request){
         $input = $request->all();
         $input['date_add'] = time();
+        $input['date_available'] = strtotime($input['date_available']);
         Product::updateOrCreate(['id'=>$request->query('id',0)],$input);
         throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
     }

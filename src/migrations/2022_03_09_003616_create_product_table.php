@@ -33,6 +33,7 @@ return new class extends Migration
             $table->tinyInteger('subtract')->default(1);
             $table->tinyInteger('minimum')->nullable()->default(1);
             $table->tinyInteger('status')->default(1)->index();
+            $table->unsignedInteger('date_available')->nullable()->default(0);
             $table->unsignedInteger('viewed')->nullable()->default(0);
             $table->unsignedInteger('sale')->nullable()->default(0);
             $table->unsignedInteger('sort')->nullable();

@@ -55,7 +55,7 @@ Route::middleware(['web'])->group(function () {
     });
 
     //分类
-    Route::get('/product/category/{id}', 'Aphly\LaravelShop\Controllers\Front\Product\CategoryController@index');
+    Route::get('/product/category', 'Aphly\LaravelShop\Controllers\Front\Product\CategoryController@index');
 
 
 

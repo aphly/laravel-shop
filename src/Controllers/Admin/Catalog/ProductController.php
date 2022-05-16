@@ -70,7 +70,7 @@ class ProductController extends Controller
     public function save(Request $request){
         $input = $request->all();
         $input['date_add'] = time();
-        $input['date_available'] = strtotime($input['date_available']);
+        $input['date_available'] = $input['date_available']?strtotime($input['date_available']):time();
         Product::updateOrCreate(['id'=>$request->query('id',0)],$input);
         throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
     }

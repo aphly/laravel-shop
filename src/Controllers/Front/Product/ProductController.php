@@ -12,11 +12,12 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
-        $res['title'] = '';
-        $res['list'] = Product::where()->orderBy('date_add','desc')->Paginate(config('shop.perPage'))->withQueryString();
+
+        $res['list'] = Product::where('id',$request->id)->with('img')->first();
 
         return $this->makeView('laravel-shop::product.index',['res'=>$res]);
     }
+
 
 
 }

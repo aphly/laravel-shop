@@ -16,12 +16,12 @@ return new class extends Migration
         Schema::create('shop_information', function (Blueprint $table) {
             $table->id();
             $table->string('title',64);
-            $table->integer('sort')->unsigned();
+            $table->unsignedInteger('sort')->nullable()->default(0);
             $table->tinyInteger('status');
-            $table->text('description');
-            $table->string('meta_title',255);
-            $table->string('meta_keyword',255);
-            $table->string('meta_description',255);
+            $table->text('description')->nullable();
+            $table->string('meta_title',255)->nullable();
+            $table->string('meta_keyword',255)->nullable();
+            $table->string('meta_description',255)->nullable();
         });
     }
 

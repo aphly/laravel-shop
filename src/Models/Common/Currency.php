@@ -26,4 +26,6 @@ class Currency extends Model
             return self::where('status', 1)->get()->keyBy('code')->toArray();
         });
     }
+
+
 }

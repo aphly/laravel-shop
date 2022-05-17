@@ -88,6 +88,7 @@ Route::middleware(['web'])->group(function () {
                     ['filter','\Catalog\FilterController'],['country','\System\CountryController'],
                     ['zone','\System\ZoneController'],['currency','\System\CurrencyController'],
                     ['attribute','\Catalog\AttributeController'],['option','\Catalog\OptionController'],
+                    ['information','\Catalog\InformationController'],['review','\Catalog\ReviewController'],
                 ];
             foreach ($route_arr as $val){
                 Route::get('/'.$val[0].'/index', 'Aphly\LaravelShop\Controllers\Admin'.$val[1].'@index');

@@ -62,7 +62,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="">产品</label>
+                <label for="">商品</label>
                 <div class="search">
                     <input class="search_input search_input_product" >
                     <div class="search_res"></div>
@@ -117,7 +117,7 @@
 
 </div>
 <style>
-.coupon
+
 </style>
 <script>
     function search_ajax(_this,type) {

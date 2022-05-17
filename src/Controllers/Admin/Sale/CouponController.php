@@ -45,7 +45,7 @@ class CouponController extends Controller
 
     public function save(Request $request){
         $input = $request->all();
-        $input['date_add']= time();
+        $input['date_add'] = $input['date_add']??time();
         $coupon = Coupon::updateOrCreate(['id'=>$request->query('id',0)],$input);
         CouponCategory::where('coupon_id',$coupon->id)->delete();
         $coupon_category = $request->input('coupon_category',[]);

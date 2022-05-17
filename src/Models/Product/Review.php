@@ -17,4 +17,7 @@ class Review extends Model
         'author','text','rating','status','date_add','date_edit'
     ];
 
+    function product(){
+        return $this->hasOne(Product::class,'id','product_id');
+    }
 }

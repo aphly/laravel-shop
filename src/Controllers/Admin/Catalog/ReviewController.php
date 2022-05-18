@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 class ReviewController extends Controller
 {
     public $index_url='/shop_admin/review/index';
-
+    //图片未增加
     public function index(Request $request)
     {
         $res['filter']['string'] = http_build_query($request->query());

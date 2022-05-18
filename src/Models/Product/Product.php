@@ -27,14 +27,20 @@ class Product extends Model
         return $this->hasMany(ProductImage::class,'product_id');
     }
 
+    public $sub_category = false;
+
     public function getProducts($data = []) {
         $filter = $data['filter'];
         $sort = $data['sort'];
         $time = time();
         $group_id = session()->has('customer')?session('customer')['group_id']:0;
         if($data['category_id']){
-            $sql = DB::table('shop_category_path as cp')->leftJoin('shop_product_category as pc','cp.category_id','=','pc.category_id')
-                ->when($filter, function ($query) {
+            if($this->sub_category){
+                $sql = DB::table('shop_category_path as cp')->leftJoin('shop_product_category as pc','cp.category_id','=','pc.category_id');
+            }else{
+                $sql = DB::table('shop_product_category as pc');
+            }
+            $sql->when($filter, function ($query) {
                     return $query->leftJoin('shop_product_filter as pf','pc.product_id','=','pf.product_id');
                 });
             $sql->leftJoin('shop_product as p','pc.product_id','=','p.id' );
@@ -43,7 +49,11 @@ class Product extends Model
         }
         $sql->where('p.status',1)->where('p.date_available','<=',time());
         if($data['category_id']){
-            $sql->where('cp.path_id',$data['category_id']);
+            if($this->sub_category) {
+                $sql->where('cp.path_id', $data['category_id']);
+            }else{
+                $sql->where('pc.category_id', $data['category_id']);
+            }
             if($filter){
                 $implode = [];
                 $filters = explode(',', $filter);

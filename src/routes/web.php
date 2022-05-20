@@ -89,6 +89,7 @@ Route::middleware(['web'])->group(function () {
                     ['zone','\System\ZoneController'],['currency','\System\CurrencyController'],
                     ['attribute','\Catalog\AttributeController'],['option','\Catalog\OptionController'],
                     ['information','\Catalog\InformationController'],['review','\Catalog\ReviewController'],
+                    ['group','\Customer\GroupController']
                 ];
             foreach ($route_arr as $val){
                 Route::get('/'.$val[0].'/index', 'Aphly\LaravelShop\Controllers\Admin'.$val[1].'@index');
@@ -97,10 +98,9 @@ Route::middleware(['web'])->group(function () {
                 Route::post('/'.$val[0].'/del', 'Aphly\LaravelShop\Controllers\Admin'.$val[1].'@del');
             }
 
-            Route::get('/group/index', 'Aphly\LaravelShop\Controllers\Admin\Customer\GroupController@index');
-            Route::post('/group/del', 'Aphly\LaravelShop\Controllers\Admin\Customer\GroupController@del');
-            Route::get('/group/form', 'Aphly\LaravelShop\Controllers\Admin\Customer\GroupController@form');
-            Route::post('/group/save', 'Aphly\LaravelShop\Controllers\Admin\Customer\GroupController@save');
+            Route::get('/customer/index', 'Aphly\LaravelShop\Controllers\Admin\Customer\CustomerController@index');
+            Route::post('/customer/save', 'Aphly\LaravelShop\Controllers\Admin\Customer\CustomerController@save');
+            Route::get('/customer/form', 'Aphly\LaravelShop\Controllers\Admin\Customer\CustomerController@form');
 
             Route::get('/product/index', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@index');
             Route::get('/product/form', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@form');

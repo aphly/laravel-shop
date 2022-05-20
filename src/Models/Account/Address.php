@@ -43,17 +43,17 @@ class Address extends Model
         }
     }
 
-    public function getAddresses() {
+    public function getAddresses($uuid = 0) {
+        $uuid = $uuid??Auth::guard('user')->user()->uuid;
         $address_data = [];
-        $data = self::where(['uuid'=>Auth::guard('user')->user()->uuid])->get()->toArray();
+        $data = self::where(['uuid'=>$uuid])->get()->toArray();
         $country = (new Country)->getListCache();
         $zone = (new Zone)->getListCache();
         foreach ($data as $v){
             $address_data[] = array(
-                'address_id'     => $v['address_id'],
+                'address_id'     => $v['id'],
                 'firstname'      => $v['firstname'],
                 'lastname'       => $v['lastname'],
-                'company'        => $v['company'],
                 'address_1'      => $v['address_1'],
                 'address_2'      => $v['address_2'],
                 'postcode'       => $v['postcode'],

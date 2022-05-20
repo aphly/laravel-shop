@@ -8,7 +8,7 @@
     <div class="itop ">
         <form method="get" action="/shop_admin/customer/index" class="select_form">
         <div class="filter ">
-            <input type="search" name="name" placeholder="customer name" value="{{$res['filter']['name']}}">
+            <input type="search" name="uuid" placeholder="customer uuid" value="{{$res['filter']['uuid']}}">
             <button class="" type="submit">搜索</button>
         </div>
         </form>
@@ -23,20 +23,24 @@
             <div class="table">
                 <ul class="table_header">
                     <li >ID</li>
-                    <li >customer name</li>
-                    <li >sort</li>
+                    <li >customer identity_type</li>
+                    <li >customer nickname</li>
                     <li >操作</li>
                 </ul>
                 @if($res['list']->total())
                     @foreach($res['list'] as $v)
                     <ul class="table_tbody">
-                        <li><input type="checkbox" class="delete_box" name="delete[]" value="{{$v['id']}}">{{$v['id']}}</li>
-                        <li>{{ $v['name'] }}</li>
+                        <li><input type="checkbox" class="delete_box" name="delete[]" value="{{$v['uuid']}}">{{$v['uuid']}}</li>
                         <li>
-                            {{$v->sort}}
+                            @foreach($v->user_auth as $val)
+                                {{$val->identity_type}} : {{$val->identifier}}
+                            @endforeach
                         </li>
                         <li>
-                            <a class="badge badge-info ajax_get" data-href="/shop_admin/customer/form?id={{$v['id']}}">编辑</a>
+                            {{ $v->user->nickname }}
+                        </li>
+                        <li>
+                            <a class="badge badge-info ajax_get" data-href="/shop_admin/customer/form?uuid={{$v['uuid']}}">编辑</a>
                         </li>
                     </ul>
                     @endforeach

@@ -4,7 +4,9 @@ namespace Aphly\LaravelShop\Controllers\Admin\Customer;
 
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\LaravelShop\Controllers\Controller;
+use Aphly\LaravelShop\Models\Account\Address;
 use Aphly\LaravelShop\Models\Account\Customer;
+use Aphly\LaravelShop\Models\Account\Group;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
@@ -13,21 +15,27 @@ class CustomerController extends Controller
 
     public function index(Request $request)
     {
-        $res['filter']['email'] = $email = $request->query('email',false);
+        $res['filter']['uuid'] = $uuid = $request->input('uuid',false);
         $res['filter']['string'] = http_build_query($request->query());
-        $res['list'] = Customer::leftjoin('')
-            ->when($name,
-                function($query,$name) {
-                    return $query->where('name', 'like', '%'.$name.'%');
+        $res['list'] = Customer::with('user')->with('user_auth')
+            ->when($uuid,
+                function($query,$uuid) {
+                    return $query->where('uuid', 'like', '%'.$uuid.'%');
                 })
             ->Paginate(config('admin.perPage'))->withQueryString();
-        return $this->makeView('laravel-shop::admin.customer.group.index',['res'=>$res]);
+        return $this->makeView('laravel-shop::admin.customer.customer.index',['res'=>$res]);
     }
 
     public function form(Request $request)
     {
         $res['customer'] = Customer::where('uuid',$request->query('uuid',0))->firstOrNew();
-        return $this->makeView('laravel-shop::admin.customer.group.form',['res'=>$res]);
+        $res['customer_group'] = Group::get()->toArray();
+        if($res['customer']->uuid){
+            $res['customer_addr'] = (new Address)->getAddresses($res['customer']->uuid);
+        }else{
+            $res['customer_addr'] = [];
+        }
+        return $this->makeView('laravel-shop::admin.customer.customer.form',['res'=>$res]);
     }
 
     public function save(Request $request){

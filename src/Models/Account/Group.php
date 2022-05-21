@@ -5,6 +5,7 @@ namespace Aphly\LaravelShop\Models\Account;
 use Aphly\LaravelShop\Models\Product\ProductReward;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;
+use Illuminate\Support\Facades\Cache;
 
 class Group extends Model
 {
@@ -21,4 +22,9 @@ class Group extends Model
         return $this->hasOne(ProductReward::class,'group_id');
     }
 
+    public function findAll() {
+        return Cache::rememberForever('group', function () {
+            return self::get()->keyBy('id')->toArray();
+        });
+    }
 }

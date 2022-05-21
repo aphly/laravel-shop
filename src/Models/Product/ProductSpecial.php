@@ -2,6 +2,8 @@
 
 namespace Aphly\LaravelShop\Models\Product;
 
+use Aphly\LaravelShop\Models\Common\Currency;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;
 
@@ -17,5 +19,13 @@ class ProductSpecial extends Model
         'group_id',
         'price','date_start','date_end'
     ];
+
+    protected function price(): Attribute
+    {
+        return new Attribute(
+            get: fn ($value) => Currency::format($value)
+        );
+    }
+
 
 }

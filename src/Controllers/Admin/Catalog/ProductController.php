@@ -181,22 +181,6 @@ class ProductController extends Controller
         }
     }
 
-    public function attributeAjax(Request $request){
-        $name = $request->query('name',false);
-        $list = AttributeGroup::leftJoin('shop_attribute','shop_attribute_group.id','=','shop_attribute.attribute_group_id')
-            ->when($name,function($query,$name) {
-                return $query->where('shop_attribute.name', 'like', '%'.$name.'%');
-            })
-            ->select('shop_attribute.*','shop_attribute_group.name as groupname')
-            ->where('shop_attribute_group.status',1)->get()->toArray();
-        $attr_res = [];
-        foreach ($list as $val){
-            $attr_res[$val['attribute_group_id']]['groupname'] = $val['groupname'];
-            $attr_res[$val['attribute_group_id']]['child'][$val['id']] = $val['name'];
-        }
-        throw new ApiException(['code'=>0,'msg'=>'success','data'=>['list'=>$attr_res]]);
-    }
-
     public function option(Request $request)
     {
         $res['product'] = $this->getProductId($request);

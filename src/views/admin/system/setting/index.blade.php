@@ -80,7 +80,17 @@
                     </div>
                 </div>
                 <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-
+                    <div class="form-group">
+                        <label for="">默认会员等级</label>
+                        <select name="config[group]" class="form-control" >
+                            @if(isset($res['group']))
+                                @foreach($res['group'] as $key=>$val)
+                                    <option value="{{$key}}" @if(($res['config']['group']['value']??'')==$key) selected @endif>{{$val['name']}}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                        <div class="invalid-feedback"></div>
+                    </div>
                 </div>
             </div>
 

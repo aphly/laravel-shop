@@ -37,7 +37,7 @@
     function attribute_addDiv() {
         let html = `<li class="item d-flex">
                         <div class="search">
-                            <input class="search_input" >
+                            <input class="search_input search_input_js" >
                             <div class="search_res"></div>
                         </div>
                         <div class="text"></div>
@@ -50,17 +50,15 @@
     }
     function search_ajax(_this) {
         $.ajax({
-            url:'/shop_admin/product/attribute_ajax?name='+$(_this).val(),
+            url:'/shop_admin/attribute/ajax?name='+$(_this).val(),
             dataType: "json",
             success:function (res) {
                 let arr = res.data.list;
                 let html = ``
                 for(let i in arr){
                     html += `<div class="search_res_item"><div class="groupname">${arr[i]['groupname']}</div><ul>`
-                    if(arr[i]['child'].length>0){
-                        for(let j in arr[i]['child']){
-                            html += `<li data-id="${j}" data-groupname="${arr[i]['groupname']}" data-name="${arr[i]['child'][j]}" onclick="show_text(this)">${arr[i]['child'][j]}</li>`
-                        }
+                    for(let j in arr[i]['child']){
+                        html += `<li data-id="${j}" data-groupname="${arr[i]['groupname']}" data-name="${arr[i]['child'][j]}" onclick="show_text(this)">${arr[i]['child'][j]}</li>`
                     }
                     html += `</ul></div>`
                 }
@@ -82,12 +80,12 @@
                 $('.search_res').hide();
             }
         });
-        $('.add_div').on('focus', '.search_input', function (e) {
+        $('.add_div').on('focus', '.search_input_js', function (e) {
             e.stopPropagation()
             $('.search_res').hide();
             search_ajax(this)
         })
-        $('.add_div').on('keyup', '.search_input', function (e) {
+        $('.add_div').on('keyup', '.search_input_js', function (e) {
             e.stopPropagation()
             $('.search_res').hide();
             search_ajax(this)

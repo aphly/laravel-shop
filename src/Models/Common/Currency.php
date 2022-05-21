@@ -5,6 +5,7 @@ namespace Aphly\LaravelShop\Models\Common;
 use Aphly\Laravel\Models\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Cookie;
 
 class Currency extends Model
 {
@@ -29,5 +30,24 @@ class Currency extends Model
         });
     }
 
-
+    static function format($price,$string = true){
+        $currency = Cookie::get('currency');
+        $info = Currency::where('code',$currency)->first();
+        if($info){
+            $price = round($price, (int)$info->decimal_place);
+            if(!$string){
+                return $price;
+            }
+            $string = '';
+            if ($info->symbol_left) {
+                $string .= $info->symbol_left;
+            }
+            $string .= number_format($price, (int)$info->decimal_place);
+            if ($info->symbol_right) {
+                $string .= $info->symbol_right;
+            }
+            return $string;
+        }
+        return $price;
+    }
 }

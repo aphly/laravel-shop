@@ -2,6 +2,7 @@
 
 
 use Aphly\LaravelShop\Models\Common\Category;
+use Aphly\LaravelShop\Models\Common\Setting;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -55,9 +56,9 @@ Route::middleware(['web'])->group(function () {
     });
 
     //分类
-    Route::get('/product/category', 'Aphly\LaravelShop\Controllers\Front\Product\CategoryController@index');
+    Route::get('/product/category', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@category');
 
-    Route::get('/product/{id}', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@index');
+    Route::get('/product/{id}', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@detail');
 
 });
 
@@ -65,8 +66,12 @@ Route::middleware(['web'])->group(function () {
 Route::middleware(['web'])->group(function () {
 
     Route::get('/test', function (){
-        $res['product'] = (new Category)->getCategory();
-        dd($res['product']);
+        $arr = (new setting)->where('code','config')->get()->toArray();
+        $res = [];
+        foreach ($arr as $val){
+            $res[$val['code']][$val['key']] = $val['value'];
+        }
+        dd($res);
         return view('welcome');
     });
 
@@ -110,7 +115,6 @@ Route::middleware(['web'])->group(function () {
             Route::post('/product/save', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@save');
             Route::match(['get', 'post'],'/product/desc', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@desc');
             Route::match(['get', 'post'],'/product/attribute', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@attribute');
-            Route::get('/product/attribute_ajax', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@attributeAjax');
             Route::match(['get', 'post'],'/product/option', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@option');
             Route::get('/product/option_ajax', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@optionAjax');
             Route::match(['get', 'post'],'/product/links', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@links');
@@ -133,6 +137,8 @@ Route::middleware(['web'])->group(function () {
             Route::get('/category/ajax', 'Aphly\LaravelShop\Controllers\Admin\Catalog\CategoryController@ajax');
             Route::get('/filter/ajax', 'Aphly\LaravelShop\Controllers\Admin\Catalog\FilterController@ajax');
             Route::get('/product/ajax', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@ajax');
+            Route::get('/attribute/ajax', 'Aphly\LaravelShop\Controllers\Admin\Catalog\AttributeController@ajax');
+
         });
     });
 });

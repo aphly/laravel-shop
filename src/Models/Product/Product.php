@@ -2,6 +2,9 @@
 
 namespace Aphly\LaravelShop\Models\Product;
 
+use Aphly\LaravelShop\Models\Common\Currency;
+use Aphly\LaravelShop\Models\Common\Setting;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;
 use Illuminate\Support\Facades\DB;
@@ -29,11 +32,12 @@ class Product extends Model
 
     public $sub_category = false;
 
-    public function getProducts($data = []) {
+    public function getList($data = []) {
         $filter = $data['filter'];
         $sort = $data['sort'];
         $time = time();
-        $group_id = session()->has('customer')?session('customer')['group_id']:0;
+        $setting = Setting::findAll();
+        $group_id = session()->has('customer')?session('customer')['group_id']:$setting['config']['group'];
         if($data['category_id']){
             if($this->sub_category){
                 $sql = DB::table('shop_category_path as cp')->leftJoin('shop_product_category as pc','cp.category_id','=','pc.category_id');
@@ -103,5 +107,21 @@ class Product extends Model
                 }
             });
         return $sql->Paginate(config('admin.perPage'))->withQueryString();
+    }
+
+    protected function price(): Attribute
+    {
+        return new Attribute(
+            get: fn ($value) => Currency::format($value)
+        );
+    }
+
+    function getProductAttribute($id){
+        return ProductAttribute::with('attribute')->where('product_id',$id)->get()->toArray();
+    }
+
+    function getProductSpecial($id){
+        $group_id = session()->has('customer')?session('customer')['group_id']:0;
+        return ProductSpecial::where('product_id',$id)->where('group_id',$group_id)->get()->toArray();
     }
 }

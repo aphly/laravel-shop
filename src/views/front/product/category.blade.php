@@ -1,4 +1,4 @@
-@include('laravel-shop::Front.common.header')
+@include('laravel-shop::front.common.header')
 <style>
 </style>
 
@@ -6,15 +6,23 @@
     <ul class="row">
         @foreach($res['list'] as $key=>$val)
             <li class="col-lg-4">
+                <a href="/product/{{$val->id}}">
                 <div class="product-text">
                     <span class="product-icon-text-style2">New</span>
                 </div>
-                {{$val['name']}}
+                {{$val->name}}
+                - {{$val->sale}}
+                - {{$val->viewed}}
+                - {{$val->date_available}}
+                - {{$val->price}}
+                - {{$val->rating}}
+                - {{$val->special}}
+                </a>
             </li>
         @endforeach
     </ul>
     <div>
-        {{$res['list']->links('laravel-shop::common.pagination')}}
+        {{$res['list']->links('laravel-shop::front.common.pagination')}}
     </div>
 </div>
 <style>
@@ -50,4 +58,4 @@ $(function () {
 })
 </script>
 
-@include('laravel-shop::Front.common.footer')
+@include('laravel-shop::front.common.footer')

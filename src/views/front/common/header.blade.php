@@ -20,11 +20,11 @@
                     <ul class="nav nav-pills">
                         @foreach($category as $val)
                         <li class="dropdown">
-                            <a href="/product/category/{{$val['id']}}">{{$val['name']}}</a>
+                            <a href="/product/category?id={{$val['id']}}">{{$val['name']}}</a>
                             @if(isset($val['child']))
                             <ul class="dropdown-menu">
                                 @foreach($val['child'] as $v)
-                                <li><a href="/product/category/{{$v['id']}}">{{$v['name']}}</a></li>
+                                <li><a href="/product/category?id={{$v['id']}}">{{$v['name']}}</a></li>
                                 @endforeach
                             </ul>
                             @endif

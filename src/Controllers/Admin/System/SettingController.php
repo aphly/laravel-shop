@@ -4,6 +4,7 @@ namespace Aphly\LaravelShop\Controllers\Admin\System;
 
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\LaravelShop\Controllers\Controller;
+use Aphly\LaravelShop\Models\Account\Group;
 use Aphly\LaravelShop\Models\Common\Country;
 use Aphly\LaravelShop\Models\Common\Currency;
 use Aphly\LaravelShop\Models\Common\Setting;
@@ -18,6 +19,7 @@ class SettingController extends Controller
         $res['config'] = Setting::where('code','config')->get()->keyBy('key')->toArray();
         $res['currency'] = (new Currency)->findAll();
         $res['country'] = (new Country)->findAll();
+        $res['group'] = (new Group)->findAll();
         return $this->makeView('laravel-shop::admin.system.setting.index',['res'=>$res]);
     }
 

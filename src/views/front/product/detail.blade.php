@@ -27,7 +27,16 @@
             </li>
         @endforeach
     </ul>
+    {{$res['info_special']->price??''}}
+    {{$res['info_reward']->points??''}}
 
+    <ul class=" ">
+        @foreach($res['info_discount'] as $v)
+            <li class="item">
+               {{$v['quantity']}} {{$v['price']}}
+            </li>
+        @endforeach
+    </ul>
 </div>
 <style>
 </style>

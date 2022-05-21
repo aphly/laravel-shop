@@ -30,6 +30,8 @@ class Product extends Model
         return $this->hasMany(ProductImage::class,'product_id');
     }
 
+
+
     public $sub_category = false;
 
     public function getList($data = []) {
@@ -116,12 +118,26 @@ class Product extends Model
         );
     }
 
-    function getProductAttribute($id){
+    function findAttribute($id){
         return ProductAttribute::with('attribute')->where('product_id',$id)->get()->toArray();
     }
 
-    function getProductSpecial($id){
-        $group_id = session()->has('customer')?session('customer')['group_id']:0;
-        return ProductSpecial::where('product_id',$id)->where('group_id',$group_id)->get()->toArray();
+    function findSpecial($id){
+        $setting = Setting::findAll();
+        $group_id = session()->has('customer')?session('customer')['group_id']:$setting['config']['group'];
+        return ProductSpecial::where('product_id',$id)->where('group_id',$group_id)->first();
     }
+
+    function findReward($id){
+        $setting = Setting::findAll();
+        $group_id = session()->has('customer')?session('customer')['group_id']:$setting['config']['group'];
+        return ProductReward::where('product_id',$id)->where('group_id',$group_id)->first();
+    }
+
+    function findDiscount($id){
+        $setting = Setting::findAll();
+        $group_id = session()->has('customer')?session('customer')['group_id']:$setting['config']['group'];
+        return ProductDiscount::where('product_id',$id)->where('group_id',$group_id)->get()->toArray();
+    }
+
 }

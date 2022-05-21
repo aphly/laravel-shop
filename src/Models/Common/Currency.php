@@ -22,7 +22,7 @@ class Currency extends Model
         return $res?$res->toArray():[];
     }
 
-    public function findAll(Int $status=0) {
+    static public function findAll(Int $status=0) {
         return Cache::rememberForever('currency'.$status, function () use ($status){
             return self::when($status,function ($query,$status){
                 return $query->where('status',$status);
@@ -32,19 +32,19 @@ class Currency extends Model
 
     static function format($price,$string = true){
         $currency = Cookie::get('currency');
-        $info = Currency::where('code',$currency)->first();
+        $info = self::findAll()[$currency];
         if($info){
-            $price = round($price, (int)$info->decimal_place);
+            $price = round($price, (int)$info['decimal_place']);
             if(!$string){
                 return $price;
             }
             $string = '';
-            if ($info->symbol_left) {
-                $string .= $info->symbol_left;
+            if ($info['symbol_left']) {
+                $string .= $info['symbol_left'];
             }
-            $string .= number_format($price, (int)$info->decimal_place);
-            if ($info->symbol_right) {
-                $string .= $info->symbol_right;
+            $string .= number_format($price, (int)$info['decimal_place']);
+            if ($info['symbol_right']) {
+                $string .= $info['symbol_right'];
             }
             return $string;
         }

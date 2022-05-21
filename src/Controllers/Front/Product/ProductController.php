@@ -33,8 +33,10 @@ class ProductController extends Controller
     {
         $res['info'] = Product::where('id',$request->id)->with('img')->with('desc')->first();
         if($res['info']->id){
-            $res['info_attr'] = $res['info']->getProductAttribute($res['info']->id);
-
+            $res['info_attr'] = $res['info']->findAttribute($res['info']->id);
+            $res['info_special'] = $res['info']->findSpecial($res['info']->id);
+            $res['info_reward'] = $res['info']->findReward($res['info']->id);
+            $res['info_discount'] = $res['info']->findDiscount($res['info']->id);
         }
         return $this->makeView('laravel-shop::front.product.detail',['res'=>$res]);
     }

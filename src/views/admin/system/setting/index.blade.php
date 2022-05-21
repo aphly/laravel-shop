@@ -1,62 +1,93 @@
+
 <div class="top-bar">
     <h5 class="nav-title">setting</h5>
 </div>
-<style>
-    .table_scroll .table_header li:nth-child(2),.table_scroll .table_tbody li:nth-child(2){flex: 0 0 300px;}
-</style>
 <div class="imain">
+    <form method="post" action="/shop_admin/setting/save" class="save_form">
+        @csrf
+        <div class="">
+            <nav style="margin-bottom: 20px;">
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">shop</a>
+                    <a class="nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">本地参数</a>
+                    <a class="nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">选项</a>
+                </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
 
-    <form method="post"  @if($res['filter']['string']) action="/shop_admin/country/del?{{$res['filter']['string']}}" @else action="/shop_admin/country/del" @endif  class="del_form">
-    @csrf
-        <div class="table_scroll">
-            <div class="table">
-                <ul class="table_header">
-                    <li >ID</li>
-                    <li >country name</li>
-                    <li >iso_code_2</li>
-                    <li >iso_code_3</li>
-                    <li >状态</li>
-                    <li >操作</li>
-                </ul>
-                @if($res['list']->total())
-                    @foreach($res['list'] as $v)
-                    <ul class="table_tbody">
-                        <li><input type="checkbox" class="delete_box" name="delete[]" value="{{$v['id']}}">{{$v['id']}}</li>
-                        <li>{{ $v['name'] }}</li>
-                        <li>
-                            {{$v['iso_code_2']}}
-                        </li>
-                        <li>
-                            {{$v['iso_code_3']}}
-                        </li>
-                        <li>
-                            @if($dict['status'])
-                                @if($v->status==1)
-                                    <span class="badge badge-success">{{$dict['status'][$v->status]}}</span>
-                                @else
-                                    <span class="badge badge-secondary">{{$dict['status'][$v->status]}}</span>
-                                @endif
+                    <div class="form-group">
+                        <label for="">email</label>
+                        <input type="text" name="config[email]" class="form-control " value="{{$res['config']['email']['value']??''}}">
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="">telephone</label>
+                        <input type="text" name="config[telephone]" class="form-control " value="{{$res['config']['telephone']['value']??''}}">
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="">address</label>
+                        <input type="text" name="config[address]" class="form-control " value="{{$res['config']['address']['value']??''}}">
+                        <div class="invalid-feedback"></div>
+                    </div>
+
+                </div>
+                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                    <div class="form-group">
+                        <label for="">国家</label>
+                        <select name="config[country]" class="form-control" >
+                            @if(isset($res['country']))
+                                @foreach($res['country'] as $key=>$val)
+                                    <option value="{{$key}}" @if(($res['config']['country']['value']??'')==$key) selected @endif>{{$val['name']}}</option>
+                                @endforeach
                             @endif
-                        </li>
-                        <li>
-                            <a class="badge badge-info ajax_get" data-href="/shop_admin/country/form?id={{$v['id']}}">编辑</a>
-                        </li>
-                    </ul>
-                    @endforeach
-                    <ul class="table_bottom">
-                        <li>
-                            <input type="checkbox" class="delete_box deleteboxall"  onclick="checkAll(this)">
-                            <button class="badge badge-danger del" type="submit">删除</button>
-                        </li>
-                        <li >
-                            {{$res['list']->links('laravel-admin::common.pagination')}}
-                        </li>
-                    </ul>
-                @endif
+                        </select>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="">货币</label>
+                        <select name="config[currency]" class="form-control" >
+                            @if(isset($res['currency']))
+                                @foreach($res['currency'] as $key=>$val)
+                                    <option value="{{$key}}" @if(($res['config']['currency']['value']??'')==$key) selected @endif>{{$val['name']}}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="">尺寸单位</label>
+                        <select name="config[length_class]" class="form-control" >
+                            @if(isset($dict['length_class']))
+                                @foreach($dict['length_class'] as $key=>$val)
+                                    <option value="{{$key}}" @if(($res['config']['length_class']['value']??'')==$key) selected @endif>{{$val}}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="">重量单位</label>
+                        <select name="config[weight_class]" class="form-control" >
+                            @if(isset($dict['weight_class']))
+                                @foreach($dict['weight_class'] as $key=>$val)
+                                    <option value="{{$key}}" @if(($res['config']['weight_class']['value']??'')==$key) selected @endif>{{$val}}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+
+                </div>
             </div>
+
+
+            <button class="btn btn-primary" type="submit">保存</button>
         </div>
-
     </form>
-</div>
 
+</div>
 

@@ -21,9 +21,11 @@ class Currency extends Model
         return $res?$res->toArray():[];
     }
 
-    public function findAllStatus() {
-        return Cache::rememberForever('currency', function (){
-            return self::where('status', 1)->get()->keyBy('code')->toArray();
+    public function findAll(Int $status=0) {
+        return Cache::rememberForever('currency'.$status, function () use ($status){
+            return self::when($status,function ($query,$status){
+                return $query->where('status',$status);
+            })->get()->keyBy('code')->toArray();
         });
     }
 

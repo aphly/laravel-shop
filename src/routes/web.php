@@ -102,6 +102,9 @@ Route::middleware(['web'])->group(function () {
             Route::post('/customer/save', 'Aphly\LaravelShop\Controllers\Admin\Customer\CustomerController@save');
             Route::get('/customer/form', 'Aphly\LaravelShop\Controllers\Admin\Customer\CustomerController@form');
 
+            Route::get('/setting/index', 'Aphly\LaravelShop\Controllers\Admin\System\SettingController@index');
+            Route::post('/setting/save', 'Aphly\LaravelShop\Controllers\Admin\System\SettingController@save');
+
             Route::get('/product/index', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@index');
             Route::get('/product/form', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@form');
             Route::post('/product/save', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@save');

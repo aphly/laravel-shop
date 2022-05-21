@@ -20,8 +20,8 @@ class Address extends Model
     public function getAddress($address_id) {
         $info = self::where(['id'=>$address_id,'uuid'=>Auth::guard('user')->user()->uuid])->first();
         if($info){
-            $country = (new Country)->getListCache();
-            $zone = (new Zone)->getListCache();
+            $country = (new Country)->findAll();
+            $zone = (new Zone)->findAll();
             return array(
                 'address_id'     => $info['address_id'],
                 'firstname'      => $info['firstname'],
@@ -47,8 +47,8 @@ class Address extends Model
         $uuid = $uuid??Auth::guard('user')->user()->uuid;
         $address_data = [];
         $data = self::where(['uuid'=>$uuid])->get()->toArray();
-        $country = (new Country)->getListCache();
-        $zone = (new Zone)->getListCache();
+        $country = (new Country)->findAll();
+        $zone = (new Zone)->findAll();
         foreach ($data as $v){
             $address_data[] = array(
                 'address_id'     => $v['id'],

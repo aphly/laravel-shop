@@ -16,15 +16,11 @@ class Country extends Model
         'name','iso_code_2','iso_code_3','postcode_required','status','address_format'
     ];
 
-    public function getListOpenCache() {
-        return Cache::rememberForever('country_open', function (){
-            return self::where('status', 1)->orderBy('name','asc')->get()->keyBy('id')->toArray();
-        });
-    }
-
-    public function getListCache() {
-        return Cache::rememberForever('country', function (){
-            return self::get()->keyBy('id')->toArray();
+    public function findAll(Int $status=0) {
+        return Cache::rememberForever('country'.$status, function () use ($status){
+            return self::when($status,function ($query,$status){
+                return $query->where('status',$status)->orderBy('name','asc');
+            })->get()->keyBy('id')->toArray();
         });
     }
 }

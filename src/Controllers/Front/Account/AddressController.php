@@ -46,11 +46,11 @@ class AddressController extends Controller
             throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>'/account/address']]);
         }else{
             $res['title'] = '';
-            $res['country'] = (new Country)->getListOpenCache();
+            $res['country'] = (new Country)->findAll(1);
             $country_keys = array_keys($res['country']);
             $res['info'] = Address::where(['uuid'=>session('user')['uuid'],'id'=>$address_id])->firstOrNew();
             if($res['info'] && in_array($res['info']->country_id,$country_keys)){
-                $res['zone'] = (new Zone)->getListOpenCache($res['info']->country_id);
+                $res['zone'] = (new Zone)->findAllByCountry($res['info']->country_id);
             }else{
                 $res['zone'] = [];
             }
@@ -65,7 +65,7 @@ class AddressController extends Controller
     }
 
     public function country(Request $request){
-        $list = (new Zone)->getListOpenCache($request->id);
+        $list = (new Zone)->findAllByCountry($request->id);
         throw new ApiException(['code'=>0,'msg'=>'success','data'=>$list]);
     }
 }

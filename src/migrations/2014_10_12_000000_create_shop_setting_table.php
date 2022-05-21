@@ -15,11 +15,10 @@ return new class extends Migration
     {
         Schema::create('shop_setting', function (Blueprint $table) {
             $table->id();
-            $table->string('code',128)->index();
-            $table->string('key',128);
-            $table->string('name',64);
-            $table->text('value');
-            $table->tinyInteger('is_json')->default(0);
+            $table->string('code',32)->index();
+            $table->string('key',64);
+            $table->text('value')->nullable();
+            $table->unique(['code','key']);
         });
     }
 

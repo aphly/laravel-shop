@@ -174,7 +174,7 @@ class ProductController extends Controller
                 $update_arr[] = ['attribute_id'=>$key,'text'=>$val,'product_id'=>$product_id];
             }
             ProductAttribute::insert($update_arr);
-            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
+            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>'/shop_admin/product/attribute?product_id='.$product_id]]);
         }else{
             $res['product_attribute'] = ProductAttribute::where('product_id',$product_id)->with('attribute')->get()->toArray();
             return $this->makeView('laravel-shop::admin.catalog.product.attribute',['res'=>$res]);
@@ -221,25 +221,12 @@ class ProductController extends Controller
                     ProductOptionValue::upsert($product_option_value_update,['id'],['product_option_id','product_id','option_id','option_value_id','quantity','subtract','price','points','weight']);
                 }
             }
-            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
+            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>'/shop_admin/product/option?product_id='.$product_id]]);
         }else{
             $res['product_option'] = ProductOption::where('product_id',$product_id)->with('value_arr')->get()->toArray();
             $res['option'] = Option::with('value')->get()->keyBy('id')->toArray();
             return $this->makeView('laravel-shop::admin.catalog.product.option',['res'=>$res]);
         }
-    }
-
-    public function optionAjax(Request $request){
-        $name = $request->query('name',false);
-        $list = Option::where('status',1)->when($name,function($query,$name) {
-                return $query->where('name', 'like', '%'.$name.'%');
-            })
-            ->with('value')->get()->keyBy('id')->toArray();
-        $option_group = [];
-        foreach ($list as $val){
-            $option_group[$val['type']][] = $val;
-        }
-        throw new ApiException(['code'=>0,'msg'=>'success','data'=>['list'=>$list,'option_group'=>$option_group]]);
     }
 
     public function links(Request $request){

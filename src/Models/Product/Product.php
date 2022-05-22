@@ -155,7 +155,7 @@ class Product extends Model
         $res = [];
         foreach ($productOption as $key=>$val){
             $res[$key] = $val;
-            $res[$key]['product_option_value'] = $productOptionValueGroup[$val['id']];
+            $res[$key]['product_option_value'] = $productOptionValueGroup[$val['id']]??[];
         }
         if($render){
             return $this->optionRender($res);

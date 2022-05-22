@@ -111,7 +111,7 @@
     var ajax_res_data = @json($res['option']);
     function search_ajax(_this) {
         $.ajax({
-            url:'/shop_admin/product/option_ajax?name='+$(_this).val(),
+            url:'/shop_admin/option/ajax?name='+$(_this).val(),
             dataType: "json",
             success:function (res) {
                 ajax_res_data = res.data.list

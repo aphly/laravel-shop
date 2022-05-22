@@ -6,6 +6,7 @@
     .product_img .item input{width: 100%;    text-align: center;}
     .product_img .item .delImg{text-align: center; background: #df6767; color: #fff; border-radius: 50%; margin-top: 5px; position: absolute; right: 5px; top: 5px;height: 24px; width: 24px; cursor: pointer;}
     .product_img .item .delImg:hover{background:#a30606;}
+    label img{width: 50px;height: 50px;}
 </style>
 <div class="container">
     {{$res['info']->name}} {{$res['info']->price}}
@@ -37,13 +38,28 @@
             </li>
         @endforeach
     </ul>
-    {!! $res['info_option'] !!}
+    <form method="post" action="" class="form-horizontal bv-form ">
+        @csrf
+        <input type="hidden" name="product_id" value="{{$res['info']->id}}">
+        {!! $res['info_option'] !!}
+        <div class="form-group">
+            <label class="control-label" for="input-quantity">数量</label>
+            <input type="text" name="quantity" value="1" class="form-control">
+        </div>
+        <button id="save-address" class="btn-default w120" onclick="cart_add()">Save</button>
+    </form>
+
 </div>
 <style>
 </style>
 <script>
+function cart_add() {
+
+}
+
 $(function () {
-    $('#carouselIndicators').carousel()
+
 })
+
 </script>
 @include('laravel-shop::Front.common.footer')

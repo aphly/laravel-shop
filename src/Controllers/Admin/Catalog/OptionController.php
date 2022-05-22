@@ -95,4 +95,17 @@ class OptionController extends Controller
         }
     }
 
+    public function ajax(Request $request){
+        $name = $request->query('name',false);
+        $list = Option::where('status',1)->when($name,function($query,$name) {
+            return $query->where('name', 'like', '%'.$name.'%');
+        })
+            ->with('value')->get()->keyBy('id')->toArray();
+        $option_group = [];
+        foreach ($list as $val){
+            $option_group[$val['type']][] = $val;
+        }
+        throw new ApiException(['code'=>0,'msg'=>'success','data'=>['list'=>$list,'option_group'=>$option_group]]);
+    }
+
 }

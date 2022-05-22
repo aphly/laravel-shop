@@ -37,6 +37,7 @@
             </li>
         @endforeach
     </ul>
+    {!! $res['info_option'] !!}
 </div>
 <style>
 </style>

@@ -37,6 +37,7 @@ class ProductController extends Controller
             $res['info_special'] = $res['info']->findSpecial($res['info']->id);
             $res['info_reward'] = $res['info']->findReward($res['info']->id);
             $res['info_discount'] = $res['info']->findDiscount($res['info']->id);
+            $res['info_option'] = $res['info']->findOption($res['info']->id,true);
         }
         return $this->makeView('laravel-shop::front.product.detail',['res'=>$res]);
     }

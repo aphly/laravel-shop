@@ -2,7 +2,10 @@
 
 
 use Aphly\LaravelShop\Models\Common\Category;
+use Aphly\LaravelShop\Models\Common\Currency;
 use Aphly\LaravelShop\Models\Common\Setting;
+use Aphly\LaravelShop\Models\Product\ProductOption;
+use Aphly\LaravelShop\Models\Product\ProductOptionValue;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -66,10 +69,18 @@ Route::middleware(['web'])->group(function () {
 Route::middleware(['web'])->group(function () {
 
     Route::get('/test', function (){
-        $arr = (new setting)->where('code','config')->get()->toArray();
+        $productOption = ProductOption::where('product_id',2)->with('option')->get()->toArray();
+        $product_option_ids = array_column($productOption,'id');
+        $productOptionValue = ProductOptionValue::whereIn('product_option_id',$product_option_ids)->with('option_value')->get()->toArray();
+        $productOptionValueGroup = [] ;
+        foreach ($productOptionValue as $val){
+            $val['price_format'] = Currency::format($val['price']);
+            $productOptionValueGroup[$val['product_option_id']][] = $val;
+        }
         $res = [];
-        foreach ($arr as $val){
-            $res[$val['code']][$val['key']] = $val['value'];
+        foreach ($productOption as $key=>$val){
+            $res[$key] = $val;
+            $res[$key]['product_option_value'] = $productOptionValueGroup[$val['id']];
         }
         dd($res);
         return view('welcome');

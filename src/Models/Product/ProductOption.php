@@ -2,6 +2,7 @@
 
 namespace Aphly\LaravelShop\Models\Product;
 
+use Aphly\LaravelShop\Models\Common\Option;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;
 
@@ -21,6 +22,9 @@ class ProductOption extends Model
         return $this->hasMany(ProductOptionValue::class,'product_option_id','id');
     }
 
+    function option(){
+        return $this->hasOne(Option::class,'id','option_id');
+    }
 
 
 }

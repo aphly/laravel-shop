@@ -97,7 +97,7 @@
                 </div>
 
             </div>
-            <div class="d-flex justify-content-center">
+            <div class="d-flex justify-content-end" style="margin-right: 20px">
                 <button class="btn btn-primary" type="submit">保存</button>
             </div>
 
@@ -222,17 +222,17 @@
                           ${option}
                     </select>
                     </span>
-                    <span><input type="number" name="product_option[${id}][${option_id}][option_value][${vid}][quantity]"></span>
+                    <span><input type="number" name="product_option[${id}][${option_id}][option_value][${vid}][quantity]" value="1"></span>
                     <span>
                         <select name="product_option[${id}][${option_id}][option_value][${vid}][subtract]" class="form-control">
                             @foreach($dict['yes_no'] as $key=>$val)
-                                <option value="{{$key}}">{{$val}}</option>
+                                <option value="{{$key}}" @if($key==2) selected @endif>{{$val}}</option>
                             @endforeach
                         </select>
                     </span>
-                    <span><input type="text" name="product_option[${id}][${option_id}][option_value][${vid}][price]"></span>
-                    <span><input type="number" name="product_option[${id}][${option_id}][option_value][${vid}][points]"></span>
-                    <span><input type="text" name="product_option[${id}][${option_id}][option_value][${vid}][weight]"></span>
+                    <span><input type="text" name="product_option[${id}][${option_id}][option_value][${vid}][price]" value="0"></span>
+                    <span><input type="number" name="product_option[${id}][${option_id}][option_value][${vid}][points]" value="0"></span>
+                    <span><input type="text" name="product_option[${id}][${option_id}][option_value][${vid}][weight]" value="0"></span>
                     <span><i class="uni app-jian option_value_jian"></i></span>
                 </li>`
         $(_this).closest('ul').append(li);

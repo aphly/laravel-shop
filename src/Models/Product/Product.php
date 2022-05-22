@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class Product extends Model
 {
@@ -122,22 +123,96 @@ class Product extends Model
         return ProductAttribute::with('attribute')->where('product_id',$id)->get()->toArray();
     }
 
-    function findSpecial($id){
+    function groupId(){
         $setting = Setting::findAll();
-        $group_id = session()->has('customer')?session('customer')['group_id']:$setting['config']['group'];
+        return session()->has('customer')?session('customer')['group_id']:$setting['config']['group'];
+    }
+
+    function findSpecial($id){
+        $group_id = $this->groupId();
         return ProductSpecial::where('product_id',$id)->where('group_id',$group_id)->first();
     }
 
     function findReward($id){
-        $setting = Setting::findAll();
-        $group_id = session()->has('customer')?session('customer')['group_id']:$setting['config']['group'];
+        $group_id = $this->groupId();
         return ProductReward::where('product_id',$id)->where('group_id',$group_id)->first();
     }
 
     function findDiscount($id){
-        $setting = Setting::findAll();
-        $group_id = session()->has('customer')?session('customer')['group_id']:$setting['config']['group'];
+        $group_id = $this->groupId();
         return ProductDiscount::where('product_id',$id)->where('group_id',$group_id)->get()->toArray();
     }
 
+    function findOption($id,$render=false){
+        $productOption = ProductOption::where('product_id',$id)->with('option')->get()->toArray();
+        $product_option_ids = array_column($productOption,'id');
+        $productOptionValue = ProductOptionValue::whereIn('product_option_id',$product_option_ids)->with('option_value')->get()->toArray();
+        $productOptionValueGroup = [] ;
+        foreach ($productOptionValue as $val){
+            $val['price_format'] = Currency::format($val['price']);
+            $productOptionValueGroup[$val['product_option_id']][] = $val;
+        }
+        $res = [];
+        foreach ($productOption as $key=>$val){
+            $res[$key] = $val;
+            $res[$key]['product_option_value'] = $productOptionValueGroup[$val['id']];
+        }
+        if($render){
+            return $this->optionRender($res);
+        }else{
+            return $res;
+        }
+    }
+
+    function optionRender($options){
+        $html = '';
+        foreach ($options as $val){
+            if($val['option']['type']=='select'){
+                $html .= '<div class="form-group '.($val['required']==1?'required':'').'">
+                              <label class="control-label">'.$val['option']['name'].'</label>
+                              <select name="option['.$val['id'].']" class="form-control">';
+                foreach ($val['product_option_value'] as $v){
+                    $html .= '<option value="'.$v['id'].'">'.$v['option_value']['name'].(intval($v['price'])?'(+'.$v['price_format'].')':'').'</option>';
+                }
+                $html .= '</select></div>';
+            }else if($val['option']['type']=='radio'){
+                $html .= '<div class="form-group '.($val['required']==1?'required':'').'">
+                              <label class="control-label">'.$val['option']['name'].'</label>
+                              <div>';
+                foreach ($val['product_option_value'] as $v){
+                    $img = $v['option_value']['image']?'<img src="'.Storage::url($v['option_value']['image']).'" />':'';
+                    $html .= '<label><input type="radio" name="option['.$val['id'].']" value="'.$v['id'].'" />'
+                        .$img.$v['option_value']['name'].(intval($v['price'])?'(+'.$v['price_format'].')':'').'</label>';
+                }
+                $html .= '</div></div>';
+            }else if($val['option']['type']=='checkbox'){
+                $html .= '<div class="form-group '.($val['required']==1?'required':'').'">
+                              <label class="control-label">'.$val['option']['name'].'</label>
+                              <div>';
+                foreach ($val['product_option_value'] as $v){
+                    $img = $v['option_value']['image']?'<img src="'.Storage::url($v['option_value']['image']).'" />':'';
+                    $html .= '<label><input type="checkbox" name="option['.$val['id'].']" value="'.$v['id'].'" />'
+                        .$img.$v['option_value']['name'].(intval($v['price'])?'(+'.$v['price_format'].')':'').'</label>';
+                }
+                $html .= '</div></div>';
+            }else if($val['option']['type']=='text'){
+                $html .= '<div class="form-group '.($val['required']==1?'required':'').'">
+                              <label class="control-label">'.$val['option']['name'].'</label>
+                              <input type="text" name="option['.$val['id'].']" value="'.$val['value'].'" placeholder="'.$val['option']['name'].'" class="form-control" />
+                            </div>';
+            }else if($val['option']['type']=='textarea'){
+                $html .= '<div class="form-group '.($val['required']==1?'required':'').'">
+                              <label class="control-label">'.$val['option']['name'].'</label>
+                              <textarea name="option['.$val['id'].']" placeholder="'.$val['value'].'" class="form-control" >'.$val['value'].'</textarea>
+                            </div>';
+            }else if($val['option']['type']=='date' || $val['option']['type']=='datetime-local' || $val['option']['type']=='date'){
+                $html .= '<div class="form-group '.($val['required']==1?'required':'').'">
+                              <label class="control-label">'.$val['option']['name'].'</label>
+                              <input type="'.$val['option']['type'].'" name="option['.$val['id'].']" value="'.$val['value'].'" placeholder="'.$val['value'].'" class="form-control" />
+                            </div>';
+            }
+
+        }
+        return $html;
+    }
 }

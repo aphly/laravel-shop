@@ -3,6 +3,7 @@
 namespace Aphly\LaravelShop\Models\Checkout;
 
 use Aphly\LaravelShop\Models\Product\Product;
+use Aphly\LaravelShop\Models\Product\ProductOption;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;
 use Illuminate\Support\Facades\Cookie;
@@ -58,7 +59,10 @@ class Cart extends Model
         foreach($cart_data as $val){
             if($val['quantity']>0 && $val['product']['status']==1 && $val['product']['date_available']<time()){
                 foreach (json_decode($val['option']) as $k => $v) {
-
+                    $productOption = ProductOption::where(['product_id'=>$val['product_id'],'id'=>$k])->with('option')->first();
+                    if(!empty($productOption)){
+                        $productOption->option->type;
+                    }
                 }
             }
         }

@@ -19,7 +19,7 @@ class CartController extends Controller
             $option = array_filter($request->input('option',[]));
             $product_options = $res['info']->findOption($res['info']->id);
             foreach ($product_options as $val) {
-                if ($val['required'] && empty($option[$val['product_option_id']])) {
+                if ($val['required'] && empty($option[$val['id']])) {
                     throw new ApiException(['code'=>1,'msg'=>$val['option_value']['name'].'required']);
                 }
             }

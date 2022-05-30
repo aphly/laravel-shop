@@ -189,7 +189,7 @@ class Product extends Model
                               <div>';
                 foreach ($val['product_option_value'] as $v){
                     $img = $v['option_value']['image']?'<img src="'.Storage::url($v['option_value']['image']).'" />':'';
-                    $html .= '<label><input type="checkbox" name="option['.$val['id'].']" value="'.$v['id'].'" />'
+                    $html .= '<label><input type="checkbox" name="option['.$val['id'].'][]" value="'.$v['id'].'" />'
                         .$img.$v['option_value']['name'].(intval($v['price'])?'(+'.$v['price_format'].')':'').'</label>';
                 }
                 $html .= '</div></div>';

@@ -38,23 +38,32 @@
             </li>
         @endforeach
     </ul>
-    <form method="post" action="" class="form-horizontal bv-form ">
+    <form id="product" class="form-horizontal bv-form ">
         @csrf
         <input type="hidden" name="product_id" value="{{$res['info']->id}}">
         {!! $res['info_option'] !!}
         <div class="form-group">
             <label class="control-label" for="input-quantity">数量</label>
-            <input type="text" name="quantity" value="1" class="form-control">
+            <input type="number" name="quantity" value="1" class="form-control">
         </div>
-        <button id="save-address" class="btn-default w120" onclick="cart_add()">Save</button>
+        <button id="save-address" class="btn-default w120" onclick="cart_add(event)">Add Cart</button>
     </form>
 
 </div>
 <style>
 </style>
 <script>
-function cart_add() {
-
+function cart_add(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    $.ajax({
+        url:'/cart',
+        type:'post',
+        data:$('#product input[type=\'text\'], #product input[type=\'hidden\'], #product input[type=\'radio\']:checked, #product input[type=\'checkbox\']:checked, #product select, #product textarea'),
+        success:function (res) {
+            console.log(res)
+        }
+    })
 }
 
 $(function () {

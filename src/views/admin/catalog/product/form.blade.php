@@ -9,12 +9,12 @@
         <div class="">
             <div class="form-group">
                 <label for="">商品名称</label>
-                <input type="text" name="name" class="form-control " value="{{$res['product']->name}}">
+                <input type="text" name="name" class="form-control " value="{{$res['product']->name}}" required>
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
                 <label for="">sku</label>
-                <input type="text" name="sku" class="form-control " value="{{$res['product']->sku}}">
+                <input type="text" name="sku" class="form-control " value="{{$res['product']->sku}}" required>
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">

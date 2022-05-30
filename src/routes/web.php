@@ -7,6 +7,7 @@ use Aphly\LaravelShop\Models\Common\Setting;
 use Aphly\LaravelShop\Models\Product\ProductOption;
 use Aphly\LaravelShop\Models\Product\ProductOptionValue;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -58,11 +59,14 @@ Route::middleware(['web'])->group(function () {
 
 
     });
+    //common
+    Route::get('/currency/{id}', 'Aphly\LaravelShop\Controllers\Front\Common\CurrencyController@ajax')->where('id', '[0-9]+');
 
-    //分类
+    //product
     Route::get('/product/category', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@category');
+    Route::get('/product/{id}', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@detail')->where('id', '[0-9]+');
 
-    Route::get('/product/{id}', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@detail');
+    Route::post('/cart', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@add');
 
 });
 
@@ -71,14 +75,10 @@ Route::middleware(['web'])->group(function () {
 
     Route::get('/test', function (){
 
-        dd(Cookie::get('visitor1'));
         return view('welcome');
     });
 
     Route::get('/test1', function (){
-        session()->forget(['user1','user2']);
-        session(['user1','x4']);
-        session(['user2','xb']);
         return view('welcome');
     });
 });

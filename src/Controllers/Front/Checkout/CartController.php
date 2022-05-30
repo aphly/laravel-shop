@@ -4,6 +4,7 @@ namespace Aphly\LaravelShop\Controllers\Front\Checkout;
 
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\LaravelShop\Controllers\Front\Controller;
+use Aphly\LaravelShop\Models\Checkout\Cart;
 use Aphly\LaravelShop\Models\Product\Product;
 use Illuminate\Http\Request;
 
@@ -22,9 +23,9 @@ class CartController extends Controller
                     throw new ApiException(['code'=>1,'msg'=>$val['option_value']['name'].'required']);
                 }
             }
-
+            (new Cart)->add($res['info']->id, $quantity, $option);
+            throw new ApiException(['code'=>0,'msg'=>'success']);
         }
-        return $this->makeView('laravel-shop::front.product.detail',['res'=>$res]);
     }
 
 

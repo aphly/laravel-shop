@@ -17,9 +17,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedInteger('uuid')->index();
             $table->integer('product_id')->unsigned()->index();
-            $table->char('visitor',32)->index();
+            $table->char('guest',32)->index();
             $table->unsignedInteger('quantity')->default(1);
-            $table->json('json')->nullable();
+            $table->text('option')->nullable();
             $table->integer('date_add')->unsigned();
         });
     }

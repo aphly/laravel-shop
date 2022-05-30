@@ -4,7 +4,7 @@ namespace Aphly\LaravelShop\Models\Product;
 
 use Aphly\LaravelShop\Models\Common\Currency;
 use Aphly\LaravelShop\Models\Common\Setting;
-use Illuminate\Database\Eloquent\Casts\Attribute;
+//use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;
 use Illuminate\Support\Facades\DB;
@@ -30,8 +30,6 @@ class Product extends Model
     function img(){
         return $this->hasMany(ProductImage::class,'product_id');
     }
-
-
 
     public $sub_category = false;
 
@@ -112,12 +110,12 @@ class Product extends Model
         return $sql->Paginate(config('admin.perPage'))->withQueryString();
     }
 
-    protected function price(): Attribute
-    {
-        return new Attribute(
-            get: fn ($value) => Currency::format($value)
-        );
-    }
+//    protected function price(): Attribute
+//    {
+//        return new Attribute(
+//            get: fn ($value) => Currency::format($value)
+//        );
+//    }
 
     function findAttribute($id){
         return ProductAttribute::with('attribute')->where('product_id',$id)->get()->toArray();

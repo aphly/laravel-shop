@@ -2,6 +2,7 @@
 
 namespace Aphly\LaravelShop\Models\Checkout;
 
+use Aphly\LaravelShop\Models\Product\Product;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;
 use Illuminate\Support\Facades\Cookie;
@@ -13,7 +14,7 @@ class Cart extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'uuid','product_id','session_id','quantity','json','date_add'
+        'uuid','product_id','guest','quantity','option','date_add'
     ];
 
     public function __construct() {
@@ -21,10 +22,14 @@ class Cart extends Model
         parent::__construct();
     }
 
+    function product(){
+        return $this->hasOne(Product::class,'id','product_id');
+    }
+
     public function login() {
-        $visitor = Cookie::get('visitor');
-        if($visitor){
-            $cart = self::where('visitor',$visitor);
+        $guest = Cookie::get('guest');
+        if($guest){
+            $cart = self::where('guest',$guest);
             $data = $cart->get()->toArray();
             $cart->delete();
             foreach ($data as $val){
@@ -36,8 +41,16 @@ class Cart extends Model
     public function add($product_id, $quantity = 1, $option = []) {
         $option = json_encode($option);
         $uuid = session('user')['uuid']??0;
-        self::updateOrCreate(['uuid'=>$uuid,'visitor'=>Cookie::get('visitor'),'product_id'=>$product_id,'option'=>$option],['quantity'=>$quantity]);
+        self::updateOrCreate(['uuid'=>$uuid,'guest'=>Cookie::get('guest'),'product_id'=>$product_id,'option'=>$option],['quantity'=>$quantity,'date_add'=>time()]);
     }
 
+    public function getProducts(){
+        $product_data = [];
+        $uuid = session('user')['uuid']??0;
+        $cart_data = self::where(['uuid'=>$uuid,'guest'=>Cookie::get('guest')])->with('product')->get()-$this->toArray();
+        dd($cart_data);
+        foreach($cart_data as $val){
 
+        }
+    }
 }

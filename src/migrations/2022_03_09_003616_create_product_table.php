@@ -38,6 +38,7 @@ return new class extends Migration
             $table->unsignedInteger('sale')->nullable()->default(0);
             $table->unsignedInteger('sort')->nullable();
             $table->unsignedInteger('date_add');
+            $table->engine = 'InnoDB';
         });
     }
 

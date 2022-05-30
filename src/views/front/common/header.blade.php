@@ -12,6 +12,7 @@
     .nav > li .dropdown-menu {margin: 0;}
     .nav > li:hover .dropdown-menu {display: block;}
 </style>
+
     <div class="fixed-top">
         <div class="container">
             <div class="d-flex justify-content-between">
@@ -57,9 +58,24 @@
                                 <i class="uni app-dengluzhanghao"></i>
                             </a>
                         @endif
+                        <ul class="currency">
+                            @foreach($currency as $val)
+                            <li data-code="{{$val['code']}}" data-id="{{$val['id']}}" onclick="currency({{$val['id']}})">{{$val['name']}}</li>
+                            @endforeach
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+<script>
+    function currency(id) {
+        $.ajax({
+            url:'/currency/'+id,
+            success:function (res) {
+                location.reload()
+            }
+        })
+    }
+</script>
     <div class="glasses-main">

@@ -11,6 +11,7 @@ class Cart extends Model
 {
     use HasFactory;
     protected $table = 'shop_cart';
+    protected $primaryKey = 'id';
     public $timestamps = false;
 
     protected $fillable = [
@@ -41,16 +42,25 @@ class Cart extends Model
     public function add($product_id, $quantity = 1, $option = []) {
         $option = json_encode($option);
         $uuid = session('user')['uuid']??0;
-        self::updateOrCreate(['uuid'=>$uuid,'guest'=>Cookie::get('guest'),'product_id'=>$product_id,'option'=>$option],['quantity'=>$quantity,'date_add'=>time()]);
+        $where = ['uuid'=>$uuid,'guest'=>Cookie::get('guest'),'product_id'=>$product_id,'option'=>$option];
+        $info = self::where($where)->first();
+        if(!empty($info)){
+            $info->increment('quantity',$quantity);
+        }else{
+            self::create(array_merge($where,['quantity'=>$quantity,'date_add'=>time()]));
+        }
     }
 
     public function getProducts(){
         $product_data = [];
         $uuid = session('user')['uuid']??0;
-        $cart_data = self::where(['uuid'=>$uuid,'guest'=>Cookie::get('guest')])->with('product')->get()-$this->toArray();
-        dd($cart_data);
+        $cart_data = self::where(['uuid'=>$uuid,'guest'=>Cookie::get('guest')])->with('product')->get()->toArray();
         foreach($cart_data as $val){
+            if($val['quantity']>0 && $val['product']['status']==1 && $val['product']['date_available']<time()){
+                foreach (json_decode($val['option']) as $k => $v) {
 
+                }
+            }
         }
     }
 }

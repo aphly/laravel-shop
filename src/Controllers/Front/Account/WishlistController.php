@@ -21,7 +21,7 @@ class WishlistController extends Controller
 
     public function product(Request $request){
         $info = Wishlist::where(['uuid'=>session('user')['uuid'],'product_id'=>$request->id])->first();
-        if($info){
+        if(!empty($info)){
             $info->delete();
             throw new ApiException(['code'=>0,'msg'=>'remove_success']);
         }else{

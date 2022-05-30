@@ -1,6 +1,7 @@
 <?php
 
 
+use Aphly\LaravelShop\Models\Checkout\Cart;
 use Aphly\LaravelShop\Models\Common\Category;
 use Aphly\LaravelShop\Models\Common\Currency;
 use Aphly\LaravelShop\Models\Common\Setting;
@@ -74,7 +75,8 @@ Route::middleware(['web'])->group(function () {
 Route::middleware(['web'])->group(function () {
 
     Route::get('/test', function (){
-
+        $a = (new Cart)->getProducts();
+        dd($a);
         return view('welcome');
     });
 

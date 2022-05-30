@@ -19,7 +19,7 @@ class Currency extends Model
 
     public function findOneByCode($code) {
         $res = self::where('code', $code)->first();
-        return $res?$res->toArray():[];
+        return !empty($res)?$res->toArray():[];
     }
 
     static public function findAll(Int $status=0) {

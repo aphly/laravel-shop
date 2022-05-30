@@ -59,7 +59,7 @@ function cart_add(e) {
     $.ajax({
         url:'/cart',
         type:'post',
-        data:$('#product input[type=\'text\'], #product input[type=\'hidden\'], #product input[type=\'radio\']:checked, #product input[type=\'checkbox\']:checked, #product select, #product textarea'),
+        data:$('#product input[type=\'text\'],#product input[type=\'number\'], #product input[type=\'hidden\'], #product input[type=\'radio\']:checked, #product input[type=\'checkbox\']:checked, #product select, #product textarea'),
         success:function (res) {
             console.log(res)
         }

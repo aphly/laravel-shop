@@ -14,7 +14,7 @@ class CartController extends Controller
     public function add(Request $request)
     {
         $res['info'] = Product::where('id',$request->input('product_id',0))->where('status',1)->first();
-        if($res['info']->id){
+        if(!empty($res['info'])){
             $quantity = (int)$request->input('quantity',1);
             $option = array_filter($request->input('option',[]));
             $product_options = $res['info']->findOption($res['info']->id);

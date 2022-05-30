@@ -19,7 +19,7 @@ class Address extends Model
 
     public function getAddress($address_id) {
         $info = self::where(['id'=>$address_id,'uuid'=>Auth::guard('user')->user()->uuid])->first();
-        if($info){
+        if(!empty($info)){
             $country = (new Country)->findAll();
             $zone = (new Zone)->findAll();
             return array(

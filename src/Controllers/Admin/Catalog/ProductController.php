@@ -96,7 +96,7 @@ class ProductController extends Controller
         }else{
             $product_id = $request->query('product_id',0);
             $res['product'] = Product::where('id',$product_id)->first();
-            if($res['product']){
+            if(!empty($res['product'])){
                 $res['product_desc'] = ProductDesc::where('product_id',$product_id)->firstOrNew();
             }
             return $this->makeView('laravel-shop::admin.catalog.product.desc',['res'=>$res]);
@@ -155,7 +155,7 @@ class ProductController extends Controller
 
     public function updateImg($product_id){
         $productImg = ProductImage::where('product_id',$product_id)->orderBy('sort','desc')->first();
-        if($productImg){
+        if(!empty($productImg)){
             Product::find($productImg->product_id)->update(['image'=>$productImg->image]);
         }else{
             Product::where(['id'=>$product_id])->update(['image'=>'']);
@@ -365,7 +365,7 @@ class ProductController extends Controller
             throw new ApiException(['code'=>1,'msg'=>'fail','data'=>[]]);
         }
         $product = Product::where('id',$product_id)->first();
-        if($product){
+        if(!empty($product)){
             return $product;
         }else{
             throw new ApiException(['code'=>2,'msg'=>'fail','data'=>[]]);

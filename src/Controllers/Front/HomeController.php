@@ -35,7 +35,7 @@ class HomeController extends Controller
         try {
             $decrypted = Crypt::decryptString($request->token);
             $user = User::where('token',$decrypted)->first();
-            if($user){
+            if(!empty($user)){
                 Auth::guard('user')->login($user);
                 return redirect('/index');
             }
@@ -50,7 +50,7 @@ class HomeController extends Controller
             $arr['identifier'] = $request->input('identifier');
             $arr['identity_type'] = config('laravel.identity_type');
             $userAuth = UserAuth::where($arr)->first();
-            if($userAuth){
+            if(!empty($userAuth)){
                 $key = 'user_'.$request->ip();
                 if($this->limiter($key,5)){
                     if(Hash::check($request->input('credential',''),$userAuth->credential)){
@@ -69,7 +69,7 @@ class HomeController extends Controller
                             session()->forget(['user','customer']);
                             session(['user'=>$user_arr]);
                             $customer = Customer::where(['uuid'=>$user_arr['uuid']])->first();
-                            if($customer->uuid){
+                            if(!empty($customer)){
                                 session(['customer'=>['group_id'=>$customer->group_id,'address_id'=>$customer->address_id]]);
                             }
                             $redirect = Cookie::get('refer');
@@ -163,7 +163,7 @@ class HomeController extends Controller
     {
         $user = Auth::guard('user')->user();
         $userauth = UserAuth::where(['identity_type'=>'email','uuid'=>$user->uuid])->first();
-        if($userauth){
+        if(!empty($userauth)){
             (new MailSend())->do($userauth->identifier,new Verify($userauth));
             throw new ApiException(['code'=>0,'msg'=>'email sent','data'=>['redirect'=>'/index']]);
         }else{
@@ -176,7 +176,7 @@ class HomeController extends Controller
     {
         if($request->isMethod('post')) {
             $userauth = UserAuth::where(['identity_type'=>'email','identifier'=>$request->input('identifier','')])->first();
-            if($userauth){
+            if(!empty($userauth)){
                 (new MailSend())->do($userauth->identifier,new Forget($userauth));
                 throw new ApiException(['code'=>0,'msg'=>'email sent','data'=>['redirect'=>'/index']]);
             }else{

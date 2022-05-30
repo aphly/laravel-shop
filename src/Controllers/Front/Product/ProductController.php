@@ -15,7 +15,7 @@ class ProductController extends Controller
     {
         //$res['title'] = '';
         $category_info = Category::where('status',1)->where('id',$request->query('id',0))->first();
-        if(!$category_info){
+        if(empty($category_info)){
             return abort(404);
         }
         $filter_data = [
@@ -32,7 +32,7 @@ class ProductController extends Controller
     public function detail(Request $request)
     {
         $res['info'] = Product::where('id',$request->id)->with('img')->with('desc')->first();
-        if($res['info']->id){
+        if(!empty($res['info'])){
             $res['info_attr'] = $res['info']->findAttribute($res['info']->id);
             $res['info_special'] = $res['info']->findSpecial($res['info']->id);
             $res['info_reward'] = $res['info']->findReward($res['info']->id);

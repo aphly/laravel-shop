@@ -142,7 +142,20 @@ class Product extends Model
     }
 
     function findOption($id,$render=false){
-        $productOption = ProductOption::where('product_id',$id)->with('option')->get()->toArray();
+        $res = $this->option($id);
+        if($render){
+            return $this->optionRender($res);
+        }else{
+            return $res;
+        }
+    }
+
+    function optionValue($id,$productOption_ids=false){
+        $productOption = ProductOption::where('product_id',$id)->when(
+                            $productOption_ids,function ($query,$productOption_ids){
+                                return $query->whereIn('id',$productOption_ids);
+                            }
+                        )->with('option')->get()->toArray();
         $product_option_ids = array_column($productOption,'id');
         $productOptionValue = ProductOptionValue::whereIn('product_option_id',$product_option_ids)->with('option_value')->get()->toArray();
         $productOptionValueGroup = [] ;
@@ -155,11 +168,7 @@ class Product extends Model
             $res[$key] = $val;
             $res[$key]['product_option_value'] = $productOptionValueGroup[$val['id']]??[];
         }
-        if($render){
-            return $this->optionRender($res);
-        }else{
-            return $res;
-        }
+        return $res;
     }
 
     function optionRender($options){

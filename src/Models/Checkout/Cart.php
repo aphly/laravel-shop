@@ -4,6 +4,7 @@ namespace Aphly\LaravelShop\Models\Checkout;
 
 use Aphly\LaravelShop\Models\Product\Product;
 use Aphly\LaravelShop\Models\Product\ProductOption;
+use Aphly\LaravelShop\Models\Product\ProductOptionValue;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;
 use Illuminate\Support\Facades\Cookie;
@@ -56,15 +57,31 @@ class Cart extends Model
         $product_data = [];
         $uuid = session('user')['uuid']??0;
         $cart_data = self::where(['uuid'=>$uuid,'guest'=>Cookie::get('guest')])->with('product')->get()->toArray();
+
         foreach($cart_data as $val){
             if($val['quantity']>0 && $val['product']['status']==1 && $val['product']['date_available']<time()){
-                foreach (json_decode($val['option']) as $k => $v) {
-                    $productOption = ProductOption::where(['product_id'=>$val['product_id'],'id'=>$k])->with('option')->first();
-                    if(!empty($productOption)){
-                        $productOption->option->type;
+                $option_data = [];
+                $val['option'] = json_decode($val['option'],true);
+                if($val['option']){
+                    $optionValue = (new Product)->optionValue($val['product_id'],array_keys($val['option']));
+                    $product_data[]  = $optionValue;
+                    foreach ($val['option'] as $k => $v) {
+
+                        //$product_data[]  = ;
+                        if(!empty($productOption)){
+                            if($productOption->option->type=='select' || $productOption->option->type=='radio'){
+
+                            }else if($productOption->option->type=='text' || $productOption->option->type=='textarea' || $productOption->option->type=='file'
+                                || $productOption->option->type=='date' || $productOption->option->type=='datetime' || $productOption->option->type=='time'){
+
+                            }else if($productOption->option->type=='checkbox' ){
+
+                            }
+                        }
                     }
                 }
             }
         }
+        return $product_data;
     }
 }

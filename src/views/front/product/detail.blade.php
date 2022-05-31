@@ -57,7 +57,7 @@ function cart_add(e) {
     e.preventDefault();
     e.stopPropagation();
     $.ajax({
-        url:'/cart',
+        url:'/cart/add',
         type:'post',
         data:$('#product input[type=\'text\'],#product input[type=\'number\'], #product input[type=\'hidden\'], #product input[type=\'radio\']:checked, #product input[type=\'checkbox\']:checked, #product select, #product textarea'),
         success:function (res) {

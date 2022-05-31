@@ -10,6 +10,11 @@ use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
+    public function index()
+    {
+        $res['list'] = (new Cart)->getProducts();
+        return $this->makeView('laravel-shop::front.checkout.cart',['res'=>$res]);
+    }
 
     public function add(Request $request)
     {

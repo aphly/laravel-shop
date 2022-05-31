@@ -155,6 +155,13 @@ class Cart extends Model
         return $product_data;
     }
 
+    public function getSubTotal() {
+        $total = 0;
+        foreach ($this->getProducts() as $cart) {
+            $total += $cart['total'];
+        }
+        return $total;
+    }
     public function remove($cart_id) {
         return self::where(['id'=>$cart_id])->delete();
     }

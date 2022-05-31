@@ -67,7 +67,8 @@ Route::middleware(['web'])->group(function () {
     Route::get('/product/category', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@category');
     Route::get('/product/{id}', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@detail')->where('id', '[0-9]+');
 
-    Route::post('/cart', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@add');
+    Route::post('/cart/add', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@add');
+    Route::get('/cart', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@index');
 
 });
 

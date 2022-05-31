@@ -22,7 +22,7 @@ class CartController extends Controller
                     }
                 }
                 if ($cart['product']['minimum'] > $product_total) {
-                    throw new ApiException(['code'=>1,'msg'=>'minimum']);
+                    $res['error'][] = 'minimum';
                 }
                 
             }

@@ -1,17 +1,18 @@
 <?php
 
-namespace Aphly\LaravelShop\Controllers\Front;
+namespace Aphly\LaravelShop\Controllers\Front\Common;
 
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Libs\Helper;
-use Aphly\LaravelShop\Mail\Forget;
 use Aphly\Laravel\Mail\MailSend;
-use Aphly\LaravelShop\Mail\Verify;
-use Aphly\LaravelShop\Requests\LoginRequest;
-use Aphly\LaravelShop\Requests\RegisterRequest;
 use Aphly\LaravelAdmin\Models\User;
 use Aphly\LaravelAdmin\Models\UserAuth;
+use Aphly\LaravelShop\Controllers\Front\Controller;
+use Aphly\LaravelShop\Mail\Forget;
+use Aphly\LaravelShop\Mail\Verify;
 use Aphly\LaravelShop\Models\Account\Customer;
+use Aphly\LaravelShop\Requests\LoginRequest;
+use Aphly\LaravelShop\Requests\RegisterRequest;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,6 +21,9 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use function config;
+use function redirect;
+use function session;
 
 class HomeController extends Controller
 {

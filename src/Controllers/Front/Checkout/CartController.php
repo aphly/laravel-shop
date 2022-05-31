@@ -13,6 +13,20 @@ class CartController extends Controller
     public function index()
     {
         $res['list'] = (new Cart)->getProducts();
+        if($res['list']){
+            foreach ($res['list'] as $cart) {
+                $product_total = 0;
+                foreach ($res['list'] as $cart2) {
+                    if ($cart2['product_id'] == $cart['product_id']) {
+                        $product_total += $cart2['quantity'];
+                    }
+                }
+                if ($cart['product']['minimum'] > $product_total) {
+                    throw new ApiException(['code'=>1,'msg'=>'minimum']);
+                }
+                
+            }
+        }
         return $this->makeView('laravel-shop::front.checkout.cart',['res'=>$res]);
     }
 
@@ -28,8 +42,9 @@ class CartController extends Controller
                     throw new ApiException(['code'=>1,'msg'=>$val['option_value']['name'].'required']);
                 }
             }
-            (new Cart)->add($res['info']->id, $quantity, $option);
-            throw new ApiException(['code'=>0,'msg'=>'success']);
+            $Cart = new Cart;
+            $Cart->add($res['info']->id, $quantity, $option);
+            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['count'=>$Cart->countProducts()]]);
         }
     }
 

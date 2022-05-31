@@ -27,21 +27,21 @@ use Illuminate\Support\Facades\Route;
 //
 Route::middleware(['web'])->group(function () {
 
-    Route::get('/userauth/{id}/verify/{token}', 'Aphly\LaravelShop\Controllers\Front\HomeController@mailVerifyCheck');
+    Route::get('/userauth/{id}/verify/{token}', 'Aphly\LaravelShop\Controllers\Front\Common\HomeController@mailVerifyCheck');
 
-    Route::match(['get', 'post'],'/forget', 'Aphly\LaravelShop\Controllers\Front\HomeController@forget');
-    Route::match(['get', 'post'],'/forget-password/{token}', 'Aphly\LaravelShop\Controllers\Front\HomeController@forgetPassword');
+    Route::match(['get', 'post'],'/forget', 'Aphly\LaravelShop\Controllers\Front\Common\HomeController@forget');
+    Route::match(['get', 'post'],'/forget-password/{token}', 'Aphly\LaravelShop\Controllers\Front\Common\HomeController@forgetPassword');
 
-    Route::get('/index', 'Aphly\LaravelShop\Controllers\Front\HomeController@index');
-    Route::match(['get'],'/autologin/{token}', 'Aphly\LaravelShop\Controllers\Front\HomeController@autoLogin');
+    Route::get('/index', 'Aphly\LaravelShop\Controllers\Front\Common\HomeController@index');
+    Route::match(['get'],'/autologin/{token}', 'Aphly\LaravelShop\Controllers\Front\Common\HomeController@autoLogin');
 
     Route::middleware(['userAuth'])->group(function () {
-        Route::match(['get'],'/email/verify', 'Aphly\LaravelShop\Controllers\Front\HomeController@mailVerify');
+        Route::match(['get'],'/email/verify', 'Aphly\LaravelShop\Controllers\Front\Common\HomeController@mailVerify');
 
-        Route::match(['get', 'post'],'/register', 'Aphly\LaravelShop\Controllers\Front\HomeController@register');
-        Route::match(['get', 'post'],'/login', 'Aphly\LaravelShop\Controllers\Front\HomeController@login');
+        Route::match(['get', 'post'],'/register', 'Aphly\LaravelShop\Controllers\Front\Common\HomeController@register');
+        Route::match(['get', 'post'],'/login', 'Aphly\LaravelShop\Controllers\Front\Common\HomeController@login');
 
-        Route::get('/logout', 'Aphly\LaravelShop\Controllers\Front\HomeController@logout');
+        Route::get('/logout', 'Aphly\LaravelShop\Controllers\Front\Common\HomeController@logout');
 
         //account
         Route::prefix('account')->group(function () {

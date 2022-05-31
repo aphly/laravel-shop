@@ -61,7 +61,6 @@ class Cart extends Model
         $product_data = [];
         $uuid = session('user')['uuid']??0;
         $cart_data = self::where(['uuid'=>$uuid,'guest'=>Cookie::get('guest')])->with('product')->get()->toArray();
-        $product = new Product;
         foreach($cart_data as $cart){
             $stock = true;
             if($cart['product']['status']==1 && $cart['product']['date_available']<time() && $cart['quantity'] > 0){
@@ -70,7 +69,7 @@ class Cart extends Model
                 $option_weight = 0;
                 $cart['option'] = json_decode($cart['option'],true);
                 if($cart['option']){
-                    $option_value = $product->optionValue($cart['product_id'],array_keys($cart['option']));
+                    $option_value = (new Product)->optionValue($cart['product_id'],array_keys($cart['option']));
                     foreach ($cart['option'] as $k => $v) {
                         if(!empty($option_value[$k])){
                             if($option_value[$k]['option']['type']=='select' || $option_value[$k]['option']['type']=='radio'){
@@ -162,7 +161,17 @@ class Cart extends Model
         }
         return $total;
     }
+
     public function remove($cart_id) {
         return self::where(['id'=>$cart_id])->delete();
+    }
+
+    public function countProducts() {
+        $product_total = 0;
+        $products = $this->getProducts();
+        foreach ($products as $product) {
+            $product_total += $product['quantity'];
+        }
+        return $product_total;
     }
 }

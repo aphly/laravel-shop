@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('shop_extension', function (Blueprint $table) {
             $table->id();
             $table->string('type',32);
-            $table->string('code',32);
+            $table->string('code',128);
         });
     }
 

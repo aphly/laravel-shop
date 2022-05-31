@@ -24,7 +24,7 @@ class CartController extends Controller
                 if ($cart['product']['minimum'] > $product_total) {
                     $res['error'][] = 'minimum';
                 }
-                
+
             }
         }
         return $this->makeView('laravel-shop::front.checkout.cart',['res'=>$res]);

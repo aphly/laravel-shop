@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('shop_coupon', function (Blueprint $table) {
             $table->id();
             $table->string('name',64);
-            $table->string('code',16);
+            $table->string('code',16)->index();
             $table->char('type',1);
             $table->decimal('discount');
             $table->tinyInteger('is_login')->default(1)->nullable();

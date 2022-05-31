@@ -17,5 +17,7 @@ class Coupon extends Model
         'uses_user','status','date_add'
     ];
 
+    public function getTotal($total) {
 
+    }
 }

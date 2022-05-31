@@ -2,6 +2,7 @@
 
 namespace Aphly\LaravelShop\Models\Product;
 
+use Aphly\LaravelShop\Models\Account\Group;
 use Aphly\LaravelShop\Models\Common\Currency;
 use Aphly\LaravelShop\Models\Common\Setting;
 //use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -121,28 +122,25 @@ class Product extends Model
         return ProductAttribute::with('attribute')->where('product_id',$id)->get()->toArray();
     }
 
-    function groupId(){
-        $setting = Setting::findAll();
-        return session()->has('customer')?session('customer')['group_id']:$setting['config']['group'];
-    }
+
 
     function findSpecial($id){
-        $group_id = $this->groupId();
+        $group_id = (new Group)->groupId();
         return ProductSpecial::where('product_id',$id)->where('group_id',$group_id)->first();
     }
 
     function findReward($id){
-        $group_id = $this->groupId();
+        $group_id = (new Group)->groupId();
         return ProductReward::where('product_id',$id)->where('group_id',$group_id)->first();
     }
 
     function findDiscount($id){
-        $group_id = $this->groupId();
+        $group_id = (new Group)->groupId();
         return ProductDiscount::where('product_id',$id)->where('group_id',$group_id)->get()->toArray();
     }
 
     function findOption($id,$render=false){
-        $res = $this->option($id);
+        $res = $this->optionValue($id);
         if($render){
             return $this->optionRender($res);
         }else{
@@ -155,13 +153,13 @@ class Product extends Model
                             $productOption_ids,function ($query,$productOption_ids){
                                 return $query->whereIn('id',$productOption_ids);
                             }
-                        )->with('option')->get()->toArray();
+                        )->with('option')->get()->keyBy('id')->toArray();
         $product_option_ids = array_column($productOption,'id');
-        $productOptionValue = ProductOptionValue::whereIn('product_option_id',$product_option_ids)->with('option_value')->get()->toArray();
+        $productOptionValue = ProductOptionValue::whereIn('product_option_id',$product_option_ids)->with('option_value')->get()->keyBy('id')->toArray();
         $productOptionValueGroup = [] ;
-        foreach ($productOptionValue as $val){
+        foreach ($productOptionValue as $key=>$val){
             $val['price_format'] = Currency::format($val['price']);
-            $productOptionValueGroup[$val['product_option_id']][] = $val;
+            $productOptionValueGroup[$val['product_option_id']][$key] = $val;
         }
         $res = [];
         foreach ($productOption as $key=>$val){

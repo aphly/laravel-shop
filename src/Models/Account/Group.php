@@ -2,6 +2,7 @@
 
 namespace Aphly\LaravelShop\Models\Account;
 
+use Aphly\LaravelShop\Models\Common\Setting;
 use Aphly\LaravelShop\Models\Product\ProductReward;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;
@@ -26,5 +27,10 @@ class Group extends Model
         return Cache::rememberForever('group', function () {
             return self::get()->keyBy('id')->toArray();
         });
+    }
+
+    function groupId(){
+        $setting = Setting::findAll();
+        return session()->has('customer')?session('customer')['group_id']:$setting['config']['group'];
     }
 }

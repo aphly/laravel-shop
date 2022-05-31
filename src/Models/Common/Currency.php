@@ -32,21 +32,24 @@ class Currency extends Model
 
     static function format($price,$string = true){
         $currency = Cookie::get('currency');
-        $info = self::findAll()[$currency];
-        if($info){
-            $price = round($price, (int)$info['decimal_place']);
-            if(!$string){
-                return $price;
+        $currency_all = self::findAll();
+        if($currency_all && $currency){
+            $info = $currency_all[$currency];
+            if($info){
+                $price = round($price, (int)$info['decimal_place']);
+                if(!$string){
+                    return $price;
+                }
+                $string = '';
+                if ($info['symbol_left']) {
+                    $string .= $info['symbol_left'];
+                }
+                $string .= number_format($price, (int)$info['decimal_place']);
+                if ($info['symbol_right']) {
+                    $string .= $info['symbol_right'];
+                }
+                return $string;
             }
-            $string = '';
-            if ($info['symbol_left']) {
-                $string .= $info['symbol_left'];
-            }
-            $string .= number_format($price, (int)$info['decimal_place']);
-            if ($info['symbol_right']) {
-                $string .= $info['symbol_right'];
-            }
-            return $string;
         }
         return $price;
     }

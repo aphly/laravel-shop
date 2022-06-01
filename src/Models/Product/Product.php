@@ -2,6 +2,7 @@
 
 namespace Aphly\LaravelShop\Models\Product;
 
+use Aphly\LaravelShop\Models\Account\Customer;
 use Aphly\LaravelShop\Models\Account\Group;
 use Aphly\LaravelShop\Models\Common\Currency;
 use Aphly\LaravelShop\Models\Common\Setting;
@@ -125,17 +126,17 @@ class Product extends Model
 
 
     function findSpecial($id){
-        $group_id = (new Group)->groupId();
+        $group_id = Customer::groupId();
         return ProductSpecial::where('product_id',$id)->where('group_id',$group_id)->first();
     }
 
     function findReward($id){
-        $group_id = (new Group)->groupId();
+        $group_id = Customer::groupId();
         return ProductReward::where('product_id',$id)->where('group_id',$group_id)->first();
     }
 
     function findDiscount($id){
-        $group_id = (new Group)->groupId();
+        $group_id = Customer::groupId();
         return ProductDiscount::where('product_id',$id)->where('group_id',$group_id)->get()->toArray();
     }
 

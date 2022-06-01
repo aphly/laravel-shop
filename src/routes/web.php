@@ -77,18 +77,8 @@ Route::middleware(['web'])->group(function () {
 Route::middleware(['web'])->group(function () {
 
     Route::get('/test', function (){
-        $data=[];
-        $data[] =['id' => 1,'type'=>'total','code'=>'shipping'];
-        $data[] =['id' => 2,'type'=>'total','code'=>'sub_total'];
-        $data[] =['id' => 3,'type'=>'total','code'=>'total'];
-        $data[] =['id' => 4,'type'=>'total','code'=>'credit'];
-        $data[] =['id' => 5,'type'=>'total','code'=>'\Aphly\LaravelShop\Models\Common\Coupon'];
-        $data[] =['id' => 6,'type'=>'total','code'=>'low_order_fee'];
-        $data[] =['id' => 7,'type'=>'total','code'=>'voucher'];
-        $data[] =['id' => 8,'type'=>'total','code'=>'handling'];
-        $data[] =['id' => 9,'type'=>'total','code'=>'reward'];
-        $data[] =['id' => 10,'type'=>'total','code'=>'tax'];
-        DB::table('shop_extension')->insert($data);
+        $productCategory = array_column([],'category_id');
+        dd($productCategory);
         return view('welcome');
     });
 

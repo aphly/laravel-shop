@@ -5,6 +5,7 @@ namespace Aphly\LaravelShop\Controllers\Front\Product;
 use Aphly\LaravelShop\Controllers\Front\Controller;
 use Aphly\LaravelShop\Models\Account\Wishlist;
 use Aphly\LaravelShop\Models\Common\Category;
+use Aphly\LaravelShop\Models\Common\Currency;
 use Aphly\LaravelShop\Models\Product\Product;
 use Illuminate\Http\Request;
 
@@ -25,7 +26,9 @@ class ProductController extends Controller
             'sort'      => $request->query('sort',false),
         ];
         $res['list'] = (new Product)->getList($filter_data);
-
+        foreach ($res['list']->items() as $key=>$val){
+            $res['list']->items()[$key]->price= Currency::format($res['list']->items()[$key]->price);
+        }
         return $this->makeView('laravel-shop::front.product.category',['res'=>$res]);
     }
 

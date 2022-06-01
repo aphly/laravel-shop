@@ -2,6 +2,7 @@
 
 namespace Aphly\LaravelShop\Models\Checkout;
 
+use Aphly\LaravelShop\Models\Account\Customer;
 use Aphly\LaravelShop\Models\Account\Group;
 use Aphly\LaravelShop\Models\Product\Product;
 use Aphly\LaravelShop\Models\Product\ProductDiscount;
@@ -109,7 +110,7 @@ class Cart extends Model
                 }
 
                 $price = $cart['product']['price'];
-                $group_id = (new Group)->groupId();
+                $group_id = Customer::groupId();
                 $time = time();
                 $discount_quantity = 0;
                 foreach ($cart_data as $cart2) {
@@ -123,8 +124,11 @@ class Cart extends Model
                     $price = $product_discount['price'];
                 }
 
-                $product_special = ProductSpecial::where('product_id',$cart['product_id'])->where('group_id',$group_id)
-                    ->where('date_start','<',$time)->where('date_end','>',$time)->orderBy('price','asc')->first();
+                $product_special = ProductSpecial::where('product_id',$cart['product_id'])->where('group_id',$group_id)->where(function ($query) use ($time){
+                                    $query->where('date_start','<',$time)->orWhere('date_start',0);
+                                })->where(function ($query) use ($time){
+                                    $query->where('date_end','>',$time)->orWhere('date_end',0);
+                                })->orderBy('price','asc')->first();
                 if(!empty($product_special)){
                     $price = $product_special['price'];
                 }
@@ -154,9 +158,9 @@ class Cart extends Model
         return $product_data;
     }
 
-    public function getSubTotal() {
+    public function getSubTotal($products) {
         $total = 0;
-        foreach ($this->getProducts() as $cart) {
+        foreach ($products as $cart) {
             $total += $cart['total'];
         }
         return $total;

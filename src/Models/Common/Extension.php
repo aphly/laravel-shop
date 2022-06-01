@@ -16,18 +16,35 @@ class Extension extends Model
         'type','code'
     ];
 
-    static public function findAll($type='total') {
-        return Cache::rememberForever('extension_'.$type, function () use ($type){
-            $arr = self::where('code',$type)->get()->toArray();
+    static public function findAll() {
+        return Cache::rememberForever('extension', function (){
+            $arr = self::get()->toArray();
             $res = [];
             foreach ($arr as $val){
-                $res[$val['code']][$val['key']] = $val['value'];
+                $res[$val['type']][] = $val['code'];
             }
             return $res;
         });
     }
 
-    public function total() {
+    public function findAllByType($type) {
+        $arr = self::findAll();
+        return !empty($arr[$type])?$arr[$type]:[];
+    }
 
+    public function total($products) {
+        $arr = $this->findAllByType('total');
+        $totals = array();
+        $total = 0;
+        $total_data = array(
+            'totals' => &$totals,
+            'total'  => &$total
+        );
+        foreach ($arr as $class){
+            if(class_exists($class)){
+                (new $class)->getTotal($products,$total_data);
+            }
+        }
+        return '';
     }
 }

@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('shop_coupon_history', function (Blueprint $table) {
             $table->id();
-            $table->integer('coupon_id')->unsigned();
+            $table->unsignedInteger('coupon_id')->index();
             $table->integer('order_id')->unsigned();
-            $table->unsignedBigInteger('uuid');
+            $table->unsignedBigInteger('uuid')->index();
             $table->decimal('amount');
             $table->integer('date_add')->unsigned();
         });

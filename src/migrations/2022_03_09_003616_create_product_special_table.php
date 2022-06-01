@@ -18,8 +18,8 @@ return new class extends Migration
             $table->unsignedInteger('product_id')->index();
             $table->unsignedInteger('group_id')->index();
             $table->decimal('price')->default(0);
-            $table->unsignedInteger('date_start')->nullable();
-            $table->unsignedInteger('date_end')->nullable();
+            $table->unsignedInteger('date_start')->nullable()->default(0);
+            $table->unsignedInteger('date_end')->nullable()->default(0);
         });
     }
 

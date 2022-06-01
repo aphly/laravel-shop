@@ -29,8 +29,5 @@ class Group extends Model
         });
     }
 
-    function groupId(){
-        $setting = Setting::findAll();
-        return session()->has('customer')?session('customer')['group_id']:$setting['config']['group'];
-    }
+
 }

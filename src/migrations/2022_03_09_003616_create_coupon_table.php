@@ -22,10 +22,10 @@ return new class extends Migration
             $table->tinyInteger('is_login')->default(1)->nullable();
             $table->tinyInteger('shipping')->default(1);
             $table->decimal('total')->nullable()->default(0);
-            $table->integer('date_start')->unsigned()->nullable();
-            $table->integer('date_end')->unsigned()->nullable();
+            $table->unsignedInteger('date_start')->nullable()->default(0);
+            $table->unsignedInteger('date_end')->nullable()->default(0);
             $table->integer('uses_total')->unsigned();
-            $table->integer('uses_user')->unsigned();
+            $table->integer('uses_customer')->unsigned();
             $table->tinyInteger('status')->default(1);
             $table->integer('date_add')->unsigned();
         });

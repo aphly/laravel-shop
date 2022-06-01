@@ -36,6 +36,11 @@ class Currency extends Model
         if($currency_all && $currency){
             $info = $currency_all[$currency];
             if($info){
+                $setting = Setting::findAll();
+                $default = $setting['config']['currency'];
+                if($currency_all[$default]['value']>0){
+                    $price = $price*$info['value']/$currency_all[$default]['value'];
+                }
                 $price = round($price, (int)$info['decimal_place']);
                 if(!$string){
                     return $price;

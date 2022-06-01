@@ -24,7 +24,7 @@
                 <ul class="table_header">
                     <li >ID</li>
                     <li >coupon name</li>
-                    <li >sort</li>
+                    <li >code</li>
                     <li >操作</li>
                 </ul>
                 @if($res['list']->total())
@@ -33,7 +33,7 @@
                         <li><input type="checkbox" class="delete_box" name="delete[]" value="{{$v['id']}}">{{$v['id']}}</li>
                         <li>{{ $v['name'] }}</li>
                         <li>
-                            {{$v->sort}}
+                            {{$v->code}}
                         </li>
                         <li>
                             <a class="badge badge-info ajax_get" data-href="/shop_admin/coupon/form?id={{$v['id']}}">编辑</a>

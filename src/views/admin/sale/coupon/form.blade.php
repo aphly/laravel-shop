@@ -97,7 +97,7 @@
 
             <div class="form-group">
                 <label for="">每个会员可以使用次数</label>
-                <input type="number" name="uses_user" class="form-control " value="{{$res['coupon']->uses_user??0}}">
+                <input type="number" name="uses_customer" class="form-control " value="{{$res['coupon']->uses_customer??0}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">

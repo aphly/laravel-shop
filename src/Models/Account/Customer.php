@@ -28,10 +28,12 @@ class Customer extends Model
         return $this->hasMany(UserAuth::class,'uuid');
     }
 
-    function groupId(){
+    static function groupId(){
         $setting = Setting::findAll();
         return session()->has('customer')?session('customer')['group_id']:$setting['config']['group'];
     }
 
-
+    static function uuid(){
+        return session()->has('customer')?session('customer')['uuid']:0;
+    }
 }

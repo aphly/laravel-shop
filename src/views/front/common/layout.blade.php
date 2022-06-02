@@ -1,4 +1,4 @@
-@include('laravel-admin::Front.common.header')
+@include('laravel-admin::front.common.header')
 <link rel="stylesheet" href="{{ URL::asset('vendor/laravel-admin/css/admin.css') }}">
 <section class="admin container-fluid">
     <div class="row">
@@ -277,4 +277,4 @@
         });
     }
 </script>
-@include('laravel-admin::Front.common.footer')
+@include('laravel-admin::front.common.footer')

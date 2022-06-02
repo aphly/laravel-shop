@@ -16,14 +16,16 @@ class Setting extends Model
         'code','key','value'
     ];
 
-    static public function findAll($code='config') {
-        return Cache::rememberForever('setting_'.$code, function () use ($code){
-            $arr = self::where('code',$code)->get()->toArray();
+    static public function findAll() {
+        return Cache::rememberForever('shop_setting', function (){
+            $arr = self::get()->toArray();
             $res = [];
             foreach ($arr as $val){
                 $res[$val['code']][$val['key']] = $val['value'];
             }
-            return $res;
+            return (Object)$res;
         });
     }
+
+
 }

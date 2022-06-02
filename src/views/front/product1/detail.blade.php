@@ -1,4 +1,4 @@
-@include('laravel-shop::Front.common.header')
+@include('laravel-shop::front.common.header')
 <style>
 
 </style>
@@ -105,4 +105,4 @@ $(function () {
     $('#carouselIndicators').carousel()
 })
 </script>
-@include('laravel-shop::Front.common.footer')
+@include('laravel-shop::front.common.footer')

@@ -1,4 +1,4 @@
-@include('laravel-shop::Front.common.header')
+@include('laravel-shop::front.common.header')
 <div class="container">
     <nav aria-label="breadcrumb" class="row col-12 mt-lg-3">
         <ol class="breadcrumb breadcrumb-wrapper col-12 m-0 pt-0 pb-0 font-14">
@@ -58,4 +58,4 @@ $(function () {
     })
 })
 </script>
-@include('laravel-shop::Front.common.footer')
+@include('laravel-shop::front.common.footer')

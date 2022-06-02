@@ -1,4 +1,4 @@
-@include('laravel-shop::Front.common.header')
+@include('laravel-shop::front.common.header')
 <link rel="stylesheet" href="{{ URL::asset('vendor/laravel/css/login.css') }}">
 <section class="login d-flex" >
     <div class="login1">
@@ -87,4 +87,4 @@ $(function (){
     })
 });
 </script>
-@include('laravel-shop::Front.common.footer')
+@include('laravel-shop::front.common.footer')

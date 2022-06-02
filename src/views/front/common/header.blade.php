@@ -1,4 +1,4 @@
-@include('laravel-shop::Front.common.header_common')
+@include('laravel-shop::front.common.header_common')
 <style>
     .fixed-top{position:fixed;top:0;right:0;left:0;z-index:1030;height: 60px;border-bottom: 1px solid #d1d1d1;background-color: #f3f9fa;}
     .glasses-main{padding-top:60px;padding-bottom:15px;}

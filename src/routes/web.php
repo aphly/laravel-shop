@@ -68,8 +68,6 @@ Route::middleware(['web'])->group(function () {
 Route::middleware(['web'])->group(function () {
 
     Route::get('/test', function (){
-
-        dd($productCategory='');
         return view('welcome');
     });
 

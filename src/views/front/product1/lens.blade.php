@@ -1,4 +1,4 @@
-@include('laravel-shop::Front.common.header')
+@include('laravel-shop::front.common.header')
 <style>
 dl,dd{margin:0;}
 .lens_box1{width: 62%;}
@@ -1525,4 +1525,4 @@ function lensCart() {
     .comp-help-popup .modal-content .index-description-text,.comp-help-popup .modal-content .lens-polarity-modular,.comp-help-popup .modal-content .rx-range,.comp-help-popup .modal-content .whats-included{display:none}
 
 </style>
-@include('laravel-shop::Front.common.footer')
+@include('laravel-shop::front.common.footer')

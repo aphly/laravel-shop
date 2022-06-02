@@ -1,4 +1,4 @@
-@include('laravel-shop::Front.common.header')
+@include('laravel-shop::front.common.header')
 <div class="container">
     <div class="top-bar">
         <h5 class="nav-title">首页</h5>
@@ -21,4 +21,4 @@
     </div>
 </div>
 
-@include('laravel-shop::Front.common.footer')
+@include('laravel-shop::front.common.footer')

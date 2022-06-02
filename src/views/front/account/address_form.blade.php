@@ -1,4 +1,4 @@
-@include('laravel-shop::Front.common.header')
+@include('laravel-shop::front.common.header')
 
 <div class="container">
     <nav aria-label="breadcrumb" class="row col-12 mt-lg-3">
@@ -178,4 +178,4 @@
         $('#input-zone').html(html)
     }
 </script>
-@include('laravel-shop::Front.common.footer')
+@include('laravel-shop::front.common.footer')

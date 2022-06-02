@@ -1,4 +1,4 @@
-@include('laravel-shop::Front.common.header')
+@include('laravel-shop::front.common.header')
 <style>
     .product_img .item{margin: 0 10px;}
     .product_img .item .img{width: 160px;height:160px;display: flex; align-items: center; box-shadow: 0 2px 4px rgb(0 0 0 / 20%);position: relative}
@@ -71,4 +71,4 @@ $(function () {
 })
 
 </script>
-@include('laravel-shop::Front.common.footer')
+@include('laravel-shop::front.common.footer')

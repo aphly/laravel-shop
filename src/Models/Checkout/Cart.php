@@ -148,6 +148,7 @@ class Cart extends Model
                 $product_data[$cart['id']]['stock'] = $stock;
                 $product_data[$cart['id']]['price'] = ($price + $option_price);
                 $product_data[$cart['id']]['total'] = ($price + $option_price) * $cart['quantity'];
+                $product_data[$cart['id']]['shipping'] = $cart['product']['shipping'];
                 $product_data[$cart['id']]['reward'] = $reward * $cart['quantity'];
                 $product_data[$cart['id']]['points'] = ($cart['product']['points'] ? ($cart['product']['points'] + $option_points) * $cart['quantity'] : 0);
                 $product_data[$cart['id']]['weight'] = ($cart['product']['weight'] + $option_weight) * $cart['quantity'];
@@ -164,6 +165,15 @@ class Cart extends Model
             $total += $cart['total'];
         }
         return $total;
+    }
+
+    public function hasShipping($products) {
+        foreach ($products as $product) {
+            if ($product['shipping']) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public function remove($cart_id) {

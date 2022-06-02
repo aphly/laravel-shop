@@ -16,15 +16,19 @@ class ProductController extends Controller
     {
         //$res['title'] = '';
         $category_info = Category::where('status',1)->where('id',$request->query('id',0))->first();
-        if(empty($category_info)){
-            return abort(404);
+        if(!empty($category_info)){
+            $filter_data = [
+                'category_id' => $category_info->id,
+                'filter'      => $request->query('filter',false),
+                'name'      => $request->query('name',false),
+                'sort'      => $request->query('sort',false),
+            ];
+        }else{
+            $filter_data = [
+                'name'      => $request->query('name',false),
+                'sort'      => $request->query('sort',false),
+            ];
         }
-        $filter_data = [
-            'category_id' => $category_info->id,
-            'filter'      => $request->query('filter',false),
-            'name'      => $request->query('name',false),
-            'sort'      => $request->query('sort',false),
-        ];
         $res['list'] = (new Product)->getList($filter_data);
         foreach ($res['list']->items() as $key=>$val){
             $res['list']->items()[$key]->price= Currency::format($res['list']->items()[$key]->price);

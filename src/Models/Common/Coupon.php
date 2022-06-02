@@ -114,12 +114,45 @@ class Coupon extends Model
                         }
                     }
                 }
-                if ($info['type'] == 'F') {
+                if ($info['type'] == 2) {
                     $info['discount'] = min($info['discount'], $sub_total);
+                }
+                foreach ($this->cart_products as $product) {
+                    $discount = 0;
+                    if (!$info['product']) {
+                        $status = true;
+                    } else {
+                        $status = in_array($product['product_id'], $info['product']);
+                    }
+                    if ($status) {
+                        if ($info['type'] == 'F') {
+                            $discount = $info['discount'] * ($product['total'] / $sub_total);
+                        } elseif ($info['type'] == 'P') {
+                            $discount = $product['total'] / 100 * $info['discount'];
+                        }
+                    }
+                    $discount_total += $discount;
+                }
+                $shipping_method = Cookie::get('shipping_method');
+                $shipping_method = json_decode($shipping_method,true);
+                if($info['shipping'] && $shipping_method) {
+                    $discount_total += $shipping_method['cost'];
+                }
+                if ($discount_total > $total_data['total']) {
+                    $discount_total = $total_data['total'];
+                }
+                if ($discount_total > 0) {
+                    $total_data['totals'][] = array(
+                        'code'       => 'coupon',
+                        'title'      => $coupon,
+                        'value'      => $discount_total,
+                        'value_format'=> '-'.Currency::format($discount_total),
+                        'sort_order' => 2
+                    );
+                    $total_data['total'] -= $discount_total;
                 }
             }
         }
-        return 12;
     }
 
     public function getCouponHistoriesByCoupon($coupon) {

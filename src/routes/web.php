@@ -1,14 +1,5 @@
 <?php
 
-
-use Aphly\LaravelShop\Models\Checkout\Cart;
-use Aphly\LaravelShop\Models\Common\Category;
-use Aphly\LaravelShop\Models\Common\Currency;
-use Aphly\LaravelShop\Models\Common\Setting;
-use Aphly\LaravelShop\Models\Product\ProductOption;
-use Aphly\LaravelShop\Models\Product\ProductOptionValue;
-use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -77,8 +68,8 @@ Route::middleware(['web'])->group(function () {
 Route::middleware(['web'])->group(function () {
 
     Route::get('/test', function (){
-        $productCategory = array_column([],'category_id');
-        dd($productCategory);
+
+        dd($productCategory='');
         return view('welcome');
     });
 

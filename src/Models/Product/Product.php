@@ -36,7 +36,8 @@ class Product extends Model
     public $sub_category = false;
 
     public function getList($data = []) {
-        $filter = $data['filter'];
+        $data['category_id'] = $data['category_id']??false;
+        $filter = $data['filter']??false;
         $sort = $data['sort'];
         $time = time();
         $setting = Setting::findAll();

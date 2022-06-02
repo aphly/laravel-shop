@@ -2,9 +2,11 @@
 
 namespace Aphly\LaravelShop\Models\Common;
 
+use Aphly\LaravelShop\Models\Checkout\Cart;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Cookie;
 
 class Extension extends Model
 {
@@ -40,11 +42,44 @@ class Extension extends Model
             'totals' => &$totals,
             'total'  => &$total
         );
+        $Cart = new Cart;
+        $sub_total = $Cart->getSubTotal($products);
+        $total_data['totals'][] = array(
+            'code'       => 'sub_total',
+            'title'      => 'sub_total',
+            'value'      => $sub_total,
+            'sort_order' => 1
+        );
+        $total_data['total'] += $sub_total;
+
         foreach ($arr as $class){
             if(class_exists($class)){
-                (new $class)->getTotal($products,$total_data);
+                (new $class($products))->getTotal($total_data);
             }
         }
-        return '';
+
+        $shipping_method = Cookie::get('shipping_method');
+        $shipping_method = json_decode($shipping_method,true);
+        if($Cart->hasShipping($products) && $shipping_method) {
+            $total_data['totals'][] = array(
+                'code'       => 'shipping',
+                'title'      => $shipping_method['title'],
+                'value'      => $shipping_method['cost'],
+                'sort_order' => 100
+            );
+            $total_data['total'] += $shipping_method['cost'];
+        }
+
+        $total_data['totals'][] = array(
+            'code'       => 'total',
+            'title'      => 'total',
+            'value'      => max(0, $total_data['total']),
+            'sort_order' => 999
+        );
+
+        return $total_data;
     }
+
+
+
 }

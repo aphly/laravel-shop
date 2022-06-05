@@ -1,5 +1,5 @@
 @include('laravel-shop::front.common.header')
-<link rel="stylesheet" href="{{ URL::asset('vendor/laravel/css/login.css') }}">
+<link rel="stylesheet" href="{{ URL::asset('vendor/laravel-admin/css/login.css') }}">
 <section class="login d-flex" >
     <div class="login1">
         <span>

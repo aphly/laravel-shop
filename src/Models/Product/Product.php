@@ -82,7 +82,7 @@ class Product extends Model
             }
         }
         $sql->groupBy('p.id')
-            ->select('p.id','p.sale','p.viewed','p.date_available','p.price','p.name','p.quantity');
+            ->select('p.id','p.sale','p.viewed','p.date_available','p.price','p.name','p.quantity','p.image');
         $sql->addSelect(['rating'=>Review::whereColumn('product_id','p.id')->where('status',1)
             ->groupBy('product_id')
             ->selectRaw('AVG(rating) AS total')->limit(1)

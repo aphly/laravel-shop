@@ -1,23 +1,28 @@
 @include('laravel-shop::front.common.header')
 <style>
+    .product-category{display: flex;flex-wrap: wrap;}
+    .product-category li{width:calc(20% - 8.5px);margin:0px 10px 10px 0px;padding:10px;background:#fff;box-shadow:0 2px 12px 2px #eee}
+    .product-category li .image{margin-bottom:10px;position:relative;z-index:10}
+    .product-category li .name{text-transform:capitalize;font-size:14px;color:#000;height:36px;line-height:18px;overflow:hidden;margin-bottom:5px}
+    .product-category li .price{font-size:14px;margin-bottom:5px}
+    .img-responsive{max-width:100%;height:auto}
+    .product-category > li:nth-child(5n), .product-category li:last-child {margin-right: 0px;}
 </style>
-
 <div class="container">
-    <ul class="row">
+    <ul class=" product-category">
         @foreach($res['list'] as $key=>$val)
-            <li class="col-lg-4">
-                <a href="/product/{{$val->id}}">
-                <div class="product-text">
-                    <span class="product-icon-text-style2">New</span>
+            <li class="">
+                <div class="image">
+                    @if($val->image)
+                        <a href="/product/{{$val->id}}"><img src="https://img.lioasde.top{{$val->image}}" class="img-responsive"></a>
+                    @else
+                        <a href="/product/{{$val->id}}"><img src="{{ URL::asset('vendor/laravel-admin/img/none.png') }}" class="img-responsive"></a>
+                    @endif
                 </div>
-                {{$val->name}}
-                - {{$val->sale}}
-                - {{$val->viewed}}
-                - {{$val->date_available}}
-                - {{$val->price}}
-                - {{$val->rating}}
-                - {{$val->special}}
-                </a>
+                <div class="name"><a href="/product/{{$val->id}}">{{$val->name}}</a></div>
+                <div class="price">
+                    <span class="normal">{{$val->price}}</span>
+                </div>
             </li>
         @endforeach
     </ul>
@@ -31,30 +36,7 @@
 
 <script>
 $(function () {
-    $('.filter-down').on('click','.filter_where',function () {
-        let str = $(this).data('key')+'='+$(this).data('val')
-        if($(this).hasClass("checked")){
-            urlOption.__del(str,1)
-        }else{
-            urlOption.__set(str,1)
-        }
-    })
-    $('.filter-down').on('click','.filter_orderby',function () {
-        let str = $(this).data('key')+'='+$(this).data('val')
-        if($(this).hasClass("checked")){
-            urlOption._del('sort',$(this).data('key')+'_'+$(this).data('val'),1)
-        }else{
-            urlOption._set('sort',$(this).data('key')+'_'+$(this).data('val'),1)
-        }
-    })
-    $('.product-img img').on({
-        mouseover : function(){
-            $(this).attr('src',$(this).data('src'));
-        },
-        mouseout : function(){
-            $(this).attr('src',$(this).data('original'));
-        }
-    })
+
 })
 </script>
 

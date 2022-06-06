@@ -39,6 +39,7 @@ class ProductController extends Controller
     public function detail(Request $request)
     {
         $res['info'] = Product::where('id',$request->id)->with('img')->with('desc')->first();
+        $res['info']->price = Currency::format($res['info']->price);
         if(!empty($res['info'])){
             $res['info_attr'] = $res['info']->findAttribute($res['info']->id);
             $res['info_special'] = $res['info']->findSpecial($res['info']->id);

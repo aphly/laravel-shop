@@ -23,7 +23,7 @@ class Setting extends Model
             foreach ($arr as $val){
                 $res[$val['code']][$val['key']] = $val['value'];
             }
-            return (Object)$res;
+            return $res;
         });
     }
 

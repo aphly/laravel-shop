@@ -40,14 +40,16 @@ class Extension extends Model
         $total = 0;
         $total_data = array(
             'totals' => &$totals,
-            'total'  => &$total
+            'total'  => &$total,
+            'total_format'  => 0
         );
         $Cart = new Cart;
         $sub_total = $Cart->getSubTotal($products);
         $total_data['totals'][] = array(
             'code'       => 'sub_total',
-            'title'      => 'sub_total',
+            'title'      => 'Sub_total',
             'value'      => $sub_total,
+            'value_format'      => Currency::format($sub_total),
             'sort_order' => 1
         );
         $total_data['total'] += $sub_total;
@@ -65,18 +67,14 @@ class Extension extends Model
                 'code'       => 'shipping',
                 'title'      => $shipping_method['title'],
                 'value'      => $shipping_method['cost'],
+                'value_format'      => Currency::format($shipping_method['cost']),
                 'sort_order' => 100
             );
             $total_data['total'] += $shipping_method['cost'];
         }
 
-        $total_data['totals'][] = array(
-            'code'       => 'total',
-            'title'      => 'total',
-            'value'      => max(0, $total_data['total']),
-            'sort_order' => 999
-        );
-
+        $total_data['total'] = max(0, $total_data['total']);
+        $total_data['total_format'] = Currency::format($total_data['total']);
         return $total_data;
     }
 

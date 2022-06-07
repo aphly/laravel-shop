@@ -11,7 +11,7 @@ class InstallController extends Controller
         $path = storage_path('app/private/shop_init.sql');
         DB::unprepared(file_get_contents($path));
         $data=[];
-        $data[] =['id'=>10000,'name' => 'Shop','url' =>'','pid'=>0,'is_leaf'=>0,'module_id'=>2];
+        $data[] =['id'=>10000,'name' => 'Shop','url' =>'','pid'=>0,'is_leaf'=>0,'module_id'=>2,'sort'=>10];
         $data[] =['id'=>10001,'name' => 'Catalog','url' =>'','pid'=>10000,'is_leaf'=>0,'module_id'=>2];
         $data[] =['id'=>10002,'name' => 'Category','url' =>'/shop_admin/category/index','pid'=>10001,'is_leaf'=>1,'module_id'=>2];
         $data[] =['id'=>10003,'name' => 'Filter','url' =>'/shop_admin/filter/index','pid'=>10001,'is_leaf'=>1,'module_id'=>2];

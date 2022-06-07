@@ -4,6 +4,7 @@ namespace Aphly\LaravelShop\Models\Checkout;
 
 use Aphly\LaravelShop\Models\Account\Customer;
 use Aphly\LaravelShop\Models\Account\Group;
+use Aphly\LaravelShop\Models\Common\Currency;
 use Aphly\LaravelShop\Models\Product\Product;
 use Aphly\LaravelShop\Models\Product\ProductDiscount;
 use Aphly\LaravelShop\Models\Product\ProductOption;
@@ -142,12 +143,15 @@ class Cart extends Model
                 if($cart['product']['subtract']==1 && ($cart['product']['quantity']<1 || $cart['product']['quantity']<$cart['quantity'])){
                     $stock = false;
                 }
-
+                $price = ($price + $option_price);
+                $total = $price*$cart['quantity'];
                 $product_data[$cart['id']] = $cart;
                 $product_data[$cart['id']]['option'] = $option_value;
                 $product_data[$cart['id']]['stock'] = $stock;
-                $product_data[$cart['id']]['price'] = ($price + $option_price);
-                $product_data[$cart['id']]['total'] = ($price + $option_price) * $cart['quantity'];
+                $product_data[$cart['id']]['price'] = $price;
+                $product_data[$cart['id']]['price_format'] = Currency::format($price);
+                $product_data[$cart['id']]['total'] = $total;
+                $product_data[$cart['id']]['total_format'] = Currency::format($total);
                 $product_data[$cart['id']]['shipping'] = $cart['product']['shipping'];
                 $product_data[$cart['id']]['reward'] = $reward * $cart['quantity'];
                 $product_data[$cart['id']]['points'] = ($cart['product']['points'] ? ($cart['product']['points'] + $option_points) * $cart['quantity'] : 0);

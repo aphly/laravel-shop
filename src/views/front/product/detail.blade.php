@@ -23,28 +23,27 @@
     .product_detail_img .zoomdiv{visibility:hidden;z-index:999;position:absolute;top:0;left:510px;width:500px;height:500px;background:#fff;text-align:center;overflow:hidden}
 </style>
 <div class="container">
-
     <div>
         <div>
             <div class="product_detail_img">
                 <div class="big_img J_zoom" >
                     <img src="https://img.lioasde.top{{$res['info']->image}}" id="big_pic" class="zoom-img">
                 </div>
+                @if(count($res['info']->img))
                 <div class="small_img  position-relative ">
                     <div class="swiper-container swiper-container_pc">
                         <div class="swiper-wrapper">
-                            @if($res['info']->img)
-                                @foreach($res['info']->img as $v)
-                                <div class="swiper-slide " data-src="https://img.lioasde.top{{$v['image']}}" onclick="changepic(this)">
-                                    <img src="https://img.lioasde.top{{$v['image']}}">
-                                </div>
-                                @endforeach
-                            @endif
+                            @foreach($res['info']->img as $v)
+                            <div class="swiper-slide " data-src="https://img.lioasde.top{{$v['image']}}" onclick="changepic(this)">
+                                <img src="https://img.lioasde.top{{$v['image']}}">
+                            </div>
+                            @endforeach
                         </div>
                     </div>
                     <div class="lr_icon left"><div></div></div>
                     <div class="lr_icon right"><div></div></div>
                 </div>
+                @endif
             </div>
             <div>
                 {{$res['info']->name}} {{$res['info']->price}}

@@ -14,6 +14,7 @@ class CartController extends Controller
     public function index()
     {
         $res['list'] = (new Cart)->getProducts();
+        $res['items'] = 0;
         if($res['list']){
             foreach ($res['list'] as $cart) {
                 $product_total = 0;
@@ -25,7 +26,7 @@ class CartController extends Controller
                 if ($cart['product']['minimum'] > $product_total) {
                     $res['error'][] = 'minimum';
                 }
-
+                $res['items'] += $cart['quantity'];
             }
             $res['total_data'] = (new Extension)->total($res['list']);
         }

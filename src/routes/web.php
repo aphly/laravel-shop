@@ -61,6 +61,7 @@ Route::middleware(['web'])->group(function () {
 
     Route::post('/cart/add', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@add');
     Route::get('/cart', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@index');
+    Route::get('/checkout', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckController@index');
 
 });
 

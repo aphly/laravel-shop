@@ -36,4 +36,18 @@ class Customer extends Model
     static function uuid(){
         return session()->has('customer')?session('customer')['uuid']:0;
     }
+
+    static function addressId(){
+        return session()->has('customer')?session('customer')['address_id']:0;
+    }
+
+    static function session($uuid=false){
+        if(!$uuid){
+            $uuid = session()->has('user')?session('user')['uuid']:0;
+        }
+        $customer = self::where(['uuid'=>$uuid])->first();
+        if(!empty($customer)){
+            session(['customer'=>['group_id'=>$customer->group_id,'address_id'=>$customer->address_id,'uuid'=>$customer->uuid]]);
+        }
+    }
 }

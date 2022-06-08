@@ -10,7 +10,7 @@
         </ol>
     </nav>
     <div class="d-flex justify-content-between">
-        @include('laravel-shop::Front.account.leftmenu')
+        @include('laravel-shop::front.customer.leftmenu')
         <div class="main-section">
             <div class="gs-account">
                 <div class="top-desc text-left">
@@ -110,7 +110,7 @@
                     <div class="form-group">
                         <div class="col-xs-12 col-sm-9">
                             <button id="save-address" class="btn-default w120" onclick="saveAddress()">Save</button>
-                            <a href="/account/address">
+                            <a href="/customer/address">
                                 <button type="button" class="btn-primary w120 ml30 btn-cancel">Cancel</button>
                             </a>
                         </div>
@@ -122,7 +122,7 @@
 </div>
 <script>
     function saveAddress() {
-        let url = '/account/address/save?address_id={{request()->query('address_id')??0}}';
+        let url = '/customer/address/save?address_id={{request()->query('address_id')??0}}';
         $.ajax({
             url,
             dataType:'json',
@@ -156,7 +156,7 @@
             }else{
                 if(country_id){
                     $.ajax({
-                        url:'/account/address/country/'+country_id,
+                        url:'/customer/address/country/'+country_id,
                         dataType: "json",
                         success: function(res){
                             country_zone[country_id] = res.data;

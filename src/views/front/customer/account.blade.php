@@ -4,7 +4,7 @@
         <h5 class="nav-title">首页</h5>
     </div>
     <div class="d-flex  justify-content-between">
-        @include('laravel-shop::Front.account.leftmenu')
+        @include('laravel-shop::Front.customer.leftmenu')
         <div class="main-section">
             你好
             @if(session('user'))

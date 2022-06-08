@@ -8,13 +8,13 @@
         </ol>
     </nav>
     <div class="d-flex justify-content-between">
-        @include('laravel-shop::Front.account.leftmenu')
+        @include('laravel-shop::front.customer.leftmenu')
         <div class="main-section">
             <div class="gs-account">
                 <div class="top-desc text-left">
                     <h1 class="d-flex justify-content-between">
                         Shipping Address
-                        <span class="pull-right h1-action"><a href="/account/address/save"><i class="fa fa-plus"></i> Add Address</a></span>
+                        <span class="pull-right h1-action"><a href="/customer/address/save"><i class="fa fa-plus"></i> Add Address</a></span>
                     </h1>
                 </div>
                 <div class="row account-info address_list">
@@ -42,7 +42,7 @@ $(function () {
     $('.address_list').on('click','.delete',function () {
         let id = $(this).data('address_id')
         $.ajax({
-            url:'/account/address/remove/'+id,
+            url:'/customer/address/remove/'+id,
             dataType:'json',
             success:function (res) {
                 if(!res.code) {

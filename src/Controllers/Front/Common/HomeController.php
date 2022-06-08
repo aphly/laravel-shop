@@ -11,6 +11,7 @@ use Aphly\LaravelShop\Controllers\Front\Controller;
 use Aphly\LaravelShop\Mail\Forget;
 use Aphly\LaravelShop\Mail\Verify;
 use Aphly\LaravelShop\Models\Account\Customer;
+use Aphly\LaravelShop\Models\Common\Setting;
 use Aphly\LaravelShop\Requests\LoginRequest;
 use Aphly\LaravelShop\Requests\RegisterRequest;
 use Illuminate\Contracts\Encryption\DecryptException;
@@ -29,7 +30,6 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
-        $res['title'] = '';
         $res['user'] = session('user');
         return $this->makeView('laravel-shop::front.home.index',['res'=>$res]);
     }
@@ -44,7 +44,7 @@ class HomeController extends Controller
                 return redirect('/index');
             }
         } catch (DecryptException $e) {
-            throw new ApiException(['code'=>1,'msg'=>'Token错误','data'=>['redirect'=>'/index']]);
+            throw new ApiException(['code'=>1,'msg'=>'Token_error','data'=>['redirect'=>'/index']]);
         }
     }
 
@@ -72,13 +72,10 @@ class HomeController extends Controller
                             $user_arr['identifier'] = $userAuth->identifier;
                             session()->forget(['user','customer']);
                             session(['user'=>$user_arr]);
-                            $customer = Customer::where(['uuid'=>$user_arr['uuid']])->first();
-                            if(!empty($customer)){
-                                session(['customer'=>['group_id'=>$customer->group_id,'address_id'=>$customer->address_id]]);
-                            }
+                            Customer::session($user_arr['uuid']);
                             $redirect = Cookie::get('refer');
                             $redirect = $redirect??'/index';
-                            throw new ApiException(['code'=>0,'msg'=>'登录成功','data'=>['redirect'=>$redirect,'user'=>$user_arr]]);
+                            throw new ApiException(['code'=>0,'msg'=>'login success','data'=>['redirect'=>$redirect,'user'=>$user_arr]]);
                         }else{
                             throw new ApiException(['code'=>3,'msg'=>'账号被冻结','data'=>['redirect'=>'/index']]);
                         }
@@ -100,7 +97,7 @@ class HomeController extends Controller
     {
         if($request->isMethod('post')) {
             $post = $request->all();
-            $post['identity_type'] = config('laravel.identity_type');
+            $post['identity_type'] = config('shop.identity_type');
             $post['uuid'] = Helper::uuid();
             $post['credential'] = Hash::make($post['credential']);
             $post['last_login'] = time();
@@ -118,13 +115,13 @@ class HomeController extends Controller
                 session()->forget(['user','customer']);
                 session(['user'=>$user_arr]);
                 $redirect = Cookie::get('refer');
-                $redirect = $redirect??'/account/index';
+                $redirect = $redirect??'/customer/account';
 
                 //新增
-                $customer = Customer::create(['uuid'=>$userAuth->uuid,'group_id'=>1]);
-                if($customer->uuid){
-                    session(['customer'=>['group_id'=>$customer->group_id,'address_id'=>$customer->address_id]]);
-                }
+                $setting = Setting::findAll();
+                $group_id = $setting['config']['group']??1;
+                $customer = Customer::create(['uuid'=>$userAuth->uuid,'group_id'=>$group_id]);
+                Customer::session($customer->uuid);
                 (new MailSend())->do($post['identifier'],new Verify($userAuth));
                 throw new ApiException(['code'=>0,'msg'=>'添加成功','data'=>['redirect'=>$redirect,'user'=>$user_arr]]);
             }else{

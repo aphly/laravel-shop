@@ -20,7 +20,7 @@
                                 <div class="col-12 col-xl-5 text-center pt-3 pb-3 d-none d-xl-block cart-img">
                                     <span class="im img-tag tag-off-per product-icon-text">50% OFF</span>
                                     <a href="" class="img-product">
-                                        <img class="d-block w-100" src="https://img.lioasde.top{{$val['product']['image']}}" alt="Rita">
+                                        <img class="d-block w-100" src="{{$oss_url}}{{$val['product']['image']}}" alt="Rita">
                                     </a>
                                 </div>
                                 <div class="col-12 col-xl-7 p-0">
@@ -192,7 +192,12 @@
 </style>
 <script>
 $(function () {
-
+    $('.proceed-to-checkout').click(function () {
+        // $.ajax({
+        //
+        // })
+        location.href='checkout'
+    })
 })
 </script>
 @include('laravel-shop::front.common.footer')

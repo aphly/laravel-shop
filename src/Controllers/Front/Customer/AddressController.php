@@ -1,6 +1,6 @@
 <?php
 
-namespace Aphly\LaravelShop\Controllers\Front\Account;
+namespace Aphly\LaravelShop\Controllers\Front\Customer;
 
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\LaravelShop\Controllers\Front\Controller;
@@ -14,8 +14,7 @@ class AddressController extends Controller
 {
     public function index()
     {
-        $res['title'] = '';
-        $res['list'] = Address::where(['uuid'=>session('user')['uuid']])->orderBy('id','desc')->Paginate(config('shop.perPage'))->withQueryString();
+        $res['list'] = Address::where(['uuid'=>Customer::uuid()])->orderBy('id','desc')->Paginate(config('shop.perPage'))->withQueryString();
         $country_ids = $zone_ids = [];
         foreach ($res['list'] as $val){
             $country_ids[] = $val['country_id'];
@@ -23,8 +22,8 @@ class AddressController extends Controller
         }
         $res['country'] = (new Country)->findAllIds($country_ids);
         $res['zone'] = (new Zone)->findAllIds($zone_ids);
-        $res['customer'] = Customer::find(session('user')['uuid']);
-        return $this->makeView('laravel-shop::front.account.address',['res'=>$res]);
+        $res['customer'] = Customer::find(Customer::uuid());
+        return $this->makeView('laravel-shop::front.customer.address',['res'=>$res]);
     }
 
     public function save(Request $request){
@@ -32,36 +31,36 @@ class AddressController extends Controller
         if($request->isMethod('post')){
             $input = $request->all();
             if(!$address_id){
-                $input['uuid'] = session('user')['uuid'];
+                $input['uuid'] = Customer::uuid();
             }
-            $address = Address::updateOrCreate(['uuid'=>session('user')['uuid'],'id'=>$address_id],$input);
+            $address = Address::updateOrCreate(['uuid'=>Customer::uuid(),'id'=>$address_id],$input);
             $default = $request->input('default',0);
             if($default){
-                Customer::where(['uuid'=>session('user')['uuid']])->update(['address_id'=>$address->id]);
+                Customer::where(['uuid'=>Customer::uuid()])->update(['address_id'=>$address->id]);
             }else{
                 if($address_id == $address->id){
-                    Customer::where(['uuid'=>session('user')['uuid']])->update(['address_id'=>0]);
+                    Customer::where(['uuid'=>Customer::uuid()])->update(['address_id'=>0]);
                 }
             }
-            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>'/account/address']]);
+            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>'/customer/address']]);
         }else{
             $res['title'] = '';
             $res['country'] = (new Country)->findAll(1);
             $country_keys = array_keys($res['country']);
-            $res['info'] = Address::where(['uuid'=>session('user')['uuid'],'id'=>$address_id])->firstOrNew();
+            $res['info'] = Address::where(['uuid'=>Customer::uuid(),'id'=>$address_id])->firstOrNew();
             if($res['info'] && in_array($res['info']->country_id,$country_keys)){
                 $res['zone'] = (new Zone)->findAllByCountry($res['info']->country_id);
             }else{
                 $res['zone'] = [];
             }
             $res['customer'] = Customer::find(session('user')['uuid']);
-            return $this->makeView('laravel-shop::front.account.address_form',['res'=>$res]);
+            return $this->makeView('laravel-shop::front.customer.address_form',['res'=>$res]);
         }
     }
 
     public function remove(Request $request){
-        Address::where(['uuid'=>session('user')['uuid'],'id'=>$request->id])->delete();
-        throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>'/account/address']]);
+        Address::where(['uuid'=>Customer::uuid(),'id'=>$request->id])->delete();
+        throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>'/customer/address']]);
     }
 
     public function country(Request $request){

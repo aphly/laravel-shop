@@ -1,5 +1,7 @@
 <?php
 
+use Aphly\Laravel\Logs\Logs;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,8 +37,8 @@ Route::middleware(['web'])->group(function () {
         Route::get('/logout', 'Aphly\LaravelShop\Controllers\Front\Common\HomeController@logout');
 
         //account
-        Route::prefix('account')->group(function () {
-            Route::get('customer', 'Aphly\LaravelShop\Controllers\Front\Account\CustomerController@index');
+        Route::prefix('customer')->group(function () {
+            Route::get('account', 'Aphly\LaravelShop\Controllers\Front\Account\CustomerController@index');
 
             Route::get('wishlist', 'Aphly\LaravelShop\Controllers\Front\Account\WishlistController@index');
             Route::get('wishlist/product/{id}', 'Aphly\LaravelShop\Controllers\Front\Account\WishlistController@product')->where('id', '[0-9]+');
@@ -49,8 +51,10 @@ Route::middleware(['web'])->group(function () {
 
         });
 
+        Route::get('/checkout', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@index');
 
     });
+
     //common
     Route::get('/currency/{id}', 'Aphly\LaravelShop\Controllers\Front\Common\CurrencyController@ajax')->where('id', '[0-9]+');
     Route::get('/coupon/{code}', 'Aphly\LaravelShop\Controllers\Front\Common\CouponController@ajax');
@@ -61,7 +65,7 @@ Route::middleware(['web'])->group(function () {
 
     Route::post('/cart/add', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@add');
     Route::get('/cart', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@index');
-    Route::get('/checkout', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckController@index');
+
 
 });
 

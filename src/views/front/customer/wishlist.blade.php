@@ -3,12 +3,12 @@
     <nav aria-label="breadcrumb" class="row col-12 mt-lg-3">
         <ol class="breadcrumb breadcrumb-wrapper col-12 m-0 pt-0 pb-0 font-14">
             <li class="breadcrumb-item"><a href="/index"><i class="fa fa-home"></i></a></li>
-            <li class="breadcrumb-item"><a href="/account/account">Account</a></li>
-            <li class="breadcrumb-item"><a href="/account/wishlist">Wishlist</a></li>
+            <li class="breadcrumb-item"><a href="/customer/account">Account</a></li>
+            <li class="breadcrumb-item"><a href="/customer/wishlist">Wishlist</a></li>
         </ol>
     </nav>
     <div class="d-flex justify-content-between">
-        @include('laravel-shop::Front.account.leftmenu')
+        @include('laravel-shop::front.customer.leftmenu')
         <div class="main-section">
             <div class="gs-account">
                 <div class="top-desc text-left">
@@ -23,7 +23,7 @@
                         <p class="address-cont">Address: {{$val['address_1']}} , {{$val['address_2']}} , {{$val['city']}} , {{$val['firstname']}} , {{$res['zone'][$val['zone_id']]['name']??''}} , {{$res['country'][$val['country_id']]['name']??''}}</p>
                         <p class="address-phone">Postcode: {{$val['postcode']}}</p>
                         <p class="col01">
-                            <a href="/account/address/save?address_id={{$val['id']}}">
+                            <a href="/customer/address/save?address_id={{$val['id']}}">
                                 <i class="fa fa-edit"></i> Edit
                             </a>
                             <a href="javascript:;" data-product_id="{{$val['product_id']}}" class="delete ml-5">
@@ -45,7 +45,7 @@ $(function () {
     $('.wishlist').on('click','.delete',function () {
         let id = $(this).data('product_id')
         $.ajax({
-            url:'/account/wishlist/remove/'+id,
+            url:'/customer/wishlist/remove/'+id,
             dataType:'json',
             success:function (res) {
                 if(!res.code) {

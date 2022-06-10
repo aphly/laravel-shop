@@ -236,7 +236,7 @@
                             @foreach($res['list'] as $val)
                             <div class="items-info ">
                                 <div class="items-img" style="width: 120px;">
-                                    <img src="{{$oss_url}}{{$val['product']['image']}}" alt="" aria-hidden="true" style="max-width: 100%;">
+                                    <img src="{{$oss_url?$oss_url.$val['product']['image']:Storage::url($val['product']['image'])}}" alt="" aria-hidden="true" style="max-width: 100%;">
                                 </div>
                                 <div class="items-lists">
                                     <ul>

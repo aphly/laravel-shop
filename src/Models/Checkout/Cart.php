@@ -49,13 +49,12 @@ class Cart extends Model
 
     public function add($product_id, $quantity = 1, $option = []) {
         $option = json_encode($option);
-        $uuid = session('user')['uuid']??0;
-        $where = ['uuid'=>$uuid,'guest'=>Cookie::get('guest'),'product_id'=>$product_id,'option'=>$option];
+        $where = ['uuid'=>Customer::uuid(),'guest'=>Cookie::get('guest'),'product_id'=>$product_id,'option'=>$option];
         $info = self::where($where)->first();
         if(!empty($info)){
             $info->increment('quantity',$quantity);
         }else{
-            self::create(array_merge($where,['quantity'=>$quantity,'date_add'=>time()]));
+            self::insert(array_merge($where,['quantity'=>$quantity,'date_add'=>time()]));
         }
     }
 

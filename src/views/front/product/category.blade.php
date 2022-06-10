@@ -14,7 +14,7 @@
             <li class="">
                 <div class="image">
                     @if($val->image)
-                        <a href="/product/{{$val->id}}"><img src="https://img.lioasde.top{{$val->image}}" class="img-responsive"></a>
+                        <a href="/product/{{$val->id}}"><img src="{{$oss_url?$oss_url.$val->image:Storage::url($val->image)}}" class="img-responsive"></a>
                     @else
                         <a href="/product/{{$val->id}}"><img src="{{ URL::asset('vendor/laravel-admin/img/none.png') }}" class="img-responsive"></a>
                     @endif

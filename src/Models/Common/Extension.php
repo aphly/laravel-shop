@@ -48,7 +48,7 @@ class Extension extends Model
         $total_data['totals'][] = array(
             'code'       => 'sub_total',
             'title'      => 'Sub_total',
-            'value'      => $sub_total,
+            'value'      => $sub_total??0,
             'value_format'      => Currency::format($sub_total),
             'sort_order' => 1
         );

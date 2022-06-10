@@ -10,6 +10,7 @@ class Controller extends \Aphly\LaravelAdmin\Controllers\Controller
     public function __construct()
     {
         View::share("oss_url",'https://img.lioasde.top');
+        View::share("oss_url",'');
         parent::__construct();
     }
 

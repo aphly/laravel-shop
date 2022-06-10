@@ -28,8 +28,8 @@ class CartController extends Controller
                 }
                 $res['items'] += $cart['quantity'];
             }
-            $res['total_data'] = (new Extension)->total($res['list']);
         }
+        $res['total_data'] = (new Extension)->total($res['list']);
         return $this->makeView('laravel-shop::front.checkout.cart',['res'=>$res]);
     }
 
@@ -42,7 +42,7 @@ class CartController extends Controller
             $product_options = $res['info']->findOption($res['info']->id);
             foreach ($product_options as $val) {
                 if ($val['required'] && empty($option[$val['id']])) {
-                    throw new ApiException(['code'=>1,'msg'=>$val['option_value']['name'].'required']);
+                    throw new ApiException(['code'=>1,'msg'=>$val['option']['name'].' required']);
                 }
             }
             $Cart = new Cart;

@@ -45,7 +45,7 @@
                             <i class="uni app-aixin"></i>
                             <div class="nav_num">0</div>
                         </div></a>
-                        <a href=""><div class="d-flex nav-cart nav-r  align-items-center">
+                        <a href="/cart"><div class="d-flex nav-cart nav-r  align-items-center">
                             <i class="uni app-gouwuche"></i>
                             <div class="nav_num">0</div>
                         </div></a>

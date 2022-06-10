@@ -27,15 +27,15 @@
         <div>
             <div class="product_detail_img">
                 <div class="big_img J_zoom" >
-                    <img src="https://img.lioasde.top{{$res['info']->image}}" id="big_pic" class="zoom-img">
+                    <img src="{{$oss_url?$oss_url.$res['info']->image:Storage::url($res['info']->image)}}" id="big_pic" class="zoom-img">
                 </div>
                 @if(count($res['info']->img))
                 <div class="small_img  position-relative ">
                     <div class="swiper-container swiper-container_pc">
                         <div class="swiper-wrapper">
                             @foreach($res['info']->img as $v)
-                            <div class="swiper-slide " data-src="https://img.lioasde.top{{$v['image']}}" onclick="changepic(this)">
-                                <img src="https://img.lioasde.top{{$v['image']}}">
+                            <div class="swiper-slide " data-src="{{$oss_url?$oss_url.$v['image']:Storage::url($v['image'])}}" onclick="changepic(this)">
+                                <img src="{{$oss_url?$oss_url.$v['image']:Storage::url($v['image'])}}">
                             </div>
                             @endforeach
                         </div>
@@ -88,7 +88,7 @@ function cart_add(e) {
     $.ajax({
         url:'/cart/add',
         type:'post',
-        data:$('#product input[type=\'text\'],#product input[type=\'number\'], #product input[type=\'hidden\'], #product input[type=\'radio\']:checked, #product input[type=\'checkbox\']:checked, #product select, #product textarea'),
+        data:$('#product input[type=\'text\'],#product input[type=\'number\'],#product input[type=\'date\'],#product input[type=\'time\'],#product input[type=\'datetime-local\'],  #product input[type=\'hidden\'], #product input[type=\'radio\']:checked, #product input[type=\'checkbox\']:checked, #product select, #product textarea'),
         success:function (res) {
             console.log(res)
         }

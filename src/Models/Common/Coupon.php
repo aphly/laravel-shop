@@ -2,7 +2,7 @@
 
 namespace Aphly\LaravelShop\Models\Common;
 
-use Aphly\LaravelShop\Models\Account\Customer;
+use Aphly\LaravelShop\Models\Customer\Customer;
 use Aphly\LaravelShop\Models\Checkout\Cart;
 use Aphly\LaravelShop\Models\Product\ProductCategory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

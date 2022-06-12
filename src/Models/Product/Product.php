@@ -2,8 +2,8 @@
 
 namespace Aphly\LaravelShop\Models\Product;
 
-use Aphly\LaravelShop\Models\Account\Customer;
-use Aphly\LaravelShop\Models\Account\Group;
+use Aphly\LaravelShop\Models\Customer\Customer;
+use Aphly\LaravelShop\Models\Customer\Group;
 use Aphly\LaravelShop\Models\Common\Currency;
 use Aphly\LaravelShop\Models\Common\Setting;
 //use Illuminate\Database\Eloquent\Casts\Attribute;

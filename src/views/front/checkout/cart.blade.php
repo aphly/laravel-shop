@@ -35,14 +35,7 @@
                                     </ul>
                                     <div class="qtyInfo">
                                         <span class="car-label">Qty:</span>
-                                        <select name="qty" class="product-qty" >
-                                            <option value="1" selected="selected">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
-                                            <option value="6">6</option>
-                                        </select>
+                                        <input type="number" name="qty" class="product-qty" value="{{$val['quantity']}}">
                                         <div class="stock-tip" style="display: none"></div>
                                         <div class="subtotalInfo d-xl-none">
                                             <span>Subtotal:</span>

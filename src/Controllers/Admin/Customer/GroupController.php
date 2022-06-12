@@ -4,7 +4,7 @@ namespace Aphly\LaravelShop\Controllers\Admin\Customer;
 
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\LaravelShop\Controllers\Controller;
-use Aphly\LaravelShop\Models\Account\Group;
+use Aphly\LaravelShop\Models\Customer\Group;
 use Illuminate\Http\Request;
 
 class GroupController extends Controller

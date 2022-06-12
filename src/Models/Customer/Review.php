@@ -1,18 +1,18 @@
 <?php
 
-namespace Aphly\LaravelShop\Models\Account;
+namespace Aphly\LaravelShop\Models\Customer;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;
 
-class ReviewImage extends Model
+class Review extends Model
 {
     use HasFactory;
     protected $table = 'shop_review';
     public $timestamps = false;
 
     protected $fillable = [
-        'review_id','image'
+        'product_id','uuid','author','text','rating','status','date_add','date_edit'
     ];
 
 

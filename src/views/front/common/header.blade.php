@@ -47,10 +47,13 @@
                         </div></a>
                         <a href="/cart"><div class="d-flex nav-cart nav-r  align-items-center">
                             <i class="uni app-gouwuche"></i>
-                            <div class="nav_num">0</div>
+                            <div class="nav_num">{{$cartQuantity}}</div>
                         </div></a>
                         @if(session('user'))
-                            <a href="/account/customer" class="nav-r">
+                            <a href="/customer/account" class="nav-r">
+                                <i class="uni app-login"></i>
+                            </a>
+                            <a href="/logout" class="nav-r">
                                 <i class="uni app-login"></i>
                             </a>
                         @else

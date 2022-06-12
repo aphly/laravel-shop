@@ -1,6 +1,6 @@
 <?php
 
-namespace Aphly\LaravelShop\Models\Account;
+namespace Aphly\LaravelShop\Models\Customer;
 
 use Aphly\LaravelShop\Models\Common\Setting;
 use Aphly\LaravelShop\Models\Product\ProductReward;

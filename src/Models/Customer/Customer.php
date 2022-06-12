@@ -1,12 +1,14 @@
 <?php
 
-namespace Aphly\LaravelShop\Models\Account;
+namespace Aphly\LaravelShop\Models\Customer;
 
 use Aphly\LaravelAdmin\Models\User;
 use Aphly\LaravelAdmin\Models\UserAuth;
+use Aphly\LaravelShop\Models\Checkout\Cart;
 use Aphly\LaravelShop\Models\Common\Setting;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;
+use Illuminate\Support\Facades\Cookie;
 
 class Customer extends Model
 {
@@ -41,13 +43,24 @@ class Customer extends Model
         return session()->has('customer')?session('customer')['address_id']:0;
     }
 
-    static function session($uuid=false){
+    static function makeSession($uuid=false){
         if(!$uuid){
             $uuid = session()->has('user')?session('user')['uuid']:0;
         }
         $customer = self::where(['uuid'=>$uuid])->first();
+
         if(!empty($customer)){
             session(['customer'=>['group_id'=>$customer->group_id,'address_id'=>$customer->address_id,'uuid'=>$customer->uuid]]);
         }
+    }
+
+    static function initCart(){
+        (new Cart)->login();
+    }
+
+    static function logout(){
+        session()->forget('customer');
+        Cookie::queue('guest', null , -1);
+
     }
 }

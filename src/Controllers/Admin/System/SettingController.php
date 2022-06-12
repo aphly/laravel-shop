@@ -4,7 +4,7 @@ namespace Aphly\LaravelShop\Controllers\Admin\System;
 
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\LaravelShop\Controllers\Controller;
-use Aphly\LaravelShop\Models\Account\Group;
+use Aphly\LaravelShop\Models\Customer\Group;
 use Aphly\LaravelShop\Models\Common\Country;
 use Aphly\LaravelShop\Models\Common\Currency;
 use Aphly\LaravelShop\Models\Common\Setting;

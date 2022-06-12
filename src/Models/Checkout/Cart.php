@@ -2,8 +2,8 @@
 
 namespace Aphly\LaravelShop\Models\Checkout;
 
-use Aphly\LaravelShop\Models\Account\Customer;
-use Aphly\LaravelShop\Models\Account\Group;
+use Aphly\LaravelShop\Models\Customer\Customer;
+use Aphly\LaravelShop\Models\Customer\Group;
 use Aphly\LaravelShop\Models\Common\Currency;
 use Aphly\LaravelShop\Models\Product\Product;
 use Aphly\LaravelShop\Models\Product\ProductDiscount;
@@ -14,6 +14,7 @@ use Aphly\LaravelShop\Models\Product\ProductSpecial;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\DB;
 
 class Cart extends Model
 {
@@ -39,6 +40,7 @@ class Cart extends Model
         $guest = Cookie::get('guest');
         if($guest){
             $cart = self::where('guest',$guest);
+            self::where('uuid',Customer::uuid())->update(['guest'=>$guest]);
             $data = $cart->get()->toArray();
             $cart->delete();
             foreach ($data as $val){
@@ -47,7 +49,7 @@ class Cart extends Model
         }
     }
 
-    public function add($product_id, $quantity = 1, $option = []) {
+    public function add($product_id, $quantity = 1, $option = [],$uuid=false) {
         $option = json_encode($option);
         $where = ['uuid'=>Customer::uuid(),'guest'=>Cookie::get('guest'),'product_id'=>$product_id,'option'=>$option];
         $info = self::where($where)->first();
@@ -55,7 +57,16 @@ class Cart extends Model
             $info->increment('quantity',$quantity);
         }else{
             self::insert(array_merge($where,['quantity'=>$quantity,'date_add'=>time()]));
+            //self::create(array_merge($where,['quantity'=>$quantity,'date_add'=>time()]));
         }
+    }
+
+    public function totalQuantity($guest) {
+        $info = self::where('guest',$guest)->select(DB::raw('SUM(quantity) as total_quantity'))->first();
+        if(!empty($info) && $info->total_quantity){
+            return $info->total_quantity;
+        }
+        return 0;
     }
 
     public function getProducts(){

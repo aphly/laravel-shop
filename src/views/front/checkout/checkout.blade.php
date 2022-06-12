@@ -23,9 +23,9 @@
                     </div>
                     <div class="color-desc selected-content">
                     </div>
-                    <div class="select-option" style="display: none;">
+                    <div class="select-option" style="">
                         <div class="address-lists">
-                            @foreach($res['customer_address'] as $val)
+                                @foreach($res['customer_address'] as $val)
                             <label class="row m-0 checkout-address">
                                 <input type="radio" class="checkout-form-radio col-1 shipping-address" name="shipping_address" value="375308">
                                 <div class="col-11 pl-3">
@@ -34,7 +34,7 @@
                                 </div>
                             </label>
                             @endforeach
-                            <label class="row m-0 pt-3 add-new-shipping-address" style="display: none">
+                            <label class="row m-0 pt-3 add-new-shipping-address" style="">
                                 <input class="checkout-form-radio col-1 shipping-address" type="radio" name="shipping_address" value="0">
                                 <div class="col-11 pl-3 font-weight-bold">
                                     Add New Address

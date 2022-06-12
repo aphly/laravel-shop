@@ -1,6 +1,8 @@
 <?php
 
 use Aphly\Laravel\Logs\Logs;
+use Aphly\LaravelShop\Models\Checkout\Cart;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
@@ -38,15 +40,15 @@ Route::middleware(['web'])->group(function () {
 
         //account
         Route::prefix('customer')->group(function () {
-            Route::get('account', 'Aphly\LaravelShop\Controllers\Front\Account\CustomerController@index');
+            Route::get('account', 'Aphly\LaravelShop\Controllers\Front\Customer\AccountController@index');
 
-            Route::get('wishlist', 'Aphly\LaravelShop\Controllers\Front\Account\WishlistController@index');
-            Route::get('wishlist/product/{id}', 'Aphly\LaravelShop\Controllers\Front\Account\WishlistController@product')->where('id', '[0-9]+');
+            Route::get('wishlist', 'Aphly\LaravelShop\Controllers\Front\Customer\WishlistController@index');
+            Route::get('wishlist/product/{id}', 'Aphly\LaravelShop\Controllers\Front\Customer\WishlistController@product')->where('id', '[0-9]+');
 
-            Route::get('address', 'Aphly\LaravelShop\Controllers\Front\Account\AddressController@index');
-            Route::match(['get', 'post'],'address/save', 'Aphly\LaravelShop\Controllers\Front\Account\AddressController@save');
-            Route::get('address/remove/{id}', 'Aphly\LaravelShop\Controllers\Front\Account\AddressController@remove')->where('id', '[0-9]+');
-            Route::get('address/country/{id}', 'Aphly\LaravelShop\Controllers\Front\Account\AddressController@country')->where('id', '[0-9]+');
+            Route::get('address', 'Aphly\LaravelShop\Controllers\Front\Customer\AddressController@index');
+            Route::match(['get', 'post'],'address/save', 'Aphly\LaravelShop\Controllers\Front\Customer\AddressController@save');
+            Route::get('address/remove/{id}', 'Aphly\LaravelShop\Controllers\Front\Customer\AddressController@remove')->where('id', '[0-9]+');
+            Route::get('address/country/{id}', 'Aphly\LaravelShop\Controllers\Front\Customer\AddressController@country')->where('id', '[0-9]+');
 
 
         });
@@ -73,6 +75,10 @@ Route::middleware(['web'])->group(function () {
 Route::middleware(['web'])->group(function () {
 
     Route::get('/test', function (){
+        $guest = Cookie::get('guest');
+        dd($guest);
+        $aa = (new Cart)->totalQuantity($guest);
+        dd($aa);
         return view('welcome');
     });
 

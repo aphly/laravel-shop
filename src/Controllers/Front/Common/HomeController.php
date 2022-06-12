@@ -10,7 +10,7 @@ use Aphly\LaravelAdmin\Models\UserAuth;
 use Aphly\LaravelShop\Controllers\Front\Controller;
 use Aphly\LaravelShop\Mail\Forget;
 use Aphly\LaravelShop\Mail\Verify;
-use Aphly\LaravelShop\Models\Account\Customer;
+use Aphly\LaravelShop\Models\Customer\Customer;
 use Aphly\LaravelShop\Models\Common\Setting;
 use Aphly\LaravelShop\Requests\LoginRequest;
 use Aphly\LaravelShop\Requests\RegisterRequest;
@@ -72,7 +72,8 @@ class HomeController extends Controller
                             $user_arr['identifier'] = $userAuth->identifier;
                             session()->forget(['user','customer']);
                             session(['user'=>$user_arr]);
-                            Customer::session($user_arr['uuid']);
+                            Customer::makeSession($user_arr['uuid']);
+                            Customer::initCart();
                             $redirect = Cookie::get('refer');
                             $redirect = $redirect??'/index';
                             throw new ApiException(['code'=>0,'msg'=>'login success','data'=>['redirect'=>$redirect,'user'=>$user_arr]]);
@@ -121,7 +122,8 @@ class HomeController extends Controller
                 $setting = Setting::findAll();
                 $group_id = $setting['config']['group']??1;
                 $customer = Customer::create(['uuid'=>$userAuth->uuid,'group_id'=>$group_id]);
-                Customer::session($customer->uuid);
+                Customer::makeSession($customer->uuid);
+                Customer::initCart();
                 (new MailSend())->do($post['identifier'],new Verify($userAuth));
                 throw new ApiException(['code'=>0,'msg'=>'添加成功','data'=>['redirect'=>$redirect,'user'=>$user_arr]]);
             }else{
@@ -137,6 +139,7 @@ class HomeController extends Controller
     {
         session()->forget('user');
         Auth::guard('user')->logout();
+        Customer::logout();
         throw new ApiException(['code'=>0,'msg'=>'成功退出','data'=>['redirect'=>'/login']]);
     }
 

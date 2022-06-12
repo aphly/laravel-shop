@@ -1,6 +1,6 @@
 <?php
 
-namespace Aphly\LaravelShop\Models\Account;
+namespace Aphly\LaravelShop\Models\Customer;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;

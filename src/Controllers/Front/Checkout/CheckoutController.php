@@ -5,7 +5,6 @@ namespace Aphly\LaravelShop\Controllers\Front\Checkout;
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\LaravelShop\Controllers\Front\Controller;
 use Aphly\LaravelShop\Models\Customer\Address;
-use Aphly\LaravelShop\Models\Customer\Customer;
 use Aphly\LaravelShop\Models\Checkout\Cart;
 use Aphly\LaravelShop\Models\Common\Extension;
 use Aphly\LaravelShop\Models\Product\Product;
@@ -31,8 +30,7 @@ class CheckoutController extends Controller
                 $res['items'] += $cart['quantity'];
             }
             $res['total_data'] = (new Extension)->total($res['list']);
-            $res['customer_address'] = Address::where('uuid',Customer::uuid())->get()->toArray();
-
+            $res['customer_address'] = (new Address)->getAddresses();
             return $this->makeView('laravel-shop::front.checkout.checkout',['res'=>$res]);
         }else{
             return redirect('cart');

@@ -1,0 +1,15 @@
+.sidebar-content{width:100%;padding:50px 32px 53px 37px;border:1px solid #e5e5e5}
+.checkout-items-title{padding-bottom:13px;border-bottom:1px solid #ccc;display:flex;justify-content:space-between}
+.checkout-items-title .items-title{cursor:pointer}
+.order-list p{margin-bottom:0}
+.checkout-edit{display:block;float:right;font-size:13px;margin-top:3px;margin-right:5px;text-transform:capitalize}
+.items-info-list .items-info{padding-top:26px;padding-bottom:32px;border-bottom:1px solid #ccc;display:flex;justify-content:space-between;width:100%}
+.items-info-list .items-img{position:relative}
+.items-info-list .items-img img{max-width:100%}
+.items-info-list .items-lists{margin-left:26px}
+.items-info-list .items-lists li{line-height:1.3}
+.sidebar-content .items-price{padding-top:11px;padding-bottom:9px}
+.sidebar-content .items-price li{line-height:1.2;padding:4px 0}
+.sidebar-content .items-right{float:right;padding-right:2px;font-weight:600}
+.sidebar-content .items-total-price{font-size:16px;font-weight:600;padding-top:15px}
+.checkout-content{border:1px solid #d1d1d1;padding:20px 50px}

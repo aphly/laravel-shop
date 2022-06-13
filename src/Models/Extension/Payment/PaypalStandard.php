@@ -1,9 +1,10 @@
 <?php
 
-namespace Aphly\LaravelShop\Models\Plugin\Payment;
+namespace Aphly\LaravelShop\Models\Extension\Payment;
 
 use Aphly\LaravelShop\Models\Common\Setting;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\DB;
 
 class PaypalStandard
 {
@@ -30,5 +31,21 @@ class PaypalStandard
             );
         }
         return $method_data;
+    }
+
+    public function install() {
+        $data=[];
+        $data[] =['code' => 'payment','key'=>'paypal_cost','value'=>'0'];
+        $data[] =['code' => 'payment','key'=>'paypal_status','value'=>'1'];
+        $data[] =['code' => 'payment','key'=>'paypal_sort','value'=>'1'];
+        return DB::table('shop_setting')->insert($data);
+    }
+
+    public function uninstall() {
+        $data=[];
+        $data[] =['code' => 'payment','key'=>'paypal_cost','value'=>'0'];
+        $data[] =['code' => 'payment','key'=>'paypal_status','value'=>'1'];
+        $data[] =['code' => 'payment','key'=>'paypal_sort','value'=>'1'];
+        return DB::table('shop_setting')->insert($data);
     }
 }

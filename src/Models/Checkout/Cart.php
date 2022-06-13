@@ -71,8 +71,10 @@ class Cart extends Model
 
     public function getProducts(){
         $product_data = [];
-        $uuid = session('user')['uuid']??0;
-        $cart_data = self::where(['uuid'=>$uuid,'guest'=>Cookie::get('guest')])->with('product')->get()->toArray();
+        $uuid = Customer::uuid();
+        $cart_data = self::when($uuid,function ($query,$uuid){
+            return  $query->where('uuid',$uuid);
+        })->where(['guest'=>Cookie::get('guest')])->with('product')->get()->toArray();
         foreach($cart_data as $cart){
             $stock = true;
             if($cart['product']['status']==1 && $cart['product']['date_available']<time() && $cart['quantity'] > 0){

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer('product_id')->unsigned()->index();
             $table->string('image',255);
-            $table->integer('sort')->unsigned()->nullable()->default(0);
+            $table->unsignedInteger('sort')->nullable()->default(0);
         });
     }
 

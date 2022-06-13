@@ -1,10 +1,7 @@
 @include('laravel-shop::front.common.header')
 <link rel="stylesheet" href="{{ URL::asset('vendor/laravel-shop/css/checkout.css') }}" />
 <style>
-    .checkout-content {
-        border: 1px solid #d1d1d1;
-        padding: 20px 50px;
-    }
+
 </style>
 <div class="container">
     <div class="checkout row">
@@ -29,7 +26,7 @@
                             <label class="row m-0 checkout-address">
                                 <input type="radio" class="checkout-form-radio col-1 shipping-address" name="shipping_address" value="375308">
                                 <div class="col-11 pl-3">
-                                    <div>s c,zz, zz, zzz, zzz, US, zzzzzzzzzz, zzzz</div>
+                                    <div>{{$val['firstname']}} {{$val['lastname']}},{{$val['address_1']}}, {{$val['address_2']}}, {{$val['city']}}, {{$val['zone_name']}}, {{$val['country_name']}}, {{$val['postcode']}}, {{$val['telephone']}}</div>
                                     <a href="javascript:;" class="checkout-address-edit color-link d-inline-block pt-3 pr-3" data-address-id="375308">Edit</a>
                                 </div>
                             </label>

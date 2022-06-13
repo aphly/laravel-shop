@@ -104,7 +104,8 @@ Route::middleware(['web'])->group(function () {
                     ['attribute','\Catalog\AttributeController'],['option','\Catalog\OptionController'],
                     ['information','\Catalog\InformationController'],['review','\Catalog\ReviewController'],
                     ['group','\Customer\GroupController']
-                ];
+            ];
+
             foreach ($route_arr as $val){
                 Route::get('/'.$val[0].'/index', 'Aphly\LaravelShop\Controllers\Admin'.$val[1].'@index');
                 Route::get('/'.$val[0].'/form', 'Aphly\LaravelShop\Controllers\Admin'.$val[1].'@form');

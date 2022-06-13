@@ -6,7 +6,6 @@ use Aphly\LaravelShop\Models\Common\Country;
 use Aphly\LaravelShop\Models\Common\Zone;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;
-use Illuminate\Support\Facades\Auth;
 
 class Address extends Model
 {
@@ -18,7 +17,7 @@ class Address extends Model
     ];
 
     public function getAddress($address_id) {
-        $info = self::where(['id'=>$address_id,'uuid'=>Auth::guard('user')->user()->uuid])->first();
+        $info = self::where(['id'=>$address_id,'uuid'=>Customer::uuid()])->first();
         if(!empty($info)){
             $country = (new Country)->findAll();
             $zone = (new Zone)->findAll();
@@ -38,13 +37,14 @@ class Address extends Model
                 'country_name'   => $country[$info['country_id']]['name']??'',
                 'iso_code_2'     => $country[$info['country_id']]['iso_code_2']??'',
                 'iso_code_3'     => $country[$info['country_id']]['iso_code_3']??'',
-                'address_format' => $country[$info['country_id']]['address_format']??''
+                'address_format' => $country[$info['country_id']]['address_format']??'',
+                'telephone'      => $info['telephone']
             );
         }
     }
 
     public function getAddresses($uuid = 0) {
-        $uuid = $uuid??Auth::guard('user')->user()->uuid;
+        $uuid = !empty($uuid)?$uuid:Customer::uuid();
         $address_data = [];
         $data = self::where(['uuid'=>$uuid])->get()->toArray();
         $country = (new Country)->findAll();
@@ -65,7 +65,8 @@ class Address extends Model
                 'country_name'   => $country[$v['country_id']]['name']??'',
                 'iso_code_2'     => $country[$v['country_id']]['iso_code_2']??'',
                 'iso_code_3'     => $country[$v['country_id']]['iso_code_3']??'',
-                'address_format' => $country[$v['country_id']]['address_format']??''
+                'address_format' => $country[$v['country_id']]['address_format']??'',
+                'telephone'      => $v['telephone']
             );
         }
         return $address_data;

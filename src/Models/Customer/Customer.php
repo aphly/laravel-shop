@@ -61,6 +61,8 @@ class Customer extends Model
     static function logout(){
         session()->forget('customer');
         Cookie::queue('guest', null , -1);
-
+        Cookie::queue('shipping_address', null , -1);
+        Cookie::queue('shipping_method', null , -1);
+        Cookie::queue('payment_method', null , -1);
     }
 }

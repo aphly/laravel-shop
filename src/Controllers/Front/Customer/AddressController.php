@@ -42,7 +42,12 @@ class AddressController extends Controller
                     Customer::where(['uuid'=>Customer::uuid()])->update(['address_id'=>0]);
                 }
             }
-            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>'/customer/address']]);
+            $checkout = $request->query('checkout',0);
+            if($checkout){
+                throw new ApiException(['code'=>0,'msg'=>'success','data'=>['list'=>(new Address)->getAddresses()]]);
+            }else{
+                throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>'/customer/address']]);
+            }
         }else{
             $res['title'] = '';
             $res['country'] = (new Country)->findAll(1);

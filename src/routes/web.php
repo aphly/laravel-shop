@@ -75,7 +75,7 @@ Route::middleware(['web'])->group(function () {
 Route::middleware(['web'])->group(function () {
 
     Route::get('/test', function (){
-        $guest = Cookie::get('guest');
+        $guest = (new \Aphly\LaravelShop\Controllers\Admin\Extension\Extension\ShippingController)->index();
         dd($guest);
         $aa = (new Cart)->totalQuantity($guest);
         dd($aa);

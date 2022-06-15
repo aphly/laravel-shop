@@ -33,8 +33,8 @@ class InstallController extends Controller
         $data[] =['id'=>10019,'name' => 'Customer','url' =>'/shop_admin/customer/index','pid'=>10018,'is_leaf'=>1,'module_id'=>2];
         $data[] =['id'=>10020,'name' => 'Group','url' =>'/shop_admin/group/index','pid'=>10018,'is_leaf'=>1,'module_id'=>2];
         $data[] =['id'=>10021,'name' => 'Extension','url' =>'','pid'=>10000,'is_leaf'=>0,'module_id'=>2];
-        $data[] =['id'=>10022,'name' => 'Shopping','url' =>'/shop_admin/shopping/index','pid'=>10020,'is_leaf'=>1,'module_id'=>2];
-        $data[] =['id'=>10023,'name' => 'Payment','url' =>'/shop_admin/payment/index','pid'=>10020,'is_leaf'=>1,'module_id'=>2];
+        $data[] =['id'=>10022,'name' => 'Shipping','url' =>'/shop_admin/extension/shipping/index','pid'=>10020,'is_leaf'=>1,'module_id'=>2];
+        $data[] =['id'=>10023,'name' => 'Payment','url' =>'/shop_admin/extension/payment/index','pid'=>10020,'is_leaf'=>1,'module_id'=>2];
         DB::table('admin_menu')->insert($data);
 
         $data=[];

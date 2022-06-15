@@ -149,6 +149,16 @@ Route::middleware(['web'])->group(function () {
             Route::get('/attribute/ajax', 'Aphly\LaravelShop\Controllers\Admin\Catalog\AttributeController@ajax');
             Route::get('/option/ajax', 'Aphly\LaravelShop\Controllers\Admin\Catalog\OptionController@ajax');
 
+            Route::get('/extension/shipping/index', 'Aphly\LaravelShop\Controllers\Admin\Extension\Extension\ShippingController@index');
+            Route::get('/extension/shipping/install', 'Aphly\LaravelShop\Controllers\Admin\Extension\Extension\ShippingController@install');
+            Route::get('/extension/shipping/uninstall', 'Aphly\LaravelShop\Controllers\Admin\Extension\Extension\ShippingController@uninstall');
+            Route::match(['get', 'post'],'/extension/shipping/edit', 'Aphly\LaravelShop\Controllers\Admin\Extension\Extension\ShippingController@edit');
+
+            Route::get('/extension/payment/index', 'Aphly\LaravelShop\Controllers\Admin\Extension\Extension\PaymentController@index');
+            Route::get('/extension/payment/install', 'Aphly\LaravelShop\Controllers\Admin\Extension\Extension\PaymentController@install');
+            Route::get('/extension/payment/uninstall', 'Aphly\LaravelShop\Controllers\Admin\Extension\Extension\PaymentController@uninstall');
+            Route::match(['get', 'post'],'/extension/payment/edit', 'Aphly\LaravelShop\Controllers\Admin\Extension\Extension\PaymentController@edit');
+
         });
     });
 });

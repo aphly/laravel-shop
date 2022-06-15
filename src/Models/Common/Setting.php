@@ -17,6 +17,15 @@ class Setting extends Model
     ];
 
     static public function findAll() {
+        $arr = self::get()->toArray();
+        $res = [];
+        foreach ($arr as $val){
+            $res[$val['code']][$val['key']] = $val['value'];
+        }
+        return $res;
+    }
+
+    static public function findAllCache() {
         return Cache::rememberForever('shop_setting', function (){
             $arr = self::get()->toArray();
             $res = [];
@@ -26,6 +35,5 @@ class Setting extends Model
             return $res;
         });
     }
-
 
 }

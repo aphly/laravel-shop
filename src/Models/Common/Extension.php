@@ -19,6 +19,15 @@ class Extension extends Model
     ];
 
     static public function findAll() {
+        $arr = self::get()->toArray();
+        $res = [];
+        foreach ($arr as $val){
+            $res[$val['type']][] = $val['code'];
+        }
+        return $res;
+    }
+
+    static public function findAllCache() {
         return Cache::rememberForever('extension', function (){
             $arr = self::get()->toArray();
             $res = [];

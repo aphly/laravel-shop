@@ -8,9 +8,9 @@ use Aphly\LaravelShop\Models\Common\Extension;
 use Aphly\LaravelShop\Models\Common\Setting;
 use Illuminate\Http\Request;
 
-class ShippingController extends Controller
+class PaymentController extends Controller
 {
-    public $cname = 'shipping';
+    public $cname = 'payment';
 
     public function index() {
         $files = glob(dirname(__DIR__) . '/'.ucwords($this->cname).'/*.php');

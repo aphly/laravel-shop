@@ -95,6 +95,8 @@ class Coupon extends Model
             $arr = $info->toArray();
             $arr['product'] = $product_data;
             return $arr;
+        }else{
+            return [];
         }
     }
 
@@ -133,10 +135,12 @@ class Coupon extends Model
                     }
                     $discount_total += $discount;
                 }
-                $shipping_method = Cookie::get('shipping_method');
-                $shipping_method = json_decode($shipping_method,true);
-                if($info['shipping'] && $shipping_method) {
-                    $discount_total += $shipping_method['cost'];
+                //$shipping_method = Cookie::get('shipping_method');
+                //$shipping_method = json_decode($shipping_method,true);
+                $shipping_coupon = Cookie::get('shipping_coupon');
+                if($info['shipping'] && !$shipping_coupon) {
+                    //$discount_total += $shipping_method['cost'];
+                    Cookie::queue('shipping_coupon',$info['id']);
                 }
                 if ($discount_total > $total_data['total']) {
                     $discount_total = $total_data['total'];

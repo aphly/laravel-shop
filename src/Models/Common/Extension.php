@@ -18,24 +18,24 @@ class Extension extends Model
         'type','code'
     ];
 
-    static public function findAll() {
+    static public function findAll($cache=false) {
+        if($cache){
+            return Cache::rememberForever('extension', function (){
+                return self::_findAll();
+            });
+        }else{
+            return self::_findAll();
+        }
+    }
+
+    static public function _findAll(): array
+    {
         $arr = self::get()->toArray();
         $res = [];
         foreach ($arr as $val){
             $res[$val['type']][] = $val['code'];
         }
         return $res;
-    }
-
-    static public function findAllCache() {
-        return Cache::rememberForever('extension', function (){
-            $arr = self::get()->toArray();
-            $res = [];
-            foreach ($arr as $val){
-                $res[$val['type']][] = $val['code'];
-            }
-            return $res;
-        });
     }
 
     public function findAllByType($type) {

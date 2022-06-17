@@ -75,10 +75,8 @@ Route::middleware(['web'])->group(function () {
 Route::middleware(['web'])->group(function () {
 
     Route::get('/test', function (){
-        $guest = (new \Aphly\LaravelShop\Controllers\Admin\Extension\Extension\ShippingController)->index();
+        $guest = (new \Aphly\LaravelShop\Models\Extension\Shipping\Shipping)->getList();
         dd($guest);
-        $aa = (new Cart)->totalQuantity($guest);
-        dd($aa);
         return view('welcome');
     });
 

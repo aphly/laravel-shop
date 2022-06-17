@@ -16,24 +16,24 @@ class Setting extends Model
         'code','key','value'
     ];
 
-    static public function findAll() {
+    static public function findAll($cache=false) {
+        if($cache){
+            return Cache::rememberForever('shop_setting', function (){
+                return self::_findAll();
+            });
+        }else{
+            return self::_findAll();
+        }
+    }
+
+    static public function _findAll(): array
+    {
         $arr = self::get()->toArray();
         $res = [];
         foreach ($arr as $val){
             $res[$val['code']][$val['key']] = $val['value'];
         }
         return $res;
-    }
-
-    static public function findAllCache() {
-        return Cache::rememberForever('shop_setting', function (){
-            $arr = self::get()->toArray();
-            $res = [];
-            foreach ($arr as $val){
-                $res[$val['code']][$val['key']] = $val['value'];
-            }
-            return $res;
-        });
     }
 
 }

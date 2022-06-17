@@ -31,6 +31,7 @@ class Currency extends Model
     }
 
     static function format($price,$string = true){
+        $price = floatval($price);
         $currency = Cookie::get('currency');
         $currency_all = self::findAll();
         if($currency_all && $currency){

@@ -7,6 +7,7 @@ use Aphly\LaravelShop\Controllers\Front\Controller;
 use Aphly\LaravelShop\Models\Customer\Address;
 use Aphly\LaravelShop\Models\Checkout\Cart;
 use Aphly\LaravelShop\Models\Common\Extension;
+use Aphly\LaravelShop\Models\Extension\Shipping\Shipping;
 use Aphly\LaravelShop\Models\Product\Product;
 use Illuminate\Http\Request;
 
@@ -31,6 +32,7 @@ class CheckoutController extends Controller
             }
             $res['total_data'] = (new Extension)->total($res['list']);
             $res['customer_address'] = (new Address)->getAddresses();
+            $res['shipping_method'] = (new Shipping)->getList();
             return $this->makeView('laravel-shop::front.checkout.checkout',['res'=>$res]);
         }else{
             return redirect('cart');

@@ -13,11 +13,12 @@ class CouponController extends Controller
 
     public function ajax(Request $request)
     {
-        $res['info'] = Coupon::where('code',$request->code)->first();
-        if(!empty($res['info']) && $res['info']->status==1){
-            Cookie::queue('coupon',$res['info']->code);
+        $res['info'] = (new Coupon)->getCoupon($request->code);
+        if(!empty($res['info'])){
+            Cookie::queue('coupon',$res['info']['code']);
             throw new ApiException(['code'=>0,'msg'=>'success']);
         }else{
+            Cookie::queue('coupon', null , -1);
             throw new ApiException(['code'=>1,'msg'=>'fail']);
         }
     }

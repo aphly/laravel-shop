@@ -11,7 +11,6 @@ class FlatController extends Controller
 {
     public function install() {
         $this->uninstall();
-
         $data=[];
         $data[] =['code' => 'shipping_flat','key'=>'cost','value'=>'5'];
         $data[] =['code' => 'shipping_flat','key'=>'status','value'=>'1'];
@@ -21,13 +20,11 @@ class FlatController extends Controller
         $data=[];
         $data[] =['type' => 'shipping','code'=>'flat'];
         DB::table('shop_extension')->insert($data);
-        throw new ApiException(['code'=>0,'msg'=>'success']);
     }
 
     public function uninstall() {
         DB::table('shop_setting')->where(['code' => 'shipping_flat'])->delete();;
         DB::table('shop_extension')->where(['type' => 'shipping','code'=>'flat'])->delete();
-        throw new ApiException(['code'=>0,'msg'=>'success']);
     }
 
 }

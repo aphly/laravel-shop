@@ -21,13 +21,11 @@ class FreeController extends Controller
         $data=[];
         $data[] =['type' => 'shipping','code'=>'free'];
         DB::table('shop_extension')->insert($data);
-        throw new ApiException(['code'=>0,'msg'=>'success']);
     }
 
     public function uninstall() {
         DB::table('shop_setting')->where(['code' => 'shipping_free'])->delete();;
         DB::table('shop_extension')->where(['type' => 'shipping','code'=>'free'])->delete();
-        throw new ApiException(['code'=>0,'msg'=>'success']);
     }
 
 

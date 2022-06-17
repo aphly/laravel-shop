@@ -12,7 +12,6 @@ class PaypalController extends Controller
 
     public function install() {
         $this->uninstall();
-
         $data=[];
         $data[] =['code' => 'payment_paypal','key'=>'cost','value'=>'5'];
         $data[] =['code' => 'payment_paypal','key'=>'status','value'=>'1'];
@@ -22,13 +21,12 @@ class PaypalController extends Controller
         $data=[];
         $data[] =['type' => 'payment','code'=>'paypal'];
         DB::table('shop_extension')->insert($data);
-        throw new ApiException(['code'=>0,'msg'=>'success']);
     }
 
     public function uninstall() {
         DB::table('shop_setting')->where(['code' => 'payment_paypal'])->delete();;
         DB::table('shop_extension')->where(['type' => 'payment','code'=>'paypal'])->delete();
-        throw new ApiException(['code'=>0,'msg'=>'success']);
+
     }
 
 

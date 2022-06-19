@@ -13,7 +13,7 @@ class StandardController extends Controller
         $this->uninstall();
         $data=[];
         $data[] =['code' => 'shipping_standard','key'=>'name','value'=>'Standard Shipping'];
-        $data[] =['code' => 'shipping_standard','key'=>'cost','value'=>'5'];
+        $data[] =['code' => 'shipping_standard','key'=>'cost','value'=>'5.95'];
         $data[] =['code' => 'shipping_standard','key'=>'status','value'=>'1'];
         $data[] =['code' => 'shipping_standard','key'=>'sort','value'=>'1'];
         $data[] =['code' => 'shipping_standard','key'=>'free','value'=>'69'];
@@ -21,7 +21,7 @@ class StandardController extends Controller
         DB::table('shop_setting')->insert($data);
 
         $data=[];
-        $data[] =['type' => 'shipping','code'=>'Standard'];
+        $data[] =['type' => 'shipping','code'=>'standard'];
         DB::table('shop_extension')->insert($data);
     }
 

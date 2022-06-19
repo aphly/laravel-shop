@@ -3,6 +3,7 @@
 use Aphly\Laravel\Logs\Logs;
 use Aphly\LaravelShop\Models\Checkout\Cart;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
@@ -68,6 +69,9 @@ Route::middleware(['web'])->group(function () {
     Route::post('/cart/add', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@add');
     Route::get('/cart', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@index');
 
+    //Checkout
+    Route::post('/checkout/shipping_address', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@shippingAddress');
+    Route::post('/checkout/shipping_method', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@shippingMethod');
 
 });
 

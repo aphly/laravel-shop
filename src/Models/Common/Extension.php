@@ -39,7 +39,7 @@ class Extension extends Model
     }
 
     public function findAllByType($type) {
-        $arr = self::findAll();
+        $arr = self::_findAll();
         return !empty($arr[$type])?$arr[$type]:[];
     }
 
@@ -69,17 +69,25 @@ class Extension extends Model
             }
         }
 
-        $shipping_method = Cookie::get('shipping_method');
-        $shipping_method = json_decode($shipping_method,true);
-        if($Cart->hasShipping($products) && $shipping_method) {
-            $total_data['totals'][] = array(
-                'code'       => 'shipping',
-                'title'      => $shipping_method['title'],
-                'value'      => $shipping_method['cost'],
-                'value_format'      => Currency::format($shipping_method['cost']),
-                'sort_order' => 100
-            );
-            $total_data['total'] += $shipping_method['cost'];
+        $shipping_coupon = Cookie::get('shipping_coupon');
+        if($shipping_coupon){
+        }else{
+            $shipping_method = Cookie::get('shipping_method');
+            $shipping_method = json_decode($shipping_method,true);
+            if($Cart->hasShipping($products) && $shipping_method) {
+                $free = intval($shipping_method['free']);
+                if($free>0 && $free<=$total_data['total']){
+                }else{
+                    $total_data['totals'][] = array(
+                        'code'       => 'shipping',
+                        'title'      => $shipping_method['title'],
+                        'value'      => $shipping_method['cost'],
+                        'value_format'      => Currency::format($shipping_method['cost']),
+                        'sort_order' => 100
+                    );
+                    $total_data['total'] += $shipping_method['cost'];
+                }
+            }
         }
 
         $total_data['total'] = max(0, $total_data['total']);

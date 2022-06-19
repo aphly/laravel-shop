@@ -22,7 +22,7 @@
                     </div>
                     <div class="select-option" style="">
                         <div class="address-lists">
-                                @foreach($res['customer_address'] as $val)
+                            @foreach($res['customer_address'] as $val)
                             <label class="row m-0 checkout-address">
                                 <input type="radio" class="checkout-form-radio col-1 shipping-address" name="shipping_address" value="375308">
                                 <div class="col-11 pl-3">
@@ -96,7 +96,20 @@
                     </div>
                     <div class="color-desc selected-content">
                     </div>
-                    <div class="select-option" style="display: none;">
+                    <div class="select-option" style="">
+                        @foreach($res['shipping_method'] as $val)
+                        <label class="row m-0">
+                            <input class="checkout-form-radio col-1 shipping-method" type="radio" name="shipping_method" value="1" data-name="Standard Shipping">
+                            <div class="col-11 pl-3 pb-3">
+                                <span class="font-weight-bold">{{$val['name']}}</span>
+                                <p class="float-right">
+                                    (<span class="checkout-pre-price">{{$val['cost_format']}}</span>)
+                                    <span class="pl-1 color-red">{{$val['new_cost_format']}}</span>
+                                </p>
+                                <p>{{$val['desc']}}</p>
+                            </div>
+                        </label>
+                        @endforeach
                     </div>
                 </div>
 

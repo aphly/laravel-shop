@@ -11,7 +11,7 @@ class Shipping
 {
     public string $cname = 'shipping';
 
-    public function getList(){
+    public function getList($total){
         $data = Extension::findAll();
         $res = [];
         $shipping_coupon = Cookie::get('shipping_coupon');
@@ -19,18 +19,26 @@ class Shipping
             $setting = Setting::findAll();
             foreach ($data[$this->cname] as $val){
                 if(isset($setting[$this->cname.'_'.$val]) && $setting[$this->cname.'_'.$val]['status']==1){
-                    $setting[$this->cname.'_'.$val]['name'] = $setting[$this->cname.'_'.$val]['name']??$val;
+                    $setting[$this->cname.'_'.$val]['shipping_free'] = 0;
                     if($shipping_coupon){
-                        $setting[$this->cname.'_'.$val]['cost'] = 0;
-                        $setting[$this->cname.'_'.$val]['cost_format'] = Currency::format(0);
-                        $setting[$this->cname.'_'.$val]['shipping_coupon'] = $shipping_coupon;
+                        $setting[$this->cname.'_'.$val]['new_cost'] = 0;
+                        $setting[$this->cname.'_'.$val]['new_cost_format'] = Currency::format(0);
+                        $setting[$this->cname.'_'.$val]['shipping_free'] = 1;
                     }else{
                         $setting[$this->cname.'_'.$val]['cost_format'] = Currency::format($setting[$this->cname.'_'.$val]['cost']);
+                        $free = intval($setting[$this->cname.'_'.$val]['free']);
+                        if($free>0 && $free<=$total){
+                            $setting[$this->cname.'_'.$val]['new_cost'] = 0;
+                            $setting[$this->cname.'_'.$val]['new_cost_format'] = Currency::format(0);
+                            $setting[$this->cname.'_'.$val]['shipping_free'] = 1;
+                        }
                     }
-                    $res[] = $setting[$this->cname.'_'.$val];
+                    $res[$val] = $setting[$this->cname.'_'.$val];
                 }
             }
         }
         return $res;
     }
+
+
 }

@@ -40,6 +40,8 @@ class Address extends Model
                 'address_format' => $country[$info['country_id']]['address_format']??'',
                 'telephone'      => $info['telephone']
             );
+        }else{
+            return [];
         }
     }
 

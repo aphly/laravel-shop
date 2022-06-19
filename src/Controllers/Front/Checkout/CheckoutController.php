@@ -10,6 +10,7 @@ use Aphly\LaravelShop\Models\Common\Extension;
 use Aphly\LaravelShop\Models\Extension\Shipping\Shipping;
 use Aphly\LaravelShop\Models\Product\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 
 class CheckoutController extends Controller
 {
@@ -32,30 +33,43 @@ class CheckoutController extends Controller
             }
             $res['total_data'] = (new Extension)->total($res['list']);
             $res['customer_address'] = (new Address)->getAddresses();
-            $res['shipping_method'] = (new Shipping)->getList();
+            $res['shipping_method'] = (new Shipping)->getList($res['total_data']['total']);
+            Cookie::queue('shipping_method_all',json_encode($res['shipping_method']));
             return $this->makeView('laravel-shop::front.checkout.checkout',['res'=>$res]);
         }else{
             return redirect('cart');
         }
     }
 
-    public function add(Request $request)
+    public function shippingMethod(Request $request)
     {
-        $res['info'] = Product::where('id',$request->input('product_id',0))->where('status',1)->first();
-        if(!empty($res['info'])){
-            $quantity = (int)$request->input('quantity',1);
-            $option = array_filter($request->input('option',[]));
-            $product_options = $res['info']->findOption($res['info']->id);
-            foreach ($product_options as $val) {
-                if ($val['required'] && empty($option[$val['id']])) {
-                    throw new ApiException(['code'=>1,'msg'=>$val['option_value']['name'].'required']);
+        $shipping_method_all = Cookie::get('shipping_method_all');
+        if($shipping_method_all){
+            $shipping_method_all = json_decode($shipping_method_all,true);
+            foreach ($shipping_method_all as $key=>$val){
+                if($key==$request->input('shipping_code')){
+                    Cookie::queue('shipping_method',json_encode($val));
+                    throw new ApiException(['code'=>0,'msg'=>'shipping method success']);
                 }
             }
-            $Cart = new Cart;
-            $Cart->add($res['info']->id, $quantity, $option);
-            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['count'=>$Cart->countProducts()]]);
+        }
+        Cookie::queue('shipping_method', null , -1);
+        throw new ApiException(['code'=>1,'msg'=>'shipping method fail']);
+    }
+
+    public function shippingAddress(Request $request)
+    {
+        $res['info'] = (new Address)->getAddress($request->input('address_id'));
+        if($res['info']){
+            Cookie::queue('shipping_address',json_encode($res['info']));
+            throw new ApiException(['code'=>0,'msg'=>'shipping address success']);
+        }else{
+            Cookie::queue('shipping_address', null , -1);
+            throw new ApiException(['code'=>1,'msg'=>'shipping address fail']);
         }
     }
+
+
 
 
 

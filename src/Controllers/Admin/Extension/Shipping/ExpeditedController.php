@@ -13,7 +13,7 @@ class ExpeditedController extends Controller
         $this->uninstall();
         $data=[];
         $data[] =['code' => 'shipping_expedited','key'=>'name','value'=>'Expedited Shipping'];
-        $data[] =['code' => 'shipping_expedited','key'=>'cost','value'=>'5'];
+        $data[] =['code' => 'shipping_expedited','key'=>'cost','value'=>'24.95'];
         $data[] =['code' => 'shipping_expedited','key'=>'status','value'=>'1'];
         $data[] =['code' => 'shipping_expedited','key'=>'sort','value'=>'1'];
         $data[] =['code' => 'shipping_expedited','key'=>'free','value'=>'249'];
@@ -21,7 +21,7 @@ class ExpeditedController extends Controller
         DB::table('shop_setting')->insert($data);
 
         $data=[];
-        $data[] =['type' => 'shipping','code'=>'Standard'];
+        $data[] =['type' => 'shipping','code'=>'expedited'];
         DB::table('shop_extension')->insert($data);
     }
 

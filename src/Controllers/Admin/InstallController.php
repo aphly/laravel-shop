@@ -71,16 +71,16 @@ class InstallController extends Controller
         DB::table('shop_customer_group')->insert($data);
 
         $data=[];
-        $data[] =['id' => 1,'type'=>'total','code'=>'shipping'];
-        $data[] =['id' => 2,'type'=>'total','code'=>'sub_total'];
-        $data[] =['id' => 3,'type'=>'total','code'=>'total'];
-        $data[] =['id' => 4,'type'=>'total','code'=>'credit'];
-        $data[] =['id' => 5,'type'=>'total','code'=>'coupon'];
-        $data[] =['id' => 6,'type'=>'total','code'=>'low_order_fee'];
-        $data[] =['id' => 7,'type'=>'total','code'=>'voucher'];
-        $data[] =['id' => 8,'type'=>'total','code'=>'handling'];
-        $data[] =['id' => 9,'type'=>'total','code'=>'reward'];
-        $data[] =['id' => 10,'type'=>'total','code'=>'tax'];
+        $data[] =['type'=>'total','code'=>'shipping'];
+        $data[] =['type'=>'total','code'=>'sub_total'];
+        $data[] =['type'=>'total','code'=>'total'];
+        $data[] =['type'=>'total','code'=>'credit'];
+        $data[] =['type'=>'total','code'=>'coupon'];
+        $data[] =['type'=>'total','code'=>'low_order_fee'];
+        $data[] =['type'=>'total','code'=>'voucher'];
+        $data[] =['type'=>'total','code'=>'handling'];
+        $data[] =['type'=>'total','code'=>'reward'];
+        $data[] =['type'=>'total','code'=>'tax'];
         DB::table('shop_extension')->insert($data);
 
         return 'install_ok';

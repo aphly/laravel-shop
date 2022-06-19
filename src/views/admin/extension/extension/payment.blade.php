@@ -34,7 +34,7 @@
                     @if(!$v['installed'])
                         <a class="badge badge-info ajax_post" data-href="{{$v['install']}}">安装</a>
                     @else
-                        <a class="badge badge-info ajax_post" data-href="{{$v['uninstall']}}">卸载</a>
+                        <a class="badge badge-danger ajax_post" data-href="{{$v['uninstall']}}">卸载</a>
                         <a class="badge badge-info ajax_get" data-href="{{$v['edit']}}">编辑</a>
                     @endif
 

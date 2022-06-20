@@ -2,6 +2,7 @@
 
 use Aphly\Laravel\Logs\Logs;
 use Aphly\LaravelShop\Models\Checkout\Cart;
+use Aphly\LaravelShop\Models\Common\Setting;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -79,7 +80,7 @@ Route::middleware(['web'])->group(function () {
 Route::middleware(['web'])->group(function () {
 
     Route::get('/test', function (){
-        $guest = (new \Aphly\LaravelShop\Models\Extension\Shipping\Shipping)->getList();
+        $guest = Setting::findAll()['payment_paypal']['total'];
         dd($guest);
         return view('welcome');
     });

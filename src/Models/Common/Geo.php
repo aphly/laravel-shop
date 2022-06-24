@@ -27,9 +27,9 @@ class Geo extends Model
     }
 
     public function in($geo_group_id,$country_id,$zone_id) {
-        $arr = self::where('geo_group_id',$geo_group_id)->get()->toArray();
+        $arr = self::where('geo_group_id',$geo_group_id)->get()->keyBy('country_id')->toArray();
         if($arr){
-            
+
         }
 
     }

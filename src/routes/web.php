@@ -3,6 +3,7 @@
 use Aphly\Laravel\Logs\Logs;
 use Aphly\LaravelShop\Models\Checkout\Cart;
 use Aphly\LaravelShop\Models\Common\Setting;
+use Aphly\LaravelShop\Models\Common\Zone;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -21,7 +22,15 @@ use Illuminate\Support\Facades\Route;
 //Route::middleware(['throttle:5,10'])->match(['get', 'post'],'/admin/test', 'Aphly\LaravelShop\Controllers\IndexController@test');
 //
 ////Route::get('/admin/init', 'Aphly\LaravelShop\Controllers\InitController@index');
+///
+///
 //
+Route::middleware(['web'])->group(function () {
+    Route::prefix('common')->group(function () {
+        Route::get('country/{id}/zone', 'Aphly\LaravelShop\Controllers\Common\CountryController@zone')->where('id', '[0-9]+');
+    });
+});
+
 Route::middleware(['web'])->group(function () {
 
     Route::get('/userauth/{id}/verify/{token}', 'Aphly\LaravelShop\Controllers\Front\Common\HomeController@mailVerifyCheck');
@@ -50,8 +59,6 @@ Route::middleware(['web'])->group(function () {
             Route::get('address', 'Aphly\LaravelShop\Controllers\Front\Customer\AddressController@index');
             Route::match(['get', 'post'],'address/save', 'Aphly\LaravelShop\Controllers\Front\Customer\AddressController@save');
             Route::get('address/remove/{id}', 'Aphly\LaravelShop\Controllers\Front\Customer\AddressController@remove')->where('id', '[0-9]+');
-            Route::get('address/country/{id}', 'Aphly\LaravelShop\Controllers\Front\Customer\AddressController@country')->where('id', '[0-9]+');
-
 
         });
 
@@ -80,9 +87,8 @@ Route::middleware(['web'])->group(function () {
 Route::middleware(['web'])->group(function () {
 
     Route::get('/test', function (){
-        $guest = Setting::findAll()['payment_paypal']['total'];
-        dd($guest);
-        return view('welcome');
+        $list = (new Zone)->findAllByCountry(7);
+        dd($list);
     });
 
     Route::get('/test1', function (){
@@ -102,7 +108,7 @@ Route::middleware(['web'])->group(function () {
             Route::post('/category/save', 'Aphly\LaravelShop\Controllers\Admin\Catalog\CategoryController@save');
 
             $route_arr = [
-                    ['filter','\Catalog\FilterController'],['country','\System\CountryController'],
+                    ['filter','\Catalog\FilterController'],['country','\System\CountryController'],['geo','\System\GeoController'],
                     ['zone','\System\ZoneController'],['currency','\System\CurrencyController'],
                     ['attribute','\Catalog\AttributeController'],['option','\Catalog\OptionController'],
                     ['information','\Catalog\InformationController'],['review','\Catalog\ReviewController'],
@@ -131,7 +137,6 @@ Route::middleware(['web'])->group(function () {
             Route::match(['get', 'post'],'/product/option', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@option');
             Route::match(['get', 'post'],'/product/links', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@links');
 
-
             Route::match(['get', 'post'],'/product/{id}/img', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@img')->where('id', '[0-9]+');
             Route::match(['post'],'/product/{id}/img_save', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@imgSave')->where('id', '[0-9]+');
             Route::match(['get'],'/product_img/{id}/del', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@imgDel')->where('id', '[0-9]+');
@@ -151,6 +156,7 @@ Route::middleware(['web'])->group(function () {
             Route::get('/product/ajax', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@ajax');
             Route::get('/attribute/ajax', 'Aphly\LaravelShop\Controllers\Admin\Catalog\AttributeController@ajax');
             Route::get('/option/ajax', 'Aphly\LaravelShop\Controllers\Admin\Catalog\OptionController@ajax');
+            Route::get('/geo/ajax', 'Aphly\LaravelShop\Controllers\Admin\System\GeoController@ajax');
 
             Route::get('/extension/shipping/index', 'Aphly\LaravelShop\Controllers\Admin\Extension\Extension\ShippingController@index');
             Route::get('/extension/shipping/install', 'Aphly\LaravelShop\Controllers\Admin\Extension\Extension\ShippingController@install');

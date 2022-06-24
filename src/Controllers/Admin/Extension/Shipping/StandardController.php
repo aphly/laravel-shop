@@ -2,9 +2,7 @@
 
 namespace Aphly\LaravelShop\Controllers\Admin\Extension\Shipping;
 
-use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\LaravelShop\Controllers\Controller;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class StandardController extends Controller
@@ -17,6 +15,7 @@ class StandardController extends Controller
         $data[] =['code' => 'shipping_standard','key'=>'status','value'=>'1'];
         $data[] =['code' => 'shipping_standard','key'=>'sort','value'=>'1'];
         $data[] =['code' => 'shipping_standard','key'=>'free','value'=>'69'];
+        $data[] =['code' => 'shipping_standard','key'=>'geo_group_id','value'=>'69'];
         $data[] =['code' => 'shipping_standard','key'=>'desc','value'=>'9-20 business days after shipment, Free with orders over $69.00'];
         DB::table('shop_setting')->insert($data);
 

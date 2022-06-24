@@ -33,6 +33,19 @@
                         </select>
                         <div class="invalid-feedback"></div>
                     </div>
+                @elseif($v['key']=='geo_group_id')
+                    <div class="form-group">
+                        <label for="">Geo</label>
+                        <select name="setting[{{$v['key']}}]"  class="form-control ">
+                            <option value="0">All Zones</option>
+                            @if($res['geoGroup'])
+                                @foreach($res['geoGroup'] as $key=>$val)
+                                    <option value="{{$val['id']}}" @if($v['value']==$val['id']) selected @endif>{{$val['name']}}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                        <div class="invalid-feedback"></div>
+                    </div>
                 @else
                     <div class="form-group">
                         <label for="">{{$v['key']}}</label>

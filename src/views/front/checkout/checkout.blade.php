@@ -128,6 +128,7 @@
                     <div class="color-desc selected-content">
 
                     </div>
+
                     <div class="select-option" style="display: none">
                     </div>
 
@@ -139,61 +140,18 @@
                                         <p>
                                             <span class="sub-total subtotal-subtotal">Subtotal:</span>
                                             <span class="items-right prices price-symbol">
-                    $765.17
-                </span>
+                                                $765.17
+                                            </span>
                                         </p>
                                     </li>
-                                    <li class="order-list" style="display: none">
-                                        <p>
-                <span class="sub-total subtotal-coupon-saving">
-                    Coupon:
-                </span>
-                                            <span class="items-right prices price-symbol coupon-saving">
-                                            -$0.00
-                                    </span>
-                                        </p>
-                                    </li>
-                                    <li class="order-list" style="display: none">
-                                        <p>
-                                            <span class="sub-total subtotal-handling">Handling Fee:</span>
-                                            <span class="items-right prices price-symbol handling-fee">
-                    $4.95
-                </span>
-                                        </p>
-                                    </li>
-                                    <li class="order-list" style="display: none">
-                                        <p>
-                                            <span class="sub-total subtotal-gs-point">Point:</span>
-                                            <span class="items-right prices price-symbol gs-point-saving">
-                    -$0.00
-                </span>
-                                        </p>
-                                    </li>
-                                    <li class="order-list" style="display: none">
-                                        <p>
-                <span class="sub-total subtotal-gift-card">
-                    GiftCard:
-                </span>
-                                            <span class="items-right prices price-symbol gift-card-saving">
-                    -$0.00
-                </span>
-                                        </p>
-                                    </li>
-                                    <li class="order-list" style="display: none">
-                                        <p>
-                                            <span class="sub-total subtotal-shipping">Shipping:</span>
-                                            <span class="items-right prices price-symbol shipping-fee">
-                    $0.00
-                </span>
-                                        </p>
-                                    </li>
+
                                 </ul>
                             </div>
                             <div class="items-total-price order-list">
                                 <span>Order Total:</span>
                                 <span class="items-right js-total-amount">
-        $765.17
-    </span>
+                                    $765.17
+                                </span>
                             </div>
                         </div>
                         <ul class="checkout-payment pt-3 pb-3">

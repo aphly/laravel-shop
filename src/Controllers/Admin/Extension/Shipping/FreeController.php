@@ -2,9 +2,7 @@
 
 namespace Aphly\LaravelShop\Controllers\Admin\Extension\Shipping;
 
-use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\LaravelShop\Controllers\Controller;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class FreeController extends Controller
@@ -18,6 +16,7 @@ class FreeController extends Controller
         $data[] =['code' => 'shipping_free','key'=>'status','value'=>'1'];
         $data[] =['code' => 'shipping_free','key'=>'sort','value'=>'1'];
         $data[] =['code' => 'shipping_free','key'=>'free','value'=>'0'];
+        $data[] =['code' => 'shipping_free','key'=>'geo_group_id','value'=>'0'];
         $data[] =['code' => 'shipping_free','key'=>'desc','value'=>'free'];
         DB::table('shop_setting')->insert($data);
 

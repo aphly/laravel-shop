@@ -58,7 +58,7 @@ class AddressController extends Controller
             }else{
                 $res['zone'] = [];
             }
-            $res['customer'] = Customer::find(session('user')['uuid']);
+            $res['customer'] = Customer::find(Customer::uuid());
             return $this->makeView('laravel-shop::front.customer.address_form',['res'=>$res]);
         }
     }

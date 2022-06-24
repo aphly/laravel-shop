@@ -2,9 +2,7 @@
 
 namespace Aphly\LaravelShop\Controllers\Admin\Extension\Shipping;
 
-use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\LaravelShop\Controllers\Controller;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class FlatController extends Controller
@@ -17,6 +15,7 @@ class FlatController extends Controller
         $data[] =['code' => 'shipping_flat','key'=>'status','value'=>'1'];
         $data[] =['code' => 'shipping_flat','key'=>'sort','value'=>'1'];
         $data[] =['code' => 'shipping_flat','key'=>'free','value'=>'0'];
+        $data[] =['code' => 'shipping_flat','key'=>'geo_group_id','value'=>'0'];
         $data[] =['code' => 'shipping_flat','key'=>'desc','value'=>'flat'];
         DB::table('shop_setting')->insert($data);
 

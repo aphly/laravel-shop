@@ -29,16 +29,17 @@ class InstallController extends Controller
         $data[] =['id'=>10015,'name' => 'Currency','url' =>'/shop_admin/currency/index','pid'=>10013,'is_leaf'=>1,'module_id'=>2,'sort'=>0];
         $data[] =['id'=>10016,'name' => 'Country','url' =>'/shop_admin/country/index','pid'=>10013,'is_leaf'=>1,'module_id'=>2,'sort'=>0];
         $data[] =['id'=>10017,'name' => 'Zone','url' =>'/shop_admin/zone/index','pid'=>10013,'is_leaf'=>1,'module_id'=>2,'sort'=>0];
-        $data[] =['id'=>10018,'name' => 'Customer','url' =>'','pid'=>10000,'is_leaf'=>0,'module_id'=>2,'sort'=>0];
-        $data[] =['id'=>10019,'name' => 'Customer','url' =>'/shop_admin/customer/index','pid'=>10018,'is_leaf'=>1,'module_id'=>2,'sort'=>0];
-        $data[] =['id'=>10020,'name' => 'Group','url' =>'/shop_admin/group/index','pid'=>10018,'is_leaf'=>1,'module_id'=>2,'sort'=>0];
-        $data[] =['id'=>10021,'name' => 'Extension','url' =>'','pid'=>10000,'is_leaf'=>0,'module_id'=>2,'sort'=>0];
-        $data[] =['id'=>10022,'name' => 'Shipping','url' =>'/shop_admin/extension/shipping/index','pid'=>10021,'is_leaf'=>1,'module_id'=>2,'sort'=>0];
-        $data[] =['id'=>10023,'name' => 'Payment','url' =>'/shop_admin/extension/payment/index','pid'=>10021,'is_leaf'=>1,'module_id'=>2,'sort'=>0];
+        $data[] =['id'=>10018,'name' => 'Geo','url' =>'/shop_admin/geo/index','pid'=>10013,'is_leaf'=>1,'module_id'=>2,'sort'=>0];
+        $data[] =['id'=>10019,'name' => 'Customer','url' =>'','pid'=>10000,'is_leaf'=>0,'module_id'=>2,'sort'=>0];
+        $data[] =['id'=>10020,'name' => 'Customer','url' =>'/shop_admin/customer/index','pid'=>10018,'is_leaf'=>1,'module_id'=>2,'sort'=>0];
+        $data[] =['id'=>10021,'name' => 'Group','url' =>'/shop_admin/group/index','pid'=>10018,'is_leaf'=>1,'module_id'=>2,'sort'=>0];
+        $data[] =['id'=>10022,'name' => 'Extension','url' =>'','pid'=>10000,'is_leaf'=>0,'module_id'=>2,'sort'=>0];
+        $data[] =['id'=>10023,'name' => 'Shipping','url' =>'/shop_admin/extension/shipping/index','pid'=>10021,'is_leaf'=>1,'module_id'=>2,'sort'=>0];
+        $data[] =['id'=>10024,'name' => 'Payment','url' =>'/shop_admin/extension/payment/index','pid'=>10021,'is_leaf'=>1,'module_id'=>2,'sort'=>0];
         DB::table('admin_menu')->insert($data);
 
         $data=[];
-        for($i=10000;$i<=10023;$i++){
+        for($i=10000;$i<=10024;$i++){
             $data[] =['role_id' => 2,'menu_id'=>$i];
         }
         DB::table('admin_role_menu')->insert($data);

@@ -5,6 +5,7 @@ namespace Aphly\LaravelShop\Controllers\Admin\Extension\Extension;
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\LaravelShop\Controllers\Controller;
 use Aphly\LaravelShop\Models\Common\Extension;
+use Aphly\LaravelShop\Models\Common\GeoGroup;
 use Aphly\LaravelShop\Models\Common\Setting;
 use Illuminate\Http\Request;
 
@@ -75,6 +76,7 @@ class ExtensionController extends Controller
                 Setting::upsert($update_arr,['code','key'],['value']);
                 throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>'/shop_admin/extension/'.$this->cname.'/index']]);
             }else{
+                $res['geoGroup'] = GeoGroup::get()->toArray();
                 $res['list'] = Setting::where(['code' => $this->cname.'_'.$res['name']])->get()->toArray();
                 return $this->makeView('laravel-shop::admin.extension.extension.'.$this->cname.'_edit',['res'=>$res]);
             }

@@ -2,9 +2,7 @@
 
 namespace Aphly\LaravelShop\Controllers\Admin\Extension\Payment;
 
-use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\LaravelShop\Controllers\Controller;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class CodController extends Controller
@@ -16,6 +14,7 @@ class CodController extends Controller
         $data[] =['code' => 'payment_cod','key'=>'total','value'=>'0.01'];
         $data[] =['code' => 'payment_cod','key'=>'status','value'=>'1'];
         $data[] =['code' => 'payment_cod','key'=>'sort','value'=>'1'];
+        $data[] =['code' => 'payment_cod','key'=>'geo_group_id','value'=>'0'];
         $data[] =['code' => 'payment_cod','key'=>'order_status','value'=>'8'];
         DB::table('shop_setting')->insert($data);
 

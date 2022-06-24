@@ -156,7 +156,7 @@
             }else{
                 if(country_id){
                     $.ajax({
-                        url:'/customer/address/country/'+country_id,
+                        url:'/common/country/'+country_id+'/zone',
                         dataType: "json",
                         success: function(res){
                             country_zone[country_id] = res.data;

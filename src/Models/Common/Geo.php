@@ -26,11 +26,17 @@ class Geo extends Model
         });
     }
 
-    public function in($geo_group_id,$country_id,$zone_id) {
+    public function inStatus($geo_group_id,$country_id,$zone_id) {
+        $status = false;
         $arr = self::where('geo_group_id',$geo_group_id)->get()->keyBy('country_id')->toArray();
-        if($arr){
-
+        if(isset($arr[$country_id])){
+            foreach ($arr[$country_id] as $val){
+                if($val['zone_id'] == 0 || $val['zone_id'] == $zone_id){
+                    $status = true;
+                    break;
+                }
+            }
         }
-
+        return $status;
     }
 }

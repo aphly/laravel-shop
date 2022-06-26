@@ -15,7 +15,7 @@ class StandardController extends Controller
         $data[] =['code' => 'shipping_standard','key'=>'status','value'=>'1'];
         $data[] =['code' => 'shipping_standard','key'=>'sort','value'=>'1'];
         $data[] =['code' => 'shipping_standard','key'=>'free','value'=>'69'];
-        $data[] =['code' => 'shipping_standard','key'=>'geo_group_id','value'=>'69'];
+        $data[] =['code' => 'shipping_standard','key'=>'geo_group_id','value'=>'0'];
         $data[] =['code' => 'shipping_standard','key'=>'desc','value'=>'9-20 business days after shipment, Free with orders over $69.00'];
         DB::table('shop_setting')->insert($data);
 

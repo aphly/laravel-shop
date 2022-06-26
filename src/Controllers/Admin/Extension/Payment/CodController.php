@@ -11,7 +11,8 @@ class CodController extends Controller
     public function install() {
         $this->uninstall();
         $data=[];
-        $data[] =['code' => 'payment_cod','key'=>'total','value'=>'0.01'];
+        $data[] =['code' => 'payment_cod','key'=>'name','value'=>'cod'];
+        $data[] =['code' => 'payment_cod','key'=>'min_total','value'=>'0.01'];
         $data[] =['code' => 'payment_cod','key'=>'status','value'=>'1'];
         $data[] =['code' => 'payment_cod','key'=>'sort','value'=>'1'];
         $data[] =['code' => 'payment_cod','key'=>'geo_group_id','value'=>'0'];

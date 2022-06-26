@@ -23,7 +23,7 @@
                     <div class="select-option" style="">
                         <div class="address-lists">
                             @foreach($res['customer_address'] as $val)
-                            <label class="row m-0 checkout-address">
+                            <label class="row m-0 checkout-address" data-id="{{$val['id']}}">
                                 <input type="radio" class="checkout-form-radio col-1 shipping-address" name="shipping_address" value="375308">
                                 <div class="col-11 pl-3">
                                     <div>{{$val['firstname']}} {{$val['lastname']}},{{$val['address_1']}}, {{$val['address_2']}}, {{$val['city']}}, {{$val['zone_name']}}, {{$val['country_name']}}, {{$val['postcode']}}, {{$val['telephone']}}</div>
@@ -97,19 +97,19 @@
                     <div class="color-desc selected-content">
                     </div>
                     <div class="select-option" style="">
-                        @foreach($res['shipping_method'] as $val)
-                        <label class="row m-0">
-                            <input class="checkout-form-radio col-1 shipping-method" type="radio" name="shipping_method" value="1" data-name="Standard Shipping">
-                            <div class="col-11 pl-3 pb-3">
-                                <span class="font-weight-bold">{{$val['name']}}</span>
-                                <p class="float-right">
-                                    (<span class="checkout-pre-price">{{$val['cost_format']}}</span>)
-                                    <span class="pl-1 color-red">{{$val['new_cost_format']}}</span>
-                                </p>
-                                <p>{{$val['desc']}}</p>
-                            </div>
-                        </label>
-                        @endforeach
+{{--                        @foreach($res['shipping_method'] as $val)--}}
+{{--                        <label class="row m-0">--}}
+{{--                            <input class="checkout-form-radio col-1 shipping-method" type="radio" name="shipping_method" value="1" data-name="Standard Shipping">--}}
+{{--                            <div class="col-11 pl-3 pb-3">--}}
+{{--                                <span class="font-weight-bold">{{$val['name']}}</span>--}}
+{{--                                <p class="float-right">--}}
+{{--                                    (<span class="checkout-pre-price">{{$val['cost_format']}}</span>)--}}
+{{--                                    <span class="pl-1 color-red">{{$val['new_cost_format']}}</span>--}}
+{{--                                </p>--}}
+{{--                                <p>{{$val['desc']}}</p>--}}
+{{--                            </div>--}}
+{{--                        </label>--}}
+{{--                        @endforeach--}}
                     </div>
                 </div>
 
@@ -169,21 +169,6 @@
                     </div>
                 </div>
 
-                <div id="paymentForm" style="display: none">
-                    <form id="paypalECForm" action="https://www.glassesshop.com/payment/paypal/execute" method="post">
-                        <input type="hidden" name="_token" value="kefgNRtnhzToF1VMf0drb7WMQRuemihAa03xrWhJ">
-                        <input type="hidden" name="paymentId" value="">
-                        <input type="hidden" name="payerID" value="">
-                        <input type="hidden" name="token" value="">
-                        <input type="hidden" name="orderId" value="">
-                    </form>
-                </div>
-                <div class="paymentForm" style="display: none">
-                    <form id="amazonPaymentForm" action="https://www.glassesshop.com/payment/amazon/execute" method="post">
-                        <input type="hidden" name="_token" value="kefgNRtnhzToF1VMf0drb7WMQRuemihAa03xrWhJ">
-                        <input type="hidden" name="orderId" value="">
-                    </form>
-                </div>
 
             </div>
         </div>
@@ -204,7 +189,7 @@
                             @foreach($res['list'] as $val)
                             <div class="items-info ">
                                 <div class="items-img" style="width: 120px;">
-                                    <img src="{{$oss_url?$oss_url.$val['product']['image']:Storage::url($val['product']['image'])}}" alt="" aria-hidden="true" style="max-width: 100%;">
+                                    <img src="{{\Aphly\LaravelShop\Models\Product\ProductImage::render($val['product']['image'])}}" alt="" aria-hidden="true" style="max-width: 100%;">
                                 </div>
                                 <div class="items-lists">
                                     <ul>
@@ -259,8 +244,20 @@
 
 </style>
 <script>
+let total = {{$res['total_data']['total']}}
 $(function () {
-
+    $('body').on('click','.checkout-address',function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        let id = $(this).data('id')
+        $.ajax({
+            url:'/checkout/shipping_address',
+            data:{address_id:id,_token: "{!! csrf_token() !!}",total},
+            success:function (res) {
+                console.log(res)
+            }
+        })
+    })
 })
 </script>
 @include('laravel-shop::front.common.footer')

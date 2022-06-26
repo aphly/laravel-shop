@@ -26,7 +26,7 @@ class Geo extends Model
         });
     }
 
-    public function inStatus($geo_group_id,$country_id,$zone_id) {
+    public function isExist($country_id,$zone_id,$geo_group_id) {
         $status = false;
         $arr = self::where('geo_group_id',$geo_group_id)->get()->keyBy('country_id')->toArray();
         if(isset($arr[$country_id])){

@@ -67,5 +67,6 @@ class Customer extends Model
         Cookie::queue('shipping_method', null , -1);
         Cookie::queue('shipping_method_all', null , -1);
         Cookie::queue('payment_method', null , -1);
+        Cookie::queue('payment_method_all', null , -1);
     }
 }

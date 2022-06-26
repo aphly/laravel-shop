@@ -20,7 +20,7 @@
                                 <div class="col-12 col-xl-5 text-center pt-3 pb-3 d-none d-xl-block cart-img">
                                     <span class="im img-tag tag-off-per product-icon-text">50% OFF</span>
                                     <a href="" class="img-product">
-                                        <img class="d-block w-100" src="{{$oss_url?$oss_url.$val['product']['image']:Storage::url($val['product']['image'])}}" alt="Rita">
+                                        <img class="d-block w-100" src="{{\Aphly\LaravelShop\Models\Product\ProductImage::render($val['product']['image'])}}" alt="Rita">
                                     </a>
                                 </div>
                                 <div class="col-12 col-xl-7 p-0">

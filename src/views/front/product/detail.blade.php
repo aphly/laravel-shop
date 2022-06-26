@@ -27,15 +27,15 @@
         <div>
             <div class="product_detail_img">
                 <div class="big_img J_zoom" >
-                    <img src="{{$oss_url?$oss_url.$res['info']->image:Storage::url($res['info']->image)}}" id="big_pic" class="zoom-img">
+                    <img src="{{ \Aphly\LaravelShop\Models\Product\ProductImage::render($res['info']->image) }}" id="big_pic" class="zoom-img">
                 </div>
                 @if(count($res['info']->img))
                 <div class="small_img  position-relative ">
                     <div class="swiper-container swiper-container_pc">
                         <div class="swiper-wrapper">
                             @foreach($res['info']->img as $v)
-                            <div class="swiper-slide " data-src="{{$oss_url?$oss_url.$v['image']:Storage::url($v['image'])}}" onclick="changepic(this)">
-                                <img src="{{$oss_url?$oss_url.$v['image']:Storage::url($v['image'])}}">
+                            <div class="swiper-slide " data-src="{{\Aphly\LaravelShop\Models\Product\ProductImage::render($v['image'])}}" onclick="changepic(this)">
+                                <img src="{{ \Aphly\LaravelShop\Models\Product\ProductImage::render($v['image']) }}">
                             </div>
                             @endforeach
                         </div>

@@ -62,7 +62,13 @@ Route::middleware(['web'])->group(function () {
 
         });
 
+        //Checkout
         Route::get('/checkout', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@index');
+        Route::get('/checkout/shipping_address', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@setShippingAddress');
+
+        Route::post('/checkout/shipping_method', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@setShippingMethod');
+        Route::post('/checkout/payment_method', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@setPaymentMethod');
+        Route::get('/checkout/confirm', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@checkout');
 
     });
 
@@ -77,9 +83,6 @@ Route::middleware(['web'])->group(function () {
     Route::post('/cart/add', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@add');
     Route::get('/cart', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@index');
 
-    //Checkout
-    Route::post('/checkout/shipping_address', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@shippingAddress');
-    Route::post('/checkout/shipping_method', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@shippingMethod');
 
 });
 

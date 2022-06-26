@@ -13,11 +13,8 @@
         @foreach($res['list'] as $key=>$val)
             <li class="">
                 <div class="image">
-                    @if($val->image)
-                        <a href="/product/{{$val->id}}"><img src="{{$oss_url?$oss_url.$val->image:Storage::url($val->image)}}" class="img-responsive"></a>
-                    @else
-                        <a href="/product/{{$val->id}}"><img src="{{ URL::asset('vendor/laravel-admin/img/none.png') }}" class="img-responsive"></a>
-                    @endif
+                    <a href="/product/{{$val->id}}"><img src="{{ \Aphly\LaravelShop\Models\Product\ProductImage::render($val->image) }}" class="img-responsive"></a>
+
                 </div>
                 <div class="name"><a href="/product/{{$val->id}}">{{$val->name}}</a></div>
                 <div class="price">

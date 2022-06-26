@@ -22,7 +22,7 @@ class Address extends Model
             $country = (new Country)->findAll();
             $zone = (new Zone)->findAll();
             return array(
-                'address_id'     => $info['address_id'],
+                'id'     => $info['address_id'],
                 'firstname'      => $info['firstname'],
                 'lastname'       => $info['lastname'],
                 'company'        => $info['company'],
@@ -53,7 +53,7 @@ class Address extends Model
         $zone = (new Zone)->findAll();
         foreach ($data as $v){
             $address_data[] = array(
-                'address_id'     => $v['id'],
+                'id'     => $v['id'],
                 'firstname'      => $v['firstname'],
                 'lastname'       => $v['lastname'],
                 'address_1'      => $v['address_1'],

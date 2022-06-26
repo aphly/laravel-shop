@@ -40,8 +40,7 @@ class Product extends Model
         $filter = $data['filter']??false;
         $sort = $data['sort'];
         $time = time();
-        $setting = Setting::findAll();
-        $group_id = session()->has('customer')?session('customer')['group_id']:$setting['config']['group'];
+        $group_id = Customer::groupId();
         if($data['category_id']){
             if($this->sub_category){
                 $sql = DB::table('shop_category_path as cp')->leftJoin('shop_product_category as pc','cp.category_id','=','pc.category_id');

@@ -17,12 +17,12 @@ return new class extends Migration
             $table->id();
             $table->integer('order_id')->unsigned()->index();
             $table->integer('product_id')->unsigned();
-            $table->string('name',64);
+            $table->string('name',128);
+            $table->string('sku',64);
             $table->integer('quantity')->default(0)->nullable();
             $table->decimal('price');
             $table->decimal('total');
-            $table->json('json');
-            $table->tinyInteger('status')->default(1)->index();
+            $table->unsignedInteger('reward');
         });
     }
 

@@ -3,7 +3,7 @@
 namespace Aphly\LaravelShop\Controllers\Admin\Sale;
 
 use Aphly\Laravel\Exceptions\ApiException;
-use Aphly\LaravelShop\Controllers\Controller;
+use Aphly\LaravelShop\Controllers\Admin\Controller;
 use Aphly\LaravelShop\Models\Common\CategoryPath;
 use Aphly\LaravelShop\Models\Common\Coupon;
 use Aphly\LaravelShop\Models\Common\CouponCategory;

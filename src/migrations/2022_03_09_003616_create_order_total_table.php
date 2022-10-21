@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('shop_order_total', function (Blueprint $table) {
             $table->id();
             $table->integer('order_id')->unsigned()->index();
-            $table->string('code',32)->unsigned();
+            $table->string('code',32);
             $table->string('title',255);
             $table->decimal('value',15,4);
             $table->integer('sort')->default(0);

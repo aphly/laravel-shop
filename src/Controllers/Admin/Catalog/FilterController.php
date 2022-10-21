@@ -3,7 +3,7 @@
 namespace Aphly\LaravelShop\Controllers\Admin\Catalog;
 
 use Aphly\Laravel\Exceptions\ApiException;
-use Aphly\LaravelShop\Controllers\Controller;
+use Aphly\LaravelShop\Controllers\Admin\Controller;
 use Aphly\LaravelShop\Models\Common\Filter;
 use Aphly\LaravelShop\Models\Common\FilterGroup;
 use Illuminate\Http\Request;

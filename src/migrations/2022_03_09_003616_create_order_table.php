@@ -41,8 +41,8 @@ return new class extends Migration
             $table->string('ip',64);
             $table->string('user_agent',255);
             $table->string('accept_language',255);
-            $table->unsignedInteger('date_add');
-            $table->unsignedInteger('date_edit');
+            $table->unsignedBigInteger('created_at');
+            $table->unsignedBigInteger('updated_at');
         });
     }
 

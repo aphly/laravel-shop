@@ -2,7 +2,6 @@
 
 namespace Aphly\LaravelShop\Controllers\Front;
 
-use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {

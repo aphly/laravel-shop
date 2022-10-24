@@ -14,29 +14,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware(['web'])->group(function () {
-    Route::prefix('common')->group(function () {
-        Route::get('country/{id}/zone', 'Aphly\LaravelShop\Controllers\Common\CountryController@zone')->where('id', '[0-9]+');
-    });
-});
-
-Route::middleware(['web'])->group(function () {
-
-    Route::get('/userauth/{id}/verify/{token}', 'Aphly\LaravelShop\Controllers\Front\Common\HomeController@mailVerifyCheck');
-
-    Route::match(['get', 'post'],'/forget', 'Aphly\LaravelShop\Controllers\Front\Common\HomeController@forget');
-    Route::match(['get', 'post'],'/forget-password/{token}', 'Aphly\LaravelShop\Controllers\Front\Common\HomeController@forgetPassword');
 
     Route::get('/index', 'Aphly\LaravelShop\Controllers\Front\Common\HomeController@index');
-    Route::match(['get'],'/autologin/{token}', 'Aphly\LaravelShop\Controllers\Front\Common\HomeController@autoLogin');
 
     Route::middleware(['userAuth'])->group(function () {
-        Route::match(['get'],'/email/verify', 'Aphly\LaravelShop\Controllers\Front\Common\HomeController@mailVerify');
-
-        Route::match(['get', 'post'],'/register', 'Aphly\LaravelShop\Controllers\Front\Common\HomeController@register');
-        Route::match(['get', 'post'],'/login', 'Aphly\LaravelShop\Controllers\Front\Common\HomeController@login');
-
-        Route::get('/logout', 'Aphly\LaravelShop\Controllers\Front\Common\HomeController@logout');
-
         //account
         Route::prefix('customer')->group(function () {
             Route::get('account', 'Aphly\LaravelShop\Controllers\Front\Customer\AccountController@index');
@@ -61,7 +42,6 @@ Route::middleware(['web'])->group(function () {
     });
 
     //common
-    Route::get('/currency/{id}', 'Aphly\LaravelShop\Controllers\Front\Common\CurrencyController@ajax')->where('id', '[0-9]+');
     Route::get('/coupon/{code}', 'Aphly\LaravelShop\Controllers\Front\Common\CouponController@ajax');
 
     //product

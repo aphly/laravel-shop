@@ -8,8 +8,8 @@
 <div class="imain">
     <div class="itop ">
         <form method="get" action="/shop_admin/product/index" class="select_form">
-        <div class="filter ">
-            <input type="search" name="name" placeholder="商品名称" value="{{$res['filter']['name']}}">
+        <div class="search_box ">
+            <input type="search" name="name" placeholder="商品名称" value="{{$res['search']['name']}}">
             <select name="status" >
                 @if(isset($dict['product_status']))
                     <option value="0" @if(!$res['filter']['status']) selected @endif>全部</option>
@@ -24,7 +24,7 @@
         <div class=""><a data-href="/shop_admin/product/form" class="badge badge-info ajax_get add">新增</a></div>
     </div>
 
-    <form method="post"  @if($res['filter']['string']) action="/shop_admin/product/del?{{$res['filter']['string']}}" @else action="/shop_admin/product/del" @endif  class="del_form">
+    <form method="post"  @if($res['search']['string']) action="/shop_admin/product/del?{{$res['search']['string']}}" @else action="/shop_admin/product/del" @endif  class="del_form">
     @csrf
         <div class="table_scroll">
             <div class="table">

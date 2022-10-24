@@ -4,26 +4,22 @@ namespace Aphly\LaravelShop\Controllers\Admin\Catalog;
 
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Libs\UploadFile;
+use Aphly\LaravelCommon\Models\CategoryPath;
+use Aphly\LaravelCommon\Models\Filter;
+use Aphly\LaravelCommon\Models\Group;
 use Aphly\LaravelShop\Controllers\Admin\Controller;
-use Aphly\LaravelShop\Models\Customer\Group;
-use Aphly\LaravelShop\Models\Common\Attribute;
-use Aphly\LaravelShop\Models\Common\AttributeGroup;
-use Aphly\LaravelShop\Models\Common\Category;
-use Aphly\LaravelShop\Models\Common\CategoryPath;
-use Aphly\LaravelShop\Models\Common\Filter;
-use Aphly\LaravelShop\Models\Common\FilterGroup;
-use Aphly\LaravelShop\Models\Common\Option;
-use Aphly\LaravelShop\Models\Product\Product;
-use Aphly\LaravelShop\Models\Product\ProductAttribute;
-use Aphly\LaravelShop\Models\Product\ProductCategory;
-use Aphly\LaravelShop\Models\Product\ProductDesc;
-use Aphly\LaravelShop\Models\Product\ProductDiscount;
-use Aphly\LaravelShop\Models\Product\ProductFilter;
-use Aphly\LaravelShop\Models\Product\ProductImage;
-use Aphly\LaravelShop\Models\Product\ProductOption;
-use Aphly\LaravelShop\Models\Product\ProductOptionValue;
-use Aphly\LaravelShop\Models\Product\ProductReward;
-use Aphly\LaravelShop\Models\Product\ProductSpecial;
+use Aphly\LaravelShop\Models\Catalog\Option;
+use Aphly\LaravelShop\Models\Catalog\Product;
+use Aphly\LaravelShop\Models\Catalog\ProductAttribute;
+use Aphly\LaravelShop\Models\Catalog\ProductCategory;
+use Aphly\LaravelShop\Models\Catalog\ProductDesc;
+use Aphly\LaravelShop\Models\Catalog\ProductDiscount;
+use Aphly\LaravelShop\Models\Catalog\ProductFilter;
+use Aphly\LaravelShop\Models\Catalog\ProductImage;
+use Aphly\LaravelShop\Models\Catalog\ProductOption;
+use Aphly\LaravelShop\Models\Catalog\ProductOptionValue;
+use Aphly\LaravelShop\Models\Catalog\ProductReward;
+use Aphly\LaravelShop\Models\Catalog\ProductSpecial;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -33,9 +29,9 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
-        $res['filter']['name'] = $name = $request->query('name',false);
-        $res['filter']['status'] = $status = $request->query('status',false);
-        $res['filter']['string'] = http_build_query($request->query());
+        $res['search']['name'] = $name = $request->query('name',false);
+        $res['search']['status'] = $status = $request->query('status',false);
+        $res['search']['string'] = http_build_query($request->query());
         $res['list'] = Product::when($name,
             function($query,$name) {
                 return $query->where('name', 'like', '%'.$name.'%');
@@ -109,7 +105,7 @@ class ProductController extends Controller
         $res['info_img'] = ProductImage::where('product_id',$request->id)->orderBy('sort','desc')->get()->toArray();
         if($request->isMethod('post')) {
             if($request->hasFile('file')) {
-                $file_path = UploadFile::imgs($request->file('file'), 'public/shop/product/image',2);
+                $file_path = (new UploadFile(0.5,2))->uploads($request->file('file'), 'public/shop/product/image');
                 $img_src = $insertData = [];
                 foreach ($file_path as $key=>$val) {
                     $img_src[] = Storage::url($val);

@@ -1,5 +1,5 @@
 @include('laravel-shop::front.common.header')
-<link rel="stylesheet" href="{{ URL::asset('vendor/laravel-shop/css/cart.css') }}" />
+<link rel="stylesheet" href="{{ URL::asset('vendor/laravel-shop/css/cart.css') }}"/>
 <style>
 
 </style>
@@ -15,55 +15,63 @@
                 @if($res['list'])
                     <div class="cart-shoppings">
                         @foreach($res['list'] as $val)
-                        <div class="col-12 js-shopping cart-shopping">
-                            <div class="row m-0 align-items-start">
-                                <div class="col-12 col-xl-5 text-center pt-3 pb-3 d-none d-xl-block cart-img">
-                                    <span class="im img-tag tag-off-per product-icon-text">50% OFF</span>
-                                    <a href="" class="img-product">
-                                        <img class="d-block w-100" src="{{\Aphly\LaravelShop\Models\Product\ProductImage::render($val['product']['image'])}}" alt="Rita">
-                                    </a>
-                                </div>
-                                <div class="col-12 col-xl-7 p-0">
-                                    <ul class="row shopping-info p-0 m-0">
-                                        <li class="d-none d-xl-block">
-                                            <span class="font-18 font-weight-bold">{{$val['product']['name']}}</span>
-                                        </li>
-                                        <li class="col-12 pb-3 pt-3 d-none d-xl-block js-cart-product-info">
-                                            <span class="car-label">Price:</span>
-                                            <span class="float-right">{{$val['price_format']}}</span>
-                                        </li>
-                                    </ul>
-                                    <div class="qtyInfo">
-                                        <span class="car-label">Qty:</span>
-                                        <input type="number" name="qty" class="product-qty" value="{{$val['quantity']}}">
-                                        <div class="stock-tip" style="display: none"></div>
-                                        <div class="subtotalInfo d-xl-none">
+                            <div class="col-12 js-shopping cart-shopping">
+                                <div class="row m-0 align-items-start">
+                                    <div class="col-12 col-xl-5 text-center pt-3 pb-3 d-none d-xl-block cart-img">
+                                        <span class="im img-tag tag-off-per product-icon-text">50% OFF</span>
+                                        <a href="" class="img-product">
+                                            <img class="d-block w-100"
+                                                 src="{{\Aphly\LaravelShop\Models\Catalog\ProductImage::render($val['product']['image'])}}"
+                                                 alt="Rita">
+                                        </a>
+                                    </div>
+                                    <div class="col-12 col-xl-7 p-0">
+                                        <ul class="row shopping-info p-0 m-0">
+                                            <li class="d-none d-xl-block">
+                                                <span class="font-18 font-weight-bold">{{$val['product']['name']}}</span>
+                                            </li>
+                                            <li class="col-12 pb-3 pt-3 d-none d-xl-block js-cart-product-info">
+                                                <span class="car-label">Price:</span>
+                                                <span class="float-right">{{$val['price_format']}}</span>
+                                            </li>
+                                        </ul>
+                                        <div class="qtyInfo">
+                                            <span class="car-label">Qty:</span>
+                                            <input type="number" name="qty" class="product-qty"
+                                                   value="{{$val['quantity']}}">
+                                            <div class="stock-tip" style="display: none"></div>
+                                            <div class="subtotalInfo d-xl-none">
+                                                <span>Subtotal:</span>
+                                                <span class="float-xl-right item-total">{{$val['total_format']}}</span>
+                                            </div>
+                                        </div>
+                                        <div class="subtotalInfo d-none d-xl-block">
                                             <span>Subtotal:</span>
                                             <span class="float-xl-right item-total">{{$val['total_format']}}</span>
                                         </div>
                                     </div>
-                                    <div class="subtotalInfo d-none d-xl-block">
-                                        <span>Subtotal:</span>
-                                        <span class="float-xl-right item-total">{{$val['total_format']}}</span>
+                                </div>
+                                <div class="close-btn">
+                                    <a href="javascript:;">
+                                        <img class="img-fluid"
+                                             src="{{ URL::asset('vendor/laravel-shop/img/cart/close_mobile.svg') }}">
+                                    </a>
+                                </div>
+                                <div class="close-bac">
+                                    <div class="remove-bac"></div>
+                                    <div class="close-content">
+                                        <span class="close-title">Remove from Cart?</span>
+                                        <div class="btn-remove">
+                                            <button type="button" class="btn-close btn-y btn-remove-item-y"
+                                                    data-key="740730931fe75fa8b00bb2ae20328b10">Yes
+                                            </button>
+                                            <button type="button" class="btn-close btn-n btn-remove-item-n"
+                                                    data-key="740730931fe75fa8b00bb2ae20328b10">No
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="close-btn">
-                                <a href="javascript:;">
-                                    <img class="img-fluid" src="{{ URL::asset('vendor/laravel-shop/img/cart/close_mobile.svg') }}">
-                                </a>
-                            </div>
-                            <div class="close-bac">
-                                <div class="remove-bac"></div>
-                                <div class="close-content">
-                                    <span class="close-title">Remove from Cart?</span>
-                                    <div class="btn-remove">
-                                        <button type="button" class="btn-close btn-y btn-remove-item-y" data-key="740730931fe75fa8b00bb2ae20328b10">Yes</button>
-                                        <button type="button" class="btn-close btn-n btn-remove-item-n" data-key="740730931fe75fa8b00bb2ae20328b10">No</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         @endforeach
                     </div>
                 @else
@@ -89,7 +97,8 @@
         </div>
         <div class="col-xl-4 d-none d-xl-block car-pay">
             <div class="gs-cart-sidebar sticky-top">
-                <div class="gs-cart-sidebar-container js-fix-sidebar default-content" style="position: static; top: 0px; display: block">
+                <div class="gs-cart-sidebar-container js-fix-sidebar default-content"
+                     style="position: static; top: 0px; display: block">
                     <div class="gs-cart-order-summary" role="region" aria-label="Order Summary">
                         <div class="car-title tips-free-shipping hide-item">
                             Great! You now qualify for Free Shipping .
@@ -101,7 +110,8 @@
                             <form class="code-apply" action="/coupon/add" method="post">
                                 <input type="hidden" name="_token" value="Swo5KKcDoZS3kGkqo53Iiqd5V4U8utOQbbJJHWGP">
                                 <div class="form-group mb-0">
-                                    <input class="car-code-input" type="text" placeholder="Promo code" name="coupon_code" value="" autocomplete="off">
+                                    <input class="car-code-input" type="text" placeholder="Promo code"
+                                           name="coupon_code" value="" autocomplete="off">
                                     <button class="btn btn-apply-code" type="button">Apply</button>
                                 </div>
                             </form>
@@ -126,7 +136,9 @@
                         <dl class="gs-cart-total-summary">
                             <div class="total-summary">Summary</div>
                             @if(isset($res['total_data']['totals']))
-                                <dd>Items: <span class="float-right cart-order-total-items-quantity">{{$res['items']}}</span></dd>
+                                <dd>Items: <span
+                                            class="float-right cart-order-total-items-quantity">{{$res['items']}}</span>
+                                </dd>
                                 @foreach($res['total_data']['totals'] as $val)
                                     <dd>{{$val['title']}}:
                                         <span class="float-right cart-order-total-items">{{$val['value_format']}}</span>
@@ -150,7 +162,8 @@
                                 <span class="free-shipping-add-money">$0.00</span>
                                 more to enjoy Free Shipping (US).
                             </div>
-                            <button type="button" class="btn btn-checkout btn-lg mb-2 p-3 proceed-to-checkout @if(!$res['items']) btn-emptyCheck @endif" >
+                            <button type="button"
+                                    class="btn btn-checkout btn-lg mb-2 p-3 proceed-to-checkout @if(!$res['items']) btn-emptyCheck @endif">
                                 Proceed to Checkout
                             </button>
                         </div>
@@ -161,14 +174,16 @@
                     <div class="pc-gs-cart-coupon">
                         <div class="gs-cart-coupon-conent js-coupon-block">
                             <a href="javascript:;" data-toggle="modal" data-target="#sale-after">
-                                <img class="Guarantee" src="{{ URL::asset('vendor/laravel-shop/img/cart/return-icon.svg') }}">
+                                <img class="Guarantee"
+                                     src="{{ URL::asset('vendor/laravel-shop/img/cart/return-icon.svg') }}">
                                 <h4>30-Day Free Return</h4>
                             </a>
                         </div>
                         <span class="divider">|</span>
                         <div class="gs-cart-coupon-conent js-coupon-block">
                             <a href="javascript:;" data-toggle="modal" data-target="#sale-after">
-                                <img class="Guarantee" src="{{ URL::asset('vendor/laravel-shop/img/cart/guarantee-icon.svg') }}">
+                                <img class="Guarantee"
+                                     src="{{ URL::asset('vendor/laravel-shop/img/cart/guarantee-icon.svg') }}">
                                 <h4>365-Day Guarantee</h4>
                             </a>
                         </div>
@@ -179,18 +194,21 @@
     </div>
 </div>
 <style>
-@media (min-width:1200px) {
-    .cart-title h2{height:35px;line-height:35px}
-}
+    @media (min-width: 1200px) {
+        .cart-title h2 {
+            height: 35px;
+            line-height: 35px
+        }
+    }
 </style>
 <script>
-$(function () {
-    $('.proceed-to-checkout').click(function () {
-        // $.ajax({
-        //
-        // })
-        location.href='checkout'
+    $(function () {
+        $('.proceed-to-checkout').click(function () {
+            // $.ajax({
+            //
+            // })
+            location.href = 'checkout'
+        })
     })
-})
 </script>
 @include('laravel-shop::front.common.footer')

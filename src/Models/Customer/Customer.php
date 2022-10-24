@@ -2,8 +2,8 @@
 
 namespace Aphly\LaravelShop\Models\Customer;
 
-use Aphly\LaravelAdmin\Models\User;
-use Aphly\LaravelAdmin\Models\UserAuth;
+use Aphly\LaravelCommon\Models\User;
+use Aphly\LaravelCommon\Models\UserAuth;
 use Aphly\LaravelShop\Models\Checkout\Cart;
 use Aphly\LaravelShop\Models\Common\Setting;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

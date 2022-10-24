@@ -2,15 +2,12 @@
 
 namespace Aphly\LaravelShop\Models\Checkout;
 
+use Aphly\LaravelCommon\Models\Currency;
 use Aphly\LaravelShop\Models\Customer\Customer;
-use Aphly\LaravelShop\Models\Customer\Group;
-use Aphly\LaravelShop\Models\Common\Currency;
-use Aphly\LaravelShop\Models\Product\Product;
-use Aphly\LaravelShop\Models\Product\ProductDiscount;
-use Aphly\LaravelShop\Models\Product\ProductOption;
-use Aphly\LaravelShop\Models\Product\ProductOptionValue;
-use Aphly\LaravelShop\Models\Product\ProductReward;
-use Aphly\LaravelShop\Models\Product\ProductSpecial;
+use Aphly\LaravelShop\Models\Catalog\Product;
+use Aphly\LaravelShop\Models\Catalog\ProductDiscount;
+use Aphly\LaravelShop\Models\Catalog\ProductReward;
+use Aphly\LaravelShop\Models\Catalog\ProductSpecial;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;
 use Illuminate\Support\Facades\Cookie;
@@ -21,11 +18,14 @@ class Cart extends Model
     use HasFactory;
     protected $table = 'shop_cart';
     protected $primaryKey = 'id';
-    public $timestamps = false;
+    //public $timestamps = false;
 
     protected $fillable = [
-        'uuid','product_id','guest','quantity','option','date_add'
+        'uuid','product_id','guest','quantity','option'
     ];
+
+    static public $products;
+    static public $product_total;
 
     public function __construct() {
         self::where('uuid',0)->where('date_add','<',time()-3600*24)->delete();
@@ -175,16 +175,16 @@ class Cart extends Model
         return $product_data;
     }
 
-    public function getSubTotal($products) {
+    public function getSubTotal() {
         $total = 0;
-        foreach ($products as $cart) {
+        foreach (self::$products as $cart) {
             $total += $cart['total'];
         }
         return $total;
     }
 
-    public function hasShipping($products) {
-        foreach ($products as $product) {
+    public function hasShipping() {
+        foreach (self::$products as $product) {
             if ($product['shipping']) {
                 return true;
             }
@@ -197,11 +197,11 @@ class Cart extends Model
     }
 
     public function countProducts() {
-        $product_total = 0;
-        $products = $this->getProducts();
-        foreach ($products as $product) {
-            $product_total += $product['quantity'];
+        self::$product_total = 0;
+        self::$products = $this->getProducts();
+        foreach (self::$products as $product) {
+            self::$product_total += $product['quantity'];
         }
-        return $product_total;
+        return self::$product_total;
     }
 }

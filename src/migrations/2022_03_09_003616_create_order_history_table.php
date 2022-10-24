@@ -19,7 +19,8 @@ return new class extends Migration
             $table->unsignedInteger('order_status_id');
             $table->tinyInteger('notify')->default(0)->nullable();
             $table->text('comment');
-            $table->unsignedInteger('date_add');
+            $table->unsignedBigInteger('created_at');
+            $table->unsignedBigInteger('updated_at');
         });
     }
 

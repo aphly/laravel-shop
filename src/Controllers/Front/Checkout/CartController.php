@@ -6,7 +6,7 @@ use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\LaravelShop\Controllers\Front\Controller;
 use Aphly\LaravelShop\Models\Checkout\Cart;
 use Aphly\LaravelShop\Models\Common\Extension;
-use Aphly\LaravelShop\Models\Product\Product;
+use Aphly\LaravelShop\Models\Catalog\Product;
 use Illuminate\Http\Request;
 
 class CartController extends Controller

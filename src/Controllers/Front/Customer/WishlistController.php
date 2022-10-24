@@ -6,7 +6,7 @@ use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\LaravelShop\Controllers\Front\Controller;
 use Aphly\LaravelShop\Models\Customer\Customer;
 use Aphly\LaravelShop\Models\Customer\Wishlist;
-use Aphly\LaravelShop\Models\Product\Product;
+use Aphly\LaravelShop\Models\Catalog\Product;
 use Illuminate\Http\Request;
 
 class WishlistController extends Controller

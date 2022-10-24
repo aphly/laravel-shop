@@ -5,8 +5,8 @@ namespace Aphly\LaravelShop\Controllers\Admin\Catalog;
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Libs\UploadFile;
 use Aphly\LaravelShop\Controllers\Admin\Controller;
-use Aphly\LaravelShop\Models\Common\Option;
-use Aphly\LaravelShop\Models\Common\OptionValue;
+use Aphly\LaravelShop\Models\Catalog\Option;
+use Aphly\LaravelShop\Models\Catalog\OptionValue;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -16,8 +16,8 @@ class OptionController extends Controller
 
     public function index(Request $request)
     {
-        $res['filter']['name'] = $name = $request->query('name',false);
-        $res['filter']['string'] = http_build_query($request->query());
+        $res['search']['name'] = $name = $request->query('name',false);
+        $res['search']['string'] = http_build_query($request->query());
         $res['list'] = Option::when($name,
                 function($query,$name) {
                     return $query->where('name', 'like', '%'.$name.'%');
@@ -66,13 +66,13 @@ class OptionController extends Controller
                                 $update_arr[$key]['image'] = '';
                             }
                         }else{
-                            $update_arr[$key]['image'] = isset($files[$key]['image'])?UploadFile::img($files[$key]['image'], 'public/shop/option'):'';
+                            $update_arr[$key]['image'] = isset($files[$key]['image'])?(new UploadFile)->upload($files[$key]['image'], 'public/shop/option'):'';
                             if($update_arr[$key]['image']){
                                 Storage::delete($optionValue[$key_i]['image']);
                             }
                         }
                     }else{
-                        $update_arr[$key]['image'] = isset($files[$key]['image'])?UploadFile::img($files[$key]['image'], 'public/shop/option'):'';
+                        $update_arr[$key]['image'] = isset($files[$key]['image'])?(new UploadFile)->upload($files[$key]['image'], 'public/shop/option'):'';
                     }
                 }
                 OptionValue::upsert($update_arr,['id'],['option_id','name','image','sort']);

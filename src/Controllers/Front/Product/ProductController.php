@@ -3,10 +3,9 @@
 namespace Aphly\LaravelShop\Controllers\Front\Product;
 
 use Aphly\LaravelShop\Controllers\Front\Controller;
-use Aphly\LaravelShop\Models\Customer\Wishlist;
-use Aphly\LaravelShop\Models\Common\Category;
 use Aphly\LaravelShop\Models\Common\Currency;
-use Aphly\LaravelShop\Models\Product\Product;
+use Aphly\LaravelShop\Models\Catalog\Category;
+use Aphly\LaravelShop\Models\Catalog\Product;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller

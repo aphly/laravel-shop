@@ -3,10 +3,10 @@
 namespace Aphly\LaravelShop\Controllers\Admin\System;
 
 use Aphly\Laravel\Exceptions\ApiException;
+use Aphly\LaravelCommon\Models\Country;
+use Aphly\LaravelCommon\Models\Currency;
+use Aphly\LaravelCommon\Models\Group;
 use Aphly\LaravelShop\Controllers\Admin\Controller;
-use Aphly\LaravelShop\Models\Customer\Group;
-use Aphly\LaravelShop\Models\Common\Country;
-use Aphly\LaravelShop\Models\Common\Currency;
 use Aphly\LaravelShop\Models\Common\Setting;
 use Illuminate\Http\Request;
 

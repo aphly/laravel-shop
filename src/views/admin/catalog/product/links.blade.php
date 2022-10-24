@@ -34,7 +34,7 @@
                 <div class="search_text">
                     @foreach($res['product_filter'] as $val)
                         <div class="product-category">
-                            <i class="uni app-jian category_jian"></i> {!! $res['filter'][$val['filter_id']]['name_all'] !!}
+                            <i class="uni app-jian filter_jian"></i> {!! $res['filter'][$val['filter_id']]['name_all'] !!}
                             <input type="hidden" name="product_filter[{{$val['filter_id']}}]" value="{{$val['filter_id']}}">
                         </div>
                     @endforeach
@@ -48,7 +48,7 @@
 <script>
     function search_ajax(_this,type) {
         $.ajax({
-            url:'/shop_admin/'+type+'/ajax?name='+$(_this).val(),
+            url:'/common_admin/'+type+'/ajax?name='+$(_this).val(),
             dataType: "json",
             success:function (res) {
                 let arr = res.data.list;
@@ -82,12 +82,7 @@
                 $('.search_res').hide();
             }
         });
-        $('.links').on('focus', '.search_input_cate', function (e) {
-            e.stopPropagation()
-            $('.search_res_cate').hide();
-            search_ajax(this,'category')
-        })
-        $('.links').on('keyup', '.search_input_cate', function (e) {
+        $('.links').on('focus keyup', '.search_input_cate', function (e) {
             e.stopPropagation()
             $('.search_res_cate').hide();
             search_ajax(this,'category')
@@ -96,15 +91,14 @@
             e.stopPropagation()
             $(this).parent().remove();
         })
-        $('.links').on('focus', '.search_input_filter', function (e) {
+        $('.links').on('focus keyup', '.search_input_filter', function (e) {
             e.stopPropagation()
             $('.search_res_cate').hide();
             search_ajax(this,'filter')
         })
-        $('.links').on('keyup', '.search_input_filter', function (e) {
+        $('.links').on('click', '.filter_jian', function (e) {
             e.stopPropagation()
-            $('.search_res_cate').hide();
-            search_ajax(this,'filter')
+            $(this).parent().remove();
         })
     })
 </script>

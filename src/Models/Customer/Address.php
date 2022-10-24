@@ -2,8 +2,8 @@
 
 namespace Aphly\LaravelShop\Models\Customer;
 
-use Aphly\LaravelShop\Models\Common\Country;
-use Aphly\LaravelShop\Models\Common\Zone;
+use Aphly\LaravelCommon\Models\Country;
+use Aphly\LaravelCommon\Models\Zone;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;
 

@@ -19,7 +19,8 @@ return new class extends Migration
             $table->integer('order_id')->unsigned();
             $table->unsignedBigInteger('uuid')->index();
             $table->decimal('amount');
-            $table->integer('date_add')->unsigned();
+            $table->unsignedBigInteger('created_at');
+            $table->unsignedBigInteger('updated_at');
         });
     }
 

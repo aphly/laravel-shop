@@ -11,7 +11,7 @@
         </div>
     </div>
 
-    <form method="post"  @if($res['filter']['string']) action="/shop_admin/review/del?{{$res['filter']['string']}}" @else action="/shop_admin/review/del" @endif  class="del_form">
+    <form method="post"  @if($res['search']['string']) action="/shop_admin/review/del?{{$res['search']['string']}}" @else action="/shop_admin/review/del" @endif  class="del_form">
     @csrf
         <div class="table_scroll">
             <div class="table">

@@ -1,5 +1,5 @@
 @include('laravel-shop::front.common.header')
-<link rel="stylesheet" href="{{ URL::asset('vendor/laravel-shop/css/checkout.css') }}" />
+<link rel="stylesheet" href="{{ URL::asset('vendor/laravel-shop/css/checkout.css') }}"/>
 <style>
 
 </style>
@@ -23,16 +23,23 @@
                     <div class="select-option" style="">
                         <div class="address-lists">
                             @foreach($res['customer_address'] as $val)
-                            <label class="row m-0 checkout-address" data-id="{{$val['id']}}">
-                                <input type="radio" class="checkout-form-radio col-1 shipping-address" name="shipping_address" value="375308">
-                                <div class="col-11 pl-3">
-                                    <div>{{$val['firstname']}} {{$val['lastname']}},{{$val['address_1']}}, {{$val['address_2']}}, {{$val['city']}}, {{$val['zone_name']}}, {{$val['country_name']}}, {{$val['postcode']}}, {{$val['telephone']}}</div>
-                                    <a href="javascript:;" class="checkout-address-edit color-link d-inline-block pt-3 pr-3" data-address-id="375308">Edit</a>
-                                </div>
-                            </label>
+                                <label class="row m-0 checkout-address" data-id="{{$val['id']}}">
+                                    <input type="radio" class="checkout-form-radio col-1 shipping-address"
+                                           name="shipping_address" value="375308">
+                                    <div class="col-11 pl-3">
+                                        <div>{{$val['firstname']}} {{$val['lastname']}},{{$val['address_1']}}
+                                            , {{$val['address_2']}}, {{$val['city']}}, {{$val['zone_name']}}
+                                            , {{$val['country_name']}}, {{$val['postcode']}}
+                                            , {{$val['telephone']}}</div>
+                                        <a href="javascript:;"
+                                           class="checkout-address-edit color-link d-inline-block pt-3 pr-3"
+                                           data-address-id="375308">Edit</a>
+                                    </div>
+                                </label>
                             @endforeach
                             <label class="row m-0 pt-3 add-new-shipping-address" style="">
-                                <input class="checkout-form-radio col-1 shipping-address" type="radio" name="shipping_address" value="0">
+                                <input class="checkout-form-radio col-1 shipping-address" type="radio"
+                                       name="shipping_address" value="0">
                                 <div class="col-11 pl-3 font-weight-bold">
                                     Add New Address
                                 </div>
@@ -40,15 +47,21 @@
                         </div>
                         <div id="shipping-address-form" style="display: none;">
                             <form id="shippingAddressForm" name="shippingAddressForm" method="post" action="">
-                                <input type="hidden" name="_token" value="kefgNRtnhzToF1VMf0drb7WMQRuemihAa03xrWhJ">        <ul class="address-form">
+                                <input type="hidden" name="_token" value="kefgNRtnhzToF1VMf0drb7WMQRuemihAa03xrWhJ">
+                                <ul class="address-form">
                                     <li class="form-item pt-3 mt-1">
-                                        <input name="firstname" class="p-3 d-inline-block w-100 checkout-form-input address-form-firstname" type="text" placeholder="First Name">
+                                        <input name="firstname"
+                                               class="p-3 d-inline-block w-100 checkout-form-input address-form-firstname"
+                                               type="text" placeholder="First Name">
                                     </li>
                                     <li class="form-item pt-3 mt-1">
-                                        <input name="lastname" class="p-3 d-inline-block w-100 checkout-form-input address-form-lastname" type="text" placeholder="Last Name">
+                                        <input name="lastname"
+                                               class="p-3 d-inline-block w-100 checkout-form-input address-form-lastname"
+                                               type="text" placeholder="Last Name">
                                     </li>
                                     <li class="form-item pt-3 mt-1">
-                                        <select name="country" class="p-3 d-inline-block w-100 checkout-form-input address-form-country">
+                                        <select name="country"
+                                                class="p-3 d-inline-block w-100 checkout-form-input address-form-country">
                                             <option value="0">Country</option>
                                             <option value="197" data-code="US">United States</option>
                                             <option value="225" data-code="GB">United Kingdom</option>
@@ -56,32 +69,48 @@
                                         </select>
                                     </li>
                                     <li class="form-item pt-3 mt-1">
-                                        <input name="address_1" class="p-3 d-inline-block w-100 checkout-form-input address-form-address-1" type="text" placeholder="Address Line 1">
+                                        <input name="address_1"
+                                               class="p-3 d-inline-block w-100 checkout-form-input address-form-address-1"
+                                               type="text" placeholder="Address Line 1">
                                     </li>
                                     <li class="form-item pt-3 mt-1">
-                                        <input name="address_2" class="p-3 d-inline-block w-100 checkout-form-input address-form-address-2" type="text" placeholder="Address Line 2 (Optional:Apt, Building, etc.)">
+                                        <input name="address_2"
+                                               class="p-3 d-inline-block w-100 checkout-form-input address-form-address-2"
+                                               type="text" placeholder="Address Line 2 (Optional:Apt, Building, etc.)">
                                     </li>
                                     <li class="form-item pt-3 mt-1 row">
                                         <div class="col-6">
-                                            <input name="city" class="p-3 d-inline-block w-100 checkout-form-input address-form-city" type="text" placeholder="City">
+                                            <input name="city"
+                                                   class="p-3 d-inline-block w-100 checkout-form-input address-form-city"
+                                                   type="text" placeholder="City">
                                         </div>
                                         <div class="col-6">
-                                            <input name="postcode" class="p-3 d-inline-block w-100 checkout-form-input address-form-postcode" type="text" placeholder="ZIP / Postal Code">
+                                            <input name="postcode"
+                                                   class="p-3 d-inline-block w-100 checkout-form-input address-form-postcode"
+                                                   type="text" placeholder="ZIP / Postal Code">
                                         </div>
                                     </li>
-                                    <li class="form-item form-state-item pt-3 mt-1"><input type="text" name="state" class="p-3 w-100 checkout-form-input address-form-state" placeholder="State / Province" value=""></li>
+                                    <li class="form-item form-state-item pt-3 mt-1"><input type="text" name="state"
+                                                                                           class="p-3 w-100 checkout-form-input address-form-state"
+                                                                                           placeholder="State / Province"
+                                                                                           value=""></li>
                                     <li class="form-item pt-3 mt-1">
-                                        <input name="phone" class="p-3 d-inline-block w-100 checkout-form-input address-form-phone" type="text" placeholder="Phone Number">
+                                        <input name="phone"
+                                               class="p-3 d-inline-block w-100 checkout-form-input address-form-phone"
+                                               type="text" placeholder="Phone Number">
                                     </li>
 
                                     <li class="pt-3 mt-3">
                                         <label>
-                                            <input name="is_default" class="checkout-form-checkbox ml-3" type="checkbox" checked="">
+                                            <input name="is_default" class="checkout-form-checkbox ml-3" type="checkbox"
+                                                   checked="">
                                             Set as primary address
                                         </label>
                                     </li>
                                     <li class="pt-3 mt-3">
-                                        <button type="button" class="checkout-btn d-block w-100 btn-checkout-continue">Continue</button>
+                                        <button type="button" class="checkout-btn d-block w-100 btn-checkout-continue">
+                                            Continue
+                                        </button>
                                     </li>
                                 </ul>
                             </form>
@@ -97,19 +126,19 @@
                     <div class="color-desc selected-content">
                     </div>
                     <div class="select-option" style="">
-{{--                        @foreach($res['shipping_method'] as $val)--}}
-{{--                        <label class="row m-0">--}}
-{{--                            <input class="checkout-form-radio col-1 shipping-method" type="radio" name="shipping_method" value="1" data-name="Standard Shipping">--}}
-{{--                            <div class="col-11 pl-3 pb-3">--}}
-{{--                                <span class="font-weight-bold">{{$val['name']}}</span>--}}
-{{--                                <p class="float-right">--}}
-{{--                                    (<span class="checkout-pre-price">{{$val['cost_format']}}</span>)--}}
-{{--                                    <span class="pl-1 color-red">{{$val['new_cost_format']}}</span>--}}
-{{--                                </p>--}}
-{{--                                <p>{{$val['desc']}}</p>--}}
-{{--                            </div>--}}
-{{--                        </label>--}}
-{{--                        @endforeach--}}
+                        {{--                        @foreach($res['shipping_method'] as $val)--}}
+                        {{--                        <label class="row m-0">--}}
+                        {{--                            <input class="checkout-form-radio col-1 shipping-method" type="radio" name="shipping_method" value="1" data-name="Standard Shipping">--}}
+                        {{--                            <div class="col-11 pl-3 pb-3">--}}
+                        {{--                                <span class="font-weight-bold">{{$val['name']}}</span>--}}
+                        {{--                                <p class="float-right">--}}
+                        {{--                                    (<span class="checkout-pre-price">{{$val['cost_format']}}</span>)--}}
+                        {{--                                    <span class="pl-1 color-red">{{$val['new_cost_format']}}</span>--}}
+                        {{--                                </p>--}}
+                        {{--                                <p>{{$val['desc']}}</p>--}}
+                        {{--                            </div>--}}
+                        {{--                        </label>--}}
+                        {{--                        @endforeach--}}
                     </div>
                 </div>
 
@@ -160,7 +189,8 @@
                                     <input type="hidden" id="paymentMethod" name="paymentMethod" value="">
                                     <input type="hidden" id="shippingMethod" name="shippingMethod" value="">
                                     <input type="hidden" id="isLogin" name="isLogin" value="">
-                                    <button type="button" class="checkout-btn d-block w-100 btn-checkout-submit" disabled="disabled">
+                                    <button type="button" class="checkout-btn d-block w-100 btn-checkout-submit"
+                                            disabled="disabled">
                                         Checkout
                                     </button>
                                 </form>
@@ -187,45 +217,46 @@
                         </div>
                         <div class="items-info-list">
                             @foreach($res['list'] as $val)
-                            <div class="items-info ">
-                                <div class="items-img" style="width: 120px;">
-                                    <img src="{{\Aphly\LaravelShop\Models\Product\ProductImage::render($val['product']['image'])}}" alt="" aria-hidden="true" style="max-width: 100%;">
+                                <div class="items-info ">
+                                    <div class="items-img" style="width: 120px;">
+                                        <img src="{{\Aphly\LaravelShop\Models\Catalog\ProductImage::render($val['product']['image'])}}"
+                                             alt="" aria-hidden="true" style="max-width: 100%;">
+                                    </div>
+                                    <div class="items-lists">
+                                        <ul>
+                                            <li>
+                                                <span><strong>{{$val['product']['name']}}</strong></span>
+                                            </li>
+                                            <li>
+                                                <span>price: </span>
+                                                <span>{{$val['price_format']}}</span>
+                                            </li>
+                                            <li>
+                                                <span>qty: </span>
+                                                <span>{{$val['quantity']}}</span>
+                                            </li>
+                                            <li>
+                                                <span>subtotal: </span>
+                                                <span>{{$val['total_format']}}</span>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
-                                <div class="items-lists">
-                                    <ul>
-                                        <li>
-                                            <span><strong>{{$val['product']['name']}}</strong></span>
-                                        </li>
-                                        <li>
-                                            <span>price: </span>
-                                            <span>{{$val['price_format']}}</span>
-                                        </li>
-                                        <li>
-                                            <span>qty: </span>
-                                            <span>{{$val['quantity']}}</span>
-                                        </li>
-                                        <li>
-                                            <span>subtotal: </span>
-                                            <span>{{$val['total_format']}}</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
                             @endforeach
                         </div>
                         <div id="checkout-total">
                             <div class="items-price">
                                 @if(isset($res['total_data']['totals']))
-                                <ul>
-                                    @foreach($res['total_data']['totals'] as $val)
-                                    <li class="order-list">
-                                        <p>
-                                            <span class="sub-total subtotal-subtotal">{{$val['title']}}:</span>
-                                            <span class="items-right prices price-symbol">{{$val['value_format']}}</span>
-                                        </p>
-                                    </li>
-                                    @endforeach
-                                </ul>
+                                    <ul>
+                                        @foreach($res['total_data']['totals'] as $val)
+                                            <li class="order-list">
+                                                <p>
+                                                    <span class="sub-total subtotal-subtotal">{{$val['title']}}:</span>
+                                                    <span class="items-right prices price-symbol">{{$val['value_format']}}</span>
+                                                </p>
+                                            </li>
+                                        @endforeach
+                                    </ul>
                                 @endif
                             </div>
                             <div class="items-total-price order-list">
@@ -244,20 +275,20 @@
 
 </style>
 <script>
-let total = {{$res['total_data']['total']}}
-$(function () {
-    $('body').on('click','.checkout-address',function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        let id = $(this).data('id')
-        $.ajax({
-            url:'/checkout/shipping_address',
-            data:{address_id:id,_token: "{!! csrf_token() !!}",total},
-            success:function (res) {
-                console.log(res)
-            }
+    let total = {{$res['total_data']['total']}}
+    $(function () {
+        $('body').on('click', '.checkout-address', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            let id = $(this).data('id')
+            $.ajax({
+                url: '/checkout/shipping_address',
+                data: {address_id: id, _token: "{!! csrf_token() !!}", total},
+                success: function (res) {
+                    console.log(res)
+                }
+            })
         })
     })
-})
 </script>
 @include('laravel-shop::front.common.footer')

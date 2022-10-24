@@ -4,8 +4,8 @@ namespace Aphly\LaravelShop\Controllers\Admin\Catalog;
 
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\LaravelShop\Controllers\Admin\Controller;
-use Aphly\LaravelShop\Models\Product\Product;
-use Aphly\LaravelShop\Models\Product\Review;
+use Aphly\LaravelShop\Models\Catalog\Product;
+use Aphly\LaravelShop\Models\Catalog\Review;
 use Illuminate\Http\Request;
 
 class ReviewController extends Controller
@@ -14,7 +14,7 @@ class ReviewController extends Controller
     //图片未增加
     public function index(Request $request)
     {
-        $res['filter']['string'] = http_build_query($request->query());
+        $res['search']['string'] = http_build_query($request->query());
         $res['list'] = Review::orderBy('id','desc')
             ->with('product')
             ->Paginate(config('admin.perPage'))->withQueryString();

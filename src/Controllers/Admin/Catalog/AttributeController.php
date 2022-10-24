@@ -4,8 +4,8 @@ namespace Aphly\LaravelShop\Controllers\Admin\Catalog;
 
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\LaravelShop\Controllers\Admin\Controller;
-use Aphly\LaravelShop\Models\Common\Attribute;
-use Aphly\LaravelShop\Models\Common\AttributeGroup;
+use Aphly\LaravelShop\Models\Catalog\Attribute;
+use Aphly\LaravelShop\Models\Catalog\AttributeGroup;
 use Illuminate\Http\Request;
 
 class AttributeController extends Controller
@@ -14,8 +14,8 @@ class AttributeController extends Controller
 
     public function index(Request $request)
     {
-        $res['filter']['name'] = $name = $request->query('name',false);
-        $res['filter']['string'] = http_build_query($request->query());
+        $res['search']['name'] = $name = $request->query('name',false);
+        $res['search']['string'] = http_build_query($request->query());
         $res['list'] = AttributeGroup::when($name,
                 function($query,$name) {
                     return $query->where('name', 'like', '%'.$name.'%');
@@ -40,10 +40,10 @@ class AttributeController extends Controller
         $attributeGroup = AttributeGroup::updateOrCreate(['id'=>$id],$request->all());
         if($attributeGroup->id){
             $val_arr = $request->input('value',[]);
-            $filter = Attribute::where('attribute_group_id',$attributeGroup->id)->pluck('id')->toArray();
+            $attribute = Attribute::where('attribute_group_id',$attributeGroup->id)->pluck('id')->toArray();
             $val_arr_keys = array_keys($val_arr);
             $update_arr = $delete_arr = [];
-            foreach ($filter as $val){
+            foreach ($attribute as $val){
                 if(!in_array($val,$val_arr_keys)){
                     $delete_arr[] = $val;
                 }
@@ -73,7 +73,7 @@ class AttributeController extends Controller
         }
     }
 
-    public function Ajax(Request $request){
+    public function ajax(Request $request){
         $name = $request->query('name',false);
         $list = AttributeGroup::leftJoin('shop_attribute','shop_attribute_group.id','=','shop_attribute.attribute_group_id')
             ->when($name,function($query,$name) {

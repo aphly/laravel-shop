@@ -27,7 +27,8 @@ return new class extends Migration
             $table->integer('uses_total')->unsigned();
             $table->integer('uses_customer')->unsigned();
             $table->tinyInteger('status')->default(1);
-            $table->integer('date_add')->unsigned();
+            $table->unsignedBigInteger('created_at');
+            $table->unsignedBigInteger('updated_at');
         });
     }
 

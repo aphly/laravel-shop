@@ -9,7 +9,7 @@ use Aphly\LaravelShop\Models\Checkout\Cart;
 use Aphly\LaravelShop\Models\Common\Extension;
 use Aphly\LaravelShop\Models\Extension\Payment\Payment;
 use Aphly\LaravelShop\Models\Extension\Shipping\Shipping;
-use Aphly\LaravelShop\Models\Product\Product;
+use Aphly\LaravelShop\Models\Catalog\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 

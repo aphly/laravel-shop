@@ -20,7 +20,8 @@ return new class extends Migration
             $table->char('guest',32)->index();
             $table->unsignedInteger('quantity')->default(1);
             $table->text('option')->nullable();
-            $table->integer('date_add')->unsigned();
+            $table->unsignedBigInteger('created_at');
+            $table->unsignedBigInteger('updated_at');
         });
     }
 

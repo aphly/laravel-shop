@@ -21,8 +21,8 @@ return new class extends Migration
             $table->text('text');
             $table->tinyInteger('rating');
             $table->tinyInteger('status')->index();
-            $table->integer('date_add')->unsigned();
-            $table->integer('date_edit')->unsigned();
+            $table->unsignedBigInteger('created_at');
+            $table->unsignedBigInteger('updated_at');
         });
     }
 

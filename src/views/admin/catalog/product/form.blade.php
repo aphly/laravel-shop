@@ -95,7 +95,7 @@
             </div>
             <div class="form-group">
                 <label for="">最小购买数量</label>
-                <input type="number" name="minimum" class="form-control " value="{{$res['product']->minimum??0}}">
+                <input type="number" name="minimum" class="form-control " value="{{$res['product']->minimum??1}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">

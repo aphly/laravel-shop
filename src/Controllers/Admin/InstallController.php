@@ -24,24 +24,24 @@ class InstallController extends Controller
     public function install(){
         $menu = Menu::create(['name' => 'Shop','url' =>'','pid'=>0,'is_leaf'=>0,'module_id'=>$this->module_id,'sort'=>10]);
         if($menu){
-            $menu21 = Menu::create(['name' => 'Product','url' =>'','pid'=>$menu->id,'is_leaf'=>0,'module_id'=>$this->module_id,'sort'=>0]);
+            $menu21 = Menu::create(['name' => 'Catalog','url' =>'','pid'=>$menu->id,'is_leaf'=>0,'module_id'=>$this->module_id,'sort'=>10]);
             if($menu21){
                 $data=[];
                 $data[] =['name' => 'Product','url' =>'/shop_admin/product/index','pid'=>$menu21->id,'is_leaf'=>1,'module_id'=>$this->module_id,'sort'=>0];
                 $data[] =['name' => 'Attribute','url' =>'/shop_admin/attribute/index','pid'=>$menu21->id,'is_leaf'=>1,'module_id'=>$this->module_id,'sort'=>0];
                 $data[] =['name' => 'Option','url' =>'/shop_admin/option/index','pid'=>$menu21->id,'is_leaf'=>1,'module_id'=>$this->module_id,'sort'=>0];
-                $data[] =['name' => 'Coupon','url' =>'/shop_admin/coupon/index','pid'=>$menu21->id,'is_leaf'=>1,'module_id'=>$this->module_id,'sort'=>0];
                 $data[] =['name' => 'Review','url' =>'/shop_admin/review/index','pid'=>$menu21->id,'is_leaf'=>1,'module_id'=>$this->module_id,'sort'=>0];
                 DB::table('admin_menu')->insert($data);
             }
-            $menu22 = Menu::create(['name' => 'Order','url' =>'','pid'=>$menu->id,'is_leaf'=>0,'module_id'=>$this->module_id,'sort'=>0]);
+            $menu22 = Menu::create(['name' => 'Sale','url' =>'','pid'=>$menu->id,'is_leaf'=>0,'module_id'=>$this->module_id,'sort'=>9]);
             if($menu22){
                 $data=[];
                 $data[] =['name' => 'Order','url' =>'/shop_admin/order/index','pid'=>$menu22->id,'is_leaf'=>1,'module_id'=>$this->module_id,'sort'=>0];
                 $data[] =['name' => 'Return','url' =>'/shop_admin/return/index','pid'=>$menu22->id,'is_leaf'=>1,'module_id'=>$this->module_id,'sort'=>0];
+                $data[] =['name' => 'Coupon','url' =>'/shop_admin/coupon/index','pid'=>$menu22->id,'is_leaf'=>1,'module_id'=>$this->module_id,'sort'=>0];
                 DB::table('admin_menu')->insert($data);
             }
-            $menu23 = Menu::create(['name' => 'System','url' =>'','pid'=>$menu->id,'is_leaf'=>0,'module_id'=>$this->module_id,'sort'=>0]);
+            $menu23 = Menu::create(['name' => 'System','url' =>'','pid'=>$menu->id,'is_leaf'=>0,'module_id'=>$this->module_id,'sort'=>8]);
             if($menu23){
                 $data=[];
                 $data[] =['name' => 'Setting','url' =>'/shop_admin/setting/index','pid'=>$menu23->id,'is_leaf'=>1,'module_id'=>$this->module_id,'sort'=>0];

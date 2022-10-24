@@ -12,9 +12,9 @@
             <input type="search" name="name" placeholder="商品名称" value="{{$res['search']['name']}}">
             <select name="status" >
                 @if(isset($dict['product_status']))
-                    <option value="0" @if(!$res['filter']['status']) selected @endif>全部</option>
+                    <option value="0" @if(!$res['search']['status']) selected @endif>全部</option>
                     @foreach($dict['product_status'] as $key=>$val)
-                        <option value="{{$key}}" @if($res['filter']['status']==$key) selected @endif>{{$val}}</option>
+                        <option value="{{$key}}" @if($res['search']['status']==$key) selected @endif>{{$val}}</option>
                     @endforeach
                 @endif
             </select>

@@ -1,6 +1,6 @@
 <?php
 
-namespace Aphly\LaravelShop\Controllers\Admin\Catalog;
+namespace Aphly\LaravelShop\Controllers\Admin\Sale;
 
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\LaravelCommon\Models\CategoryPath;

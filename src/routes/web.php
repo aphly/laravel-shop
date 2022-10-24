@@ -59,17 +59,8 @@ Route::middleware(['web'])->group(function () {
     Route::prefix('shop_admin')->middleware(['managerAuth'])->group(function () {
         Route::middleware(['rbac'])->group(function () {
 
-            Route::get('/category/index', 'Aphly\LaravelShop\Controllers\Admin\Catalog\CategoryController@index');
-            Route::post('/category/del', 'Aphly\LaravelShop\Controllers\Admin\Catalog\CategoryController@del');
-            Route::get('/category/show', 'Aphly\LaravelShop\Controllers\Admin\Catalog\CategoryController@show');
-            Route::post('/category/save', 'Aphly\LaravelShop\Controllers\Admin\Catalog\CategoryController@save');
-
             $route_arr = [
-                    ['filter','\Catalog\FilterController'],['country','\System\CountryController'],['geo','\System\GeoController'],
-                    ['zone','\System\ZoneController'],['currency','\System\CurrencyController'],
-                    ['attribute','\Catalog\AttributeController'],['option','\Catalog\OptionController'],
-                    ['information','\Catalog\InformationController'],['review','\Catalog\ReviewController'],
-                    ['group','\Customer\GroupController']
+                    ['attribute','\Catalog\AttributeController'],['option','\Catalog\OptionController'],['review','\Catalog\ReviewController']
             ];
 
             foreach ($route_arr as $val){
@@ -108,12 +99,9 @@ Route::middleware(['web'])->group(function () {
             Route::post('/coupon/save', 'Aphly\LaravelShop\Controllers\Admin\Sale\CouponController@save');
             Route::get('/coupon/history', 'Aphly\LaravelShop\Controllers\Admin\Sale\CouponController@history');
 
-            Route::get('/category/ajax', 'Aphly\LaravelShop\Controllers\Admin\Catalog\CategoryController@ajax');
-            Route::get('/filter/ajax', 'Aphly\LaravelShop\Controllers\Admin\Catalog\FilterController@ajax');
             Route::get('/product/ajax', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@ajax');
             Route::get('/attribute/ajax', 'Aphly\LaravelShop\Controllers\Admin\Catalog\AttributeController@ajax');
             Route::get('/option/ajax', 'Aphly\LaravelShop\Controllers\Admin\Catalog\OptionController@ajax');
-            Route::get('/geo/ajax', 'Aphly\LaravelShop\Controllers\Admin\System\GeoController@ajax');
 
             Route::get('/extension/shipping/index', 'Aphly\LaravelShop\Controllers\Admin\Extension\Extension\ShippingController@index');
             Route::get('/extension/shipping/install', 'Aphly\LaravelShop\Controllers\Admin\Extension\Extension\ShippingController@install');

@@ -19,7 +19,7 @@ class ProductImage extends Model
         'sort'
     ];
 
-    static public $oss_url = 'https://img.lioasde.top';
+    static public $oss_url = false;
 
     static function render($img){
         if($img){

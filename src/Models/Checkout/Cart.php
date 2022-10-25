@@ -3,7 +3,7 @@
 namespace Aphly\LaravelShop\Models\Checkout;
 
 use Aphly\LaravelCommon\Models\Currency;
-use Aphly\LaravelShop\Models\Customer\Customer;
+use Aphly\LaravelCommon\Models\User;
 use Aphly\LaravelShop\Models\Catalog\Product;
 use Aphly\LaravelShop\Models\Catalog\ProductDiscount;
 use Aphly\LaravelShop\Models\Catalog\ProductReward;
@@ -25,10 +25,10 @@ class Cart extends Model
     ];
 
     static public $products;
-    static public $product_total;
+    static public $product_count;
 
     public function __construct() {
-        self::where('uuid',0)->where('date_add','<',time()-3600*24)->delete();
+        self::where('uuid',0)->where('created_at','<',time()-3600*24)->delete();
         parent::__construct();
     }
 
@@ -40,7 +40,7 @@ class Cart extends Model
         $guest = Cookie::get('guest');
         if($guest){
             $cart = self::where('guest',$guest);
-            self::where('uuid',Customer::uuid())->update(['guest'=>$guest]);
+            self::where('uuid',User::uuid())->update(['guest'=>$guest]);
             $data = $cart->get()->toArray();
             $cart->delete();
             foreach ($data as $val){
@@ -49,15 +49,14 @@ class Cart extends Model
         }
     }
 
-    public function add($product_id, $quantity = 1, $option = [],$uuid=false) {
+    public function add($product_id, $quantity = 1, $option = []) {
         $option = json_encode($option);
-        $where = ['uuid'=>Customer::uuid(),'guest'=>Cookie::get('guest'),'product_id'=>$product_id,'option'=>$option];
+        $where = ['uuid'=>User::uuid(),'guest'=>Cookie::get('guest'),'product_id'=>$product_id,'option'=>$option];
         $info = self::where($where)->first();
         if(!empty($info)){
             $info->increment('quantity',$quantity);
         }else{
-            self::insert(array_merge($where,['quantity'=>$quantity,'date_add'=>time()]));
-            //self::create(array_merge($where,['quantity'=>$quantity,'date_add'=>time()]));
+            self::create(array_merge($where,['quantity'=>$quantity]));
         }
     }
 
@@ -71,7 +70,7 @@ class Cart extends Model
 
     public function getProducts(){
         $product_data = [];
-        $uuid = Customer::uuid();
+        $uuid = User::uuid();
         $cart_data = self::when($uuid,function ($query,$uuid){
             return  $query->where('uuid',$uuid);
         })->where(['guest'=>Cookie::get('guest')])->with('product')->get()->toArray();
@@ -123,7 +122,8 @@ class Cart extends Model
                 }
 
                 $price = $cart['product']['price'];
-                $group_id = Customer::groupId();
+
+                $group_id = User::groupId();
                 $time = time();
                 $discount_quantity = 0;
                 foreach ($cart_data as $cart2) {
@@ -145,7 +145,6 @@ class Cart extends Model
                 if(!empty($product_special)){
                     $price = $product_special['price'];
                 }
-
                 $product_reward = ProductReward::where('product_id',$cart['product_id'])->where('group_id',$group_id)->first();
                 if (!empty($product_reward)) {
                     $reward = $product_reward['points'];
@@ -155,6 +154,7 @@ class Cart extends Model
                 if($cart['product']['subtract']==1 && ($cart['product']['quantity']<1 || $cart['product']['quantity']<$cart['quantity'])){
                     $stock = false;
                 }
+
                 $price = ($price + $option_price);
                 $total = $price*$cart['quantity'];
                 $product_data[$cart['id']] = $cart;
@@ -197,11 +197,64 @@ class Cart extends Model
     }
 
     public function countProducts() {
-        self::$product_total = 0;
-        self::$products = $this->getProducts();
-        foreach (self::$products as $product) {
-            self::$product_total += $product['quantity'];
+        self::$product_count = 0;
+        if(!self::$products){
+            self::$products = $this->getProducts();
         }
-        return self::$product_total;
+        foreach (self::$products as $product) {
+            self::$product_count += $product['quantity'];
+        }
+        return [self::$product_count,self::$products];
+    }
+
+    public function total($products) {
+        $arr = $this->findAllByType('total');
+        $totals = array();
+        $total = 0;
+        $total_data = array(
+            'totals' => &$totals,
+            'total'  => &$total,
+            'total_format'  => 0
+        );
+        $sub_total = $this->getSubTotal($products);
+        $total_data['totals'][] = array(
+            'code'       => 'sub_total',
+            'title'      => 'Sub_total',
+            'value'      => $sub_total??0,
+            'value_format'      => Currency::format($sub_total),
+            'sort_order' => 1
+        );
+        $total_data['total'] += $sub_total;
+
+        foreach ($arr as $class){
+            if(class_exists($class)){
+                (new $class($products))->getTotal($total_data);
+            }
+        }
+
+        $shipping_coupon = Cookie::get('shipping_coupon');
+        if($shipping_coupon){
+        }else{
+            $shipping_method = Cookie::get('shipping_method');
+            $shipping_method = json_decode($shipping_method,true);
+            if($Cart->hasShipping($products) && $shipping_method) {
+                $free = intval($shipping_method['free']);
+                if($free>0 && $free<=$total_data['total']){
+                }else{
+                    $total_data['totals'][] = array(
+                        'code'       => 'shipping',
+                        'title'      => $shipping_method['title'],
+                        'value'      => $shipping_method['cost'],
+                        'value_format'      => Currency::format($shipping_method['cost']),
+                        'sort_order' => 100
+                    );
+                    $total_data['total'] += $shipping_method['cost'];
+                }
+            }
+        }
+
+        $total_data['total'] = max(0, $total_data['total']);
+        $total_data['total_format'] = Currency::format($total_data['total']);
+        return $total_data;
     }
 }

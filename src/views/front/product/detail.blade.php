@@ -1,122 +1,25 @@
 @include('laravel-shop::front.common.header')
-<link rel="stylesheet" href="{{ URL::asset('vendor/laravel-shop/css/idangerous.swiper.css') }}"/>
+<link rel="stylesheet" href="{{ URL::asset('static/shop/css/idangerous.swiper.css') }}"/>
 <style>
-    label img {
-        width: 50px;
-        height: 50px;
-    }
-
-    .product_detail_img {
-        max-width: 500px;
-        width: 100%;
-        position: relative;
-    }
-
-    .product_detail_img .big_img {
-        border-right: 1px solid #f1f1f1;
-        border-bottom: 1px solid #f1f1f1;
-        width: 100%;
-        height: 500px;
-    }
-
-    .product_detail_img .big_img img {
-        width: 100%;
-        height: 100%
-    }
-
-    .product_detail_img .small_img {
-        height: 100px;
-        padding-top: 10px;
-        position: relative;
-    }
-
-    .product_detail_img .small_img .swiper-container_pc {
-        height: 80px
-    }
-
-    .product_detail_img .small_img .swiper-container, .lr_icon {
-        width: 450px
-    }
-
-    .product_detail_img .small_img .swiper-container {
-        color: #fff;
-        text-align: center
-    }
-
-    .product_detail_img .small_img .swiper-slide img {
-        height: 100%;
-        width: 100%;
-    }
-
-    .product_detail_img .small_img .swiper-wrapper .swiper-slide.active img {
-        border: 1px solid #9d1000;
-    }
-
-    .product_detail_img .lr_icon.left {
-        left: 0px;
-        top: 10px;
-        width: 25px
-    }
-
-    .product_detail_img .lr_icon {
-        position: absolute;
-        width: 25px;
-        height: 80px
-    }
-
-    .product_detail_img .lr_icon.left > div {
-        background-position: left center
-    }
-
-    .product_detail_img .lr_icon > div {
-        background: url({{ URL::asset('vendor/laravel-shop/img/leftright.png') }}) no-repeat;
-        width: 100%;
-        height: 100%;
-        margin: 0 auto;
-        cursor: pointer
-    }
-
-    .product_detail_img .lr_icon.right {
-        right: 0px;
-        top: 10px;
-        width: 25px
-    }
-
-    .product_detail_img .lr_icon.right > div {
-        background-position: right center
-    }
-
-    .product_detail_img .zoomdiv.show {
-        visibility: visible;
-    }
-
-    .product_detail_img .jqZoomPup {
-        z-index: 999;
-        display: none;
-        position: absolute;
-        top: 0px;
-        left: 0px;
-        box-sizing: content-box;
-        width: 250px;
-        height: 250px;
-        background: #fff;
-        opacity: 0.5;
-        filter: alpha(Opacity=50);
-        cursor: pointer
-    }
-
-    .product_detail_img .zoomdiv {
-        visibility: hidden;
-        z-index: 999;
-        position: absolute;
-        top: 0;
-        left: 510px;
-        width: 500px;
-        height: 500px;
-        background: #fff;
-        text-align: center;
-        overflow: hidden
-    }
+    label img{width:50px;height:50px}
+    .product_detail_img{max-width:500px;width:100%;position:relative}
+    .product_detail_img .big_img{border-right:1px solid #f1f1f1;border-bottom:1px solid #f1f1f1;width:100%;height:500px}
+    .product_detail_img .big_img img{width:100%;height:100%}
+    .product_detail_img .small_img{height:100px;padding-top:10px;position:relative}
+    .product_detail_img .small_img .swiper-container_pc{height:80px}
+    .product_detail_img .small_img .swiper-container,.lr_icon{width:450px}
+    .product_detail_img .small_img .swiper-container{color:#fff;text-align:center}
+    .product_detail_img .small_img .swiper-slide img{height:100%;width:100%}
+    .product_detail_img .small_img .swiper-wrapper .swiper-slide.active img{border:1px solid #9d1000}
+    .product_detail_img .lr_icon.left{left:0px;top:10px;width:25px}
+    .product_detail_img .lr_icon{position:absolute;width:25px;height:80px}
+    .product_detail_img .lr_icon.left > div{background-position:left center}
+    .product_detail_img .lr_icon > div{background:url({{URL::asset('static/shop/img/leftright.png')}}) no-repeat;width:100%;height:100%;margin:0 auto;cursor:pointer}
+    .product_detail_img .lr_icon.right{right:0px;top:10px;width:25px}
+    .product_detail_img .lr_icon.right > div{background-position:right center}
+    .product_detail_img .zoomdiv.show{visibility:visible}
+    .product_detail_img .jqZoomPup{z-index:999;display:none;position:absolute;top:0px;left:0px;box-sizing:content-box;width:250px;height:250px;background:#fff;opacity:0.5;filter:alpha(Opacity=50);cursor:pointer}
+    .product_detail_img .zoomdiv{visibility:hidden;z-index:999;position:absolute;top:0;left:510px;width:500px;height:500px;background:#fff;text-align:center;overflow:hidden}
 </style>
 <div class="container">
     <div>
@@ -197,15 +100,10 @@
             }
         })
     }
-
-    $(function () {
-
-    })
-
 </script>
 
-<script src="{{ URL::asset('vendor/laravel-shop/js/idangerous.swiper.min.js') }}" type="text/javascript"></script>
-<script src="{{ URL::asset('vendor/laravel-shop/js/jqzoom.js') }}" type="text/javascript"></script>
+<script src="{{ URL::asset('static/shop/js/idangerous.swiper.min.js') }}" type="text/javascript"></script>
+<script src="{{ URL::asset('static/shop/js/jqzoom.js') }}" type="text/javascript"></script>
 <script>
     var detailSwiper = new Swiper('.swiper-container_pc', {
         paginationClickable: true,

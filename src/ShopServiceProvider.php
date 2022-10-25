@@ -3,6 +3,7 @@
 namespace Aphly\LaravelShop;
 
 use Aphly\Laravel\Providers\ServiceProvider;
+use Aphly\LaravelShop\Middleware\Guest;
 
 class ShopServiceProvider extends ServiceProvider
 {
@@ -30,6 +31,7 @@ class ShopServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__.'/migrations');
         $this->loadViewsFrom(__DIR__.'/views', 'laravel-shop');
         $this->loadRoutesFrom(__DIR__.'/routes/web.php');
+        $this->addRouteMiddleware('guest', Guest::class);
     }
 
 }

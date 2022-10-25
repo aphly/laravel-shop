@@ -2,9 +2,10 @@
 
 namespace Aphly\LaravelShop\Controllers\Front\Product;
 
+use Aphly\LaravelCommon\Models\Category;
+use Aphly\LaravelCommon\Models\Currency;
+use Aphly\LaravelCommon\Models\User;
 use Aphly\LaravelShop\Controllers\Front\Controller;
-use Aphly\LaravelShop\Models\Common\Currency;
-use Aphly\LaravelShop\Models\Catalog\Category;
 use Aphly\LaravelShop\Models\Catalog\Product;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,7 @@ class ProductController extends Controller
 
     public function category(Request $request)
     {
-        //$res['title'] = '';
+        $res['title'] = '';
         $category_info = Category::where('status',1)->where('id',$request->query('id',0))->first();
         if(!empty($category_info)){
             $filter_data = [
@@ -37,13 +38,15 @@ class ProductController extends Controller
 
     public function detail(Request $request)
     {
+        $res['title'] = '';
         $res['info'] = Product::where('id',$request->id)->with('img')->with('desc')->first();
         $res['info']->price = Currency::format($res['info']->price);
         if(!empty($res['info'])){
+            $group_id = (new User)->group_id();
             $res['info_attr'] = $res['info']->findAttribute($res['info']->id);
-            $res['info_special'] = $res['info']->findSpecial($res['info']->id);
-            $res['info_reward'] = $res['info']->findReward($res['info']->id);
-            $res['info_discount'] = $res['info']->findDiscount($res['info']->id);
+            $res['info_special'] = $res['info']->findSpecial($res['info']->id,$group_id);
+            $res['info_reward'] = $res['info']->findReward($res['info']->id,$group_id);
+            $res['info_discount'] = $res['info']->findDiscount($res['info']->id,$group_id);
             $res['info_option'] = $res['info']->findOption($res['info']->id,true);
         }
         return $this->makeView('laravel-shop::front.product.detail',['res'=>$res]);

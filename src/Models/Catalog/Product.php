@@ -3,6 +3,7 @@
 namespace Aphly\LaravelShop\Models\Catalog;
 
 use Aphly\LaravelCommon\Models\Currency;
+use Aphly\LaravelCommon\Models\User;
 use Aphly\LaravelShop\Models\Customer\Customer;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;
@@ -37,7 +38,7 @@ class Product extends Model
         $filter = $data['filter']??false;
         $sort = $data['sort'];
         $time = time();
-        $group_id = Customer::groupId();
+        $group_id = (new User)->group_id();
         if($data['category_id']){
             if($this->sub_category){
                 $sql = DB::table('shop_category_path as cp')->leftJoin('shop_product_category as pc','cp.category_id','=','pc.category_id');
@@ -113,18 +114,15 @@ class Product extends Model
         return ProductAttribute::with('attribute')->where('product_id',$id)->get()->toArray();
     }
 
-    function findSpecial($id){
-        $group_id = Customer::groupId();
+    function findSpecial($id,$group_id){
         return ProductSpecial::where('product_id',$id)->where('group_id',$group_id)->first();
     }
 
-    function findReward($id){
-        $group_id = Customer::groupId();
+    function findReward($id,$group_id){
         return ProductReward::where('product_id',$id)->where('group_id',$group_id)->first();
     }
 
-    function findDiscount($id){
-        $group_id = Customer::groupId();
+    function findDiscount($id,$group_id){
         return ProductDiscount::where('product_id',$id)->where('group_id',$group_id)->get()->toArray();
     }
 

@@ -4,14 +4,8 @@
 </div>
 <div>
     你好
-    @if($res['user'])
-        {{$res['user']['nickname']}}
-
-        <a href="/logout">注销</a>
-
-        {{$res['user']['identifier']??''}}
-        {{$res['user']['identity_type']??''}}
-        <a href="/email/verify">校验邮箱</a>
+    @if($user)
+        {{$user['nickname']}}
     @endif
 
 

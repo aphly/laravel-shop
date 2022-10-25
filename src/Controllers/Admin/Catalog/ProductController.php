@@ -219,7 +219,7 @@ class ProductController extends Controller
             }
             throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>'/shop_admin/product/option?product_id='.$product_id]]);
         }else{
-            $res['product_option'] = ProductOption::where('product_id',$product_id)->with('value_arr')->get()->toArray();
+            $res['product_option'] = ProductOption::where('product_id',$product_id)->with('value_arr')->orderBy('id','desc')->get()->toArray();
             $res['option'] = Option::with('value')->get()->keyBy('id')->toArray();
             return $this->makeView('laravel-shop::admin.catalog.product.option',['res'=>$res]);
         }
@@ -255,9 +255,9 @@ class ProductController extends Controller
 
             $res['product_filter'] = ProductFilter::where('product_id',$product_id)->get()->toArray();
             $filter_ids = array_column($res['product_filter'],'filter_id');
-            $res['filter'] = Filter::leftJoin('shop_filter_group as group','group.id','=','shop_filter.filter_group_id')
-                ->whereIn('shop_filter.id', $filter_ids)
-                ->selectRaw("shop_filter.*,concat(group.name,' \> ',shop_filter.name) as name_all")
+            $res['filter'] = Filter::leftJoin('common_filter_group as group','group.id','=','common_filter.filter_group_id')
+                ->whereIn('common_filter.id', $filter_ids)
+                ->selectRaw("common_filter.*,concat(group.name,' \> ',common_filter.name) as name_all")
                 ->get()->keyBy('id')->toArray();
             return $this->makeView('laravel-shop::admin.catalog.product.links',['res'=>$res]);
         }

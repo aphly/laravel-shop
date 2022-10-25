@@ -47,7 +47,8 @@ class CartController extends Controller
             }
             $Cart = new Cart;
             $Cart->add($res['info']->id, $quantity, $option);
-            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['count'=>$Cart->countProducts()]]);
+            list($count,$list) = $Cart->countProducts();
+            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['count'=>$count,'list'=>$list]]);
         }
     }
 

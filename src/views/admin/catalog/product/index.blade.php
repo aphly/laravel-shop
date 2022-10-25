@@ -58,12 +58,12 @@
                         <li>
                             <a class="badge badge-info ajax_get" data-href="/shop_admin/product/form?id={{$v['id']}}">编辑</a>
                             <a class="badge badge-info ajax_get" data-href="/shop_admin/product/desc?product_id={{$v['id']}}">描述</a>
+                            <a class="badge badge-info ajax_get" data-href="/shop_admin/product/special?product_id={{$v['id']}}">特价</a>
                             <a class="badge badge-info ajax_get" data-href="/shop_admin/product/links?product_id={{$v['id']}}">关联</a>
                             <a class="badge badge-info ajax_get" data-href="/shop_admin/product/{{$v['id']}}/img">图片</a>
                             <a class="badge badge-info ajax_get" data-href="/shop_admin/product/attribute?product_id={{$v['id']}}">属性</a>
                             <a class="badge badge-info ajax_get" data-href="/shop_admin/product/option?product_id={{$v['id']}}">选项</a>
                             <a class="badge badge-info ajax_get" data-href="/shop_admin/product/reward?product_id={{$v['id']}}">积分奖励</a>
-                            <a class="badge badge-info ajax_get" data-href="/shop_admin/product/special?product_id={{$v['id']}}">特价</a>
                             <a class="badge badge-info ajax_get" data-href="/shop_admin/product/discount?product_id={{$v['id']}}">批发打折</a>
                         </li>
                     </ul>

@@ -5,9 +5,9 @@ namespace Aphly\LaravelShop\Models\Customer;
 use Aphly\LaravelCommon\Models\User;
 use Aphly\LaravelCommon\Models\UserAuth;
 use Aphly\LaravelShop\Models\Checkout\Cart;
-use Aphly\LaravelShop\Models\Common\Setting;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 
 class Customer extends Model
@@ -19,8 +19,19 @@ class Customer extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'uuid','address_id','group_id'
+        'uuid','address_id'
     ];
+
+    static $customer=false;
+
+    function __construct()
+    {
+        $uuid = Auth::guard('user')->uuid;
+        if(!self::$customer && $uuid){
+            self::$customer = self::where(['uuid'=>$uuid])->first();
+        }
+        parent::__construct();
+    }
 
     function user(){
         return $this->hasOne(User::class,'uuid','uuid');
@@ -28,30 +39,6 @@ class Customer extends Model
 
     function user_auth(){
         return $this->hasMany(UserAuth::class,'uuid');
-    }
-
-    static function groupId(){
-        $setting = Setting::findAll();
-        return session()->has('customer')?session('customer')['group_id']:$setting['config']['group'];
-    }
-
-    static function uuid(){
-        return session()->has('customer')?session('customer')['uuid']:0;
-    }
-
-    static function addressId(){
-        return session()->has('customer')?session('customer')['address_id']:0;
-    }
-
-    static function makeSession($uuid=false){
-        if(!$uuid){
-            $uuid = session()->has('user')?session('user')['uuid']:0;
-        }
-        $customer = self::where(['uuid'=>$uuid])->first();
-
-        if(!empty($customer)){
-            session(['customer'=>['group_id'=>$customer->group_id,'address_id'=>$customer->address_id,'uuid'=>$customer->uuid]]);
-        }
     }
 
     static function initCart(){

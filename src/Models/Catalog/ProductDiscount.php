@@ -15,8 +15,7 @@ class ProductDiscount extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'product_id','group_id',
-        'price','date_start','date_end'
+        'product_id','group_id','price'
     ];
 
     protected function price(): Attribute

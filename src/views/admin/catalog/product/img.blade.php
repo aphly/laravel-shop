@@ -30,8 +30,8 @@
                             <div class="img">
                                 <img src="{{Storage::url($v['image'])}}" >
                                 <div class="delImg" onclick="removeImg({{$v['id']}},this)"><i class="uni app-lajitong"></i></div>
-                                <div class="img_pre img_move"><</div>
-                                <div class="img_next img_move">></div>
+                                <div class="img_pre img_move" style="display: flex;align-items: center;justify-content: center;"><i class="uni app-fanhui1" style="display: block;"></i></div>
+                                <div class="img_next img_move" style="display: flex;align-items: center;justify-content: center;"><i class="uni app-fanhui1" style="transform: rotate(180deg);display: block;"></i></div>
                             </div>
                             <input type="hidden" name="sort[{{$v['id']}}]" value="{{$v['sort']}}">
                         </li>

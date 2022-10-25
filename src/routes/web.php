@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['web'])->group(function () {
 
-    Route::get('/index', 'Aphly\LaravelShop\Controllers\Front\Common\HomeController@index');
+
 
     Route::middleware(['userAuth'])->group(function () {
         //account
@@ -41,17 +41,19 @@ Route::middleware(['web'])->group(function () {
 
     });
 
-    //common
-    Route::get('/coupon/{code}', 'Aphly\LaravelShop\Controllers\Front\Common\CouponController@ajax');
+    Route::middleware(['guest'])->group(function () {
+        Route::get('/index', 'Aphly\LaravelShop\Controllers\Front\HomeController@index');
 
-    //product
-    Route::get('/product/category', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@category');
-    Route::get('/product/{id}', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@detail')->where('id', '[0-9]+');
+        //common
+        Route::get('/coupon/{code}', 'Aphly\LaravelShop\Controllers\Front\Common\CouponController@ajax');
 
-    Route::post('/cart/add', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@add');
-    Route::get('/cart', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@index');
+        //product
+        Route::get('/product/category', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@category');
+        Route::get('/product/{id}', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@detail')->where('id', '[0-9]+');
 
-
+        Route::post('/cart/add', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@add');
+        Route::get('/cart', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@index');
+    });
 });
 
 Route::middleware(['web'])->group(function () {

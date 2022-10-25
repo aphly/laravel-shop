@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="{{ URL::asset('vendor/laravel-shop/css/product_admin.css') }}">
+
 <div class="top-bar">
     <h5 class="nav-title">coupon</h5>
 </div>

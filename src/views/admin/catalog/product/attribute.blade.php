@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="{{ URL::asset('vendor/laravel-shop/css/product_admin.css') }}">
 <div class="top-bar">
     <h5 class="nav-title">商品 - {{$res['product']->name}} - 属性</h5>
 </div>

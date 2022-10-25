@@ -31,7 +31,7 @@
                     @endforeach
                 </div>
                 <div>
-                    {{$res['list']->links('laravel-shop::front.common.pagination')}}
+                    {{$res['list']->links('laravel-common::front.common.pagination')}}
                 </div>
             </div>
         </div>

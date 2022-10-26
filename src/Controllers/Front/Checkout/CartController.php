@@ -13,6 +13,7 @@ class CartController extends Controller
 {
     public function index()
     {
+        $res['title'] = '';
         $res['list'] = (new Cart)->getProducts();
         $res['items'] = 0;
         if($res['list']){
@@ -29,7 +30,8 @@ class CartController extends Controller
                 $res['items'] += $cart['quantity'];
             }
         }
-        $res['total_data'] = (new Extension)->total($res['list']);
+        //$res['total_data'] = (new Extension)->total($res['list']);
+        $res['total_data'] = 0;
         return $this->makeView('laravel-shop::front.checkout.cart',['res'=>$res]);
     }
 

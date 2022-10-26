@@ -45,8 +45,7 @@ class Customer extends Model
         (new Cart)->login();
     }
 
-    static function logout(){
-        session()->forget('customer');
+    function afterLogout(){
         Cookie::queue('guest', null , -1);
         Cookie::queue('coupon', null , -1);
         Cookie::queue('shipping_address', null , -1);
@@ -55,5 +54,9 @@ class Customer extends Model
         Cookie::queue('shipping_method_all', null , -1);
         Cookie::queue('payment_method', null , -1);
         Cookie::queue('payment_method_all', null , -1);
+    }
+
+    function afterRegister($user){
+        self::create(['uuid'=>$user->uuid]);
     }
 }

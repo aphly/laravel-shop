@@ -42,7 +42,7 @@ class ProductController extends Controller
         $res['info'] = Product::where('id',$request->id)->with('img')->with('desc')->first();
         $res['info']->price = Currency::format($res['info']->price);
         if(!empty($res['info'])){
-            $group_id = (new User)->group_id();
+            $group_id = User::groupId();
             $res['info_attr'] = $res['info']->findAttribute($res['info']->id);
             $res['info_special'] = $res['info']->findSpecial($res['info']->id,$group_id);
             $res['info_reward'] = $res['info']->findReward($res['info']->id,$group_id);

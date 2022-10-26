@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('shop_customer', function (Blueprint $table) {
             $table->unsignedBigInteger('uuid')->primary();
             $table->unsignedInteger('address_id')->nullable()->default(0);
-            $table->unsignedInteger('group_id')->index();
         });
     }
 

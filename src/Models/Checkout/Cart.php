@@ -172,10 +172,13 @@ class Cart extends Model
                 $this->remove($cart['id']);
             }
         }
-        return $product_data;
+        return self::$products = $product_data;
     }
 
     public function getSubTotal() {
+        if(!self::$products){
+            self::$products = $this->getProducts();
+        }
         $total = 0;
         foreach (self::$products as $cart) {
             $total += $cart['total'];
@@ -184,6 +187,9 @@ class Cart extends Model
     }
 
     public function hasShipping() {
+        if(!self::$products){
+            self::$products = $this->getProducts();
+        }
         foreach (self::$products as $product) {
             if ($product['shipping']) {
                 return true;
@@ -207,7 +213,7 @@ class Cart extends Model
         return [self::$product_count,self::$products];
     }
 
-    public function total($products) {
+    public function total() {
         $arr = $this->findAllByType('total');
         $totals = array();
         $total = 0;
@@ -216,7 +222,7 @@ class Cart extends Model
             'total'  => &$total,
             'total_format'  => 0
         );
-        $sub_total = $this->getSubTotal($products);
+        $sub_total = $this->getSubTotal();
         $total_data['totals'][] = array(
             'code'       => 'sub_total',
             'title'      => 'Sub_total',
@@ -228,7 +234,7 @@ class Cart extends Model
 
         foreach ($arr as $class){
             if(class_exists($class)){
-                (new $class($products))->getTotal($total_data);
+                (new $class())->getTotal($total_data);
             }
         }
 
@@ -237,7 +243,7 @@ class Cart extends Model
         }else{
             $shipping_method = Cookie::get('shipping_method');
             $shipping_method = json_decode($shipping_method,true);
-            if($Cart->hasShipping($products) && $shipping_method) {
+            if($this->hasShipping() && $shipping_method) {
                 $free = intval($shipping_method['free']);
                 if($free>0 && $free<=$total_data['total']){
                 }else{

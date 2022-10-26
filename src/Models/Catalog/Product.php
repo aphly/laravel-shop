@@ -38,7 +38,7 @@ class Product extends Model
         $filter = $data['filter']??false;
         $sort = $data['sort'];
         $time = time();
-        $group_id = (new User)->group_id();
+        $group_id = User::groupId();
         if($data['category_id']){
             if($this->sub_category){
                 $sql = DB::table('shop_category_path as cp')->leftJoin('shop_product_category as pc','cp.category_id','=','pc.category_id');

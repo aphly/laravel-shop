@@ -18,7 +18,7 @@ class Coupon extends Model
     protected $fillable = [
         'name','code','type','discount','is_login',
         'shipping','total','date_start','date_end','uses_total',
-        'uses_customer','status','date_add'
+        'uses_customer','status'
     ];
 
     public function __construct(public array $cart_products=[])
@@ -36,7 +36,7 @@ class Coupon extends Model
                     $query->where('date_end',0)->orWhere('date_end','>',$time);
                 })->where('status',1)->first();
         if(!empty($info)){
-            if($info->total > (new Cart)->getSubTotal($this->cart_products)){
+            if($info->total > (new Cart)->getSubTotal()){
                 $status = false;
             }
             $coupon_total = $this->getCouponHistoriesByCoupon($code);

@@ -101,7 +101,7 @@ class Coupon extends Model
     }
 
     public function getTotal($total_data) {
-        $coupon = Cookie::get('coupon');
+        $coupon = Cookie::get('shop_coupon');
         if($coupon){
             $info = $this->getCoupon($coupon);
             if($info) {

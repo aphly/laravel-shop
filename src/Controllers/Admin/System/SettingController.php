@@ -7,7 +7,7 @@ use Aphly\LaravelCommon\Models\Country;
 use Aphly\LaravelCommon\Models\Currency;
 use Aphly\LaravelCommon\Models\Group;
 use Aphly\LaravelShop\Controllers\Admin\Controller;
-use Aphly\LaravelShop\Models\Common\Setting;
+use Aphly\LaravelShop\Models\Common\ExtensionParams;
 use Illuminate\Http\Request;
 
 class SettingController extends Controller
@@ -16,7 +16,7 @@ class SettingController extends Controller
 
     public function index(Request $request)
     {
-        $res['config'] = Setting::where('code','config')->get()->keyBy('key')->toArray();
+        $res['config'] = ExtensionParams::where('code','config')->get()->keyBy('key')->toArray();
         $res['currency'] = (new Currency)->findAll();
         $res['country'] = (new Country)->findAll();
         $res['group'] = (new Group)->findAll();
@@ -29,7 +29,7 @@ class SettingController extends Controller
         foreach ($config as $key=>$val){
             $update[] = ['code'=>'config','key'=>$key,'value'=>$val];
         }
-        Setting::upsert($update,['code','key'],['value']);
+        ExtensionParams::upsert($update,['code','key'],['value']);
         throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
     }
 

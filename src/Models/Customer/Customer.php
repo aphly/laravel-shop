@@ -47,13 +47,10 @@ class Customer extends Model
 
     function afterLogout(){
         Cookie::queue('guest', null , -1);
-        Cookie::queue('coupon', null , -1);
-        Cookie::queue('shipping_address', null , -1);
-        Cookie::queue('shipping_coupon', null , -1);
-        Cookie::queue('shipping_method', null , -1);
-        Cookie::queue('shipping_method_all', null , -1);
-        Cookie::queue('payment_method', null , -1);
-        Cookie::queue('payment_method_all', null , -1);
+        Cookie::queue('shop_address', null , -1);
+        Cookie::queue('shop_shipping', null , -1);
+        Cookie::queue('shop_coupon', null , -1);
+        Cookie::queue('shop_payment', null , -1);
     }
 
     function afterRegister($user){

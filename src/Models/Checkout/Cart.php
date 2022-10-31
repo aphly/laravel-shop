@@ -4,10 +4,12 @@ namespace Aphly\LaravelShop\Models\Checkout;
 
 use Aphly\LaravelCommon\Models\Currency;
 use Aphly\LaravelCommon\Models\User;
+use Aphly\LaravelShop\Models\Catalog\Coupon;
 use Aphly\LaravelShop\Models\Catalog\Product;
 use Aphly\LaravelShop\Models\Catalog\ProductDiscount;
 use Aphly\LaravelShop\Models\Catalog\ProductReward;
 use Aphly\LaravelShop\Models\Catalog\ProductSpecial;
+use Aphly\LaravelShop\Models\Catalog\Shipping;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;
 use Illuminate\Support\Facades\Cookie;
@@ -213,30 +215,35 @@ class Cart extends Model
         return [self::$product_count,self::$products];
     }
 
+    public static $total = [
+        'shipping','coupon','sub_total','total'
+    ];
+
     public function total() {
-        $arr = $this->findAllByType('total');
-        $totals = array();
+
+        $totals = [];
         $total = 0;
-        $total_data = array(
+        $total_data = [
             'totals' => &$totals,
             'total'  => &$total,
             'total_format'  => 0
-        );
+        ];
         $sub_total = $this->getSubTotal();
-        $total_data['totals'][] = array(
+        $total_data['totals'][] = [
             'code'       => 'sub_total',
             'title'      => 'Sub_total',
             'value'      => $sub_total??0,
             'value_format'      => Currency::format($sub_total),
             'sort_order' => 1
-        );
+        ];
         $total_data['total'] += $sub_total;
 
-        foreach ($arr as $class){
-            if(class_exists($class)){
-                (new $class())->getTotal($total_data);
-            }
-        }
+        (new Coupon())->getTotal($total_data);
+
+        (new Shipping())->getTotal($total_data);
+
+
+
 
         $shipping_coupon = Cookie::get('shipping_coupon');
         if($shipping_coupon){

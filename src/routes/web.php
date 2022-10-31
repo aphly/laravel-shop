@@ -62,7 +62,8 @@ Route::middleware(['web'])->group(function () {
         Route::middleware(['rbac'])->group(function () {
 
             $route_arr = [
-                    ['attribute','\Catalog\AttributeController'],['option','\Catalog\OptionController'],['review','\Catalog\ReviewController']
+                ['attribute','\Catalog\AttributeController'],['option','\Catalog\OptionController'],['review','\Catalog\ReviewController'],
+                ['shipping','\Catalog\ShippingController'],['coupon','\Sale\CouponController']
             ];
 
             foreach ($route_arr as $val){
@@ -95,25 +96,12 @@ Route::middleware(['web'])->group(function () {
             Route::match(['get', 'post'],'/product/special', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@special');
             Route::match(['get', 'post'],'/product/discount', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@discount');
 
-            Route::get('/coupon/index', 'Aphly\LaravelShop\Controllers\Admin\Sale\CouponController@index');
-            Route::post('/coupon/del', 'Aphly\LaravelShop\Controllers\Admin\Sale\CouponController@del');
-            Route::get('/coupon/form', 'Aphly\LaravelShop\Controllers\Admin\Sale\CouponController@form');
-            Route::post('/coupon/save', 'Aphly\LaravelShop\Controllers\Admin\Sale\CouponController@save');
             Route::get('/coupon/history', 'Aphly\LaravelShop\Controllers\Admin\Sale\CouponController@history');
 
             Route::get('/product/ajax', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@ajax');
             Route::get('/attribute/ajax', 'Aphly\LaravelShop\Controllers\Admin\Catalog\AttributeController@ajax');
             Route::get('/option/ajax', 'Aphly\LaravelShop\Controllers\Admin\Catalog\OptionController@ajax');
 
-            Route::get('/extension/shipping/index', 'Aphly\LaravelShop\Controllers\Admin\Extension\Extension\ShippingController@index');
-            Route::get('/extension/shipping/install', 'Aphly\LaravelShop\Controllers\Admin\Extension\Extension\ShippingController@install');
-            Route::get('/extension/shipping/uninstall', 'Aphly\LaravelShop\Controllers\Admin\Extension\Extension\ShippingController@uninstall');
-            Route::match(['get', 'post'],'/extension/shipping/edit', 'Aphly\LaravelShop\Controllers\Admin\Extension\Extension\ShippingController@edit');
-
-            Route::get('/extension/payment/index', 'Aphly\LaravelShop\Controllers\Admin\Extension\Extension\PaymentController@index');
-            Route::get('/extension/payment/install', 'Aphly\LaravelShop\Controllers\Admin\Extension\Extension\PaymentController@install');
-            Route::get('/extension/payment/uninstall', 'Aphly\LaravelShop\Controllers\Admin\Extension\Extension\PaymentController@uninstall');
-            Route::match(['get', 'post'],'/extension/payment/edit', 'Aphly\LaravelShop\Controllers\Admin\Extension\Extension\PaymentController@edit');
 
         });
     });

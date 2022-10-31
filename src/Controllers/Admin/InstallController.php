@@ -108,6 +108,10 @@ class InstallController extends Controller
             $data[] =['dict_id' => $dict->id,'name'=>'Voided','value'=>'14','fixed'=>'0'];
             DB::table('admin_dict_value')->insert($data);
         }
+        $data=[];
+        $data[] =['type'=>'shipping','code'=>'expedited'];
+        $data[] =['type'=>'shipping','code'=>'standard'];
+        DB::table('shop_extension')->insert($data);
         return 'install_ok';
     }
     public function uninstall(){
@@ -126,6 +130,7 @@ class InstallController extends Controller
             $ids = array_column($arr,'id');
             DB::table('admin_dict_value')->whereIn('dict_id',$ids)->delete();
         }
+        DB::table('shop_extension')->truncate();
         return 'uninstall_ok';
     }
 

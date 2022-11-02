@@ -28,10 +28,10 @@ class Shipping extends Model
         return $this->hasMany(GeoGroup::class,'id','geo_group_id');
     }
 
-    public function getShipping() {
+    public function getList() {
         $shop_address = Cookie::get('shop_address');
         if($shop_address){
-            
+
         }
 
     }

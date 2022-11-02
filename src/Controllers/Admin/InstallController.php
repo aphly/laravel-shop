@@ -31,6 +31,7 @@ class InstallController extends Controller
                 $data[] =['name' => 'Attribute','url' =>'/shop_admin/attribute/index','pid'=>$menu21->id,'is_leaf'=>1,'module_id'=>$this->module_id,'sort'=>0];
                 $data[] =['name' => 'Option','url' =>'/shop_admin/option/index','pid'=>$menu21->id,'is_leaf'=>1,'module_id'=>$this->module_id,'sort'=>0];
                 $data[] =['name' => 'Review','url' =>'/shop_admin/review/index','pid'=>$menu21->id,'is_leaf'=>1,'module_id'=>$this->module_id,'sort'=>0];
+                $data[] =['name' => 'Shipping','url' =>'/shop_admin/shipping/index','pid'=>$menu21->id,'is_leaf'=>1,'module_id'=>$this->module_id,'sort'=>0];
                 DB::table('admin_menu')->insert($data);
             }
             $menu22 = Menu::create(['name' => 'Sale','url' =>'','pid'=>$menu->id,'is_leaf'=>0,'module_id'=>$this->module_id,'sort'=>9]);
@@ -108,10 +109,7 @@ class InstallController extends Controller
             $data[] =['dict_id' => $dict->id,'name'=>'Voided','value'=>'14','fixed'=>'0'];
             DB::table('admin_dict_value')->insert($data);
         }
-        $data=[];
-        $data[] =['type'=>'shipping','code'=>'expedited'];
-        $data[] =['type'=>'shipping','code'=>'standard'];
-        DB::table('shop_extension')->insert($data);
+
         return 'install_ok';
     }
     public function uninstall(){
@@ -130,7 +128,7 @@ class InstallController extends Controller
             $ids = array_column($arr,'id');
             DB::table('admin_dict_value')->whereIn('dict_id',$ids)->delete();
         }
-        DB::table('shop_extension')->truncate();
+
         return 'uninstall_ok';
     }
 

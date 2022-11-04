@@ -18,14 +18,14 @@
             </div>
 
             <div class="form-group">
-                <label for="">cost</label>
+                <label for="">价格</label>
                 <input type="text" name="cost" class="form-control " value="{{$res['info']->cost}}">
                 <div class="invalid-feedback"></div>
             </div>
 
             <div class="form-group">
-                <label for="">free</label>
-                <input type="text" name="free" class="form-control " value="{{$res['info']->free}}">
+                <label for="">满免邮</label>
+                <input type="text" name="free_cost" class="form-control " value="{{$res['info']->free_cost}}">
                 <div class="invalid-feedback"></div>
             </div>
 

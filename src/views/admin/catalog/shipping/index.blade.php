@@ -18,8 +18,8 @@
                 <ul class="table_header">
                     <li >ID</li>
                     <li >名称</li>
-                    <li ></li>
-                    <li ></li>
+                    <li >价格</li>
+                    <li >满免邮</li>
                     <li >状态</li>
                     <li >操作</li>
                 </ul>
@@ -29,8 +29,10 @@
                         <li><input type="checkbox" class="delete_box" name="delete[]" value="{{$v['id']}}">{{$v['id']}}</li>
                         <li>{{ $v->name }}</li>
                         <li>
+                            {{ $v->cost }}
                         </li>
                         <li>
+                            {{ $v->free_cost }}
                         </li>
                         <li>
                             @if($dict['status'])

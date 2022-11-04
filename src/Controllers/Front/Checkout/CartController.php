@@ -5,7 +5,6 @@ namespace Aphly\LaravelShop\Controllers\Front\Checkout;
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\LaravelShop\Controllers\Front\Controller;
 use Aphly\LaravelShop\Models\Checkout\Cart;
-use Aphly\LaravelShop\Models\Common\Extension;
 use Aphly\LaravelShop\Models\Catalog\Product;
 use Illuminate\Http\Request;
 
@@ -14,24 +13,24 @@ class CartController extends Controller
     public function index()
     {
         $res['title'] = '';
-        $res['list'] = (new Cart)->getProducts();
+        $cart = new Cart;
+        $res['list'] = $cart->getProducts();
         $res['items'] = 0;
         if($res['list']){
-            foreach ($res['list'] as $cart) {
+            foreach ($res['list'] as $product) {
                 $product_total = 0;
-                foreach ($res['list'] as $cart2) {
-                    if ($cart2['product_id'] == $cart['product_id']) {
-                        $product_total += $cart2['quantity'];
+                foreach ($res['list'] as $product2) {
+                    if ($product2['product_id'] == $product['product_id']) {
+                        $product_total += $product2['quantity'];
                     }
                 }
-                if ($cart['product']['minimum'] > $product_total) {
+                if ($product['product']['minimum'] > $product_total) {
                     $res['error'][] = 'minimum';
                 }
-                $res['items'] += $cart['quantity'];
+                $res['items'] += $product['quantity'];
             }
         }
-        //$res['total_data'] = (new Extension)->total($res['list']);
-        $res['total_data'] = 0;
+        $res['total_data'] = $cart->totalData();
         return $this->makeView('laravel-shop::front.checkout.cart',['res'=>$res]);
     }
 

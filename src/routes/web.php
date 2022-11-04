@@ -13,9 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/home1', 'Aphly\LaravelShop\Controllers\Front\HomeController@home1');
+
 Route::middleware(['web'])->group(function () {
-
-
 
     Route::middleware(['userAuth'])->group(function () {
         //account

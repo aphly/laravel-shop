@@ -7,7 +7,7 @@
         <div class="review">
             <div class="form-group">
                 <label for="">名称</label>
-                <input type="text" name="name" class="form-control " value="{{$res['info']->name}}">
+                <input type="text" name="name" required class="form-control " value="{{$res['info']->name}}">
                 <div class="invalid-feedback"></div>
             </div>
 
@@ -42,14 +42,15 @@
             </div>
 
             <div class="form-group">
-                <label for="">sort</label>
+                <label for="">排序</label>
                 <input type="number" name="sort" class="form-control " value="{{$res['info']->sort}}">
                 <div class="invalid-feedback"></div>
             </div>
 
             <div class="form-group">
-                <label for="">geo</label>
+                <label for="">区域</label>
                 <select name="geo_group_id" class="form-control">
+                    <option value="0" @if(!$res['info']->geo_group_id) selected @endif>无</option>
                     @if(isset($res['geoGroup']))
                         @foreach($res['geoGroup'] as $key=>$val)
                             <option value="{{$val['id']}}" @if($res['info']->geo_group_id==$val['id']) selected @endif>{{$val['name']}}</option>

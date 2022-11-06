@@ -33,10 +33,9 @@ Route::middleware(['web'])->group(function () {
 
         //Checkout
         Route::get('/checkout', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@index');
-        Route::get('/checkout/shipping_address', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@setShippingAddress');
-
-        Route::post('/checkout/shipping_method', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@setShippingMethod');
-        Route::post('/checkout/payment_method', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@setPaymentMethod');
+        Route::match(['get', 'post'],'/checkout/address', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@address');
+        Route::match(['get', 'post'],'/checkout/shipping', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@shipping');
+        Route::match(['get', 'post'],'/checkout/payment_method', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@paymentMethod');
         Route::get('/checkout/confirm', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@checkout');
 
     });

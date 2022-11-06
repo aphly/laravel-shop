@@ -8,17 +8,17 @@
         <div class="coupon ajaxData">
             <div class="form-group">
                 <label for="">名称</label>
-                <input type="text" name="name" class="form-control " value="{{$res['coupon']->name}}">
+                <input type="text" name="name" required class="form-control " value="{{$res['coupon']->name}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
                 <label for="">折扣券代码</label>
-                <input type="text" name="code" class="form-control " value="{{$res['coupon']->code}}">
+                <input type="text" name="code" required class="form-control " value="{{$res['coupon']->code}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
                 <label for="">类型</label>
-                <select name="type" class="form-control ">
+                <select name="type" class="form-control " required>
                     <option value="1">百分比</option>
                     <option value="2">固定金额</option>
                 </select>
@@ -26,23 +26,12 @@
             </div>
             <div class="form-group">
                 <label for="">折扣</label>
-                <input type="text" name="discount" class="form-control " value="{{$res['coupon']->discount}}">
+                <input type="text" name="discount" required class="form-control " value="{{$res['coupon']->discount}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
                 <label for="">最低订单金额</label>
                 <input type="text" name="total" class="form-control " value="{{$res['coupon']->total??0}}">
-                <div class="invalid-feedback"></div>
-            </div>
-            <div class="form-group">
-                <label for="">免费配送</label>
-                <select name="shipping" class="form-control ">
-                    @if(isset($dict['yes_no']))
-                        @foreach($dict['yes_no'] as $key=>$val)
-                            <option value="{{$key}}" @if($res['coupon']->shipping==$key) selected @endif>{{$val}}</option>
-                        @endforeach
-                    @endif
-                </select>
                 <div class="invalid-feedback"></div>
             </div>
 
@@ -122,7 +111,7 @@
 <script>
     function search_ajax(_this,type) {
         $.ajax({
-            url:'/shop_admin/'+type+'/ajax?name='+$(_this).val(),
+            url:'/common_admin/'+type+'/ajax?name='+$(_this).val(),
             dataType: "json",
             success:function (res) {
                 let arr = res.data.list;

@@ -15,7 +15,7 @@ class ShippingController extends Controller
     public function index(Request $request)
     {
         $res['search']['string'] = http_build_query($request->query());
-        $res['list'] = Shipping::orderBy('id','desc')
+        $res['list'] = Shipping::orderBy('id','desc')->with('geoGroup')
             ->Paginate(config('admin.perPage'))->withQueryString();
         return $this->makeView('laravel-shop::admin.catalog.shipping.index',['res'=>$res]);
     }
@@ -31,7 +31,7 @@ class ShippingController extends Controller
         $id = $request->query('id',0);
         $input = $request->all();
         $input['cost'] = floatval($input['cost']);
-        $input['free'] = floatval($input['free']);
+        $input['free_cost'] = floatval($input['free_cost']);
         Shipping::updateOrCreate(['id'=>$id],$input);
         throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
     }

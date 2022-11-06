@@ -22,17 +22,6 @@ class Customer extends Model
         'uuid','address_id'
     ];
 
-    static $customer=false;
-
-    function __construct()
-    {
-        $uuid = Auth::guard('user')->uuid;
-        if(!self::$customer && $uuid){
-            self::$customer = self::where(['uuid'=>$uuid])->first();
-        }
-        parent::__construct();
-    }
-
     function user(){
         return $this->hasOne(User::class,'uuid','uuid');
     }
@@ -47,10 +36,9 @@ class Customer extends Model
 
     function afterLogout(){
         Cookie::queue('guest', null , -1);
-        Cookie::queue('shop_address', null , -1);
-        Cookie::queue('shop_shipping', null , -1);
-        Cookie::queue('shop_coupon', null , -1);
-        Cookie::queue('shop_payment', null , -1);
+        Cookie::queue('shop_address_id', null , -1);
+        Cookie::queue('shop_shipping_id', null , -1);
+        Cookie::queue('payment_method_id', null , -1);
     }
 
     function afterRegister($user){

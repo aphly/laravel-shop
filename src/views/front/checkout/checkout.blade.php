@@ -1,5 +1,5 @@
 @include('laravel-shop::front.common.header')
-<link rel="stylesheet" href="{{ URL::asset('vendor/laravel-shop/css/checkout.css') }}"/>
+<link rel="stylesheet" href="{{ URL::asset('static/shop/css/checkout.css') }}"/>
 <style>
 
 </style>
@@ -10,7 +10,57 @@
                 Checkout
             </h2>
         </div>
-        <div class="col-12 col-xl-8">
+
+        <div class="row">
+            <div>
+                @foreach($res['address'] as $val)
+                    <label class="row m-0 checkout-address" data-id="{{$val['id']}}" >
+                        <input type="radio" class="checkout-form-radio col-1 shipping-address"
+                               name="shipping_address" value="">
+                        <div class="col-11 pl-3">
+                            <div>{{$val['firstname']}} {{$val['lastname']}},{{$val['address_1']}}
+                                , {{$val['address_2']}}, {{$val['city']}}, {{$val['zone_name']}}
+                                , {{$val['country_name']}}, {{$val['postcode']}}
+                                , {{$val['telephone']}}</div>
+                            <a href="javascript:;"
+                               class="checkout-address-edit color-link d-inline-block pt-3 pr-3"
+                               data-address-id="375308">change</a>
+                        </div>
+                    </label>
+                @endforeach
+            </div>
+
+            <div>
+                @foreach($res['shipping'] as $val)
+                    <label class="checkout-shipping" data-id="{{$val['id']}}">
+                        <input type="radio" class="checkout-form-radio col-1 shipping-address"
+                               name="shipping_address" value="">
+                        <div class="col-11 pl-3">
+                            <div>{{$val['name']}}</div>
+                            <a href="javascript:;"
+                               class="checkout-address-edit color-link d-inline-block pt-3 pr-3"
+                               data-address-id="375308">Edit</a>
+                        </div>
+                    </label>
+                @endforeach
+            </div>
+            <div>
+                @foreach($res['paymentMethod'] as $val)
+                    <label class="checkout-payment" data-id="{{$val['id']}}">
+                        <input type="radio" class="checkout-form-radio col-1 shipping-address"
+                               name="shipping_address" value="">
+                        <div class="col-11 pl-3">
+                            <div>{{$val['name']}}</div>
+                            <a href="javascript:;"
+                               class="checkout-address-edit color-link d-inline-block pt-3 pr-3"
+                               data-address-id="375308">Edit</a>
+                        </div>
+                    </label>
+                @endforeach
+            </div>
+        </div>
+
+        <div class="col-12 col-xl-8 d-none">
             <input type="hidden" name="onLoadCurrentStep" id="onLoadCurrentStep" value="payMethod">
             <div class="checkout-content mb-5">
                 <div id="shippingAddress" class="checkout-item step-active ">
@@ -22,21 +72,7 @@
                     </div>
                     <div class="select-option" style="">
                         <div class="address-lists">
-                            @foreach($res['customer_address'] as $val)
-                                <label class="row m-0 checkout-address" data-id="{{$val['id']}}">
-                                    <input type="radio" class="checkout-form-radio col-1 shipping-address"
-                                           name="shipping_address" value="375308">
-                                    <div class="col-11 pl-3">
-                                        <div>{{$val['firstname']}} {{$val['lastname']}},{{$val['address_1']}}
-                                            , {{$val['address_2']}}, {{$val['city']}}, {{$val['zone_name']}}
-                                            , {{$val['country_name']}}, {{$val['postcode']}}
-                                            , {{$val['telephone']}}</div>
-                                        <a href="javascript:;"
-                                           class="checkout-address-edit color-link d-inline-block pt-3 pr-3"
-                                           data-address-id="375308">Edit</a>
-                                    </div>
-                                </label>
-                            @endforeach
+
                             <label class="row m-0 pt-3 add-new-shipping-address" style="">
                                 <input class="checkout-form-radio col-1 shipping-address" type="radio"
                                        name="shipping_address" value="0">
@@ -275,7 +311,6 @@
 
 </style>
 <script>
-    let total = {{$res['total_data']['total']}}
     $(function () {
         $('body').on('click', '.checkout-address', function (e) {
             e.preventDefault();
@@ -283,7 +318,34 @@
             let id = $(this).data('id')
             $.ajax({
                 url: '/checkout/shipping_address',
-                data: {address_id: id, _token: "{!! csrf_token() !!}", total},
+                type:'post',
+                data: {address_id: id, _token: "{!! csrf_token() !!}"},
+                success: function (res) {
+                    console.log(res)
+                }
+            })
+        })
+        $('body').on('click', '.checkout-shipping', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            let id = $(this).data('id')
+            $.ajax({
+                url: '/checkout/shipping',
+                type:'post',
+                data: {shipping_id: id, _token: "{!! csrf_token() !!}"},
+                success: function (res) {
+                    console.log(res)
+                }
+            })
+        })
+        $('body').on('click', '.checkout-payment', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            let id = $(this).data('id')
+            $.ajax({
+                url: '/checkout/payment_method',
+                type:'post',
+                data: {payment_method_id: id, _token: "{!! csrf_token() !!}"},
                 success: function (res) {
                     console.log(res)
                 }

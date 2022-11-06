@@ -29,21 +29,22 @@ class Shipping extends Model
     }
 
     public function geoGroup(){
-        return $this->hasMany(GeoGroup::class,'id','geo_group_id');
+        return $this->hasOne(GeoGroup::class,'id','geo_group_id');
     }
 
-    public function getList() {
+    public function getList($address_id=0) {
         $res = [];
         $cart = new Cart;
         if($cart->hasShipping()){
-            $shop_address = Cookie::get('shop_address_id');
+            $shop_address = $address_id?$address_id:(Cookie::get('shop_address_id'));
             if($shop_address){
                 $addrInfo = Address::where('id',$shop_address)->where('uuid',User::uuid())->first();
                 if(!empty($addrInfo)) {
                     $subTotal = $cart->getSubTotal();
+
                     $shipping = (new Shipping())->findAll();
                     foreach ($shipping as $val) {
-                        if($subTotal>=$val['free_cost']){
+                        if($val['free_cost']>0?($subTotal>=$val['free_cost']):false){
                             $val['free']=1;
                         }else{
                             $val['free']=0;

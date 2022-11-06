@@ -1,5 +1,5 @@
 @include('laravel-shop::front.common.header')
-<link rel="stylesheet" href="{{ URL::asset('vendor/laravel-shop/css/cart.css') }}"/>
+<link rel="stylesheet" href="{{ URL::asset('static/shop/css/cart.css') }}"/>
 <style>
 
 </style>
@@ -54,7 +54,7 @@
                                 <div class="close-btn">
                                     <a href="javascript:;">
                                         <img class="img-fluid"
-                                             src="{{ URL::asset('vendor/laravel-shop/img/cart/close_mobile.svg') }}">
+                                             src="{{ URL::asset('static/shop/img/cart/close_mobile.svg') }}">
                                     </a>
                                 </div>
                                 <div class="close-bac">
@@ -76,7 +76,7 @@
                     </div>
                 @else
                     <div class="car-empty">
-                        <img class="emptyImg" src="{{ URL::asset('vendor/laravel-shop/img/cart/empty.svg') }}">
+                        <img class="emptyImg" src="{{ URL::asset('static/shop/img/cart/empty.svg') }}">
                         <div class="empty-text">
                             <p class="emptyTitle">Your Shopping Cart is Empty</p>
                             <p class="emptyDescrip">
@@ -175,7 +175,7 @@
                         <div class="gs-cart-coupon-conent js-coupon-block">
                             <a href="javascript:;" data-toggle="modal" data-target="#sale-after">
                                 <img class="Guarantee"
-                                     src="{{ URL::asset('vendor/laravel-shop/img/cart/return-icon.svg') }}">
+                                     src="{{ URL::asset('static/shop/img/cart/return-icon.svg') }}">
                                 <h4>30-Day Free Return</h4>
                             </a>
                         </div>
@@ -183,7 +183,7 @@
                         <div class="gs-cart-coupon-conent js-coupon-block">
                             <a href="javascript:;" data-toggle="modal" data-target="#sale-after">
                                 <img class="Guarantee"
-                                     src="{{ URL::asset('vendor/laravel-shop/img/cart/guarantee-icon.svg') }}">
+                                     src="{{ URL::asset('static/shop/img/cart/guarantee-icon.svg') }}">
                                 <h4>365-Day Guarantee</h4>
                             </a>
                         </div>

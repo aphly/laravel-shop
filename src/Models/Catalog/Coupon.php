@@ -4,8 +4,8 @@ namespace Aphly\LaravelShop\Models\Catalog;
 
 use Aphly\Laravel\Models\Model;
 use Aphly\LaravelCommon\Models\Currency;
+use Aphly\LaravelCommon\Models\User;
 use Aphly\LaravelShop\Models\Checkout\Cart;
-use Aphly\LaravelShop\Models\Customer\Customer;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\Cookie;
 
@@ -13,18 +13,12 @@ class Coupon extends Model
 {
     use HasFactory;
     protected $table = 'shop_coupon';
-    public $timestamps = false;
+    //public $timestamps = false;
 
     protected $fillable = [
-        'name','code','type','discount','is_login',
-        'shipping','total','date_start','date_end','uses_total',
+        'name','code','type','discount','is_login','total','date_start','date_end','uses_total',
         'uses_customer','status'
     ];
-
-    public function __construct(public array $cart_products=[])
-    {
-        parent::__construct();
-    }
 
     public function getCoupon($code) {
         $status = true;
@@ -36,18 +30,17 @@ class Coupon extends Model
                     $query->where('date_end',0)->orWhere('date_end','>',$time);
                 })->where('status',1)->first();
         if(!empty($info)){
-            if($info->total > (new Cart)->getSubTotal()){
+        	$cart = new Cart;
+            if($info->total > $cart->getSubTotal()){
                 $status = false;
             }
             $coupon_total = $this->getCouponHistoriesByCoupon($code);
             if ($info['uses_total'] > 0 && ($coupon_total >= $info['uses_total'])) {
                 $status = false;
             }
-            if ($info['is_login'] && !Customer::uuid()) {
-                $status = false;
-            }
-            if(Customer::uuid()){
-                $customer_total = $this->getCouponHistoriesByUuId($code, Customer::uuid());
+
+            if(User::uuid()){
+                $customer_total = $this->getCouponHistoriesByUuId($code, User::uuid());
                 if ($info['uses_customer'] > 0 && ($customer_total >= $info['uses_customer'])) {
                     $status = false;
                 }
@@ -67,7 +60,7 @@ class Coupon extends Model
             }
 
             if ($coupon_product_data || $coupon_category_data) {
-                foreach ($this->cart_products as $product) {
+                foreach ($cart->getProducts() as $product) {
                     if (in_array($product['product_id'], $coupon_product_data)) {
                         $product_data[$product['product_id']] = $product['product_id'];
                         continue;
@@ -82,7 +75,6 @@ class Coupon extends Model
                             }
                         }
                     }
-
                 }
                 if (!$product_data) {
                     $status = false;
@@ -105,12 +97,13 @@ class Coupon extends Model
         if($coupon){
             $info = $this->getCoupon($coupon);
             if($info) {
+				$cart = new Cart;
                 $discount_total = 0;
                 if (!$info['product']) {
-                    $sub_total = (new Cart)->getSubTotal($this->cart_products);
+                    $sub_total = $cart->getSubTotal();
                 } else {
                     $sub_total = 0;
-                    foreach ($this->cart_products as $product) {
+                    foreach ($cart->getProducts() as $product) {
                         if (in_array($product['product_id'], $info['product'])) {
                             $sub_total += $product['total'];
                         }
@@ -119,7 +112,7 @@ class Coupon extends Model
                 if ($info['type'] == 2) {
                     $info['discount'] = min($info['discount'], $sub_total);
                 }
-                foreach ($this->cart_products as $product) {
+                foreach ($cart->getProducts() as $product) {
                     $discount = 0;
                     if (!$info['product']) {
                         $status = true;
@@ -135,16 +128,11 @@ class Coupon extends Model
                     }
                     $discount_total += $discount;
                 }
-                //$shipping_method = Cookie::get('shipping_method');
-                //$shipping_method = json_decode($shipping_method,true);
-                $shipping_coupon = Cookie::get('shipping_coupon');
-                if($info['shipping'] && !$shipping_coupon) {
-                    //$discount_total += $shipping_method['cost'];
-                    Cookie::queue('shipping_coupon',$info['id']);
-                }
+
                 if ($discount_total > $total_data['total']) {
                     $discount_total = $total_data['total'];
                 }
+
                 if ($discount_total > 0) {
                     $total_data['totals'][] = array(
                         'code'       => 'coupon',

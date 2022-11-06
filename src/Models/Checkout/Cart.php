@@ -232,11 +232,16 @@ class Cart extends Model
             'sort_order' => 1
         ];
         $total_data['total'] += $sub_total;
-        (new Shipping())->getTotal($total_data);
-        $total_data['total_format'] = Currency::format($total_data['total']);
-        dd($total_data);
-        (new Coupon())->getTotal($total_data);
 
+		//(new Coupon())->getTotal($total_data);
+
+		(new Shipping())->getTotal($total_data);
+
+		$total_data['total_format'] = Currency::format($total_data['total']);
+        return $total_data;
+
+
+        dd($total_data);
 
         $shipping_coupon = Cookie::get('shipping_coupon');
         if($shipping_coupon){

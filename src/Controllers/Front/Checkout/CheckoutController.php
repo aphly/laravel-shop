@@ -84,7 +84,7 @@ class CheckoutController extends Controller
 					if ($key == $request->input('shipping_id')) {
 						Cookie::queue('shop_shipping_id', $key);
 						$payment_method = (new PaymentMethod)->findAll();
-						throw new ApiException(['code' => 0, 'msg' => 'shipping method success', 'data' => ['redirect'=>'/checkout/payment_method','list' => $payment_method]]);
+						throw new ApiException(['code' => 0, 'msg' => 'shipping method success', 'data' => ['redirect'=>'/checkout/pay','list' => $payment_method]]);
 					}
 				}
 			}
@@ -120,6 +120,9 @@ class CheckoutController extends Controller
 		if($request->isMethod('post')) {
             $input['amount'] = $res['total_data']['total'];
             $input['method_id'] = $request->input('payment_method_id');
+            if(!intval($input['method_id'])){
+                throw new ApiException(['code' => 2, 'msg' => 'payment method fail']);
+            }
             $input['cancel_url'] = url('/checkout/payment_method');
             $input['notify_func'] = '\Aphly\LaravelShop\Models\Sale\Order@notify';
             $input['success_url'] = url('/checkout/success');
@@ -133,7 +136,6 @@ class CheckoutController extends Controller
                     $payment->pay(false);
                 }
             }
-
 			throw new ApiException(['code' => 1, 'msg' => 'payment method fail']);
 		}else{
 			$res['paymentMethod'] = (new PaymentMethod)->findAll();

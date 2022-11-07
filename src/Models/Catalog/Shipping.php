@@ -32,7 +32,7 @@ class Shipping extends Model
         return $this->hasOne(GeoGroup::class,'id','geo_group_id');
     }
 
-    public function getList($address_id=0) {
+    public function getList($address_id=0,$shipping_id=0) {
         $res = [];
         $cart = new Cart;
         if($cart->hasShipping()){
@@ -48,6 +48,9 @@ class Shipping extends Model
                             $val['free']=1;
                         }else{
                             $val['free']=0;
+                        }
+                        if($shipping_id && $val['id']==$shipping_id){
+                            return $val;
                         }
                         if ($val['geo_group_id']) {
                             $geo = GeoGroup::with('child')->where('id',$val['geo_group_id'])->where('status',1)->firstToArray();
@@ -84,7 +87,7 @@ class Shipping extends Model
                     'sort_order' => 3
                 ];
             }else{
-                $price = $shipping[$shop_shipping_id]['price'];
+                $price = $shipping[$shop_shipping_id]['cost'];
                 $total_data['totals'][] = [
                     'title'      => 'shipping',
                     'value'      => $price,

@@ -3,6 +3,8 @@
 namespace Aphly\LaravelShop\Controllers\Front;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 
 class Controller extends \Aphly\LaravelCommon\Controllers\Front\Controller
@@ -16,8 +18,10 @@ class Controller extends \Aphly\LaravelCommon\Controllers\Front\Controller
 
             }else{
             }
+
             return $next($request);
         });
         parent::__construct();
     }
+
 }

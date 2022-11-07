@@ -17,27 +17,39 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('uuid')->index();
             $table->string('email',255);
-            $table->string('telephone',255);
-            $table->string('shipping_firstname',32);
-            $table->string('shipping_lastname',32);
-            $table->string('shipping_address_1',128);
-            $table->string('shipping_address_2',128);
-            $table->string('shipping_city',128);
-            $table->string('shipping_postcode',10);
-            $table->string('shipping_country',128);
-            $table->unsignedInteger('shipping_country_id');
-            $table->string('shipping_zone',128);
-            $table->unsignedInteger('shipping_zone_id');
-            $table->string('shipping_method',128);
-            $table->string('shipping_code',128);
-            $table->string('payment_method',128);
-            $table->string('payment_code',128);
-            $table->text('comment');
+
+            $table->unsignedBigInteger('address_id');
+            $table->string('address_firstname',32);
+            $table->string('address_lastname',32);
+            $table->string('address_address_1',128);
+            $table->string('address_address_2',128);
+            $table->string('address_city',128);
+            $table->string('address_postcode',10);
+            $table->string('address_country',128);
+            $table->unsignedInteger('address_country_id');
+            $table->string('address_zone',128);
+            $table->unsignedInteger('address_zone_id');
+            $table->string('address_telephone',255);
+
+            $table->unsignedBigInteger('shipping_id');
+            $table->string('shipping_name',32);
+            $table->string('shipping_desc',255);
+            $table->decimal('shipping_cost');
+            $table->decimal('shipping_free_cost');
+            $table->unsignedBigInteger('shipping_geo_group_id');
+
+            $table->unsignedBigInteger('payment_method_id');
+            $table->string('payment_method_name',32);
+
             $table->decimal('total',15,4);
-            $table->tinyInteger('order_status_id')->default(1)->index();
-            $table->unsignedInteger('currency_id');
-            $table->string('currency_code',3);
+            $table->text('comment');
+
+            $table->unsignedBigInteger('currency_id');
+            $table->string('currency_code',8);
             $table->decimal('currency_value',15,8);
+
+            $table->tinyInteger('order_status_id')->default(1)->index();
+
             $table->string('ip',64);
             $table->string('user_agent',255);
             $table->string('accept_language',255);

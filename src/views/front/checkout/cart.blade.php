@@ -84,12 +84,14 @@
                             </p>
                         </div>
                         <div class="btn-empty">
-                            <a class="color-link-white font-18 cartBtn mr-xl-5" href="/eyeglasses">
+                            <a class="color-link-white font-18 cartBtn mr-xl-5" href="/">
                                 Continue Shopping
                             </a>
-                            <a class="color-link-white font-18 cartBtn ml-xl-5" href="/login?redirect=/cart">
+                            @if(!$user)
+                            <a class="color-link-white font-18 cartBtn ml-xl-5" href="route('login')">
                                 Sign in / Register
                             </a>
+                            @endif
                         </div>
                     </div>
                 @endif
@@ -207,7 +209,7 @@
             // $.ajax({
             //
             // })
-            location.href = 'checkout'
+            location.href = '/checkout/address'
         })
     })
 </script>

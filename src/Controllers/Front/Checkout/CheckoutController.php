@@ -118,11 +118,12 @@ class CheckoutController extends Controller
         $res['list'] = $cart->getProducts();
         $res['total_data'] = $cart->totalData();
 		if($request->isMethod('post')) {
-            $input['amount'] = $res['total_data']['total'];
             $input['method_id'] = $request->input('payment_method_id');
             if(!intval($input['method_id'])){
                 throw new ApiException(['code' => 2, 'msg' => 'payment method fail']);
             }
+			$input['amount'] = $res['total_data']['total'];
+			$input['currency_code'] = $request->input('payment_method_id');
             $input['cancel_url'] = url('/checkout/payment_method');
             $input['notify_func'] = '\Aphly\LaravelShop\Models\Sale\Order@notify';
             $input['success_url'] = url('/checkout/success');

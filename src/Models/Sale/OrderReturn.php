@@ -5,14 +5,14 @@ namespace Aphly\LaravelShop\Models\Sale;
 use Aphly\Laravel\Models\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class OrderProduct extends Model
+class OrderReturn extends Model
 {
     use HasFactory;
-    protected $table = 'shop_order_product';
+    protected $table = 'shop_order_return';
     public $timestamps = false;
 
     protected $fillable = [
-        'order_id','product_id','name','sku','quantity','price','total','reward'
+        'uuid','firstname','lastname','email','telephone','total','status'
     ];
 
 

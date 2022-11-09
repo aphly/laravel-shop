@@ -111,7 +111,22 @@ class InstallController extends Controller
             $data[] =['dict_id' => $dict->id,'name'=>'Voided','value'=>'14','fixed'=>'0'];
             DB::table('admin_dict_value')->insert($data);
         }
-
+		$data=[];
+		$data[] =['id'=>'1','name'=>'Pending'];
+		$data[] =['id'=>'2','name'=>'Processing'];
+		$data[] =['id'=>'3','name'=>'Shipped'];
+		$data[] =['id'=>'4','name'=>'Complete'];
+		$data[] =['id'=>'5','name'=>'Canceled'];
+		$data[] =['id'=>'6','name'=>'Denied'];
+		$data[] =['id'=>'7','name'=>'Canceled Reversal'];
+		$data[] =['id'=>'8','name'=>'Failed'];
+		$data[] =['id'=>'9','name'=>'Refunded'];
+		$data[] =['id'=>'10','name'=>'Reversed'];
+		$data[] =['id'=>'11','name'=>'Chargeback'];
+		$data[] =['id'=>'12','name'=>'Expired'];
+		$data[] =['id'=>'13','name'=>'Processed'];
+		$data[] =['id'=>'14','name'=>'Voided'];
+		DB::table('shop_order_status')->insert($data);
         return 'install_ok';
     }
     public function uninstall(){
@@ -130,7 +145,7 @@ class InstallController extends Controller
             $ids = array_column($arr,'id');
             DB::table('admin_dict_value')->whereIn('dict_id',$ids)->delete();
         }
-
+		DB::table('shop_order_status')->truncate();
         return 'uninstall_ok';
     }
 

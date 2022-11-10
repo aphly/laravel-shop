@@ -16,13 +16,12 @@ return new class extends Migration
         Schema::create('shop_order', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('uuid')->index();
-            $table->string('email',255);
-
+            $table->unsignedBigInteger('payment_id')->nullable()->index();
             $table->unsignedBigInteger('address_id');
             $table->string('address_firstname',32);
             $table->string('address_lastname',32);
             $table->string('address_address_1',128);
-            $table->string('address_address_2',128);
+            $table->string('address_address_2',128)->nullable();
             $table->string('address_city',128);
             $table->string('address_postcode',10);
             $table->string('address_country',128);
@@ -33,16 +32,15 @@ return new class extends Migration
 
             $table->unsignedBigInteger('shipping_id');
             $table->string('shipping_name',32);
-            $table->string('shipping_desc',255);
+            $table->string('shipping_desc',255)->nullable();
             $table->decimal('shipping_cost');
-            $table->decimal('shipping_free_cost');
-            $table->unsignedBigInteger('shipping_geo_group_id');
+            $table->decimal('shipping_free_cost')->nullable();
+            $table->unsignedBigInteger('shipping_geo_group_id')->nullable();
 
             $table->unsignedBigInteger('payment_method_id');
-            $table->string('payment_method_name',32);
 
             $table->decimal('total',15,4);
-            $table->text('comment');
+            $table->text('comment')->nullable();
 
             $table->unsignedBigInteger('currency_id');
             $table->string('currency_code',8);
@@ -50,9 +48,9 @@ return new class extends Migration
 
             $table->tinyInteger('order_status_id')->default(1)->index();
 
-            $table->string('ip',64);
-            $table->string('user_agent',255);
-            $table->string('accept_language',255);
+            $table->string('ip',64)->nullable();
+            $table->string('user_agent',255)->nullable();
+            $table->string('accept_language',255)->nullable();
             $table->unsignedBigInteger('created_at');
             $table->unsignedBigInteger('updated_at');
         });

@@ -2,7 +2,7 @@
 
 namespace Aphly\LaravelShop\Models\Catalog;
 
-use Aphly\LaravelCommon\Models\Address;
+use Aphly\LaravelCommon\Models\UserAddress;
 use Aphly\LaravelCommon\Models\Currency;
 use Aphly\LaravelCommon\Models\GeoGroup;
 use Aphly\LaravelCommon\Models\User;
@@ -38,7 +38,7 @@ class Shipping extends Model
         if($cart->hasShipping()){
             $shop_address = $address_id?$address_id:(Cookie::get('shop_address_id'));
             if($shop_address){
-                $addrInfo = Address::where('id',$shop_address)->where('uuid',User::uuid())->first();
+                $addrInfo = UserAddress::where('id',$shop_address)->where('uuid',User::uuid())->first();
                 if(!empty($addrInfo)) {
                     $subTotal = $cart->getSubTotal();
 
@@ -88,13 +88,14 @@ class Shipping extends Model
                 ];
             }else{
                 $price = $shipping[$shop_shipping_id]['cost'];
+                list($value,$value_format) = Currency::format($price,2);
                 $total_data['totals'][] = [
                     'title'      => 'shipping',
-                    'value'      => $price,
-                    'value_format'      => $price?Currency::format($price):'Free',
+                    'value'      => $value,
+                    'value_format'      => $value?$value_format:'Free',
                     'sort_order' => 3
                 ];
-                $total_data['total'] += $price;
+                $total_data['total'] += $value;
             }
         }
     }

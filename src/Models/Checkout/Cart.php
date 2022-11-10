@@ -225,47 +225,20 @@ class Cart extends Model
             'total'  => &$total
         ];
         $sub_total = $this->getSubTotal();
+        list($value,$value_format) = Currency::format($sub_total,2);
         $total_data['totals'][] = [
             'title'      => 'Sub_total',
-            'value'      => $sub_total??0,
-            'value_format'      => Currency::format($sub_total),
+            'value'      => $value,
+            'value_format'      => $value_format,
             'sort_order' => 1
         ];
-        $total_data['total'] += $sub_total;
+        $total_data['total'] += $value;
 
 		//(new Coupon())->getTotal($total_data);
 
 		(new Shipping())->getTotal($total_data);
 
-		$total_data['total_format'] = Currency::format($total_data['total']);
-        return $total_data;
-
-
-        dd($total_data);
-
-        $shipping_coupon = Cookie::get('shipping_coupon');
-        if($shipping_coupon){
-        }else{
-            $shipping_method = Cookie::get('shipping_method');
-            $shipping_method = json_decode($shipping_method,true);
-            if($this->hasShipping() && $shipping_method) {
-                $free = intval($shipping_method['free']);
-                if($free>0 && $free<=$total_data['total']){
-                }else{
-                    $total_data['totals'][] = array(
-                        'code'       => 'shipping',
-                        'title'      => $shipping_method['title'],
-                        'value'      => $shipping_method['cost'],
-                        'value_format'      => Currency::format($shipping_method['cost']),
-                        'sort_order' => 100
-                    );
-                    $total_data['total'] += $shipping_method['cost'];
-                }
-            }
-        }
-
-        $total_data['total'] = max(0, $total_data['total']);
-        $total_data['total_format'] = Currency::format($total_data['total']);
+		$total_data['total_format'] = Currency::_format($total_data['total']);
         return $total_data;
     }
 }

@@ -3,12 +3,13 @@
 namespace Aphly\LaravelShop\Controllers\Front\Checkout;
 
 use Aphly\Laravel\Exceptions\ApiException;
+use Aphly\LaravelCommon\Models\Currency;
 use Aphly\LaravelPayment\Models\Payment;
 use Aphly\LaravelPayment\Models\PaymentMethod;
 use Aphly\LaravelShop\Controllers\Front\Controller;
 use Aphly\LaravelShop\Models\Catalog\Shipping;
 use Aphly\LaravelShop\Models\Checkout\Cart;
-use Aphly\LaravelCommon\Models\Address;
+use Aphly\LaravelCommon\Models\UserAddress;
 use Aphly\LaravelShop\Models\Sale\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
@@ -35,7 +36,7 @@ class CheckoutController extends Controller
                 $res['items'] += $cart1['quantity'];
             }
             $res['total_data'] = $cart->totalData();
-            $res['address'] = (new Address)->getAddresses();
+            $res['address'] = (new UserAddress)->getAddresses();
 			$res['shipping'] = (new Shipping)->getList();
 			$res['paymentMethod'] = (new PaymentMethod)->findAll();
             return $this->makeView('laravel-shop::front.checkout.checkout',['res'=>$res]);
@@ -48,7 +49,7 @@ class CheckoutController extends Controller
     {
         $res['title'] = 'Checkout Address';
     	if($request->isMethod('post')){
-			$res['info'] = (new Address)->getAddress($request->input('address_id'));
+			$res['info'] = (new UserAddress)->getAddress($request->input('address_id'));
 			if($res['info']){
 				Cookie::queue('shop_address_id',$res['info']['id']);
 				$shipping_method = (new Shipping)->getList($res['info']['id']);
@@ -64,7 +65,7 @@ class CheckoutController extends Controller
             $cart = new Cart;
             $res['list'] = $cart->getProducts();
             $res['total_data'] = $cart->totalData();
-			$res['address'] = (new Address)->getAddresses();
+			$res['address'] = (new UserAddress)->getAddresses();
 			return $this->makeView('laravel-shop::front.checkout.address',['res'=>$res]);
 		}
     }
@@ -73,7 +74,7 @@ class CheckoutController extends Controller
     {
         $res['title'] = 'Checkout Shipping';
         $address_id = Cookie::get('shop_address_id');
-        $res['address'] = (new Address)->getAddress($address_id);
+        $res['address'] = (new UserAddress)->getAddress($address_id);
         if(!$res['address']){
             return redirect('/checkout/address');
         }
@@ -105,7 +106,7 @@ class CheckoutController extends Controller
     {
         $res['title'] = 'Checkout Pay';
         $address_id = Cookie::get('shop_address_id');
-        $res['address'] = (new Address)->getAddress($address_id);
+        $res['address'] = (new UserAddress)->getAddress($address_id);
         if(!$res['address']){
             return redirect('/checkout/address');
         }
@@ -118,23 +119,64 @@ class CheckoutController extends Controller
         $res['list'] = $cart->getProducts();
         $res['total_data'] = $cart->totalData();
 		if($request->isMethod('post')) {
-            $input['method_id'] = $request->input('payment_method_id');
-            if(!intval($input['method_id'])){
+            $input['uuid'] = $this->user->uuid;
+
+            $input['address_id'] = $res['address']['id'];
+            $input['address_firstname'] = $res['address']['firstname'];
+            $input['address_lastname'] = $res['address']['lastname'];
+            $input['address_address_1'] = $res['address']['address_1'];
+            $input['address_address_2'] = $res['address']['address_2'];
+            $input['address_city'] = $res['address']['city'];
+            $input['address_postcode'] = $res['address']['postcode'];
+            $input['address_country'] = $res['address']['country_name'];
+            $input['address_country_id'] = $res['address']['country_id'];
+            $input['address_zone'] = $res['address']['zone_name'];
+            $input['address_zone_id'] = $res['address']['zone_id'];
+            $input['address_telephone'] = $res['address']['telephone'];
+
+            $input['shipping_id'] = $res['shipping']['id'];
+            $input['shipping_name'] = $res['shipping']['name'];
+            $input['shipping_desc'] = $res['shipping']['desc'];
+            $input['shipping_cost'] = $res['shipping']['cost'];
+            $input['shipping_free_cost'] = $res['shipping']['free_cost'];
+            $input['shipping_geo_group_id'] = $res['shipping']['geo_group_id'];
+
+            $input['payment_method_id'] = $request->input('payment_method_id');
+            if(!intval($input['payment_method_id'])){
                 throw new ApiException(['code' => 2, 'msg' => 'payment method fail']);
             }
-			$input['amount'] = $res['total_data']['total'];
-			$input['currency_code'] = $request->input('payment_method_id');
-            $input['cancel_url'] = url('/checkout/payment_method');
-            $input['notify_func'] = '\Aphly\LaravelShop\Models\Sale\Order@notify';
-            $input['success_url'] = url('/checkout/success');
-            $input['fail_url'] = url('/checkout/fail');
-            $payment = (new Payment)->make($input);
-            if($payment->id){
-                $input['uuid'] = $this->user->uuid;
-                $input['payment_id'] = $payment->id;
-                $order = Order::create($input);
-                if($order->id){
-                    $payment->pay(false);
+
+            $input['total'] = $res['total_data']['total'];
+            if($input['total']>0){
+            }else{
+                throw new ApiException(['code' => 3, 'msg' => 'amount error']);
+            }
+            $input['comment'] = '';
+            $currency = Currency::defaultCurr(true);
+            if(!$currency){
+                throw new ApiException(['code' => 4, 'msg' => 'currency error']);
+            }
+            $input['currency_id'] = $currency['id'];
+            $input['currency_code'] = $currency['code'];
+            $input['currency_value'] = $currency['value'];
+
+            $input['ip'] = $request->ip();
+            $input['user_agent'] = $request->header('user-agent');
+            $input['accept_language'] = $request->header('accept-language');
+            $order = Order::create($input);
+            if($order->id){
+                $payment_input['amount'] = $res['total_data']['total'];
+                $payment_input['currency_code'] = $currency['code'];
+                $payment_input['cancel_url'] = url('/checkout/payment_method');
+                $payment_input['notify_func'] = '\Aphly\LaravelShop\Models\Sale\Order@notify';
+                $payment_input['success_url'] = url('/checkout/success');
+                $payment_input['fail_url'] = url('/checkout/fail');
+                $payment = (new Payment)->make($payment_input);
+                if($payment->id){
+                    $order->payment_id = $payment->id;
+                    if($order->save()){
+                        $payment->pay(false);
+                    }
                 }
             }
 			throw new ApiException(['code' => 1, 'msg' => 'payment method fail']);

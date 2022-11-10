@@ -13,7 +13,7 @@
 
             <div class="form-group">
                 <label for="">描述</label>
-                <textarea name="desc" rows="10" class="form-control ">{{$res['info']->desc}}</textarea>
+                <textarea name="desc" rows="5"  class="form-control ">{{$res['info']->desc}}</textarea>
                 <div class="invalid-feedback"></div>
             </div>
 

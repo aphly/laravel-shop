@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('name',64)->nullable();
             $table->unsignedInteger('quantity')->nullable();
             $table->string('image',255)->nullable();
-            $table->decimal('price')->nullable();
+            $table->decimal('price',15,4)->nullable();
             $table->tinyInteger('shipping')->nullable()->default(1);
             $table->unsignedInteger('points')->nullable();
             $table->unsignedInteger('tax_class_id')->nullable()->default(1);

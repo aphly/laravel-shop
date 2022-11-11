@@ -19,12 +19,14 @@ class HomeController extends Controller
 
     public function home1(Request $request)
     {
-        dd($request->header('user-agent'));
+
         $cart = new Cart;
         $res['list'] = $cart->getProducts();
         $res['total_data'] = $cart->totalData();
+
         dd($res['total_data']);
         $shipping = (new Shipping())->getTotal();
         dd($shipping);
     }
+
 }

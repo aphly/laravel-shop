@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedInteger('product_id')->index();
             $table->unsignedInteger('group_id')->index();
-            $table->decimal('price')->default(0);
+            $table->decimal('price',15,4)->default(0);
             $table->unsignedInteger('date_start')->nullable()->default(0);
             $table->unsignedInteger('date_end')->nullable()->default(0);
         });

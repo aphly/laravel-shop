@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('name',64);
             $table->string('code',16)->index();
             $table->char('type',1);
-            $table->decimal('discount');
-            $table->decimal('total')->nullable()->default(0);
+            $table->decimal('discount',15,4);
+            $table->decimal('total',15,4)->nullable()->default(0);
             $table->unsignedInteger('date_start')->nullable()->default(0);
             $table->unsignedInteger('date_end')->nullable()->default(0);
             $table->integer('uses_total')->unsigned();

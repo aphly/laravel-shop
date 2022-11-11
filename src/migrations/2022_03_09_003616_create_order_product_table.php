@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('name',128);
             $table->string('sku',64);
             $table->integer('quantity')->default(0)->nullable();
-            $table->decimal('price');
-            $table->decimal('total');
+            $table->decimal('price',15,4);
+            $table->decimal('total',15,4);
             $table->unsignedInteger('reward');
         });
     }

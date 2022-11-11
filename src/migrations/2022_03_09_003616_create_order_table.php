@@ -33,8 +33,8 @@ return new class extends Migration
             $table->unsignedBigInteger('shipping_id');
             $table->string('shipping_name',32);
             $table->string('shipping_desc',255)->nullable();
-            $table->decimal('shipping_cost');
-            $table->decimal('shipping_free_cost')->nullable();
+            $table->decimal('shipping_cost',15,4);
+            $table->decimal('shipping_free_cost',15,4)->nullable();
             $table->unsignedBigInteger('shipping_geo_group_id')->nullable();
 
             $table->unsignedBigInteger('payment_method_id');

@@ -11,6 +11,7 @@ use Aphly\LaravelShop\Models\Catalog\Shipping;
 use Aphly\LaravelShop\Models\Checkout\Cart;
 use Aphly\LaravelCommon\Models\UserAddress;
 use Aphly\LaravelShop\Models\Sale\Order;
+use Aphly\LaravelShop\Models\Sale\OrderTotal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 
@@ -165,6 +166,23 @@ class CheckoutController extends Controller
             $input['accept_language'] = $request->header('accept-language');
             $order = Order::create($input);
             if($order->id){
+                $orderTotal_input = [];
+                foreach ($res['total_data']['totals'] as $val){
+                    $val['order_id'] = $order->id;
+                    $orderTotal_input[] = $val;
+                }
+                $orderTotal_input[] = [
+                    'order_id'=>$order->id,
+                    "title" => "Total",
+                    "value" => $res['total_data']['total'],
+                    "value_format" => $res['total_data']['total_format'],
+                    "sort" => 0,
+                ];
+                OrderTotal::insert($orderTotal_input);
+
+
+
+
                 $payment_input['amount'] = $res['total_data']['total'];
                 $payment_input['currency_code'] = $currency['code'];
                 $payment_input['cancel_url'] = url('/checkout/payment_method');

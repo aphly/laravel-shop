@@ -230,7 +230,7 @@ class Cart extends Model
             'title'      => 'Sub_total',
             'value'      => $value,
             'value_format'      => $value_format,
-            'sort_order' => 1
+            'sort' => 1
         ];
         $total_data['total'] += $value;
 

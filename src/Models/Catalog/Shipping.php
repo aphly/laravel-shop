@@ -84,7 +84,7 @@ class Shipping extends Model
                     'title'      => 'shipping',
                     'value'      => 0,
                     'value_format'      => 'Free',
-                    'sort_order' => 3
+                    'sort' => 3
                 ];
             }else{
                 $price = $shipping[$shop_shipping_id]['cost'];
@@ -93,7 +93,7 @@ class Shipping extends Model
                     'title'      => 'shipping',
                     'value'      => $value,
                     'value_format'      => $value?$value_format:'Free',
-                    'sort_order' => 3
+                    'sort' => 3
                 ];
                 $total_data['total'] += $value;
             }

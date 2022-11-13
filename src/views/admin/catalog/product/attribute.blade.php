@@ -1,5 +1,8 @@
 <div class="top-bar">
     <h5 class="nav-title">商品 - {{$res['product']->name}} - 属性</h5>
+    <div>
+        @include('laravel-shop::admin.catalog.product.submenu')
+    </div>
 </div>
 <div class="imain">
     <form method="post" action="/shop_admin/product/attribute" class="save_form">

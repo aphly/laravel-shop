@@ -17,8 +17,8 @@ class Product extends Model
     //public $timestamps = false;
 
     protected $fillable = [
-        'sku','name','quantity','image','price',
-        'shipping','points','stock_status_id','weight','weight_class_id',
+        'sku','name','quantity','image','price','uuid',
+        'shipping','stock_status_id','weight','weight_class_id',
         'length','width','height','length_class_id','subtract',
         'minimum','status','viewed','sale','sort','date_available'
     ];
@@ -38,7 +38,7 @@ class Product extends Model
         $filter = $data['filter']??false;
         $sort = $data['sort'];
         $time = time();
-        $group_id = User::groupId();
+        //$group_id = User::groupId();
         if($data['category_id']){
             if($this->sub_category){
                 $sql = DB::table('shop_category_path as cp')->leftJoin('shop_product_category as pc','cp.category_id','=','pc.category_id');
@@ -82,10 +82,22 @@ class Product extends Model
             ->select('p.id','p.sale','p.viewed','p.date_available','p.price','p.name','p.quantity','p.image');
         $sql->addSelect(['rating'=>Review::whereColumn('product_id','p.id')->where('status',1)
             ->groupBy('product_id')
-            ->selectRaw('AVG(rating) AS total')->limit(1)
+            ->selectRaw('AVG(rating) AS total')
         ]);
-        $sql->addSelect(['special'=>ProductSpecial::whereColumn('product_id','p.id')->where('group_id',$group_id)
-            ->where('date_start','<',$time)->where('date_end','>',$time)
+        $sql->addSelect(['reviews'=>Review::whereColumn('product_id','p.id')->where('status',1)
+            ->groupBy('product_id')
+            ->selectRaw('count(*) AS total')
+        ]);
+        $sql->addSelect(['special'=>ProductSpecial::whereColumn('product_id','p.id')
+            ->where(function ($query) use ($time){
+                $query->where('date_start',0)->orWhere('date_start','<',$time);
+            })->where(function ($query) use ($time){
+                $query->where('date_end',0)->orWhere('date_end','>',$time);
+            })->orderBy('priority','desc')
+            ->select('price')->limit(1)
+        ]);
+        $sql->addSelect(['discount'=>ProductDiscount::whereColumn('product_id','p.id')
+            ->where('quantity',1)
             ->select('price')->limit(1)
         ]);
         $sql->when($sort,

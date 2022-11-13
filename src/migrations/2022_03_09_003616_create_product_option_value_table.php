@@ -19,9 +19,9 @@ return new class extends Migration
             $table->integer('product_id')->unsigned()->index();
             $table->integer('option_id')->unsigned()->index();
             $table->integer('option_value_id')->unsigned()->index();
-            $table->integer('quantity')->unsigned()->nullable();
+            $table->integer('quantity')->nullable();
             $table->tinyInteger('subtract')->unsigned()->nullable();
-            $table->decimal('price',15,4)->nullable();
+            $table->decimal('price',15,2)->nullable();
             $table->integer('points')->unsigned()->nullable();
             $table->float('weight')->nullable();
         });

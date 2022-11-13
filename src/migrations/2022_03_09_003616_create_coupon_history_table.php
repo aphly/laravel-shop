@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedInteger('coupon_id')->index();
             $table->integer('order_id')->unsigned();
             $table->unsignedBigInteger('uuid')->index();
-            $table->decimal('amount',15,4);
+            $table->decimal('amount',15,2);
             $table->unsignedBigInteger('created_at');
             $table->unsignedBigInteger('updated_at');
         });

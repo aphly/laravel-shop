@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer('order_id')->unsigned()->index();
             $table->string('title',255);
-            $table->decimal('value',15,4);
+            $table->decimal('value',15,2);
             $table->string('value_format',255);
             $table->integer('sort')->nullable()->default(0);
         });

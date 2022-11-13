@@ -11,6 +11,8 @@ use Aphly\LaravelShop\Models\Catalog\Shipping;
 use Aphly\LaravelShop\Models\Checkout\Cart;
 use Aphly\LaravelCommon\Models\UserAddress;
 use Aphly\LaravelShop\Models\Sale\Order;
+use Aphly\LaravelShop\Models\Sale\OrderOption;
+use Aphly\LaravelShop\Models\Sale\OrderProduct;
 use Aphly\LaravelShop\Models\Sale\OrderTotal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
@@ -180,8 +182,26 @@ class CheckoutController extends Controller
                 ];
                 OrderTotal::insert($orderTotal_input);
 
-
-
+                foreach ($res['list'] as $val){
+                    $orderProduct_input = $val;
+                    $orderProduct_input['order_id'] = $order->id;
+                    $orderProduct_input['name'] = $val['product']['name'];
+                    $orderProduct_input['sku'] = $val['product']['sku'];
+                    $orderProduct = OrderProduct::create($orderProduct_input);
+                    if($orderProduct->id){
+                        foreach ($val['option'] as $v){
+                            $orderOption = $v;
+                            $orderOption['order_id'] = $order->id;
+                            $orderOption['order_product_id'] = $orderProduct->id;
+                            $orderOption['product_option_id'] = $v['option_id'];
+                            $orderOption['product_option_value_id'] = $v['product_option_value']['id'];
+                            $orderOption['name'] = $v['option']['name'];
+                            $orderOption['value'] = $v['product_option_value']['option_value']['name'];
+                            $orderOption['type'] = $v['option']['type'];
+                            OrderOption::create($orderOption);
+                        }
+                    }
+                }
 
                 $payment_input['amount'] = $res['total_data']['total'];
                 $payment_input['currency_code'] = $currency['code'];
@@ -193,7 +213,9 @@ class CheckoutController extends Controller
                 if($payment->id){
                     $order->payment_id = $payment->id;
                     if($order->save()){
-                        $payment->pay(false);
+                        $cart->delUuid();
+                        throw new ApiException(['code' => 1, 'msg' => 'payment hhh']);
+                        //$payment->pay(false);
                     }
                 }
             }

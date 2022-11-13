@@ -16,8 +16,9 @@ return new class extends Migration
         Schema::create('shop_product_special', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('product_id')->index();
-            $table->unsignedInteger('group_id')->index();
-            $table->decimal('price',15,4)->default(0);
+            $table->unsignedInteger('group_id')->nullable();
+            $table->unsignedInteger('priority')->nullable()->default(1);
+            $table->decimal('price',15,2)->default(0);
             $table->unsignedInteger('date_start')->nullable()->default(0);
             $table->unsignedInteger('date_end')->nullable()->default(0);
         });

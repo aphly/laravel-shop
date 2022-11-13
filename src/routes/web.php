@@ -81,15 +81,16 @@ Route::middleware(['web'])->group(function () {
             Route::post('/setting/save', 'Aphly\LaravelShop\Controllers\Admin\System\SettingController@save');
 
             Route::get('/product/index', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@index');
-            Route::get('/product/form', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@form');
-            Route::post('/product/save', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@save');
+            Route::match(['get', 'post'],'/product/add', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@add');
+            Route::match(['get', 'post'],'/product/edit', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@edit');
+            Route::post('/product/del', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@del');
             Route::match(['get', 'post'],'/product/desc', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@desc');
             Route::match(['get', 'post'],'/product/attribute', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@attribute');
             Route::match(['get', 'post'],'/product/option', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@option');
             Route::match(['get', 'post'],'/product/links', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@links');
 
-            Route::match(['get', 'post'],'/product/{id}/img', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@img')->where('id', '[0-9]+');
-            Route::match(['post'],'/product/{id}/img_save', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@imgSave')->where('id', '[0-9]+');
+            Route::match(['get', 'post'],'/product/img', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@img');
+            Route::match(['post'],'/product/img_save', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@imgSave');
             Route::match(['get'],'/product_img/{id}/del', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@imgDel')->where('id', '[0-9]+');
 
             Route::match(['get', 'post'],'/product/reward', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@reward');

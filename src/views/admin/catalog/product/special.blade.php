@@ -1,5 +1,8 @@
 <div class="top-bar">
     <h5 class="nav-title">商品 - {{$res['product']->name}} </h5>
+    <div>
+        @include('laravel-shop::admin.catalog.product.submenu')
+    </div>
 </div>
 <div class="imain">
     <form method="post" @if($res['product']->id) action="/shop_admin/product/special?product_id={{$res['product']->id}}" @else action="/shop_admin/product/special" @endif class="save_form">
@@ -7,17 +10,13 @@
         <div class="">
             <ul class="special">
                 <li>
-                    <span>会员等级</span><span>价格</span><span>开始日期</span><span>结束日期</span>
+                    <span>优先级(从大到小)</span><span>价格</span><span>开始日期</span><span>结束日期</span>
                     <span  class="op"><i class="uni app-jia" onclick="add_special()"></i></span>
                 </li>
                 @foreach($res['product_special'] as $val)
                     <li>
                         <span>
-                            <select name="product_special[{{$val['id']}}][group_id]" >
-                                @foreach($res['group'] as $k=>$v)
-                                    <option value="{{$v['id']}}" @if($v['id']==$val['group_id']) selected @endif>{{$v['name']}}</option>
-                                @endforeach
-                            </select>
+                            <input type="text" name="product_special[{{$val['id']}}][priority]" value="{{$val['priority']??1}}">
                         </span>
                         <span>
                             <input type="text" name="product_special[{{$val['id']}}][price]" value="{{$val['price']??0}}">
@@ -55,11 +54,7 @@
         let id = randomId(8)
         let html = `<li>
                         <span>
-                            <select name="product_special[${id}][group_id]" >
-                            @foreach($res['group'] as $k=>$v)
-                            <option value="{{$v['id']}}">{{$v['name']}}</option>
-                            @endforeach
-                            </select>
+                            <input type="number" name="product_special[${id}][priority]" value="1">
                         </span>
                         <span>
                             <input type="number" name="product_special[${id}][price]" value="0">

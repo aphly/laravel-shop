@@ -1,5 +1,8 @@
 <div class="top-bar">
     <h5 class="nav-title">商品 - {{$res['product']->name}}</h5>
+    <div>
+        @include('laravel-shop::admin.catalog.product.submenu')
+    </div>
 </div>
 <style>
 

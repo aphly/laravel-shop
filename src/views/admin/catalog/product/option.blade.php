@@ -1,5 +1,8 @@
 <div class="top-bar">
     <h5 class="nav-title">商品 - {{$res['product']->name}} - 选项</h5>
+    <div>
+        @include('laravel-shop::admin.catalog.product.submenu')
+    </div>
 </div>
 <style>
 
@@ -42,7 +45,7 @@
                                 @if($res['option'][$val['option_id']]['type']=='radio' || $res['option'][$val['option_id']]['type']=='select' || $res['option'][$val['option_id']]['type']=='checkbox')
                                 <ul>
                                     <li><span>选项值</span><span>数量</span><span>减少库存</span><span>价格</span>
-                                        <span>所需积分</span><span>重量</span><span data-option_id="{{$val['option_id']}}" onclick="add_option_value(this,'{{$val['id']}}')"><i class="uni app-jia"></i></span></li>
+                                        <span>奖励积分</span><span>重量</span><span data-option_id="{{$val['option_id']}}" onclick="add_option_value(this,'{{$val['id']}}')"><i class="uni app-jia"></i></span></li>
                                     @foreach($val['value_arr'] as $k=>$v)
                                         <li>
                                             <span>
@@ -180,7 +183,7 @@
         if(type=='select' || type=='radio' || type=='checkbox'){
             html += `<ul>
                     <li><span>选项值</span><span>数量</span><span>减少库存</span><span>价格</span>
-                    <span>所需积分</span><span>重量</span><span data-option_id="${option_id}" onclick="add_option_value(this,'${id}')"><i class="uni app-jia"></i></span></li>
+                    <span>奖励积分</span><span>重量</span><span data-option_id="${option_id}" onclick="add_option_value(this,'${id}')"><i class="uni app-jia"></i></span></li>
 
                 </ul>`
         }else if(type=='text'){

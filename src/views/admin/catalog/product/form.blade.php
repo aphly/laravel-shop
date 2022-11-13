@@ -1,9 +1,12 @@
 <div class="top-bar">
     <h5 class="nav-title">商品</h5>
+    <div>
+        @include('laravel-shop::admin.catalog.product.submenu')
+    </div>
 </div>
 
 <div class="imain">
-    <form method="post" @if($res['product']->id) action="/shop_admin/product/save?id={{$res['product']->id}}" @else action="/shop_admin/product/save" @endif class="save_form">
+    <form method="post" @if($res['product']->id) action="/shop_admin/product/edit?product_id={{$res['product']->id}}" @else action="/shop_admin/product/add" @endif class="save_form">
         @csrf
         <div class="">
             <div class="form-group">
@@ -35,11 +38,6 @@
                         @endforeach
                     @endif
                 </select>
-                <div class="invalid-feedback"></div>
-            </div>
-            <div class="form-group">
-                <label for="">所需积分</label>
-                <input type="text" name="points" class="form-control " value="{{$res['product']->points??0}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">

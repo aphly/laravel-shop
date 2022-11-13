@@ -133,17 +133,19 @@ class Cart extends Model
                             $discount_quantity += $cart2['quantity'];
                         }
                     }
-                    $product_discount = ProductDiscount::where('product_id', $cart['product_id'])->where('group_id', $group_id)
+                    $product_discount = ProductDiscount::where('product_id', $cart['product_id'])
                         ->where('quantity', '<=', $discount_quantity)->orderBy('quantity', 'desc')->first();
                     if (!empty($product_discount)) {
                         $price = $product_discount['price'];
                     }
 
-                    $product_special = ProductSpecial::where('product_id', $cart['product_id'])->where('group_id', $group_id)->where(function ($query) use ($time) {
-                        $query->where('date_start', '<', $time)->orWhere('date_start', 0);
-                    })->where(function ($query) use ($time) {
-                        $query->where('date_end', '>', $time)->orWhere('date_end', 0);
-                    })->orderBy('price', 'asc')->first();
+                    $product_special = ProductSpecial::where('product_id', $cart['product_id'])
+                        ->where(function ($query) use ($time){
+                            $query->where('date_start',0)->orWhere('date_start','<',$time);
+                        })->where(function ($query) use ($time){
+                            $query->where('date_end',0)->orWhere('date_end','>',$time);
+                        })->orderBy('priority','desc')->first();
+
                     if (!empty($product_special)) {
                         $price = $product_special['price'];
                     }
@@ -212,6 +214,11 @@ class Cart extends Model
         return self::where(['id'=>$cart_id])->delete();
     }
 
+    public function delUuid(){
+        Cookie::queue('shop_address_id', null , -1);
+        Cookie::queue('shop_shipping_id', null , -1);
+        return self::where(['uuid'=>User::uuid()])->delete();
+    }
 
     public static $total = [
         'shipping','coupon','sub_total','total'

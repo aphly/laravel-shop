@@ -2,8 +2,13 @@
 
 namespace Aphly\LaravelShop\Models\Sale;
 
+use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Models\Model;
+use Aphly\LaravelCommon\Models\UserCredit;
+use Aphly\LaravelShop\Models\Catalog\Product;
+use Aphly\LaravelShop\Models\Catalog\ProductOptionValue;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\DB;
 
 class Order extends Model
 {
@@ -19,5 +24,53 @@ class Order extends Model
 		'ip','user_agent','accept_language'
     ];
 
+    public function notify($payment)
+    {
+        DB::beginTransaction();
+        try {
+            $info = self::where(['payment_id'=>$payment->id])->lockForUpdate()->first();
+            if(!empty($info)){
+                $info->order_status_id=2;
+                if($info->save()){
+                    $this->addOrderHistory($info,$info->order_status_id);
+                }
+            }
+        }catch (ApiException $e) {
+            DB::rollBack();
+            throw $e;
+        }
+        DB::commit();
+    }
 
+    public function addOrderHistory($info, $order_status_id, $comment = '', $notify = false){
+        if($order_status_id==2){
+            $orderProduct = OrderProduct::where('order_id',$info->id)->get()->toArray();
+            foreach ($orderProduct as $val){
+                (new UserCredit)->handle('Reward', $info->uuid, 'point', '+', $val['reward'], 'payment_id#' . $info->payment_id);
+                Product::where(['subtract'=>1,'id'=>$val['product_id']])->decrement('quantity',$val['quantity']);
+                $orderOption = OrderOption::where(['order_id'=>$info->id,'order_product_id'=>$val['id']])->get()->toArray();
+                foreach ($orderOption as $v){
+                    ProductOptionValue::where(['product_option_value_id'=>$v['product_option_value_id'],'subtract'=>1])->decrement('quantity',$val['quantity']);
+                }
+            }
+        }else if($order_status_id==5){
+            $orderProduct = OrderProduct::where('order_id',$info->id)->get()->toArray();
+            foreach ($orderProduct as $val){
+                (new UserCredit)->handle('Reward', $info->uuid, 'point', '-', $val['reward'], 'cancel#' . $info->payment_id);
+                Product::where(['subtract'=>1,'id'=>$val['product_id']])->increment('quantity',$val['quantity']);
+                $orderOption = OrderOption::where(['order_id'=>$info->id,'order_product_id'=>$val['id']])->get()->toArray();
+                foreach ($orderOption as $v){
+                    ProductOptionValue::where(['product_option_value_id'=>$v['product_option_value_id'],'subtract'=>1])->increment('quantity',$val['quantity']);
+                }
+            }
+        }
+
+        OrderHistory::create([
+            'order_id'=>$info->id,
+            'order_status_id'=>$order_status_id,
+            'comment'=>$comment,
+            'notify'=>$notify
+        ]);
+
+    }
 }

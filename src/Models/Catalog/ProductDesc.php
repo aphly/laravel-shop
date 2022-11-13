@@ -13,9 +13,7 @@ class ProductDesc extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'product_id',
-        'description',
-        'meta_title','meta_description','meta_keyword'
+        'product_id','description','meta_description'
     ];
 
 }

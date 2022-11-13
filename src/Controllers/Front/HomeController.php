@@ -24,7 +24,7 @@ class HomeController extends Controller
         $res['list'] = $cart->getProducts();
         $res['total_data'] = $cart->totalData();
 
-        dd($res['total_data']);
+        dd($res['list']);
         $shipping = (new Shipping())->getTotal();
         dd($shipping);
     }

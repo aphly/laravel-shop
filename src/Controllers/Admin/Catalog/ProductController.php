@@ -57,6 +57,33 @@ class ProductController extends Controller
         throw new ApiException(['code'=>0,'msg'=>'success','data'=>['list'=>$list]]);
     }
 
+    public function add(Request $request)
+    {
+        if($request->isMethod('post')){
+            $input = $request->all();
+            $input['uuid'] = $this->manager->uuid;
+            $input['date_available'] = $input['date_available']?strtotime($input['date_available']):time();
+            Product::create($input);
+            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
+        }else{
+            $res['product'] = Product::where('id',$request->query('product_id',0))->firstOrNew();
+            return $this->makeView('laravel-shop::admin.catalog.product.form',['res'=>$res]);
+        }
+    }
+
+    public function edit(Request $request)
+    {
+        $res['product'] = Product::where('id',$request->query('product_id',0))->firstOrError();
+        if($request->isMethod('post')){
+            $input = $request->all();
+            $input['date_available'] = $input['date_available']?strtotime($input['date_available']):time();
+            $res['product']->update($input);
+            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
+        }else{
+            return $this->makeView('laravel-shop::admin.catalog.product.form',['res'=>$res]);
+        }
+    }
+
     public function form(Request $request)
     {
         $res['product'] = Product::where('id',$request->query('id',0))->firstOrNew();
@@ -65,7 +92,7 @@ class ProductController extends Controller
 
     public function save(Request $request){
         $input = $request->all();
-        $input['date_add'] = time();
+        $input['uuid'] = $this->manager->uuid;
         $input['date_available'] = $input['date_available']?strtotime($input['date_available']):time();
         Product::updateOrCreate(['id'=>$request->query('id',0)],$input);
         throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
@@ -101,20 +128,20 @@ class ProductController extends Controller
 
     public function img(Request $request)
     {
-        $res['info'] = Product::find($request->id);
-        $res['info_img'] = ProductImage::where('product_id',$request->id)->orderBy('sort','desc')->get()->toArray();
+        $res['product'] = Product::find($request->query('product_id',0));
+        $res['info_img'] = ProductImage::where('product_id',$res['product']->id)->orderBy('sort','desc')->get()->toArray();
         if($request->isMethod('post')) {
             if($request->hasFile('file')) {
                 $file_path = (new UploadFile(0.5,2))->uploads($request->file('file'), 'public/shop/product/image');
                 $img_src = $insertData = [];
                 foreach ($file_path as $key=>$val) {
                     $img_src[] = Storage::url($val);
-                    $insertData[] = ['product_id'=>$res['info']->id,'image'=>$val,'sort'=>$key];
+                    $insertData[] = ['product_id'=>$res['product']->id,'image'=>$val,'sort'=>$key];
                 }
                 if ($insertData) {
                     ProductImage::insert($insertData);
-                    $this->updateImg($request->id);
-                    throw new ApiException(['code' => 0, 'msg' => '上传成功', 'data' => ['redirect' => '/shop_admin/product/'.$res['info']->id.'/img','imgs'=>$img_src]]);
+                    $this->updateImg($res['product']->id);
+                    throw new ApiException(['code' => 0, 'msg' => '上传成功', 'data' => ['redirect' => '/shop_admin/product/img?product_id='.$res['product']->id,'imgs'=>$img_src]]);
                 }
             }
             throw new ApiException(['code'=>2,'data'=>'','msg'=>'上传错误']);
@@ -135,7 +162,7 @@ class ProductController extends Controller
                 Product::find($productImage->product_id)->update(['image'=>$productImage->image]);
             }
         }
-        throw new ApiException(['code' => 0, 'msg' => '更新成功', 'data' => ['redirect' => '/shop_admin/product/'.$request->id.'/img']]);
+        throw new ApiException(['code' => 0, 'msg' => '更新成功', 'data' => ['redirect' => '/shop_admin/product/img?product_id='.$request->query('product_id',0)]]);
     }
 
     public function imgDel(Request $request)
@@ -170,7 +197,7 @@ class ProductController extends Controller
                 $update_arr[] = ['attribute_id'=>$key,'text'=>$val,'product_id'=>$product_id];
             }
             ProductAttribute::insert($update_arr);
-            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>'/shop_admin/product/attribute?product_id='.$product_id]]);
+            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
         }else{
             $res['product_attribute'] = ProductAttribute::where('product_id',$product_id)->with('attribute')->get()->toArray();
             return $this->makeView('laravel-shop::admin.catalog.product.attribute',['res'=>$res]);
@@ -217,7 +244,7 @@ class ProductController extends Controller
                     ProductOptionValue::upsert($product_option_value_update,['id'],['product_option_id','product_id','option_id','option_value_id','quantity','subtract','price','points','weight']);
                 }
             }
-            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>'/shop_admin/product/option?product_id='.$product_id]]);
+            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
         }else{
             $res['product_option'] = ProductOption::where('product_id',$product_id)->with('value_arr')->orderBy('id','desc')->get()->toArray();
             $res['option'] = Option::with('value')->get()->keyBy('id')->toArray();
@@ -306,7 +333,7 @@ class ProductController extends Controller
             ProductSpecial::upsert($update,['id'],['product_id','group_id','price','date_start','date_end']);
             throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
         }else{
-            $res['group'] = Group::get()->keyBy('id')->toArray();
+            //$res['group'] = Group::get()->keyBy('id')->toArray();
             $res['product_special'] = ProductSpecial::where('product_id',$product_id)->get()->toArray();
             return $this->makeView('laravel-shop::admin.catalog.product.special',['res'=>$res]);
         }
@@ -329,10 +356,10 @@ class ProductController extends Controller
                 $arr_v['product_id'] = $product_id;
                 $update[] = $arr_v;
             }
-            ProductDiscount::upsert($update,['id'],['product_id','group_id','price','quantity']);
+            ProductDiscount::upsert($update,['id'],['product_id','price','quantity']);
             throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
         }else{
-            $res['group'] = Group::get()->keyBy('id')->toArray();
+            //$res['group'] = Group::get()->keyBy('id')->toArray();
             $res['product_discount'] = ProductDiscount::where('product_id',$product_id)->get()->toArray();
             return $this->makeView('laravel-shop::admin.catalog.product.discount',['res'=>$res]);
         }

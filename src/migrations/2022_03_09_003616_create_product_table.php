@@ -15,13 +15,13 @@ return new class extends Migration
     {
         Schema::create('shop_product', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('uuid')->index();
             $table->string('sku',64)->nullable()->default('')->index();
             $table->string('name',64)->nullable();
-            $table->unsignedInteger('quantity')->nullable();
+            $table->integer('quantity')->nullable();
             $table->string('image',255)->nullable();
-            $table->decimal('price',15,4)->nullable();
+            $table->decimal('price',15,2)->nullable();
             $table->tinyInteger('shipping')->nullable()->default(1);
-            $table->unsignedInteger('points')->nullable();
             $table->unsignedInteger('tax_class_id')->nullable()->default(1);
             $table->tinyInteger('stock_status_id');
             $table->float('weight')->nullable();

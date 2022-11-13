@@ -1,5 +1,8 @@
 <div class="top-bar">
-    <h5 class="nav-title">图片 - {{$res['info']->name}}</h5>
+    <h5 class="nav-title">图片 - {{$res['product']->name}}</h5>
+    <div>
+        @include('laravel-shop::admin.catalog.product.submenu')
+    </div>
 </div>
 <style>
     .product_img .item{margin: 0 10px;}
@@ -21,7 +24,7 @@
             </div>
             <input type="file" class="fileUpload" accept="image/gif,image/jpeg,image/jpg,image/png"  multiple="multiple" style="display: none" onchange="uploadImg(this)">
         </label>
-        <form method="post" action="/shop_admin/product/{{$res['info']->id}}/img_save" class="save_form" >
+        <form method="post" action="/shop_admin/product/img_save?product_id={{$res['product']->id}}" class="save_form" >
             @csrf
             @if($res['info_img'])
                 <ul class="d-flex flex-wrap product_img">
@@ -79,7 +82,7 @@
             formData.append("file[]", $(_this)[0].files[i]);
         }
         formData.append('_token', '{{csrf_token()}}');
-        let url = '/shop_admin/product/{{$res['info']->id}}/img';
+        let url = '/shop_admin/product/img?product_id={{$res['product']->id}}';
         let type = 'post';
         if(url && type){
             $.ajax({

@@ -112,20 +112,20 @@ class InstallController extends Controller
             DB::table('admin_dict_value')->insert($data);
         }
 		$data=[];
-		$data[] =['id'=>'1','name'=>'Pending'];
-		$data[] =['id'=>'2','name'=>'Processing'];
-		$data[] =['id'=>'3','name'=>'Shipped'];
-		$data[] =['id'=>'4','name'=>'Complete'];
-		$data[] =['id'=>'5','name'=>'Canceled'];
-		$data[] =['id'=>'6','name'=>'Denied'];
-		$data[] =['id'=>'7','name'=>'Canceled Reversal'];
-		$data[] =['id'=>'8','name'=>'Failed'];
-		$data[] =['id'=>'9','name'=>'Refunded'];
-		$data[] =['id'=>'10','name'=>'Reversed'];
-		$data[] =['id'=>'11','name'=>'Chargeback'];
-		$data[] =['id'=>'12','name'=>'Expired'];
-		$data[] =['id'=>'13','name'=>'Processed'];
-		$data[] =['id'=>'14','name'=>'Voided'];
+		$data[] =['id'=>'1','name'=>'Pending','cn_name'=>'待支付'];
+		$data[] =['id'=>'2','name'=>'Processing','cn_name'=>'处理中'];
+		$data[] =['id'=>'3','name'=>'Shipped','cn_name'=>'已寄送'];
+		$data[] =['id'=>'4','name'=>'Complete','cn_name'=>'已完成'];
+		$data[] =['id'=>'5','name'=>'Canceled','cn_name'=>'已取消'];
+		$data[] =['id'=>'6','name'=>'Denied','cn_name'=>''];
+		$data[] =['id'=>'7','name'=>'Canceled Reversal','cn_name'=>''];
+		$data[] =['id'=>'8','name'=>'Failed','cn_name'=>''];
+		$data[] =['id'=>'9','name'=>'Refunded','cn_name'=>''];
+		$data[] =['id'=>'10','name'=>'Reversed','cn_name'=>''];
+		$data[] =['id'=>'11','name'=>'Chargeback','cn_name'=>''];
+		$data[] =['id'=>'12','name'=>'Expired','cn_name'=>''];
+		$data[] =['id'=>'13','name'=>'Processed','cn_name'=>''];
+		$data[] =['id'=>'14','name'=>'Voided','cn_name'=>''];
 		DB::table('shop_order_status')->insert($data);
         return 'install_ok';
     }

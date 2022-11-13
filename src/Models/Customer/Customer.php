@@ -38,7 +38,6 @@ class Customer extends Model
         Cookie::queue('guest', null , -1);
         Cookie::queue('shop_address_id', null , -1);
         Cookie::queue('shop_shipping_id', null , -1);
-        Cookie::queue('payment_method_id', null , -1);
     }
 
     function afterRegister($user){

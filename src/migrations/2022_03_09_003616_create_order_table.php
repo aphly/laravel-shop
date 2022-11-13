@@ -33,13 +33,13 @@ return new class extends Migration
             $table->unsignedBigInteger('shipping_id');
             $table->string('shipping_name',32);
             $table->string('shipping_desc',255)->nullable();
-            $table->decimal('shipping_cost',15,4);
-            $table->decimal('shipping_free_cost',15,4)->nullable();
+            $table->decimal('shipping_cost',15,2);
+            $table->decimal('shipping_free_cost',15,2)->nullable();
             $table->unsignedBigInteger('shipping_geo_group_id')->nullable();
 
             $table->unsignedBigInteger('payment_method_id');
 
-            $table->decimal('total',15,4);
+            $table->decimal('total',15,2);
             $table->text('comment')->nullable();
 
             $table->unsignedBigInteger('currency_id');
@@ -53,6 +53,7 @@ return new class extends Migration
             $table->string('accept_language',255)->nullable();
             $table->unsignedBigInteger('created_at');
             $table->unsignedBigInteger('updated_at');
+            $table->engine = 'InnoDB';
         });
     }
 

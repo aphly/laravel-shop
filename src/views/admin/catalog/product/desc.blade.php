@@ -1,5 +1,8 @@
 <div class="top-bar">
     <h5 class="nav-title">商品 - {{$res['product']->name}}</h5>
+    <div>
+        @include('laravel-shop::admin.catalog.product.submenu')
+    </div>
 </div>
 <div class="imain">
     <form method="post" @if($res['product']->id) action="/shop_admin/product/desc?product_id={{$res['product']->id}}" @else action="/shop_admin/product/desc" @endif class="save_form">
@@ -11,18 +14,8 @@
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">meta_title</label>
-                <input type="text" name="meta_title" class="form-control " value="{{$res['product_desc']->meta_title}}">
-                <div class="invalid-feedback"></div>
-            </div>
-            <div class="form-group">
                 <label for="">meta_description</label>
-                <input type="text" name="meta_description" class="form-control " value="{{$res['product_desc']->meta_description}}">
-                <div class="invalid-feedback"></div>
-            </div>
-            <div class="form-group">
-                <label for="">meta_keyword</label>
-                <input type="text" name="meta_keyword" class="form-control " value="{{$res['product_desc']->meta_keyword}}">
+                <input type="text" name="meta_description" required class="form-control " value="{{$res['product_desc']->meta_description}}">
                 <div class="invalid-feedback"></div>
             </div>
         </div>

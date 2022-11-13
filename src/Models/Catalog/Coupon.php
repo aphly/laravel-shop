@@ -135,8 +135,7 @@ class Coupon extends Model
 
                 if ($discount_total > 0) {
                     $total_data['totals'][] = array(
-                        'code'       => 'coupon',
-                        'title'      => $coupon,
+                        'title'      => 'Coupon',
                         'value'      => $discount_total,
                         'value_format'=> '-'.Currency::format($discount_total),
                         'sort_order' => 2

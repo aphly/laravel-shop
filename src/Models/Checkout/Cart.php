@@ -241,7 +241,7 @@ class Cart extends Model
         ];
         $total_data['total'] += $value;
 
-		//(new Coupon())->getTotal($total_data);
+		(new Coupon())->getTotal($total_data);
 
 		(new Shipping())->getTotal($total_data);
 

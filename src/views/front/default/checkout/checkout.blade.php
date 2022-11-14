@@ -1,4 +1,4 @@
-@include('laravel-shop::front.common.header')
+@include('laravel-shop-front::common.header')
 <link rel="stylesheet" href="{{ URL::asset('static/shop/css/checkout.css') }}"/>
 <style>
 
@@ -353,4 +353,4 @@
         })
     })
 </script>
-@include('laravel-shop::front.common.footer')
+@include('laravel-shop-front::common.footer')

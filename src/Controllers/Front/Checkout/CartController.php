@@ -31,7 +31,7 @@ class CartController extends Controller
             }
         }
         $res['total_data'] = $cart->totalData();
-        return $this->makeView('laravel-shop::front.checkout.cart',['res'=>$res]);
+        return $this->makeView('laravel-shop-front::checkout.cart',['res'=>$res]);
     }
 
     public function add(Request $request)

@@ -1,4 +1,4 @@
-@include('laravel-shop::front.common.header')
+@include('laravel-shop-front::common.header')
 <link rel="stylesheet" href="{{ URL::asset('static/shop/css/checkout.css') }}"/>
 <style>
 
@@ -8,15 +8,12 @@
         <div class="col-12">
             {{$res['address']['firstname']}} {{$res['address']['lastname']}} {{$res['address']['address_1']}}
         </div>
-        <div class="col-12">
-            {{$res['shipping']['name']}}
-        </div>
         <div class="col-8">
-            <form action="/checkout/pay" method="post" class="save_form">
+            <form action="/checkout/shipping" method="post" class="save_form">
                 @csrf
-                @foreach($res['paymentMethod'] as $val)
-                    <label class="checkout-payment" data-id="{{$val['id']}}">
-                        <input type="radio" class="checkout-form-radio col-1 shipping-address" name="payment_method_id" value="{{$val['id']}}">
+                @foreach($res['shipping'] as $val)
+                    <label class="checkout-shipping" data-id="{{$val['id']}}">
+                        <input type="radio" class="checkout-form-radio col-1 shipping-address" name="shipping_id" value="{{$val['id']}}">
                         <div class="col-11 pl-3">
                             <div>{{$val['name']}}</div>
                             <a href="javascript:;"
@@ -25,11 +22,11 @@
                         </div>
                     </label>
                 @endforeach
-                <button> pay</button>
+                <button> next</button>
             </form>
         </div>
         <div class="col-4">
-            @include('laravel-shop::front.checkout.right')
+            @include('laravel-shop-front::checkout.right')
         </div>
     </div>
 
@@ -40,4 +37,4 @@
 <script>
 
 </script>
-@include('laravel-shop::front.common.footer')
+@include('laravel-shop-front::common.footer')

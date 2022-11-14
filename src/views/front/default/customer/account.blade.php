@@ -1,10 +1,10 @@
-@include('laravel-shop::front.common.header')
+@include('laravel-shop-front::common.header')
 <div class="container">
     <div class="top-bar">
         <h5 class="nav-title">首页</h5>
     </div>
     <div class="d-flex  justify-content-between">
-        @include('laravel-shop::Front.customer.leftmenu')
+        @include('laravel-shop-front::customer.leftmenu')
         <div class="main-section">
             你好
             @if(session('user'))
@@ -21,4 +21,4 @@
     </div>
 </div>
 
-@include('laravel-shop::front.common.footer')
+@include('laravel-shop-front::common.footer')

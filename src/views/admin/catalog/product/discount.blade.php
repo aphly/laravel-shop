@@ -5,6 +5,8 @@
     </div>
 </div>
 <div class="imain">
+    <div class="" style="margin-bottom: 10px;color: darkred">'特价'和'批发打折'同时存在，优先使用特价</div>
+
     <form method="post" @if($res['product']->id) action="/shop_admin/product/discount?product_id={{$res['product']->id}}" @else action="/shop_admin/product/discount" @endif class="save_form">
         @csrf
         <div class="">

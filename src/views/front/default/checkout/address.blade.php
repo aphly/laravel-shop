@@ -1,4 +1,4 @@
-@include('laravel-shop::front.common.header')
+@include('laravel-shop-front::common.header')
 <link rel="stylesheet" href="{{ URL::asset('static/shop/css/checkout.css') }}"/>
 <style>
 
@@ -26,7 +26,7 @@
             </form>
         </div>
         <div class="col-4">
-            @include('laravel-shop::front.checkout.right')
+            @include('laravel-shop-front::checkout.right')
         </div>
     </div>
 
@@ -37,4 +37,4 @@
 <script>
 
 </script>
-@include('laravel-shop::front.common.footer')
+@include('laravel-shop-front::common.footer')

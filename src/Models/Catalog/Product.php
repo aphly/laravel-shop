@@ -126,16 +126,22 @@ class Product extends Model
         return ProductAttribute::with('attribute')->where('product_id',$id)->get()->toArray();
     }
 
-    function findSpecial($id,$group_id){
-        return ProductSpecial::where('product_id',$id)->where('group_id',$group_id)->first();
+    function findSpecial($id){
+        $time = time();
+        return ProductSpecial::where('product_id',$id)->where(function ($query) use ($time){
+            $query->where('date_start',0)->orWhere('date_start','<',$time);
+        })->where(function ($query) use ($time){
+            $query->where('date_end',0)->orWhere('date_end','>',$time);
+        })->orderBy('priority','desc')
+            ->select('price')->first();
     }
 
     function findReward($id,$group_id){
         return ProductReward::where('product_id',$id)->where('group_id',$group_id)->first();
     }
 
-    function findDiscount($id,$group_id){
-        return ProductDiscount::where('product_id',$id)->where('group_id',$group_id)->get()->toArray();
+    function findDiscount($id){
+        return ProductDiscount::where('product_id',$id)->get()->toArray();
     }
 
     function findOption($id,$render=false){

@@ -32,8 +32,10 @@ class ProductController extends Controller
         $res['list'] = (new Product)->getList($filter_data);
         foreach ($res['list']->items() as $key=>$val){
             $res['list']->items()[$key]->price= Currency::format($res['list']->items()[$key]->price);
+            $res['list']->items()[$key]->special= Currency::format($res['list']->items()[$key]->special);
+            $res['list']->items()[$key]->discount= Currency::format($res['list']->items()[$key]->discount);
         }
-        return $this->makeView('laravel-shop::front.product.category',['res'=>$res]);
+        return $this->makeView('laravel-shop-front::product.category',['res'=>$res]);
     }
 
     public function detail(Request $request)
@@ -44,12 +46,12 @@ class ProductController extends Controller
         if(!empty($res['info'])){
             $group_id = User::groupId();
             $res['info_attr'] = $res['info']->findAttribute($res['info']->id);
-            $res['info_special'] = $res['info']->findSpecial($res['info']->id,$group_id);
-            $res['info_reward'] = $res['info']->findReward($res['info']->id,$group_id);
-            $res['info_discount'] = $res['info']->findDiscount($res['info']->id,$group_id);
             $res['info_option'] = $res['info']->findOption($res['info']->id,true);
+            $res['info_special'] = $res['info']->findSpecial($res['info']->id);
+            $res['info_reward'] = $res['info']->findReward($res['info']->id,$group_id);
+            $res['info_discount'] = $res['info']->findDiscount($res['info']->id);
         }
-        return $this->makeView('laravel-shop::front.product.detail',['res'=>$res]);
+        return $this->makeView('laravel-shop-front::product.detail',['res'=>$res]);
     }
 
 

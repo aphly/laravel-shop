@@ -42,7 +42,7 @@ class CheckoutController extends Controller
             $res['address'] = (new UserAddress)->getAddresses();
 			$res['shipping'] = (new Shipping)->getList();
 			$res['paymentMethod'] = (new PaymentMethod)->findAll();
-            return $this->makeView('laravel-shop::front.checkout.checkout',['res'=>$res]);
+            return $this->makeView('laravel-shop-front::checkout.checkout',['res'=>$res]);
         }else{
             return redirect('cart');
         }
@@ -69,7 +69,7 @@ class CheckoutController extends Controller
             $res['list'] = $cart->getProducts();
             $res['total_data'] = $cart->totalData();
 			$res['address'] = (new UserAddress)->getAddresses();
-			return $this->makeView('laravel-shop::front.checkout.address',['res'=>$res]);
+			return $this->makeView('laravel-shop-front::checkout.address',['res'=>$res]);
 		}
     }
 
@@ -101,7 +101,7 @@ class CheckoutController extends Controller
             $res['list'] = $cart->getProducts();
             $res['total_data'] = $cart->totalData();
 			$res['shipping'] = (new Shipping)->getList();
-			return $this->makeView('laravel-shop::front.checkout.shipping',['res'=>$res]);
+			return $this->makeView('laravel-shop-front::checkout.shipping',['res'=>$res]);
 		}
     }
 
@@ -222,7 +222,7 @@ class CheckoutController extends Controller
 			throw new ApiException(['code' => 1, 'msg' => 'payment method fail']);
 		}else{
 			$res['paymentMethod'] = (new PaymentMethod)->findAll();
-			return $this->makeView('laravel-shop::front.checkout.payment_method',['res'=>$res]);
+			return $this->makeView('laravel-shop-front::checkout.payment_method',['res'=>$res]);
 		}
     }
 

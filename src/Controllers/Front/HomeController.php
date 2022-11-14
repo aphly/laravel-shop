@@ -14,7 +14,7 @@ class HomeController extends Controller
     public function index()
     {
         $res['title'] = 'Home index';
-        return $this->makeView('laravel-shop::front.home.index',['res'=>$res]);
+        return $this->makeView('laravel-shop-front::home.index',['res'=>$res]);
     }
 
     public function home1(Request $request)

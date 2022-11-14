@@ -1,4 +1,4 @@
-@include('laravel-shop::front.common.header')
+@include('laravel-shop-front::common.header')
 <style>
     .product-category{display:flex;flex-wrap:wrap}
     .product-category li{width:calc(20% - 8.5px);margin:0px 10px 10px 0px;padding:10px;background:#fff;box-shadow:0 2px 12px 2px #eee}
@@ -21,11 +21,14 @@
                 <div class="price">
                     <span class="normal">{{$val->price}}</span>
                 </div>
+                <div class="price">
+                    <span class="normal">{{$val->special}}</span>
+                </div>
             </li>
         @endforeach
     </ul>
     <div>
-        {{$res['list']->links('laravel-common::front.common.pagination')}}
+        {{$res['list']->links('laravel-common-front::common.pagination')}}
     </div>
 </div>
 <style>
@@ -38,4 +41,4 @@
     })
 </script>
 
-@include('laravel-shop::front.common.footer')
+@include('laravel-shop-front::common.footer')

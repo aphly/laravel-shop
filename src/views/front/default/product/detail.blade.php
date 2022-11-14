@@ -1,4 +1,4 @@
-@include('laravel-shop::front.common.header')
+@include('laravel-shop-front::common.header')
 <link rel="stylesheet" href="{{ URL::asset('static/shop/css/idangerous.swiper.css') }}"/>
 <style>
     label img{width:50px;height:50px}
@@ -52,7 +52,8 @@
                 @endif
             </div>
             <div>
-                {{$res['info']->name}} {{$res['info']->price}}
+                {{$res['info']->name}}
+                {{$res['info']->price}}
             </div>
         </div>
     </div>
@@ -139,4 +140,4 @@
     })
 </script>
 
-@include('laravel-shop::front.common.footer')
+@include('laravel-shop-front::common.footer')

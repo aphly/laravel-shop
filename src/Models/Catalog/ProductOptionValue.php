@@ -12,12 +12,16 @@ class ProductOptionValue extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'product_option_id','product_id','option_id','option_value_id',
+        'product_option_id','product_id','option_id','option_value_id','product_image_id',
         'quantity','subtract','price','points','weight'
     ];
 
     function option_value(){
         return $this->hasOne(OptionValue::class,'id','option_value_id');
+    }
+
+    function productImage(){
+        return $this->hasOne(ProductImage::class,'id','product_image_id');
     }
 
 }

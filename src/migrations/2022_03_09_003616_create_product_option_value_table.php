@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('product_id')->unsigned()->index();
             $table->integer('option_id')->unsigned()->index();
             $table->integer('option_value_id')->unsigned()->index();
+            $table->integer('product_image_id')->unsigned()->nullable();
             $table->integer('quantity')->nullable();
             $table->tinyInteger('subtract')->unsigned()->nullable();
             $table->decimal('price',15,2)->nullable();

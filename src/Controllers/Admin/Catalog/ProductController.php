@@ -248,6 +248,7 @@ class ProductController extends Controller
         }else{
             $res['product_option'] = ProductOption::where('product_id',$product_id)->with('value_arr')->orderBy('id','desc')->get()->toArray();
             $res['option'] = Option::with('value')->get()->keyBy('id')->toArray();
+            $res['product_image'] = ProductImage::where('product_id',$product_id)->get()->keyBy('id')->toArray();
             return $this->makeView('laravel-shop::admin.catalog.product.option',['res'=>$res]);
         }
     }

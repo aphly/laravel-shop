@@ -44,7 +44,7 @@
                             <div class="option_value_list">
                                 @if($res['option'][$val['option_id']]['type']=='radio' || $res['option'][$val['option_id']]['type']=='select' || $res['option'][$val['option_id']]['type']=='checkbox')
                                 <ul>
-                                    <li><span>选项值</span><span>数量</span><span>减少库存</span><span>价格</span>
+                                    <li><span>选项值</span><span>关联图片</span><span>数量</span><span>减少库存</span><span>价格</span>
                                         <span>奖励积分</span><span>重量</span><span data-option_id="{{$val['option_id']}}" onclick="add_option_value(this,'{{$val['id']}}')"><i class="uni app-jia"></i></span></li>
                                     @foreach($val['value_arr'] as $k=>$v)
                                         <li>
@@ -54,6 +54,9 @@
                                                     <option value="{{$v1['id']}}" @if($v1['id']==$v['option_value_id']) selected @endif>{{$v1['name']}}</option>
                                                     @endforeach
                                                 </select>
+                                            </span>
+                                            <span>
+                                                <input type="hidden" name="product_option[{{$val['id']}}][{{$val['option_id']}}][option_value][{{$v['id']}}][product_image_id]" value="{{$v['product_image_id']}}">
                                             </span>
                                             <span><input type="number" name="product_option[{{$val['id']}}][{{$val['option_id']}}][option_value][{{$v['id']}}][quantity]" value="{{$v['quantity']}}"></span>
                                             <span>
@@ -101,13 +104,48 @@
             </div>
             <div class="d-flex justify-content-end" style="margin-right: 20px">
                 <button class="btn btn-primary" type="submit">保存</button>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#product_image">
+                    Launch static backdrop modal
+                </button>
             </div>
 
         </div>
     </form>
 </div>
+<div class="modal fade" id="product_image" data-backdrop="static" data-keyboard="false" aria-labelledby="staticBackdropLabel" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @if($res['product_image'])
+                    <ul class="d-flex flex-wrap product_img">
+                        @foreach($res['product_image'] as $v)
+                            <li class="item">
+                                <div class="img">
+                                    <img src="{{Storage::url($v['image'])}}" >
+                                    <div class="delImg" onclick="removeImg({{$v['id']}},this)"><i class="uni app-lajitong"></i></div>
+                                </div>
+                                <input type="hidden" name="sort[{{$v['id']}}]" value="{{$v['sort']}}">
+                            </li>
+                        @endforeach
+                    </ul>
+                @endif
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">添加图片</button>
+                <button type="button" class="btn btn-primary">完成</button>
+            </div>
+        </div>
+    </div>
+</div>
 <style>
-
+    .imglist{border:1px solid #ddd;width: 32px;height: 32px;display: flex;align-items: center;justify-content: center;cursor: pointer;}
+    .imglist img{width: 100%;height: 100%;}
 </style>
 <script>
     var ajax_res_data = @json($res['option']);
@@ -182,7 +220,7 @@
         let html = ``
         if(type=='select' || type=='radio' || type=='checkbox'){
             html += `<ul>
-                    <li><span>选项值</span><span>数量</span><span>减少库存</span><span>价格</span>
+                    <li><span>选项值</span><span>关联图片</span><span>数量</span><span>减少库存</span><span>价格</span>
                     <span>奖励积分</span><span>重量</span><span data-option_id="${option_id}" onclick="add_option_value(this,'${id}')"><i class="uni app-jia"></i></span></li>
 
                 </ul>`
@@ -224,6 +262,12 @@
                           ${option}
                     </select>
                     </span>
+                    <span>
+                        <label>
+                            <input type="hidden" name="product_option[${id}][${option_id}][option_value][${vid}][product_image_id]" value="">
+                            <div class="imglist" data-id="product_option[${id}][${option_id}][option_value][${vid}][product_image_id]">+</div>
+                        </label>
+                    </span>
                     <span><input type="number" name="product_option[${id}][${option_id}][option_value][${vid}][quantity]" value="1"></span>
                     <span>
                         <select name="product_option[${id}][${option_id}][option_value][${vid}][subtract]" class="form-control">
@@ -248,6 +292,11 @@
                 $('.search_res').hide();
             }
         });
+        $('#iload').on('click', '.imglist', function (e) {
+            e.stopPropagation()
+            console.log($(this).data('id'))
+        })
+
         $('.option').on('focus', '.search_input', function (e) {
             e.stopPropagation()
             $('.search_res').hide();

@@ -56,7 +56,18 @@
                                                 </select>
                                             </span>
                                             <span>
-                                                <input type="hidden" name="product_option[{{$val['id']}}][{{$val['option_id']}}][option_value][{{$v['id']}}][product_image_id]" value="{{$v['product_image_id']}}">
+                                                <label>
+                                                    <input type="hidden" name="product_option[{{$val['id']}}][{{$val['option_id']}}][option_value][{{$v['id']}}][product_image_id]" value="">
+                                                    <div class="imglist" data-id="product_option[{{$val['id']}}][{{$val['option_id']}}][option_value][{{$v['id']}}][product_image_id]"
+                                                         data-image_id="{{$v['product_image_id']}}" data-image_src="{{Storage::url($res['product_image'][$v['product_image_id']]['image'])}}"
+                                                    >
+                                                       @if($v['product_image_id'] && $res['product_image'][$v['product_image_id']])
+                                                            <img src="{{Storage::url($res['product_image'][$v['product_image_id']]['image'])}}" alt="">
+                                                       @else
+                                                           +
+                                                       @endif
+                                                    </div>
+                                                </label>
                                             </span>
                                             <span><input type="number" name="product_option[{{$val['id']}}][{{$val['option_id']}}][option_value][{{$v['id']}}][quantity]" value="{{$v['quantity']}}"></span>
                                             <span>
@@ -104,9 +115,6 @@
             </div>
             <div class="d-flex justify-content-end" style="margin-right: 20px">
                 <button class="btn btn-primary" type="submit">保存</button>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#product_image">
-                    Launch static backdrop modal
-                </button>
             </div>
 
         </div>
@@ -116,7 +124,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                <h5 class="modal-title" id="staticBackdropLabel">关联图片</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -128,7 +136,7 @@
                             <li class="item" data-id="{{$v['id']}}" data-image="{{Storage::url($v['image'])}}">
                                 <div class="img">
                                     <img src="{{Storage::url($v['image'])}}" >
-
+                                    <i class="uni app-duigouxiao"></i>
                                 </div>
                                 <input type="hidden" name="sort[{{$v['id']}}]" value="{{$v['sort']}}">
                             </li>
@@ -137,13 +145,19 @@
                 @endif
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">添加图片</button>
-                <button type="button" class="btn btn-primary">完成</button>
+                <a class="btn btn-secondary ajax_get" data-href="/shop_admin/product/img?product_id={{$res['product']->id}}" data-fn="$('#product_image').modal('toggle')">添加图片</a>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">完成</button>
             </div>
         </div>
     </div>
 </div>
 <style>
+    .product_img li{margin: 1%;}
+    .product_img li img{width: 100px;height: 100px;}
+    .product_img li.active{border:1px solid #0da9c4;}
+    .product_img li .img{position: relative;}
+    .product_img li i{display: none;width: 20px;height: 20px;top: 5px;left: 5px;}
+    .product_img li.active i{display: block;position: absolute;color:#0da9c4; }
     .imglist{border:1px solid #ddd;width: 32px;height: 32px;display: flex;align-items: center;justify-content: center;cursor: pointer;}
     .imglist img{width: 100%;height: 100%;}
 </style>
@@ -285,15 +299,38 @@
     }
 
     function mount() {
-        $('body').on("click", function (e) {
+        $('body').off('click').on("click", function (e) {
             //let id = $(e.target).data('id')
             if (e.target.className !== 'search_input') {
                 $('.search_res').hide();
             }
         });
-        $('#iload').on('click', '.imglist', function (e) {
+        
+        $('.product_img').on('click','li',function () {
+            $('.product_img li').removeClass('active')
+            $(this).addClass('active')
+            let old_id = $('.product_img').attr('data-id');
+            $('.imain input[name="'+old_id+'"]').val($(this).data('id'))
+            $('.imain .imglist[data-id="'+old_id+'"]').attr('data-image_id',$(this).data('id'))
+                .attr('data-image_src',$(this).data('image'))
+                .html('<img src="'+$(this).data('image')+'" />')
+        })
+        
+        $('.imain').on('click', '.imglist', function (e) {
             e.stopPropagation()
-            console.log($(this).data('id'))
+            $('#product_image').modal('toggle').find('.product_img').attr('data-id',$(this).data('id'));
+            let image_id = $(this).attr('data-image_id');
+            let image_src = $(this).attr('data-image_src');
+            if(image_id && image_src){
+                $('.product_img li').each(function (){
+                    let _this = $(this)
+                    if(_this.data('id')==image_id && _this.data('image')===image_src){
+                        _this.addClass('active')
+                    }else{
+                        _this.removeClass('active')
+                    }
+                })
+            }
         })
 
         $('.option').on('focus', '.search_input', function (e) {

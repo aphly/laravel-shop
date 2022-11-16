@@ -89,7 +89,7 @@
     }
 
     $(function () {
-        $('body').on("click", function (e) {
+        $('body').off('click').on("click", function (e) {
             //let id = $(e.target).data('id')
             if (e.target.className !== 'search_input') {
                 $('.search_res').hide();

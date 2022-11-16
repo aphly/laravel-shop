@@ -284,8 +284,7 @@
         $(_this).closest('ul').append(li);
     }
 
-
-    $(function () {
+    function mount() {
         $('body').on("click", function (e) {
             //let id = $(e.target).data('id')
             if (e.target.className !== 'search_input') {
@@ -312,6 +311,10 @@
             e.stopPropagation()
             $(this).closest('li').remove()
         })
+    }
+
+    $(function () {
+        mount()
     })
 </script>
 

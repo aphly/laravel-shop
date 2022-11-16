@@ -75,7 +75,7 @@
         $(_this).closest('.search').children('input').val($(_this).data('name'))
         $(_this).closest('.search_res').hide()
     }
-    $(function () {
+    function mount() {
         $('body').on("click", function (e) {
             //let id = $(e.target).data('id')
             if (e.target.className !== 'search_input') {
@@ -92,6 +92,9 @@
             $('.search_res').hide();
             search_ajax(this)
         })
+    }
+    $(function () {
+        mount()
     })
 </script>
 

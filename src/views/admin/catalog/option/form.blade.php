@@ -147,10 +147,12 @@
                     </li>`;
         $('.add_div ul').append(html);
     }
+
     function filter_delDiv(_this) {
         $(_this).parent().remove()
     }
-    $(function () {
+
+    function mount() {
         $(option_form).on('change',".fileUpload",function (e) {
             e.stopPropagation();
             let img_html = ''
@@ -176,6 +178,10 @@
                 $('.option_op').hide();
             }
         })
+    }
+
+    $(function () {
+        mount()
     })
 
 </script>

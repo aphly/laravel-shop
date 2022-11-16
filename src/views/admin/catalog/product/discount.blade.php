@@ -41,10 +41,13 @@
 .discount li span input,.discount li span select{ width: 100%;outline: none;height: 32px;line-height: 32px;padding: 0 10px;border: 1px solid #999;border-radius: 4px;}
 </style>
 <script>
-    $(function () {
+    function mount() {
         $('.discount').on('click','.app-jian',function () {
             $(this).closest('li').remove();
         })
+    }
+    $(function () {
+        mount()
     })
     function add_discount() {
         let id = randomId(8)

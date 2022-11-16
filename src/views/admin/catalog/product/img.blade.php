@@ -46,7 +46,7 @@
     </div>
 </div>
 <script>
-    $(function () {
+    function mount() {
         $('.product_img').on('click','.img_pre',function () {
             let curr = $(this).closest('.item');
             let pre = curr.prev();
@@ -65,6 +65,9 @@
             }
             resetSort()
         })
+    }
+    $(function () {
+        mount()
     })
 
     function resetSort(){

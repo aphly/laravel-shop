@@ -138,7 +138,7 @@
         $(_this).closest('.form-group').children('.search_text').append(html)
     }
 
-    $(function () {
+    function mount() {
         $('body').on("click", function (e) {
             //let id = $(e.target).data('id')
             if (e.target.className !== 'search_input') {
@@ -169,5 +169,9 @@
             $('.search_res_cate').hide();
             search_ajax(this,'product')
         })
+    }
+
+    $(function () {
+        mount()
     })
 </script>

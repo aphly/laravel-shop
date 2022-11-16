@@ -125,10 +125,10 @@
                 @if($res['product_image'])
                     <ul class="d-flex flex-wrap product_img">
                         @foreach($res['product_image'] as $v)
-                            <li class="item">
+                            <li class="item" data-id="{{$v['id']}}" data-image="{{Storage::url($v['image'])}}">
                                 <div class="img">
                                     <img src="{{Storage::url($v['image'])}}" >
-                                    <div class="delImg" onclick="removeImg({{$v['id']}},this)"><i class="uni app-lajitong"></i></div>
+
                                 </div>
                                 <input type="hidden" name="sort[{{$v['id']}}]" value="{{$v['sort']}}">
                             </li>

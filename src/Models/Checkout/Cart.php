@@ -37,7 +37,11 @@ class Cart extends Model
         return $this->hasOne(Product::class,'id','product_id');
     }
 
-    public function login() {
+    public function afterRegister() {
+        $this->afterLogin();
+    }
+
+    public function afterLogin() {
         $guest = Cookie::get('guest');
         if($guest){
             $cart = self::where('guest',$guest);

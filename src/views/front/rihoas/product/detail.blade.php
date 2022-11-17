@@ -1,7 +1,7 @@
 @include('laravel-shop-front::common.header')
 <link rel="stylesheet" href="{{ URL::asset('static/shop/css/idangerous.swiper.css') }}"/>
 <style>
-    label img{width:50px;height:50px}
+
     .product_detail_img{max-width:500px;width:100%;position:relative}
     .product_detail_img .big_img{border-right:1px solid #f1f1f1;border-bottom:1px solid #f1f1f1;width:100%;height:500px}
     .product_detail_img .big_img img{width:100%;height:100%}
@@ -17,27 +17,24 @@
     .product_detail_img .lr_icon > div{background:url({{URL::asset('static/shop/img/leftright.png')}}) no-repeat;width:100%;height:100%;margin:0 auto;cursor:pointer}
     .product_detail_img .lr_icon.right{right:0px;top:10px;width:25px}
     .product_detail_img .lr_icon.right > div{background-position:right center}
-    .product_detail_img .zoomdiv.show{visibility:visible}
-    .product_detail_img .jqZoomPup{z-index:999;display:none;position:absolute;top:0px;left:0px;box-sizing:content-box;width:250px;height:250px;background:#fff;opacity:0.5;filter:alpha(Opacity=50);cursor:pointer}
-    .product_detail_img .zoomdiv{visibility:hidden;z-index:999;position:absolute;top:0;left:510px;width:500px;height:500px;background:#fff;text-align:center;overflow:hidden}
+
 </style>
 <div class="container">
     <div>
         <div>
-            <div class="product_detail_img">
-                <div class="big_img J_zoom">
-                    <img src="{{ \Aphly\LaravelShop\Models\Catalog\ProductImage::render($res['info']->image) }}"
-                         id="big_pic" class="zoom-img">
+            <div class="product_detail_img" id="aphly_viewerjs">
+                <div class="big_img ">
+                    <img src="{{ $res['info_img'][0]['image_src']??'' }}" id="big_pic" class="aphly_viewer">
                 </div>
-                @if(count($res['info']->img))
+                @if($res['info_img'])
                     <div class="small_img  position-relative ">
                         <div class="swiper-container swiper-container_pc">
                             <div class="swiper-wrapper">
-                                @foreach($res['info']->img as $v)
-                                    <div class="swiper-slide "
-                                         data-src="{{\Aphly\LaravelShop\Models\Catalog\ProductImage::render($v['image'])}}"
+                                @foreach($res['info_img'] as $v)
+                                    <div class="swiper-slide " data-image_id="{{$v['id']}}"
+                                         data-src="{{$v['image_src']}}"
                                          onclick="changepic(this)">
-                                        <img src="{{ \Aphly\LaravelShop\Models\Catalog\ProductImage::render($v['image']) }}">
+                                        <img src="{{$v['image_src']}}">
                                     </div>
                                 @endforeach
                             </div>
@@ -53,10 +50,18 @@
             </div>
             <div>
                 {{$res['info']->name}}
-                {{$res['info']->price}}
             </div>
+            <div class="d-flex price">
+                <span class="normal">{{$res['info']->price}}</span>
+                @if(!empty($res['info_special']) && $res['info_special']->price)
+                    <span class="special_price">{{$res['info_special']->price}}</span>
+                    <span class="price_sale">Sale</span>
+                @endif
+            </div>
+
         </div>
     </div>
+
     <ul class=" ">
         @foreach($res['info_attr'] as $v)
             <li class="item">
@@ -64,8 +69,6 @@
             </li>
         @endforeach
     </ul>
-    {{$res['info_special']->price??''}}
-    {{$res['info_reward']->points??''}}
 
     <ul class=" ">
         @foreach($res['info_discount'] as $v)
@@ -74,33 +77,77 @@
             </li>
         @endforeach
     </ul>
-    <form id="product" class="form-horizontal bv-form ">
+
+    <form id="product" class="" method="post" action="/cart/add">
         @csrf
         <input type="hidden" name="product_id" value="{{$res['info']->id}}">
-        {!! $res['info_option'] !!}
-        <div class="form-group">
-            <label class="control-label" for="input-quantity">数量</label>
-            <input type="number" name="quantity" value="1" class="form-control">
+        <div class="info_option">
+            {!! $res['info_option'] !!}
         </div>
-        <button id="save-address" class="btn-default w120" onclick="cart_add(event)">Add Cart</button>
+        <div class="form-group">
+            <div class="control-label">数量</div>
+            <div class="quantity-wrapper">
+                <div class="quantity-down">-</div>
+                <input type="number" name="quantity" value="1" class="form-control">
+                <div class="quantity-up">+</div>
+            </div>
+        </div>
+        <button id="save-address" class="add_cart_btn " >Add To Cart</button>
     </form>
 
 </div>
 <style>
+    .info_option input[type="radio"]{display: none;}
+    .info_option label{padding: 10px 20px; border: 1px solid #f1f1f1;margin-right: 10px; border-radius: 2px;cursor: pointer}
+    .info_option label img{width:30px;height:30px;margin-right: 10px;}
+    .info_option label:hover,.quantity-wrapper div:hover{border: 1px solid #ddd;}
+    .info_option label.active{border: 1px solid #333;}
+
+    .quantity-wrapper{display: flex;}
+    .quantity-wrapper div,.quantity-wrapper input{text-align: center; line-height: 48px;height: 48px;width: 48px;min-width: 48px;background-color: #fff;border: 1px solid #f1f1f1;border-radius: 2px;}
+    .quantity-wrapper div{color: #aaa;font-size: 30px;cursor: pointer;user-select: none}
+
+    .quantity-wrapper input{margin: 0 10px;}
+
+    input[type='number']::-webkit-outer-spin-button,input[type='number']::-webkit-inner-spin-button {
+        -webkit-appearance: none !important;
+    }
+    .add_cart_btn{height: 48px;background: #fff;border: 1px solid #212b36;width: 100%;border-radius: 2px;}
+    .add_cart_btn:hover{background: #212b36;color: #fff;}
 </style>
 <script>
-    function cart_add(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        $.ajax({
-            url: '/cart/add',
-            type: 'post',
-            data: $('#product input[type=\'text\'],#product input[type=\'number\'],#product input[type=\'date\'],#product input[type=\'time\'],#product input[type=\'datetime-local\'],  #product input[type=\'hidden\'], #product input[type=\'radio\']:checked, #product input[type=\'checkbox\']:checked, #product select, #product textarea'),
-            success: function (res) {
-                console.log(res)
+    let form_id = '#product'
+    $(function (){
+        $(form_id).submit(function (){
+            const form = $(this)
+            if(form[0].checkValidity()===false){
+            }else{
+                let url = form.attr("action");
+                let type = form.attr("method");
+                if(url && type){
+                    $(form_id+' input.form-control').removeClass('is-valid').removeClass('is-invalid');
+                    let btn_html = $(form_id+' button[type="submit"]').html();
+                    $.ajax({
+                        type,url,
+                        data: form.serialize(),
+                        dataType: "json",
+                        beforeSend:function () {
+                            $(form_id+' button[type="submit"]').attr('disabled',true).html('<i class="btn_loading app-jiazai uni"></i>');
+                        },
+                        success: function(res){
+                            console.log(res)
+                        },
+                        complete:function(XMLHttpRequest,textStatus){
+                            $(form_id+' button[type="submit"]').removeAttr('disabled').html(btn_html);
+                        }
+                    })
+                }else{
+                    console.log('no action')
+                }
             }
+            return false;
         })
-    }
+    });
 </script>
 
 <script src="{{ URL::asset('static/shop/js/idangerous.swiper.min.js') }}" type="text/javascript"></script>
@@ -110,12 +157,6 @@
         paginationClickable: true,
         slidesPerView: 5,
     })
-    $('.lr_icon.left').on('click', function (e) {
-        detailSwiper.swipePrev()
-    })
-    $('.lr_icon.right').on('click', function (e) {
-        detailSwiper.swipeNext()
-    })
     var detailSwiper_m = new Swiper('.swiper-container_m', {
         //loop:true,
         grabCursor: true,
@@ -124,19 +165,43 @@
     })
 
     function changepic(_this) {
-        $('#big_pic').attr('src', $(_this).data('src'));
+        $('#big_pic').attr('src', $(_this).data('src')).attr('data-original',$(_this).data('src'));
     }
 
     $(function () {
-        $('.small_img .swiper-wrapper ').on('mouseenter', '.swiper-slide', function () {
-            $('.small_img .swiper-wrapper .swiper-slide').removeClass('active')
-            $(this).addClass('active')
-            $('#big_pic').attr('src', $(this).data('src'));
+        $('.lr_icon.left').on('click', function (e) {
+            detailSwiper.swipePrev()
         })
-        $('.J_zoom').jqzoom({
-            width: 500,
-            height: 500,
-        });
+
+        $('.lr_icon.right').on('click', function (e) {
+            detailSwiper.swipeNext()
+        })
+
+        $('.info_option').on('click',' label',function () {
+            $(this).closest('div').find('label').removeClass('active')
+            $(this).addClass('active')
+            if($(this).data('image_src')){
+                $('.product_detail_img .swiper-slide[data-image_id="'+$(this).data('image_id')+'"]').click()
+            }
+        })
+
+        $('.quantity-wrapper').on('click','.quantity-down', function (e) {
+            let input = $(this).parent().find('input')
+            let q_curr = parseInt(input.val());
+            let quantity = q_curr-1;
+            if(quantity>0){
+                input.val(quantity)
+            }else{
+                input.val(0)
+            }
+        })
+
+        $('.quantity-wrapper').on('click','.quantity-up', function (e) {
+            let input = $(this).parent().find('input')
+            let q_curr = parseInt(input.val());
+            input.val(q_curr+1)
+        })
+
     })
 </script>
 

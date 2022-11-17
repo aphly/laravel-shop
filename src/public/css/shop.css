@@ -1,0 +1,12 @@
+.special_price{opacity: .5;text-decoration: line-through;}
+.price_sale{color: #e36254;}
+.price span{margin-right: 10px;}
+
+.product_option dl{display: flex;}
+.product_option dl dd{border: 1px solid #ffffff;padding: 4px;}
+.product_option dl dd.active{border: 1px solid saddlebrown}
+.product_option img{width: 28px;height: 28px;}
+
+.product_image img{width: 100%;}
+.product_image dd{display: none}
+.product_image dd.active{display: block}

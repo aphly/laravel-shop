@@ -44,7 +44,7 @@
                             <div class="option_value_list">
                                 @if($res['option'][$val['option_id']]['type']=='radio' || $res['option'][$val['option_id']]['type']=='select' || $res['option'][$val['option_id']]['type']=='checkbox')
                                 <ul>
-                                    <li><span>选项值</span><span>关联图片</span><span>数量</span><span>减少库存</span><span>价格</span>
+                                    <li><span>选项值</span> @if($res['option'][$val['option_id']]['type']=='radio' || $res['option'][$val['option_id']]['type']=='select') <span>关联图片</span> @endif <span>数量</span><span>减少库存</span><span>价格</span>
                                         <span>奖励积分</span><span>重量</span><span data-option_id="{{$val['option_id']}}" onclick="add_option_value(this,'{{$val['id']}}')"><i class="uni app-jia"></i></span></li>
                                     @foreach($val['value_arr'] as $k=>$v)
                                         <li>
@@ -55,20 +55,23 @@
                                                     @endforeach
                                                 </select>
                                             </span>
+                                            @if($res['option'][$val['option_id']]['type']=='radio')
                                             <span>
                                                 <label>
-                                                    <input type="hidden" name="product_option[{{$val['id']}}][{{$val['option_id']}}][option_value][{{$v['id']}}][product_image_id]" value="">
-                                                    <div class="imglist" data-id="product_option[{{$val['id']}}][{{$val['option_id']}}][option_value][{{$v['id']}}][product_image_id]"
-                                                         data-image_id="{{$v['product_image_id']}}" data-image_src="{{Storage::url($res['product_image'][$v['product_image_id']]['image'])}}"
-                                                    >
-                                                       @if($v['product_image_id'] && $res['product_image'][$v['product_image_id']])
+                                                    <input type="hidden" name="product_option[{{$val['id']}}][{{$val['option_id']}}][option_value][{{$v['id']}}][product_image_id]" value="{{$v['product_image_id']}}">
+                                                    @if($v['product_image_id'] && $res['product_image'][$v['product_image_id']])
+                                                        <div class="imglist" data-id="product_option[{{$val['id']}}][{{$val['option_id']}}][option_value][{{$v['id']}}][product_image_id]"
+                                                             data-image_id="{{$v['product_image_id']}}" data-image_src="{{Storage::url($res['product_image'][$v['product_image_id']]['image'])}}">
                                                             <img src="{{Storage::url($res['product_image'][$v['product_image_id']]['image'])}}" alt="">
-                                                       @else
+                                                        </div>
+                                                    @else
+                                                        <div class="imglist" data-image_id="0" data-id="product_option[{{$val['id']}}][{{$val['option_id']}}][option_value][{{$v['id']}}][product_image_id]">
                                                            +
-                                                       @endif
-                                                    </div>
+                                                        </div>
+                                                    @endif
                                                 </label>
                                             </span>
+                                            @endif
                                             <span><input type="number" name="product_option[{{$val['id']}}][{{$val['option_id']}}][option_value][{{$v['id']}}][quantity]" value="{{$v['quantity']}}"></span>
                                             <span>
                                                 <select name="product_option[{{$val['id']}}][{{$val['option_id']}}][option_value][{{$v['id']}}][subtract]" class="form-control">
@@ -132,13 +135,18 @@
             <div class="modal-body">
                 @if($res['product_image'])
                     <ul class="d-flex flex-wrap product_img">
+                        <li class="item" data-id="0">
+                            <div class="img" style="display: flex;justify-content: center;align-items: center;">
+                                +
+                                <i class="uni app-duigouxiao"></i>
+                            </div>
+                        </li>
                         @foreach($res['product_image'] as $v)
                             <li class="item" data-id="{{$v['id']}}" data-image="{{Storage::url($v['image'])}}">
                                 <div class="img">
                                     <img src="{{Storage::url($v['image'])}}" >
                                     <i class="uni app-duigouxiao"></i>
                                 </div>
-                                <input type="hidden" name="sort[{{$v['id']}}]" value="{{$v['sort']}}">
                             </li>
                         @endforeach
                     </ul>
@@ -152,10 +160,10 @@
     </div>
 </div>
 <style>
-    .product_img li{margin: 1%;}
-    .product_img li img{width: 100px;height: 100px;}
+    .product_img li{margin: 1%;border:1px solid #f1f1f1;border-radius: 4px;cursor: pointer}
+    .product_img li img{width: 100%;height: 100%;}
     .product_img li.active{border:1px solid #0da9c4;}
-    .product_img li .img{position: relative;}
+    .product_img li .img{position: relative;width: 100px;height: 100px; }
     .product_img li i{display: none;width: 20px;height: 20px;top: 5px;left: 5px;}
     .product_img li.active i{display: block;position: absolute;color:#0da9c4; }
     .imglist{border:1px solid #ddd;width: 32px;height: 32px;display: flex;align-items: center;justify-content: center;cursor: pointer;}
@@ -233,11 +241,17 @@
     function option_value_li(type,option_id,id) {
         let html = ``
         if(type=='select' || type=='radio' || type=='checkbox'){
-            html += `<ul>
+            if(type=='radio'){
+                html += `<ul>
                     <li><span>选项值</span><span>关联图片</span><span>数量</span><span>减少库存</span><span>价格</span>
-                    <span>奖励积分</span><span>重量</span><span data-option_id="${option_id}" onclick="add_option_value(this,'${id}')"><i class="uni app-jia"></i></span></li>
-
+                    <span>奖励积分</span><span>重量</span><span data-option_id="${option_id}" onclick="add_option_value(this,'${id}','${type}')"><i class="uni app-jia"></i></span></li>
                 </ul>`
+            }else{
+                html += `<ul>
+                    <li><span>选项值</span><span>数量</span><span>减少库存</span><span>价格</span>
+                    <span>奖励积分</span><span>重量</span><span data-option_id="${option_id}" onclick="add_option_value(this,'${id}','${type}')"><i class="uni app-jia"></i></span></li>
+                </ul>`
+            }
         }else if(type=='text'){
             html += `<div class="form-group">
                         <label class="control-label">选项值</label>
@@ -263,12 +277,21 @@
         return html;
     }
 
-    function add_option_value(_this,id){
+    function add_option_value(_this,id,type){
         let vid = randomId(8)
         let option_id = $(_this).data('option_id')
         let option = ``
         for(let i in ajax_res_data[option_id]['value']){
             option += `<option value="${ajax_res_data[option_id]['value'][i]['id']}">${ajax_res_data[option_id]['value'][i]['name']}</option>`
+        }
+        let sub = '';
+        if(type=='radio'){
+            sub = `<span>
+                        <label>
+                            <input type="hidden" name="product_option[${id}][${option_id}][option_value][${vid}][product_image_id]" value="">
+                            <div class="imglist" data-id="product_option[${id}][${option_id}][option_value][${vid}][product_image_id]">+</div>
+                        </label>
+                    </span>`
         }
         let li = `<li>
                     <span>
@@ -276,12 +299,7 @@
                           ${option}
                     </select>
                     </span>
-                    <span>
-                        <label>
-                            <input type="hidden" name="product_option[${id}][${option_id}][option_value][${vid}][product_image_id]" value="">
-                            <div class="imglist" data-id="product_option[${id}][${option_id}][option_value][${vid}][product_image_id]">+</div>
-                        </label>
-                    </span>
+                    ${sub}
                     <span><input type="number" name="product_option[${id}][${option_id}][option_value][${vid}][quantity]" value="1"></span>
                     <span>
                         <select name="product_option[${id}][${option_id}][option_value][${vid}][subtract]" class="form-control">
@@ -305,17 +323,23 @@
                 $('.search_res').hide();
             }
         });
-        
+
         $('.product_img').on('click','li',function () {
             $('.product_img li').removeClass('active')
             $(this).addClass('active')
             let old_id = $('.product_img').attr('data-id');
-            $('.imain input[name="'+old_id+'"]').val($(this).data('id'))
-            $('.imain .imglist[data-id="'+old_id+'"]').attr('data-image_id',$(this).data('id'))
-                .attr('data-image_src',$(this).data('image'))
-                .html('<img src="'+$(this).data('image')+'" />')
+            let image_id = $(this).data('id')
+            if(image_id){
+                $('.imain input[name="'+old_id+'"]').val($(this).data('id'))
+                $('.imain .imglist[data-id="'+old_id+'"]').attr('data-image_id',$(this).data('id'))
+                    .attr('data-image_src',$(this).data('image'))
+                    .html('<img src="'+$(this).data('image')+'" />')
+            }else{
+                $('.imain input[name="'+old_id+'"]').val(0)
+                $('.imain .imglist[data-id="'+old_id+'"]').html('+')
+            }
         })
-        
+
         $('.imain').on('click', '.imglist', function (e) {
             e.stopPropagation()
             $('#product_image').modal('toggle').find('.product_img').attr('data-id',$(this).data('id'));

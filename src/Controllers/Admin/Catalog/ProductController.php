@@ -112,15 +112,15 @@ class ProductController extends Controller
 
     public function desc(Request $request)
     {
+        $res['product'] = $this->getProductId($request);
         if($request->isMethod('post')) {
             $input = $request->all();
-            ProductDesc::updateOrCreate(['product_id'=>$request->query('product_id',0)],$input);
+            ProductDesc::updateOrCreate(['product_id'=>$res['product']->id],$input);
             throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
         }else{
-            $product_id = $request->query('product_id',0);
-            $res['product'] = Product::where('id',$product_id)->first();
+            $res['product'] = Product::where('id',$res['product']->id)->first();
             if(!empty($res['product'])){
-                $res['product_desc'] = ProductDesc::where('product_id',$product_id)->firstOrNew();
+                $res['product_desc'] = ProductDesc::where('product_id',$res['product']->id)->firstOrNew();
             }
             return $this->makeView('laravel-shop::admin.catalog.product.desc',['res'=>$res]);
         }
@@ -128,7 +128,7 @@ class ProductController extends Controller
 
     public function img(Request $request)
     {
-        $res['product'] = Product::find($request->query('product_id',0));
+        $res['product'] = $this->getProductId($request);
         $res['info_img'] = ProductImage::where('product_id',$res['product']->id)->orderBy('sort','desc')->get()->toArray();
         if($request->isMethod('post')) {
             if($request->hasFile('file')) {
@@ -153,6 +153,8 @@ class ProductController extends Controller
 
     public function imgSave(Request $request)
     {
+        $res['product'] = $this->getProductId($request);
+        $product_id = $res['product']->id;
         $post = $request->input('sort');
         $max = max($post);
         foreach ($post as $k=>$v){
@@ -162,7 +164,7 @@ class ProductController extends Controller
                 Product::find($productImage->product_id)->update(['image'=>$productImage->image]);
             }
         }
-        throw new ApiException(['code' => 0, 'msg' => '更新成功', 'data' => ['redirect' => '/shop_admin/product/img?product_id='.$request->query('product_id',0)]]);
+        throw new ApiException(['code' => 0, 'msg' => '更新成功', 'data' => ['redirect' => $this->index_url]]);
     }
 
     public function imgDel(Request $request)
@@ -241,7 +243,7 @@ class ProductController extends Controller
                         $arr_v['option_id'] = $productOption->option_id;
                         $product_option_value_update[] = $arr_v;
                     }
-                    ProductOptionValue::upsert($product_option_value_update,['id'],['product_option_id','product_id','option_id','option_value_id','quantity','subtract','price','points','weight']);
+                    ProductOptionValue::upsert($product_option_value_update,['id'],['product_option_id','product_id','option_id','option_value_id','product_image_id','quantity','subtract','price','points','weight']);
                 }
             }
             throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
@@ -388,11 +390,6 @@ class ProductController extends Controller
         if(!$product_id){
             throw new ApiException(['code'=>1,'msg'=>'fail','data'=>[]]);
         }
-        $product = Product::where('id',$product_id)->first();
-        if(!empty($product)){
-            return $product;
-        }else{
-            throw new ApiException(['code'=>2,'msg'=>'fail','data'=>[]]);
-        }
+        return Product::where('id',$product_id)->firstOrError();
     }
 }

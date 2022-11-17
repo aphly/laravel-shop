@@ -21,11 +21,11 @@ class ProductImage extends Model
 
     static public $oss_url = false;
 
-    static function render($img){
+    static function render($img,$default=false){
         if($img){
             return self::$oss_url?self::$oss_url.$img:Storage::url($img);
         }else{
-            return URL::asset('vendor/laravel-admin/img/none.png');
+            return $default?URL::asset('vendor/laravel-admin/img/none.png'):null;
         }
     }
 }

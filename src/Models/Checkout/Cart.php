@@ -170,7 +170,7 @@ class Cart extends Model
                     $product_data[$cart['id']]['total_format'] = Currency::format($total);
                     $product_data[$cart['id']]['shipping'] = $cart['product']['shipping'];
                     $product_data[$cart['id']]['reward'] = $reward * $cart['quantity'];
-                    $product_data[$cart['id']]['points'] = ($cart['product']['points'] ? ($cart['product']['points'] + $option_points) * $cart['quantity'] : 0);
+                    //$product_data[$cart['id']]['points'] = ($cart['product']['points'] ? ($cart['product']['points'] + $option_points) * $cart['quantity'] : 0);
                     $product_data[$cart['id']]['weight'] = ($cart['product']['weight'] + $option_weight) * $cart['quantity'];
                 } else {
                     $this->remove($cart['id']);

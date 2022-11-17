@@ -31,6 +31,26 @@ class Product extends Model
         return $this->hasMany(ProductImage::class,'product_id');
     }
 
+    function imgById($product_id){
+        $productImage = ProductImage::where('product_id',$product_id)->orderBy('sort','desc')->get()->toArray();
+        $res = [];
+        foreach($productImage as $val){
+            $val['image_src'] = ProductImage::render($val['image']);
+            $res[] = $val;
+        }
+        return $res;
+    }
+
+    function imgByIds($product_ids){
+        $productImage = ProductImage::whereIN('product_id',$product_ids)->orderBy('sort','desc')->get()->toArray();
+        $res = [];
+        foreach($productImage as $val){
+            $val['image_src'] = ProductImage::render($val['image']);
+            $res[$val['product_id']][] = $val;
+        }
+        return $res;
+    }
+
     public $sub_category = false;
 
     public function getList($data = []) {
@@ -159,11 +179,28 @@ class Product extends Model
                                 return $query->whereIn('id',$productOption_ids);
                             }
                         )->with('option')->get()->keyBy('id')->toArray();
+        return $this->_optionValue($productOption);
+    }
+
+    function optionValueByName($ids,$name='color'){
+        $option = Option::where('name',$name)->firstToArray();
+        if($option){
+            $productOption = ProductOption::whereIn('product_id',$ids)->where('option_id',$option['id'])->with('option')->get()->keyBy('product_id')->toArray();
+            return $this->_optionValue($productOption);
+        }
+        return [];
+    }
+
+    function _optionValue($productOption){
         $product_option_ids = array_column($productOption,'id');
-        $productOptionValue = ProductOptionValue::whereIn('product_option_id',$product_option_ids)->with('option_value')->get()->keyBy('id')->toArray();
+        $productOptionValue = ProductOptionValue::whereIn('product_option_id',$product_option_ids)->with('option_value')->with('productImage')->get()->keyBy('id')->toArray();
         $productOptionValueGroup = [] ;
         foreach ($productOptionValue as $key=>$val){
             $val['price_format'] = Currency::format($val['price']);
+            $val['option_value']['image_src'] = ProductImage::render($val['option_value']['image']);
+            if($val['product_image']){
+                $val['product_image']['image_src'] = ProductImage::render($val['product_image']['image']);
+            }
             $productOptionValueGroup[$val['product_option_id']][$key] = $val;
         }
         $res = [];
@@ -179,7 +216,7 @@ class Product extends Model
         foreach ($options as $val){
             if($val['option']['type']=='select'){
                 $html .= '<div class="form-group '.($val['required']==1?'required':'').'">
-                              <label class="control-label">'.$val['option']['name'].'</label>
+                              <div class="control-label">'.$val['option']['name'].'</div>
                               <select name="option['.$val['id'].']" class="form-control">';
                 foreach ($val['product_option_value'] as $v){
                     $html .= '<option value="'.$v['id'].'">'.$v['option_value']['name'].(intval($v['price'])?'(+'.$v['price_format'].')':'').'</option>';
@@ -187,37 +224,48 @@ class Product extends Model
                 $html .= '</select></div>';
             }else if($val['option']['type']=='radio'){
                 $html .= '<div class="form-group '.($val['required']==1?'required':'').'">
-                              <label class="control-label">'.$val['option']['name'].'</label>
-                              <div>';
+                              <div class="control-label">'.$val['option']['name'].'</div>
+                              <div class="div_ul">';
                 foreach ($val['product_option_value'] as $v){
-                    $img = $v['option_value']['image']?'<img src="'.Storage::url($v['option_value']['image']).'" />':'';
-                    $html .= '<label><input type="radio" name="option['.$val['id'].']" value="'.$v['id'].'" />'
+                    $data_image_src = '';
+                    if($v['product_image_id']){
+                        if($v['product_image']['image_src']){
+                            $img = '<img src="'.$v['product_image']['image_src'].'" />';
+                            $data_image_src = 'data-image_src="true"';
+                        }else{
+                            $img = '';
+                        }
+                    }else{
+                        $img = $v['option_value']['image']?'<img src="'.$v['option_value']['image_src'].'" />':'';
+                    }
+                    $html .= '<input type="radio" name="option['.$val['id'].']" id="option_'.$val['id'].'" value="'.$v['id'].'" />
+                            <label for="option_'.$val['id'].'" data-image_id="'.$v['product_image_id'].'" '.$data_image_src.'>'
                         .$img.$v['option_value']['name'].(intval($v['price'])?'(+'.$v['price_format'].')':'').'</label>';
                 }
                 $html .= '</div></div>';
             }else if($val['option']['type']=='checkbox'){
                 $html .= '<div class="form-group '.($val['required']==1?'required':'').'">
-                              <label class="control-label">'.$val['option']['name'].'</label>
-                              <div>';
+                              <div class="control-label">'.$val['option']['name'].'</div>
+                              <div class="div_ul">';
                 foreach ($val['product_option_value'] as $v){
-                    $img = $v['option_value']['image']?'<img src="'.Storage::url($v['option_value']['image']).'" />':'';
-                    $html .= '<label><input type="checkbox" name="option['.$val['id'].'][]" value="'.$v['id'].'" />'
+                    $img = $v['option_value']['image']?'<img src="'.$v['option_value']['image_src'].'" />':'';
+                    $html .= '<input type="checkbox" name="option['.$val['id'].'][]" id="option_'.$val['id'].'" value="'.$v['id'].'" /><label for="option_'.$val['id'].'">'
                         .$img.$v['option_value']['name'].(intval($v['price'])?'(+'.$v['price_format'].')':'').'</label>';
                 }
                 $html .= '</div></div>';
             }else if($val['option']['type']=='text'){
                 $html .= '<div class="form-group '.($val['required']==1?'required':'').'">
-                              <label class="control-label">'.$val['option']['name'].'</label>
+                              <div class="control-label">'.$val['option']['name'].'</div>
                               <input type="text" name="option['.$val['id'].']" value="'.$val['value'].'" placeholder="'.$val['option']['name'].'" class="form-control" />
                             </div>';
             }else if($val['option']['type']=='textarea'){
                 $html .= '<div class="form-group '.($val['required']==1?'required':'').'">
-                              <label class="control-label">'.$val['option']['name'].'</label>
+                              <div class="control-label">'.$val['option']['name'].'</div>
                               <textarea name="option['.$val['id'].']" placeholder="'.$val['value'].'" class="form-control" >'.$val['value'].'</textarea>
                             </div>';
             }else if($val['option']['type']=='date' || $val['option']['type']=='datetime-local' || $val['option']['type']=='date'){
                 $html .= '<div class="form-group '.($val['required']==1?'required':'').'">
-                              <label class="control-label">'.$val['option']['name'].'</label>
+                              <div class="control-label">'.$val['option']['name'].'</div>
                               <input type="'.$val['option']['type'].'" name="option['.$val['id'].']" value="'.$val['value'].'" placeholder="'.$val['value'].'" class="form-control" />
                             </div>';
             }

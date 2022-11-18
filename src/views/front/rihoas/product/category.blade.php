@@ -15,7 +15,7 @@
         @foreach($res['list'] as $key=>$val)
             <li class="">
                 <div class="image">
-                    @if($res['product_option'][$val->id]['product_option_value'] && $res['product_image'])
+                    @if(isset($res['product_option'][$val->id]['product_option_value']) && $res['product_image'])
                         <dl class="product_image">
                             @foreach($res['product_image'][$val->id] as $k=>$v)
                                 @if($k)
@@ -40,7 +40,7 @@
                     @endif
                 </div>
                 <div class="product_option">
-                    @if($res['product_option'][$val->id]['product_option_value'])
+                    @if(isset($res['product_option'][$val->id]['product_option_value']))
                     <dl>
                         @foreach($res['product_option'][$val->id]['product_option_value'] as $v)
                             @if($v['product_image'] && $v['product_image']['image_src'])
@@ -61,7 +61,7 @@
 </div>
 
 <style>
-.special_price{opacity: .5;text-decoration: line-through;}
+.special_price{opacity: 0.5;text-decoration: line-through;}
 .price_sale{color: #e36254;}
 .price span{margin-right: 10px;}
 

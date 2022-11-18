@@ -25,7 +25,7 @@ class ProductImage extends Model
         if($img){
             return self::$oss_url?self::$oss_url.$img:Storage::url($img);
         }else{
-            return $default?URL::asset('vendor/laravel-admin/img/none.png'):null;
+            return $default?URL::asset('static/admin/img/none.png'):null;
         }
     }
 }

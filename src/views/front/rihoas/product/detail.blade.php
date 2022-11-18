@@ -151,7 +151,7 @@
 </script>
 
 <script src="{{ URL::asset('static/shop/js/idangerous.swiper.min.js') }}" type="text/javascript"></script>
-<script src="{{ URL::asset('static/shop/js/jqzoom.js') }}" type="text/javascript"></script>
+
 <script>
     var detailSwiper = new Swiper('.swiper-container_pc', {
         paginationClickable: true,

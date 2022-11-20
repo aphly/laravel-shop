@@ -4,6 +4,7 @@ namespace Aphly\LaravelShop\Controllers\Front\Checkout;
 
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\LaravelShop\Controllers\Front\Controller;
+use Aphly\LaravelShop\Models\Catalog\ProductImage;
 use Aphly\LaravelShop\Models\Checkout\Cart;
 use Aphly\LaravelShop\Models\Catalog\Product;
 use Illuminate\Http\Request;
@@ -17,7 +18,8 @@ class CartController extends Controller
         $res['list'] = $cart->getProducts();
         $res['items'] = 0;
         if($res['list']){
-            foreach ($res['list'] as $product) {
+            foreach ($res['list'] as $key=>$product) {
+                $res['list'][$key]['product']['image_src'] = ProductImage::render($res['list'][$key]['product']['image'],true);
                 $product_total = 0;
                 foreach ($res['list'] as $product2) {
                     if ($product2['product_id'] == $product['product_id']) {
@@ -42,13 +44,13 @@ class CartController extends Controller
             $option = array_filter($request->input('option',[]));
             $product_options = $res['info']->findOption($res['info']->id);
             foreach ($product_options as $val) {
-                if ($val['required'] && empty($option[$val['id']])) {
+                if ($val['required']==1 && empty($option[$val['id']])) {
                     throw new ApiException(['code'=>1,'msg'=>$val['option']['name'].' required']);
                 }
             }
             $Cart = new Cart;
             $Cart->add($res['info']->id, $quantity, $option);
-            list($count,$list) = $Cart->countProducts();
+            list($count,$list) = $Cart->countProducts(true);
             throw new ApiException(['code'=>0,'msg'=>'success','data'=>['count'=>$count,'list'=>$list]]);
         }
     }

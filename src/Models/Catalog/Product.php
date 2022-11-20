@@ -3,12 +3,9 @@
 namespace Aphly\LaravelShop\Models\Catalog;
 
 use Aphly\LaravelCommon\Models\Currency;
-use Aphly\LaravelCommon\Models\User;
-use Aphly\LaravelShop\Models\Customer\Customer;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 
 class Product extends Model
 {
@@ -17,7 +14,7 @@ class Product extends Model
     //public $timestamps = false;
 
     protected $fillable = [
-        'sku','name','quantity','image','price','uuid',
+        'sku','name','quantity','image','price','uuid','model',
         'shipping','stock_status_id','weight','weight_class_id',
         'length','width','height','length_class_id','subtract',
         'minimum','status','viewed','sale','sort','date_available'
@@ -35,7 +32,7 @@ class Product extends Model
         $productImage = ProductImage::where('product_id',$product_id)->orderBy('sort','desc')->get()->toArray();
         $res = [];
         foreach($productImage as $val){
-            $val['image_src'] = ProductImage::render($val['image']);
+            $val['image_src'] = ProductImage::render($val['image'],true);
             $res[] = $val;
         }
         return $res;
@@ -53,7 +50,7 @@ class Product extends Model
 
     public $sub_category = false;
 
-    public function getList($data = []) {
+    public function getList($data = [],$groupByModel=false) {
         $data['category_id'] = $data['category_id']??false;
         $filter = $data['filter']??false;
         $sort = $data['sort'];
@@ -99,7 +96,7 @@ class Product extends Model
             }
         }
         $sql->groupBy('p.id')
-            ->select('p.id','p.sale','p.viewed','p.date_available','p.price','p.name','p.quantity','p.image');
+            ->select('p.id','p.sale','p.viewed','p.date_available','p.price','p.name','p.quantity','p.image','p.model');
         $sql->addSelect(['rating'=>Review::whereColumn('product_id','p.id')->where('status',1)
             ->groupBy('product_id')
             ->selectRaw('AVG(rating) AS total')
@@ -120,26 +117,54 @@ class Product extends Model
             ->where('quantity',1)
             ->select('price')->limit(1)
         ]);
-        $sql->when($sort,
-            function($query,$sort) {
-                $sort = explode('_',$sort);
-                if($sort[0]=='viewed'){
-                    return $query->orderBy('p.viewed','desc');
-                }else if($sort[0]=='new'){
-                    return $query->orderBy('p.date_available','desc');
-                }else if($sort[0]=='price'){
-                    if($sort[1]=='asc'){
-                        return $query->orderBy('p.price','asc');
-                    }else{
-                        return $query->orderBy('p.price','desc');
+        if($groupByModel){
+            $res = DB::table(DB::raw("({$sql->toSql()}) as temp"))
+                    ->mergeBindings($sql)
+                    ->groupBy('model')
+                    ->selectRaw('model,GROUP_CONCAT(id) as ids,max(viewed) as viewed,max(date_available) as date_available,
+                    min(price) as price,min(special) as special,min(discount) as discount,max(sale) as sale,max(rating) as rating')
+                    ->when($sort,
+                        function($query,$sort) {
+                            $sort = explode('_',$sort);
+                            if($sort[0]=='viewed'){
+                                return $query->orderBy('viewed','desc');
+                            }else if($sort[0]=='new'){
+                                return $query->orderBy('date_available','desc');
+                            }else if($sort[0]=='price'){
+                                if($sort[1]=='asc'){
+                                    return $query->orderByRaw('(CASE WHEN min(special) IS NOT NULL THEN min(special) WHEN min(discount) IS NOT NULL THEN min(discount) ELSE min(price) END) asc');
+                                }else{
+                                    return $query->orderByRaw('(CASE WHEN min(special) IS NOT NULL THEN min(special) WHEN min(discount) IS NOT NULL THEN min(discount) ELSE min(price) END) desc');
+                                }
+                            }else if($sort[0]=='sale'){
+                                return $query->orderBy('sale','desc');
+                            }else if($sort[0]=='rating'){
+                                return $query->orderBy('rating','desc');
+                            }
+                    });
+            return $res->Paginate(config('admin.perPage'))->withQueryString();
+        }else{
+            $sql->when($sort,
+                function($query,$sort) {
+                    $sort = explode('_',$sort);
+                    if($sort[0]=='viewed'){
+                        return $query->orderBy('p.viewed','desc');
+                    }else if($sort[0]=='new'){
+                        return $query->orderBy('p.date_available','desc');
+                    }else if($sort[0]=='price'){
+                        if($sort[1]=='asc'){
+                            return $query->orderByRaw('CASE WHEN special IS NOT NULL THEN special WHEN discount IS NOT NULL THEN discount ELSE p.price END asc');
+                        }else{
+                            return $query->orderByRaw('CASE WHEN special IS NOT NULL THEN special WHEN discount IS NOT NULL THEN discount ELSE p.price END desc');
+                        }
+                    }else if($sort[0]=='sale'){
+                        return $query->orderBy('p.sale','desc');
+                    }else if($sort[0]=='rating'){
+                        return $query->orderBy('rating','desc');
                     }
-                }else if($sort[0]=='sale'){
-                    return $query->orderBy('p.sale','desc');
-                }else if($sort[0]=='rating'){
-                    return $query->orderBy('rating','desc');
-                }
-            });
-        return $sql->Paginate(config('admin.perPage'))->withQueryString();
+                });
+            return $sql->Paginate(config('admin.perPage'))->withQueryString();
+        }
     }
 
     function findAttribute($id){
@@ -223,7 +248,7 @@ class Product extends Model
                 }
                 $html .= '</select></div>';
             }else if($val['option']['type']=='radio'){
-                $html .= '<div class="form-group '.($val['required']==1?'required':'').'">
+                $html .= '<div class="form-group radio '.($val['required']==1?'required':'').'">
                               <div class="control-label">'.$val['option']['name'].'</div>
                               <div class="div_ul">';
                 foreach ($val['product_option_value'] as $v){

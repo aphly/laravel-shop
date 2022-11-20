@@ -243,7 +243,7 @@ class ProductController extends Controller
                         $arr_v['option_id'] = $productOption->option_id;
                         $product_option_value_update[] = $arr_v;
                     }
-                    ProductOptionValue::upsert($product_option_value_update,['id'],['product_option_id','product_id','option_id','option_value_id','product_image_id','quantity','subtract','price','points','weight']);
+                    ProductOptionValue::upsert($product_option_value_update,['id'],['product_option_id','product_id','option_id','option_value_id','product_image_id','quantity','subtract','price','weight']);
                 }
             }
             throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);

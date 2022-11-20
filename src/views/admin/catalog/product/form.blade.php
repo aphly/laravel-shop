@@ -20,6 +20,11 @@
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
+                <label for="">model</label>
+                <input type="text" name="model" class="form-control " value="{{$res['product']->model}}" >
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="form-group">
                 <label for="">quantity</label>
                 <input type="number" name="quantity" class="form-control " value="{{$res['product']->quantity??0}}">
                 <div class="invalid-feedback"></div>

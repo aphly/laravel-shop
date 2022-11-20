@@ -15,7 +15,7 @@
         @foreach($res['list'] as $key=>$val)
             <li class="">
                 <div class="image">
-                    @if(isset($res['product_option'][$val->id]['product_option_value']) && $res['product_image'])
+                    @if(isset($res['product_option'][$val->id]['product_option_value']) && isset($res['product_image'][$val->id]))
                         <dl class="product_image">
                             @foreach($res['product_image'][$val->id] as $k=>$v)
                                 @if($k)

@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class Cart extends Model
 {
@@ -29,7 +30,7 @@ class Cart extends Model
     static public $products=[];
 
     public function __construct() {
-        self::where('uuid',0)->where('created_at','<',time()-3600*24)->delete();
+        self::where('uuid',0)->where('created_at','<',time()-3600*24*2)->delete();
         parent::__construct();
     }
 
@@ -73,8 +74,8 @@ class Cart extends Model
         return 0;
     }
 
-    public function getProducts(){
-        if(!self::$products) {
+    public function getProducts($refresh=false){
+        if(!self::$products || $refresh) {
             $product_data = [];
             $uuid = User::uuid();
             $cart_data = self::when($uuid, function ($query, $uuid) {
@@ -84,7 +85,6 @@ class Cart extends Model
                 $stock = true;
                 if ($cart['product']['status'] == 1 && $cart['product']['date_available'] < time() && $cart['quantity'] > 0) {
                     $option_price = 0;
-                    $option_points = 0;
                     $option_weight = 0;
                     $cart['option'] = json_decode($cart['option'], true);
                     if ($cart['option']) {
@@ -94,7 +94,6 @@ class Cart extends Model
                                 if ($option_value[$k]['option']['type'] == 'select' || $option_value[$k]['option']['type'] == 'radio') {
                                     if (!empty($option_value[$k]['product_option_value'][$v])) {
                                         $option_price += $option_value[$k]['product_option_value'][$v]['price'];
-                                        $option_points += $option_value[$k]['product_option_value'][$v]['points'];
                                         $option_weight += $option_value[$k]['product_option_value'][$v]['weight'];
                                         if ($option_value[$k]['product_option_value'][$v]['subtract'] == 1 && (!$option_value[$k]['product_option_value'][$v]['quantity'] || ($option_value[$k]['product_option_value'][$v]['quantity'] < $cart['quantity']))) {
                                             $stock = false;
@@ -110,7 +109,6 @@ class Cart extends Model
                                     foreach ($v as $v1) {
                                         if (!empty($option_value[$k]['product_option_value'][$v1])) {
                                             $option_price += $option_value[$k]['product_option_value'][$v1]['price'];
-                                            $option_points += $option_value[$k]['product_option_value'][$v1]['points'];
                                             $option_weight += $option_value[$k]['product_option_value'][$v1]['weight'];
                                             $arr[$v1] = $option_value[$k]['product_option_value'][$v1];
                                             if ($option_value[$k]['product_option_value'][$v1]['subtract'] == 1 && (!$option_value[$k]['product_option_value'][$v1]['quantity'] || ($option_value[$k]['product_option_value'][$v1]['quantity'] < $cart['quantity']))) {
@@ -174,7 +172,6 @@ class Cart extends Model
                     $product_data[$cart['id']]['total_format'] = Currency::format($total);
                     $product_data[$cart['id']]['shipping'] = $cart['product']['shipping'];
                     $product_data[$cart['id']]['reward'] = $reward * $cart['quantity'];
-                    //$product_data[$cart['id']]['points'] = ($cart['product']['points'] ? ($cart['product']['points'] + $option_points) * $cart['quantity'] : 0);
                     $product_data[$cart['id']]['weight'] = ($cart['product']['weight'] + $option_weight) * $cart['quantity'];
                 } else {
                     $this->remove($cart['id']);
@@ -205,9 +202,9 @@ class Cart extends Model
         return false;
     }
 
-    public function countProducts() {
+    public function countProducts($new=false) {
         $product_count = 0;
-        $products = $this->getProducts();
+        $products = $this->getProducts($new);
         foreach ($products as $product) {
             $product_count += $product['quantity'];
         }

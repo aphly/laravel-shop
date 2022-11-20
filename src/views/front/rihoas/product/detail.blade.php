@@ -24,7 +24,7 @@
         <div>
             <div class="product_detail_img" id="aphly_viewerjs">
                 <div class="big_img ">
-                    <img src="{{ $res['info_img'][0]['image_src']??'' }}" id="big_pic" class="aphly_viewer">
+                    <img src="{{ $res['info_img'][0]['image_src']??URL::asset('static/admin/img/none.png') }}" id="big_pic" class="aphly_viewer">
                 </div>
                 @if($res['info_img'])
                     <div class="small_img  position-relative ">
@@ -58,7 +58,15 @@
                     <span class="price_sale">Sale</span>
                 @endif
             </div>
-
+            <div>
+                @if($res['shipping'])
+                    <div style="text-align: left;margin-bottom:0px">
+                        <span style="font-size: 14px; color: #E36254">
+                            <strong>Free Standard Shipping</strong>
+                        </span>
+                    </div>
+                @endif
+            </div>
         </div>
     </div>
 
@@ -85,7 +93,7 @@
             {!! $res['info_option'] !!}
         </div>
         <div class="form-group">
-            <div class="control-label">数量</div>
+            <div class="control-label">Quantity</div>
             <div class="quantity-wrapper">
                 <div class="quantity-down">-</div>
                 <input type="number" name="quantity" value="1" class="form-control">
@@ -135,7 +143,7 @@
                             $(form_id+' button[type="submit"]').attr('disabled',true).html('<i class="btn_loading app-jiazai uni"></i>');
                         },
                         success: function(res){
-                            console.log(res)
+                            $('.cart_num').text(res.data.count);
                         },
                         complete:function(XMLHttpRequest,textStatus){
                             $(form_id+' button[type="submit"]').removeAttr('disabled').html(btn_html);
@@ -147,6 +155,7 @@
             }
             return false;
         })
+
     });
 </script>
 
@@ -184,7 +193,7 @@
                 $('.product_detail_img .swiper-slide[data-image_id="'+$(this).data('image_id')+'"]').click()
             }
         })
-
+        $('.info_option .radio label:first').click();
         $('.quantity-wrapper').on('click','.quantity-down', function (e) {
             let input = $(this).parent().find('input')
             let q_curr = parseInt(input.val());

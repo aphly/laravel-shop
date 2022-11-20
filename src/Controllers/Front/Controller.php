@@ -2,6 +2,7 @@
 
 namespace Aphly\LaravelShop\Controllers\Front;
 
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;

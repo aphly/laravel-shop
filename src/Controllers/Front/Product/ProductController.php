@@ -8,6 +8,7 @@ use Aphly\LaravelCommon\Models\User;
 use Aphly\LaravelShop\Controllers\Front\Controller;
 use Aphly\LaravelShop\Models\Catalog\Product;
 use Aphly\LaravelShop\Models\Catalog\ProductImage;
+use Aphly\LaravelShop\Models\Catalog\Shipping;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -32,6 +33,7 @@ class ProductController extends Controller
         }
         $product = new Product;
         $res['list'] = $product->getList($filter_data);
+
         $product_ids = [];
         foreach ($res['list']->items() as $key=>$val){
             $product_ids[] = $res['list']->items()[$key]->id;
@@ -57,6 +59,7 @@ class ProductController extends Controller
         $res['info_special'] = $res['info']->findSpecial($res['info']->id);
         $res['info_reward'] = $res['info']->findReward($res['info']->id,$group_id);
         $res['info_discount'] = $res['info']->findDiscount($res['info']->id);
+        $res['shipping'] = Shipping::where('cost',0)->firstToArray();
         return $this->makeView('laravel-shop-front::product.detail',['res'=>$res]);
     }
 

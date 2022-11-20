@@ -5,56 +5,58 @@
 </style>
 <div class="container">
     <div class="cart row">
-        <div class="col-12 col-xl-8 cart-title">
-            <h2 class="m-0">
+        <div class=" cart-title">
+            <h2 class="">
                 My Cart
             </h2>
         </div>
-        <div class="col-12 col-xl-8 car-content">
+        <div class=" car-content">
             <div class="myChart">
                 @if($res['list'])
                     <div class="cart-shoppings">
                         @foreach($res['list'] as $val)
-                            <div class="col-12 js-shopping cart-shopping">
-                                <div class="row m-0 align-items-start">
-                                    <div class="col-12 col-xl-5 text-center pt-3 pb-3 d-none d-xl-block cart-img">
+                            <div class=" js-shopping cart-shopping">
+                                <div class="row  align-items-start">
+                                    <div class="  text-center   d-none  cart-img">
                                         <span class="im img-tag tag-off-per product-icon-text">50% OFF</span>
                                         <a href="" class="img-product">
                                             <img class="d-block w-100"
-                                                 src="{{\Aphly\LaravelShop\Models\Catalog\ProductImage::render($val['product']['image'])}}"
+                                                 src="{{$val['product']['image_src']}}"
                                                  alt="Rita">
                                         </a>
                                     </div>
-                                    <div class="col-12 col-xl-7 p-0">
-                                        <ul class="row shopping-info p-0 m-0">
-                                            <li class="d-none d-xl-block">
+                                    <div class="  ">
+                                        <ul class="row shopping-info  ">
+                                            <li class="d-none ">
                                                 <span class="font-18 font-weight-bold">{{$val['product']['name']}}</span>
                                             </li>
-                                            <li class="col-12 pb-3 pt-3 d-none d-xl-block js-cart-product-info">
+                                            <li class="   d-none  js-cart-product-info">
                                                 <span class="car-label">Price:</span>
-                                                <span class="float-right">{{$val['price_format']}}</span>
+                                                <span class="">{{$val['price_format']}}</span>
                                             </li>
+                                            @if($val['option'])
+
+                                            @endif
                                         </ul>
                                         <div class="qtyInfo">
                                             <span class="car-label">Qty:</span>
                                             <input type="number" name="qty" class="product-qty"
                                                    value="{{$val['quantity']}}">
                                             <div class="stock-tip" style="display: none"></div>
-                                            <div class="subtotalInfo d-xl-none">
+                                            <div class="subtotalInfo ">
                                                 <span>Subtotal:</span>
-                                                <span class="float-xl-right item-total">{{$val['total_format']}}</span>
+                                                <span class=" item-total">{{$val['total_format']}}</span>
                                             </div>
                                         </div>
-                                        <div class="subtotalInfo d-none d-xl-block">
+                                        <div class="subtotalInfo d-none ">
                                             <span>Subtotal:</span>
-                                            <span class="float-xl-right item-total">{{$val['total_format']}}</span>
+                                            <span class=" item-total">{{$val['total_format']}}</span>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="close-btn">
                                     <a href="javascript:;">
-                                        <img class="img-fluid"
-                                             src="{{ URL::asset('static/shop/img/cart/close_mobile.svg') }}">
+                                        <img class="img-fluid" src="{{ URL::asset('static/shop/img/cart/close_mobile.svg') }}">
                                     </a>
                                 </div>
                                 <div class="close-bac">
@@ -62,11 +64,11 @@
                                     <div class="close-content">
                                         <span class="close-title">Remove from Cart?</span>
                                         <div class="btn-remove">
-                                            <button type="button" class="btn-close btn-y btn-remove-item-y"
-                                                    data-key="740730931fe75fa8b00bb2ae20328b10">Yes
+                                            <button type="button" class="btn-close btn-y btn-remove-item-y">
+                                                Yes
                                             </button>
-                                            <button type="button" class="btn-close btn-n btn-remove-item-n"
-                                                    data-key="740730931fe75fa8b00bb2ae20328b10">No
+                                            <button type="button" class="btn-close btn-n btn-remove-item-n">
+                                                No
                                             </button>
                                         </div>
                                     </div>
@@ -97,7 +99,7 @@
                 @endif
             </div>
         </div>
-        <div class="col-xl-4 d-none d-xl-block car-pay">
+        <div class=" d-none  car-pay">
             <div class="gs-cart-sidebar sticky-top">
                 <div class="gs-cart-sidebar-container js-fix-sidebar default-content"
                      style="position: static; top: 0px; display: block">
@@ -129,7 +131,7 @@
                                     <strong class="coupon-code cart-list-coupon-code"></strong>
                                     <span class="coupon-remove">Remove</span>
                                 </div>
-                                <div class="alert alert-danger mt-2 hide-item">
+                                <div class="alert alert-danger  hide-item">
                                     <ul>
                                     </ul>
                                 </div>
@@ -139,23 +141,23 @@
                             <div class="total-summary">Summary</div>
                             @if(isset($res['total_data']['totals']))
                                 <dd>Items: <span
-                                            class="float-right cart-order-total-items-quantity">{{$res['items']}}</span>
+                                            class=" cart-order-total-items-quantity">{{$res['items']}}</span>
                                 </dd>
                                 @foreach($res['total_data']['totals'] as $val)
                                     <dd>{{$val['title']}}:
-                                        <span class="float-right cart-order-total-items">{{$val['value_format']}}</span>
+                                        <span class=" cart-order-total-items">{{$val['value_format']}}</span>
                                     </dd>
                                 @endforeach
                             @else
-                                <dd>Items: <span class="float-right cart-order-total-items-quantity">0</span></dd>
+                                <dd>Items: <span class=" cart-order-total-items-quantity">0</span></dd>
                                 <dd>Subtotal:
-                                    <span class="float-right cart-order-total-items">$0.00</span>
+                                    <span class=" cart-order-total-items">$0.00</span>
                                 </dd>
                             @endif
                         </dl>
                         <dl class="gs-cart-total-detail">
                             <dt class="gs-cart-order-total js-order-total">Order Total:
-                                <span class="price-symbol float-right cart-order-grand-total">{{$res['total_data']['total_format']}}</span>
+                                <span class="price-symbol  cart-order-grand-total">{{$res['total_data']['total_format']}}</span>
                             </dt>
                         </dl>
                         <div class="gs-cart-proceed-checkout">
@@ -176,16 +178,14 @@
                     <div class="pc-gs-cart-coupon">
                         <div class="gs-cart-coupon-conent js-coupon-block">
                             <a href="javascript:;" data-toggle="modal" data-target="#sale-after">
-                                <img class="Guarantee"
-                                     src="{{ URL::asset('static/shop/img/cart/return-icon.svg') }}">
+                                <img class="Guarantee" src="{{ URL::asset('static/shop/img/cart/return-icon.svg') }}">
                                 <h4>30-Day Free Return</h4>
                             </a>
                         </div>
                         <span class="divider">|</span>
                         <div class="gs-cart-coupon-conent js-coupon-block">
                             <a href="javascript:;" data-toggle="modal" data-target="#sale-after">
-                                <img class="Guarantee"
-                                     src="{{ URL::asset('static/shop/img/cart/guarantee-icon.svg') }}">
+                                <img class="Guarantee" src="{{ URL::asset('static/shop/img/cart/guarantee-icon.svg') }}">
                                 <h4>365-Day Guarantee</h4>
                             </a>
                         </div>
@@ -206,9 +206,6 @@
 <script>
     $(function () {
         $('.proceed-to-checkout').click(function () {
-            // $.ajax({
-            //
-            // })
             location.href = '/checkout/address'
         })
     })

@@ -28,11 +28,6 @@ class Cart extends Model
 
     static public $products=[];
 
-    public function __construct() {
-        self::where('uuid',0)->where('created_at','<',time()-3600*24*2)->delete();
-        parent::__construct();
-    }
-
     function product(){
         return $this->hasOne(Product::class,'id','product_id');
     }
@@ -215,10 +210,14 @@ class Cart extends Model
     }
 
     public function delUuid(){
+        return self::where(['uuid'=>User::uuid()])->delete();
+    }
+
+    public function initCart(){
         Cookie::queue('shop_coupon', null , -1);
         Cookie::queue('shop_address_id', null , -1);
         Cookie::queue('shop_shipping_id', null , -1);
-        return self::where(['uuid'=>User::uuid()])->delete();
+        self::where('uuid',0)->where('created_at','<',time()-3600*24*2)->delete();
     }
 
     public static $total = [

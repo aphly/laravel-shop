@@ -19,6 +19,7 @@ class CartController extends Controller
     {
         $res['title'] = '';
         $cart = new Cart;
+        $cart->initCart();
         $res['list'] = $cart->getProducts();
         $res['items'] = 0;
         if($res['list']){
@@ -48,6 +49,11 @@ class CartController extends Controller
             list($count,$list) = $cart->countProducts(true);
             throw new ApiException(['code'=>0,'msg'=>'success','data'=>['count'=>$count,'list'=>$list]]);
         }
+    }
+
+    public function edit(Request $request)
+    {
+        $cartInfo = Cart::where(['id'=>$request->id])->firstOrError();
     }
 
     public function addWishlist(Request $request)

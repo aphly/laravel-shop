@@ -16,6 +16,7 @@
     .qtyInfo {border-bottom: 1px solid #dadada; padding-bottom: 15px; padding-top: 5px;}
     .subtotalInfo{display: flex;justify-content: space-between;margin-top: 25px;font-weight: 600}
 
+    .cart-code{margin-top: 10px;}
     .cart-order-summary{padding:0 30px 30px}
     .btn-apply-code,.cart-code-input{border-radius:5px;height:45px;outline:none}
     .cart-code-input{border:1px solid #ccc;padding-left:10px;width:calc(100% - 90px)}
@@ -29,6 +30,7 @@
     .btn-checkout{background:#0da9c4;border-radius:4px;color:#fff;font-size:16px;height:38px;width:100%}
     .btn-checkout:hover{background:#0c92a9;color:#fff}
     .btn-checkout:disabled{background: #b6b6b6!important;}
+    .cart-order-total{display: flex;justify-content: space-between;margin-bottom: 10px;}
 
     .cart-btn-continue{color:#2a2a2a;margin-top:15px;text-align:center}
     a.color-link-defaut{border-bottom:1px solid #333;color:#333}
@@ -232,7 +234,7 @@
     })
 
     function coupon(res){
-        console.log(res)
+        location.href = '/cart'
     }
 
 </script>

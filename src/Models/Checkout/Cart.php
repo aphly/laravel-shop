@@ -14,7 +14,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class Cart extends Model
 {
@@ -202,9 +201,9 @@ class Cart extends Model
         return false;
     }
 
-    public function countProducts($new=false) {
+    public function countProducts($refresh=false) {
         $product_count = 0;
-        $products = $this->getProducts($new);
+        $products = $this->getProducts($refresh);
         foreach ($products as $product) {
             $product_count += $product['quantity'];
         }
@@ -216,6 +215,7 @@ class Cart extends Model
     }
 
     public function delUuid(){
+        Cookie::queue('shop_coupon', null , -1);
         Cookie::queue('shop_address_id', null , -1);
         Cookie::queue('shop_shipping_id', null , -1);
         return self::where(['uuid'=>User::uuid()])->delete();

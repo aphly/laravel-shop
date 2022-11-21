@@ -32,7 +32,7 @@ return new class extends Migration
             $table->float('height')->nullable();
             $table->tinyInteger('length_class_id');
             $table->tinyInteger('subtract')->default(1);
-            $table->tinyInteger('minimum')->nullable()->default(1);
+            //$table->tinyInteger('minimum')->nullable()->default(1);
             $table->tinyInteger('status')->default(1)->index();
             $table->unsignedInteger('date_available')->nullable()->default(0);
             $table->unsignedInteger('viewed')->nullable()->default(0);

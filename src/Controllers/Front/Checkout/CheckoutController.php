@@ -7,6 +7,7 @@ use Aphly\LaravelCommon\Models\Currency;
 use Aphly\LaravelPayment\Models\Payment;
 use Aphly\LaravelPayment\Models\PaymentMethod;
 use Aphly\LaravelShop\Controllers\Front\Controller;
+use Aphly\LaravelShop\Models\Catalog\ProductImage;
 use Aphly\LaravelShop\Models\Catalog\Shipping;
 use Aphly\LaravelShop\Models\Checkout\Cart;
 use Aphly\LaravelCommon\Models\UserAddress;
@@ -26,16 +27,8 @@ class CheckoutController extends Controller
         $res['list'] = $cart->getProducts();
         $res['items'] = 0;
         if($res['list']){
-            foreach ($res['list'] as $cart1) {
-                $product_total = 0;
-                foreach ($res['list'] as $cart2) {
-                    if ($cart2['product_id'] == $cart1['product_id']) {
-                        $product_total += $cart2['quantity'];
-                    }
-                }
-                if ($cart1['product']['minimum'] > $product_total) {
-                    return redirect('cart');
-                }
+            foreach ($res['list'] as $key=>$cart1) {
+                $res['list'][$key]['product']['image_src'] = ProductImage::render($res['list'][$key]['product']['image'],true);
                 $res['items'] += $cart1['quantity'];
             }
             $res['total_data'] = $cart->totalData();

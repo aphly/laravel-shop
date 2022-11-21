@@ -193,7 +193,11 @@
                 $('.product_detail_img .swiper-slide[data-image_id="'+$(this).data('image_id')+'"]').click()
             }
         })
-        $('.info_option .radio label:first').click();
+
+        $('.info_option .radio').each(function () {
+            $(this).find('label:first').click();
+        })
+
         $('.quantity-wrapper').on('click','.quantity-down', function (e) {
             let input = $(this).parent().find('input')
             let q_curr = parseInt(input.val());

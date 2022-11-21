@@ -13,24 +13,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
-
 Route::middleware(['web'])->group(function () {
 
     Route::get('/home1', 'Aphly\LaravelShop\Controllers\Front\HomeController@home1');
 
     Route::middleware(['userAuth'])->group(function () {
         //account
-        Route::prefix('customer')->group(function () {
-            Route::get('account', 'Aphly\LaravelShop\Controllers\Front\Customer\AccountController@index');
+        Route::prefix('account')->group(function () {
+            //wishlist
+            Route::get('wishlist', 'Aphly\LaravelShop\Controllers\Front\Account\WishlistController@index');
+            Route::post('wishlist/product/{id}', 'Aphly\LaravelShop\Controllers\Front\Account\WishlistController@product')->where('id', '[0-9]+');
+            Route::post('wishlist/{id}/remove', 'Aphly\LaravelShop\Controllers\Front\Account\WishlistController@remove')->where('id', '[0-9]+');
 
-            Route::get('wishlist', 'Aphly\LaravelShop\Controllers\Front\Customer\WishlistController@index');
-            Route::get('wishlist/product/{id}', 'Aphly\LaravelShop\Controllers\Front\Customer\WishlistController@product')->where('id', '[0-9]+');
+            //cart
+            Route::post('cart/{id}/wishlist', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@addWishlist')->where('id', '[0-9]+');
 
-            Route::get('address', 'Aphly\LaravelShop\Controllers\Front\Customer\AddressController@index');
-            Route::match(['get', 'post'],'address/save', 'Aphly\LaravelShop\Controllers\Front\Customer\AddressController@save');
-            Route::get('address/remove/{id}', 'Aphly\LaravelShop\Controllers\Front\Customer\AddressController@remove')->where('id', '[0-9]+');
-
+            //order
+            Route::get('order', 'Aphly\LaravelShop\Controllers\Front\Account\OrderController@index');
+            Route::get('order/{id}/detail', 'Aphly\LaravelShop\Controllers\Front\Account\OrderController@detail')->where('id', '[0-9]+');
         });
 
         //Checkout
@@ -38,7 +38,6 @@ Route::middleware(['web'])->group(function () {
         Route::match(['get', 'post'],'/checkout/address', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@address');
         Route::match(['get', 'post'],'/checkout/shipping', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@shipping');
         Route::match(['get', 'post'],'/checkout/pay', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@pay');
-
     });
 
     Route::middleware(['guest'])->group(function () {
@@ -51,8 +50,10 @@ Route::middleware(['web'])->group(function () {
         Route::get('/product/category', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@category');
         Route::get('/product/{id}', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@detail')->where('id', '[0-9]+');
 
+        //cart
         Route::post('/cart/add', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@add');
         Route::get('/cart', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@index');
+        Route::post('/cart/coupon', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@coupon');
     });
 });
 
@@ -102,8 +103,6 @@ Route::middleware(['web'])->group(function () {
             Route::get('/product/ajax', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@ajax');
             Route::get('/attribute/ajax', 'Aphly\LaravelShop\Controllers\Admin\Catalog\AttributeController@ajax');
             Route::get('/option/ajax', 'Aphly\LaravelShop\Controllers\Admin\Catalog\OptionController@ajax');
-
-
         });
     });
 });

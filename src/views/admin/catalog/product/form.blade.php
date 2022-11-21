@@ -95,11 +95,7 @@
                 </select>
                 <div class="invalid-feedback"></div>
             </div>
-            <div class="form-group">
-                <label for="">最小购买数量</label>
-                <input type="number" name="minimum" class="form-control " value="{{$res['product']->minimum??1}}">
-                <div class="invalid-feedback"></div>
-            </div>
+
             <div class="form-group">
                 <label for="">上架时间</label>
                 <input type="datetime-local" name="date_available" class="form-control " value="{{$res['product']->date_available?date('Y-m-d',$res['product']->date_available)."T".date('H:i',$res['product']->date_available):0}}">

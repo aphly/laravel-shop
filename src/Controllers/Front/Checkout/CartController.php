@@ -3,11 +3,15 @@
 namespace Aphly\LaravelShop\Controllers\Front\Checkout;
 
 use Aphly\Laravel\Exceptions\ApiException;
+use Aphly\LaravelCommon\Models\User;
 use Aphly\LaravelShop\Controllers\Front\Controller;
+use Aphly\LaravelShop\Models\Account\Wishlist;
+use Aphly\LaravelShop\Models\Catalog\Coupon;
 use Aphly\LaravelShop\Models\Catalog\ProductImage;
 use Aphly\LaravelShop\Models\Checkout\Cart;
 use Aphly\LaravelShop\Models\Catalog\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 
 class CartController extends Controller
 {
@@ -20,15 +24,6 @@ class CartController extends Controller
         if($res['list']){
             foreach ($res['list'] as $key=>$product) {
                 $res['list'][$key]['product']['image_src'] = ProductImage::render($res['list'][$key]['product']['image'],true);
-                $product_total = 0;
-                foreach ($res['list'] as $product2) {
-                    if ($product2['product_id'] == $product['product_id']) {
-                        $product_total += $product2['quantity'];
-                    }
-                }
-                if ($product['product']['minimum'] > $product_total) {
-                    $res['error'][] = 'minimum';
-                }
                 $res['items'] += $product['quantity'];
             }
         }
@@ -48,13 +43,35 @@ class CartController extends Controller
                     throw new ApiException(['code'=>1,'msg'=>$val['option']['name'].' required']);
                 }
             }
-            $Cart = new Cart;
-            $Cart->add($res['info']->id, $quantity, $option);
-            list($count,$list) = $Cart->countProducts(true);
+            $cart = new Cart;
+            $cart->add($res['info']->id, $quantity, $option);
+            list($count,$list) = $cart->countProducts(true);
             throw new ApiException(['code'=>0,'msg'=>'success','data'=>['count'=>$count,'list'=>$list]]);
         }
     }
 
+    public function addWishlist(Request $request)
+    {
+        $cartInfo = Cart::where(['id'=>$request->id])->firstOrError();
+        $info = Wishlist::where(['uuid'=>User::uuid(),'product_id'=>$cartInfo->product_id])->first();
+        if(empty($info)){
+            Wishlist::create(['product_id'=>$cartInfo->product_id,'uuid'=>User::uuid()]);
+        }
+        $cartInfo->delete();
+        throw new ApiException(['code'=>0,'msg'=>'add_success']);
+    }
+
+    public function coupon(Request $request)
+    {
+        $res['info'] = (new Coupon)->getCoupon($request->code);
+        if(!empty($res['info'])){
+            Cookie::queue('shop_coupon',$res['info']['code']);
+            throw new ApiException(['code'=>0,'msg'=>'success']);
+        }else{
+            Cookie::queue('shop_coupon', null , -1);
+            throw new ApiException(['code'=>1,'msg'=>'fail']);
+        }
+    }
 
 
 }

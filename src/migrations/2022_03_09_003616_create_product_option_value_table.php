@@ -23,7 +23,6 @@ return new class extends Migration
             $table->integer('quantity')->nullable();
             $table->tinyInteger('subtract')->unsigned()->nullable();
             $table->decimal('price',15,2)->nullable();
-            $table->integer('points')->unsigned()->nullable();
             $table->float('weight')->nullable();
         });
     }

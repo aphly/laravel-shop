@@ -51,6 +51,7 @@ return new class extends Migration
             $table->string('ip',64)->nullable();
             $table->string('user_agent',255)->nullable();
             $table->string('accept_language',255)->nullable();
+            $table->unsignedBigInteger('delete_at')->nullable()->default(0);
             $table->unsignedBigInteger('created_at');
             $table->unsignedBigInteger('updated_at');
             $table->engine = 'InnoDB';

@@ -17,7 +17,7 @@ class Product extends Model
         'sku','name','quantity','image','price','uuid','model',
         'shipping','stock_status_id','weight','weight_class_id',
         'length','width','height','length_class_id','subtract',
-        'minimum','status','viewed','sale','sort','date_available'
+        'status','viewed','sale','sort','date_available'
     ];
 
     function desc(){
@@ -55,7 +55,6 @@ class Product extends Model
         $filter = $data['filter']??false;
         $sort = $data['sort'];
         $time = time();
-        //$group_id = User::groupId();
         if($data['category_id']){
             if($this->sub_category){
                 $sql = DB::table('shop_category_path as cp')->leftJoin('shop_product_category as pc','cp.category_id','=','pc.category_id');
@@ -134,7 +133,7 @@ class Product extends Model
                                 if($sort[1]=='asc'){
                                     return $query->orderByRaw('(CASE WHEN min(special) IS NOT NULL THEN min(special) WHEN min(discount) IS NOT NULL THEN min(discount) ELSE min(price) END) asc');
                                 }else{
-                                    return $query->orderByRaw('(CASE WHEN min(special) IS NOT NULL THEN min(special) WHEN min(discount) IS NOT NULL THEN min(discount) ELSE min(price) END) desc');
+                                    return $query->orderByRaw('(CASE WHEN max(special) IS NOT NULL THEN max(special) WHEN max(discount) IS NOT NULL THEN min(discount) ELSE max(price) END) desc');
                                 }
                             }else if($sort[0]=='sale'){
                                 return $query->orderBy('sale','desc');
@@ -153,9 +152,9 @@ class Product extends Model
                         return $query->orderBy('p.date_available','desc');
                     }else if($sort[0]=='price'){
                         if($sort[1]=='asc'){
-                            return $query->orderByRaw('CASE WHEN special IS NOT NULL THEN special WHEN discount IS NOT NULL THEN discount ELSE p.price END asc');
+                            return $query->orderByRaw('(CASE WHEN special IS NOT NULL THEN special WHEN discount IS NOT NULL THEN discount ELSE p.price END) asc');
                         }else{
-                            return $query->orderByRaw('CASE WHEN special IS NOT NULL THEN special WHEN discount IS NOT NULL THEN discount ELSE p.price END desc');
+                            return $query->orderByRaw('(CASE WHEN special IS NOT NULL THEN special WHEN discount IS NOT NULL THEN discount ELSE p.price END) desc');
                         }
                     }else if($sort[0]=='sale'){
                         return $query->orderBy('p.sale','desc');

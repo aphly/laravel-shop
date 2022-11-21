@@ -4,8 +4,8 @@ namespace Aphly\LaravelShop\Controllers\Front\Customer;
 
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\LaravelShop\Controllers\Front\Controller;
-use Aphly\LaravelShop\Models\Customer\Address;
-use Aphly\LaravelShop\Models\Customer\Customer;
+use Aphly\LaravelShop\Models\Account\Address;
+use Aphly\LaravelShop\Models\Account\Customer;
 use Aphly\LaravelShop\Models\Common\Country;
 use Aphly\LaravelShop\Models\Common\Zone;
 use Illuminate\Http\Request;

@@ -53,7 +53,11 @@ class CartController extends Controller
 
     public function edit(Request $request)
     {
-        $cartInfo = Cart::where(['id'=>$request->id])->firstOrError();
+        $cartInfo = Cart::where(['id'=>$request->input('cart_id',0)])->firstOrError();
+        $quantity = $request->input('quantity',1);
+        $cartInfo->quantity = $quantity>1?$quantity:1;
+        $cartInfo->save();
+        throw new ApiException(['code'=>0,'msg'=>'success']);
     }
 
     public function addWishlist(Request $request)
@@ -64,7 +68,7 @@ class CartController extends Controller
             Wishlist::create(['product_id'=>$cartInfo->product_id,'uuid'=>User::uuid()]);
         }
         $cartInfo->delete();
-        throw new ApiException(['code'=>0,'msg'=>'add_success']);
+        throw new ApiException(['code'=>0,'msg'=>'success']);
     }
 
     public function coupon(Request $request)

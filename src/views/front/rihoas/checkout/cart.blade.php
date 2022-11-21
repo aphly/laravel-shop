@@ -47,7 +47,7 @@
 
 <div class="container">
     <div class="cart">
-        <div class=" cart-title">
+        <div class="cart-title">
             <h2 class="">
                 My Cart
             </h2>
@@ -221,12 +221,21 @@
         </div>
     </div>
 </div>
-
+<div class="xxxx">
+    asadsasd
+</div>
 <style>
 
 </style>
 
 <script>
+    function aasd(t){
+        console.log('cccc',t);
+    }
+    $('.xxxx').click(debounce(aasd, 1000,'xxx'))
+    function testx(){
+        console.log('xxxx');
+    }
     $(function () {
         $('.proceed-to-checkout').click(function () {
             location.href = '/checkout/address'

@@ -96,7 +96,7 @@
             <div class="control-label">Quantity</div>
             <div class="quantity-wrapper">
                 <div class="quantity-down">-</div>
-                <input type="number" name="quantity" value="1" class="form-control">
+                <input type="number" name="quantity" onblur="if(value<1)value=1" value="1" class="form-control">
                 <div class="quantity-up">+</div>
             </div>
         </div>
@@ -114,7 +114,6 @@
     .quantity-wrapper{display: flex;}
     .quantity-wrapper div,.quantity-wrapper input{text-align: center; line-height: 48px;height: 48px;width: 48px;min-width: 48px;background-color: #fff;border: 1px solid #f1f1f1;border-radius: 2px;}
     .quantity-wrapper div{color: #aaa;font-size: 30px;cursor: pointer;user-select: none}
-
     .quantity-wrapper input{margin: 0 10px;}
 
     input[type='number']::-webkit-outer-spin-button,input[type='number']::-webkit-inner-spin-button {
@@ -202,10 +201,10 @@
             let input = $(this).parent().find('input')
             let q_curr = parseInt(input.val());
             let quantity = q_curr-1;
-            if(quantity>0){
+            if(quantity>1){
                 input.val(quantity)
             }else{
-                input.val(0)
+                input.val(1)
             }
         })
 

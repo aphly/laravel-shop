@@ -5,7 +5,7 @@
     .myChart{width: 60%;margin-right: 20px;}
     .cart-pay{width: calc(40% - 20px);}
 
-    .cart-shopping{background:#fff;box-shadow:0 0 15px 0 #e3e3e3;margin-top:0;margin-bottom:10px;padding:50px 30px 30px;position:relative}
+    .cart-shopping{background:#fff;box-shadow:0 0 15px 0 #e3e3e3;margin-top:0;margin-bottom:10px;padding:50px 30px 30px;position:relative;border-radius: 4px;}
     .close-btn{cursor:pointer;position:absolute;right:10px;top:10px;width:18px}
 
     .cart-img{width: 40%;padding:0 35px;}
@@ -13,18 +13,20 @@
     .cart-product-name{font-size: 18px;font-weight: 700;}
     .shopping-info .cart-product-info{display: flex;justify-content: space-between;padding: 5px 0;}
     .cart-product-info-x{color: #999;}
-    .qtyInfo {border-bottom: 1px solid #dadada; padding-bottom: 15px; padding-top: 5px;}
+    .qtyInfo {border-bottom: 1px solid #dadada; padding-bottom: 15px; padding-top: 5px;display: flex;justify-content: space-between;}
     .subtotalInfo{display: flex;justify-content: space-between;margin-top: 25px;font-weight: 600}
 
     .cart-code{margin-top: 10px;}
     .cart-order-summary{padding:0 30px 30px}
     .btn-apply-code,.cart-code-input{border-radius:5px;height:45px;outline:none}
-    .cart-code-input{border:1px solid #ccc;padding-left:10px;width:calc(100% - 90px)}
-    .btn-apply-code{background:#f16c00;border:none;color:#fff;font-size:14px;line-height:43px;padding:0;width:75px}
+    .cart-code-input{border:1px solid #ccc;padding-left:10px;width:calc(100% - 120px)}
+    .btn-apply-code{background:#f16c00;border:none;color:#fff;font-size:14px;line-height:43px;padding:0;width: 110px;margin-left: 5px;position: relative;top: -1px;}
+    .btn-apply-code:hover{color:#fff;}
 
     .summarytip{border-bottom:1px solid #dadada;padding:10px 0 13px;position:relative}
     .cart-total-summary{padding-top:25px}
-    .cart-total-summary dl{display:flex;justify-content:space-between}
+    .cart-total-summary dl{display:flex;justify-content:space-between;flex-wrap: wrap;}
+    .cart-total-summary dl dd{width: 100%;display: flex;justify-content: space-between;margin-bottom: 5px;}
     .total-summary{margin-bottom:10px;font-weight:600}
     .cart-total-detail{border-top:1px solid #dadada;margin-top:23px;padding-top:25px;font-size:16px;font-weight:700}
     .btn-checkout{background:#0da9c4;border-radius:4px;color:#fff;font-size:16px;height:38px;width:100%}
@@ -39,6 +41,15 @@
     .pc-cart-coupon .divider{color:#dadada;display:inline-block}
     .Guarantee{height:26px;left:0;position:absolute;top:50%;transform:translateY(-50%)}
 
+    .cart-label{line-height: 28px;}
+    .quantity-wrapper{display: flex;}
+    .quantity-wrapper div,.quantity-wrapper input{text-align: center; line-height: 28px;height: 28px;width: 28px;min-width:28px;background-color: #fff;border: 1px solid #f1f1f1;border-radius: 2px;}
+    .quantity-wrapper div{color: #aaa;font-size: 22px;cursor: pointer;user-select: none}
+    .quantity-wrapper input{margin: 0 10px;}
+    input[type='number']::-webkit-outer-spin-button,input[type='number']::-webkit-inner-spin-button {
+        -webkit-appearance: none !important;
+    }
+    .coupon-remove {color: #0da9c4;cursor: pointer}
     @media (max-width: 1200px) {
         .myChart{width: 100%;margin-right: 0;}
         .cart-pay{width: 100%;}
@@ -83,11 +94,15 @@
                                         </ul>
                                         <div class="qtyInfo">
                                             <span class="cart-label">Qty:</span>
-                                            <input type="number" name="qty" class="product-qty" value="{{$val['quantity']}}">
+                                            <div class="quantity-wrapper" data-cart_id="{{$val['id']}}">
+                                                <div class="quantity-down">-</div>
+                                                <input type="number" name="qty" class="product-qty" value="{{$val['quantity']}}">
+                                                <div class="quantity-up">+</div>
+                                            </div>
                                         </div>
                                         <div class="subtotalInfo">
                                             <span>Subtotal:</span>
-                                            <span class=" item-total">{{$val['total_format']}}</span>
+                                            <span class="item-total">{{$val['total_format']}}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -153,32 +168,27 @@
 
                         <div class="summarytip">
                             <div class="coupon-used text-left  hide-item">
-                                <div class="d-lg-none d-block">
-                                    The coupon has been applied for <strong class="coupon-code cart-list-coupon-save">$0.00</strong>
+                                @if($res['coupon'])
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        Applied Coupon:
+                                        <strong class="coupon-code cart-list-coupon-code">{{$res['coupon']}}</strong>
+                                    </div>
+                                    <div class="coupon-remove" onclick="couponRemove()">Remove</div>
                                 </div>
-                                <div class="position-relative">
-                                    Applied Coupon:
-                                    <strong class="coupon-code cart-list-coupon-code"></strong>
-                                    <span class="coupon-remove">Remove</span>
-                                </div>
-                                <div class="alert alert-danger  hide-item">
-                                    <ul>
-                                    </ul>
-                                </div>
+                                @endif
                             </div>
                         </div>
 
                         <div class="cart-total-summary">
                             <div class="total-summary">Summary</div>
                             <dl>
+                                <dd><span>Items:</span> <span class="cart-order-total-items-quantity js_cart_count">{{$res['count']}}</span></dd>
+                                <dd><span>Subtotal:</span> <span class=" cart-order-total-items js_cart_sub_total_format">{{$res['total_data']['sub_total_format']}}</span></dd>
                             @if(isset($res['total_data']['totals']))
-                                <dd><span>Items:</span> <span class="cart-order-total-items-quantity">{{$res['items']}}</span></dd>
                                 @foreach($res['total_data']['totals'] as $val)
                                     <dd><span>{{$val['title']}}:</span><span class=" cart-order-total-items">{{$val['value_format']}}</span> </dd>
                                 @endforeach
-                            @else
-                                <dd><span>Items:</span> <span class="cart-order-total-items-quantity">0</span></dd>
-                                <dd><span>Subtotal:</span> <span class=" cart-order-total-items">{{$res['total_data']['total_format']}}</span></dd>
                             @endif
                             </dl>
                         </div>
@@ -186,7 +196,7 @@
                         <dl class="cart-total-detail">
                             <dd class="cart-order-total">
                                 <span>Order Total:</span>
-                                <span class="cart-order-grand-total">{{$res['total_data']['total_format']}}</span>
+                                <span class="cart-order-grand-total js_cart_total">{{$res['total_data']['total_format']}}</span>
                             </dd>
                         </dl>
 
@@ -221,28 +231,81 @@
         </div>
     </div>
 </div>
-<div class="xxxx">
-    asadsasd
-</div>
+
 <style>
 
 </style>
 
 <script>
-    function aasd(t){
-        console.log('cccc',t);
-    }
-    $('.xxxx').click(debounce(aasd, 1000,'xxx'))
-    function testx(){
-        console.log('xxxx');
-    }
     $(function () {
+
         $('.proceed-to-checkout').click(function () {
             location.href = '/checkout/address'
         })
+
+        $('.quantity-wrapper').on('click','.quantity-down', function () {
+            let input = $(this).parent().find('input')
+            let q_curr = parseInt(input.val());
+            let quantity = q_curr-1;
+            quantity = quantity>1?quantity:1;
+            input.val(quantity)
+            let cart_id = $(this).closest('.quantity-wrapper').data('cart_id');
+            let _this = this
+            debounce_fn(function () {
+                edit_cart(cart_id,quantity,_this)
+            },1000,cart_id,quantity,_this)
+        })
+
+        $('.quantity-wrapper').on('click','.quantity-up', function () {
+            let input = $(this).parent().find('input')
+            let q_curr = parseInt(input.val());
+            let quantity = q_curr+1;
+            input.val(quantity)
+            let cart_id = $(this).closest('.quantity-wrapper').data('cart_id');
+            let _this = this
+            debounce_fn(function () {
+                edit_cart(cart_id,quantity,_this)
+            },1000,cart_id,quantity,_this)
+        })
+
+        $('.quantity-wrapper').on('blur','input',debounce(function () {
+            let quantity = $(this).val();
+            let cart_id = $(this).closest('.quantity-wrapper').data('cart_id');
+            edit_cart(cart_id,quantity,this)
+        }))
+
     })
 
-    function coupon(res){
+    function edit_cart(cart_id,quantity,_this) {
+        if(cart_id && quantity){
+            $.ajax({
+                url:'/cart/edit',
+                type:'post',
+                data:{cart_id,quantity,'_token':'{{csrf_token()}}'},
+                dataType: "json",
+                success:function (res) {
+                    if(!res.code){
+                        $(_this).closest('.cart-img_r').find('.item-total').text(res.data.list[cart_id].total_format)
+                        $('.cart_num').text(res.data.count)
+                        $('.js_cart_count').text(res.data.count)
+                        $('.js_cart_sub_total_format').text(res.data.total_data.sub_total_format)
+                        $('.js_cart_total').text(res.data.total_data.total_format)
+                    }
+                }
+            })
+        }
+    }
+
+    function couponRemove() {
+        $.ajax({
+            url:'/cart/coupon_remove',
+            success:function () {
+                location.href = '/cart'
+            }
+        })
+    }
+
+    function coupon(){
         location.href = '/cart'
     }
 

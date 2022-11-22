@@ -20,7 +20,7 @@ class CartController extends Controller
         $res['title'] = '';
         $cart = new Cart;
         $cart->initCart();
-        $res['list'] = $cart->getProducts();
+        list($res['count'],$res['list']) = $cart->countProducts();
         $res['items'] = 0;
         if($res['list']){
             foreach ($res['list'] as $key=>$product) {
@@ -29,6 +29,7 @@ class CartController extends Controller
             }
         }
         $res['total_data'] = $cart->totalData();
+        $res['coupon'] = Cookie::get('shop_coupon');
         return $this->makeView('laravel-shop-front::checkout.cart',['res'=>$res]);
     }
 
@@ -53,11 +54,17 @@ class CartController extends Controller
 
     public function edit(Request $request)
     {
-        $cartInfo = Cart::where(['id'=>$request->input('cart_id',0)])->firstOrError();
+        $cart = new Cart;
+        $cartInfo = $cart->where(['id'=>$request->input('cart_id',0),'guest'=>Cookie::get('guest')])->firstOrError();
         $quantity = $request->input('quantity',1);
         $cartInfo->quantity = $quantity>1?$quantity:1;
-        $cartInfo->save();
-        throw new ApiException(['code'=>0,'msg'=>'success']);
+        if($cartInfo->save()){
+            list($res['count'],$res['list']) = $cart->countProducts(true);
+            $res['total_data'] = $cart->totalData();
+            throw new ApiException(['code'=>0,'msg'=>'success','data'=>$res]);
+        }else{
+            throw new ApiException(['code'=>1,'msg'=>'fail']);
+        }
     }
 
     public function addWishlist(Request $request)
@@ -73,7 +80,7 @@ class CartController extends Controller
 
     public function coupon(Request $request)
     {
-        $res['info'] = (new Coupon)->getCoupon($request->code);
+        $res['info'] = (new Coupon)->getCoupon($request->input('coupon_code',0));
         if(!empty($res['info'])){
             Cookie::queue('shop_coupon',$res['info']['code']);
             throw new ApiException(['code'=>0,'msg'=>'success']);
@@ -83,5 +90,9 @@ class CartController extends Controller
         }
     }
 
-
+    public function couponRemove()
+    {
+        Cookie::queue('shop_coupon', null , -1);
+        throw new ApiException(['code'=>0,'msg'=>'success']);
+    }
 }

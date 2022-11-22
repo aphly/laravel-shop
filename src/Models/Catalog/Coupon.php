@@ -54,7 +54,7 @@ class Coupon extends Model
             }
 
             $coupon_category_data = [];
-            $coupon_category_query = CouponCategory::leftJoin('shop_category_path','shop_coupon_category.category_id','=','shop_category_path.path_id')->where('shop_coupon_category.coupon_id',$info['id'])->get()->toArray();
+            $coupon_category_query = CouponCategory::leftJoin('common_category_path','shop_coupon_category.category_id','=','common_category_path.path_id')->where('shop_coupon_category.coupon_id',$info['id'])->get()->toArray();
             foreach ($coupon_category_query as $category) {
                 $coupon_category_data[] = $category['category_id'];
             }
@@ -120,19 +120,17 @@ class Coupon extends Model
                         $status = in_array($product['product_id'], $info['product']);
                     }
                     if ($status) {
-                        if ($info['type'] == 'F') {
+                        if ($info['type'] == 2) {
                             $discount = $info['discount'] * ($product['total'] / $sub_total);
-                        } elseif ($info['type'] == 'P') {
+                        } elseif ($info['type'] == 1) {
                             $discount = $product['total'] / 100 * $info['discount'];
                         }
                     }
                     $discount_total += $discount;
                 }
-
                 if ($discount_total > $total_data['total']) {
                     $discount_total = $total_data['total'];
                 }
-
                 if ($discount_total > 0) {
                     $total_data['totals'][] = array(
                         'title'      => 'Coupon',

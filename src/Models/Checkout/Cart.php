@@ -214,7 +214,7 @@ class Cart extends Model
     }
 
     public function initCart(){
-        Cookie::queue('shop_coupon', null , -1);
+        //Cookie::queue('shop_coupon', null , -1);
         Cookie::queue('shop_address_id', null , -1);
         Cookie::queue('shop_shipping_id', null , -1);
         self::where('uuid',0)->where('created_at','<',time()-3600*24*2)->delete();
@@ -233,12 +233,15 @@ class Cart extends Model
         ];
         $sub_total = $this->getSubTotal();
         list($value,$value_format) = Currency::format($sub_total,2);
-        $total_data['totals'][] = [
-            'title'      => 'Sub_total',
-            'value'      => $value,
-            'value_format'      => $value_format,
-            'sort' => 1
-        ];
+//        $total_data['totals'][] = [
+//            'title'      => 'Sub_total',
+//            'value'      => $value,
+//            'value_format'      => $value_format,
+//            'sort' => 1
+//        ];
+        $total_data['sub_total'] = $value;
+        $total_data['sub_total_format'] = $value_format;
+
         $total_data['total'] += $value;
 
 		(new Coupon())->getTotal($total_data);

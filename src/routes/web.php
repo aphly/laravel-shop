@@ -17,12 +17,13 @@ Route::middleware(['web'])->group(function () {
 
     Route::get('/home1', 'Aphly\LaravelShop\Controllers\Front\HomeController@home1');
 
+    Route::post('wishlist/product/{id}', 'Aphly\LaravelShop\Controllers\Front\Account\WishlistController@product')->where('id', '[0-9]+');
+
     Route::middleware(['userAuth'])->group(function () {
         //account
         Route::prefix('account')->group(function () {
             //wishlist
             Route::get('wishlist', 'Aphly\LaravelShop\Controllers\Front\Account\WishlistController@index');
-            Route::post('wishlist/product/{id}', 'Aphly\LaravelShop\Controllers\Front\Account\WishlistController@product')->where('id', '[0-9]+');
             Route::post('wishlist/{id}/remove', 'Aphly\LaravelShop\Controllers\Front\Account\WishlistController@remove')->where('id', '[0-9]+');
 
             //cart
@@ -55,6 +56,8 @@ Route::middleware(['web'])->group(function () {
         Route::post('/cart/edit', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@edit');
         Route::get('/cart', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@index');
         Route::post('/cart/coupon', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@coupon');
+        Route::get('/cart/coupon_remove', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@couponRemove');
+
     });
 });
 

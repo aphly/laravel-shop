@@ -7,7 +7,6 @@ use Aphly\LaravelCommon\Models\Currency;
 use Aphly\LaravelPayment\Models\Payment;
 use Aphly\LaravelPayment\Models\PaymentMethod;
 use Aphly\LaravelShop\Controllers\Front\Controller;
-use Aphly\LaravelShop\Models\Catalog\ProductImage;
 use Aphly\LaravelShop\Models\Catalog\Shipping;
 use Aphly\LaravelShop\Models\Checkout\Cart;
 use Aphly\LaravelCommon\Models\UserAddress;

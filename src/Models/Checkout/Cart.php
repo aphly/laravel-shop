@@ -27,7 +27,7 @@ class Cart extends Model
         'uuid','product_id','guest','quantity','option'
     ];
 
-    static public $products=[];
+    static public $list=[];
 
     function product(){
         return $this->hasOne(Product::class,'id','product_id');
@@ -70,8 +70,8 @@ class Cart extends Model
     }
 
     public function getList($refresh=false){
-        if(!self::$products || $refresh) {
-            $product_data = [];
+        if(!self::$list || $refresh) {
+            $list = [];
             $uuid = User::uuid();
             $cart_data = self::when($uuid, function ($query, $uuid) {
                 return $query->where('uuid', $uuid);
@@ -81,12 +81,16 @@ class Cart extends Model
                 if ($cart['product']['status'] == 1 && $cart['product']['date_available'] < time() && $cart['quantity'] > 0) {
                     $option_price = 0;
                     $option_weight = 0;
+                    $option_value_name_arr = [];
                     $cart['option'] = json_decode($cart['option'], true);
                     if ($cart['option']) {
                         $option_value = (new Product)->optionValue($cart['product_id'], array_keys($cart['option']));
+
                         foreach ($cart['option'] as $k => $v) {
                             if (!empty($option_value[$k])) {
+
                                 if ($option_value[$k]['option']['type'] == 'select' || $option_value[$k]['option']['type'] == 'radio') {
+                                    $option_value_name_arr[] = $option_value[$k]['product_option_value'][$v]['option_value']['name'];
                                     if (!empty($option_value[$k]['product_option_value'][$v])) {
                                         $option_price += $option_value[$k]['product_option_value'][$v]['price'];
                                         $option_weight += $option_value[$k]['product_option_value'][$v]['weight'];
@@ -98,8 +102,10 @@ class Cart extends Model
                                     }
                                 } else if ($option_value[$k]['option']['type'] == 'text' || $option_value[$k]['option']['type'] == 'textarea' || $option_value[$k]['option']['type'] == 'file'
                                     || $option_value[$k]['option']['type'] == 'date' || $option_value[$k]['option']['type'] == 'datetime' || $option_value[$k]['option']['type'] == 'time') {
+                                    $option_value_name_arr[] = $option_value[$k]['product_option_value'][$v]['option_value']['name'];
                                     $option_value[$k]['product_option_value'] = $v;
                                 } else if ($option_value[$k]['option']['type'] == 'checkbox' && is_array($v)) {
+                                    $option_value_name_arr[] = $option_value[$k]['product_option_value'][$v]['option_value']['name'];
                                     $arr = [];
                                     foreach ($v as $v1) {
                                         if (!empty($option_value[$k]['product_option_value'][$v1])) {
@@ -159,23 +165,24 @@ class Cart extends Model
                     $price = ($price + $option_price);
                     $total = $price * $cart['quantity'];
                     $cart['product']['image_src'] = ProductImage::render($cart['product']['image'],true);
-                    $product_data[$cart['id']] = $cart;
-                    $product_data[$cart['id']]['option'] = $option_value;
-                    $product_data[$cart['id']]['stock'] = $stock;
-                    $product_data[$cart['id']]['price'] = $price;
-                    $product_data[$cart['id']]['price_format'] = Currency::format($price);
-                    $product_data[$cart['id']]['total'] = $total;
-                    $product_data[$cart['id']]['total_format'] = Currency::format($total);
-                    $product_data[$cart['id']]['shipping'] = $cart['product']['shipping'];
-                    $product_data[$cart['id']]['reward'] = $reward * $cart['quantity'];
-                    $product_data[$cart['id']]['weight'] = ($cart['product']['weight'] + $option_weight) * $cart['quantity'];
+                    $list[$cart['id']] = $cart;
+                    $list[$cart['id']]['option'] = $option_value;
+                    $list[$cart['id']]['option_name_str'] = implode(' / ',$option_value_name_arr);
+                    $list[$cart['id']]['stock'] = $stock;
+                    $list[$cart['id']]['price'] = $price;
+                    $list[$cart['id']]['price_format'] = Currency::format($price);
+                    $list[$cart['id']]['total'] = $total;
+                    $list[$cart['id']]['total_format'] = Currency::format($total);
+                    $list[$cart['id']]['shipping'] = $cart['product']['shipping'];
+                    $list[$cart['id']]['reward'] = $reward * $cart['quantity'];
+                    $list[$cart['id']]['weight'] = ($cart['product']['weight'] + $option_weight) * $cart['quantity'];
                 } else {
                     $this->remove($cart['id']);
                 }
             }
-            return self::$products = $product_data;
+            return self::$list = $list;
         }else{
-            return self::$products;
+            return self::$list;
         }
     }
 

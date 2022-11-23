@@ -68,7 +68,7 @@ class Product extends Model
         }else{
             $sql = DB::table('shop_product as p');
         }
-        $sql->where('p.status',1)->where('p.date_available','<=',time());
+        $sql->where('p.status',1)->where('p.date_available','<=',$time);
         if($data['category_id']){
             if($this->sub_category) {
                 $sql->where('cp.path_id', $data['category_id']);
@@ -166,18 +166,40 @@ class Product extends Model
         }
     }
 
+    function getByids($product_ids){
+        $time = time();
+        $sql = DB::table('shop_product as p')->where('p.status',1)->where('p.date_available','<=',$time)->whereIn('p.id',$product_ids);
+        $sql->select('p.id','p.sale','p.viewed','p.date_available','p.price','p.name','p.quantity','p.image','p.model');
+        $sql->addSelect(['special'=>ProductSpecial::whereColumn('product_id','p.id')
+            ->where(function ($query) use ($time){
+                $query->where('date_start',0)->orWhere('date_start','<',$time);
+            })->where(function ($query) use ($time){
+                $query->where('date_end',0)->orWhere('date_end','>',$time);
+            })->orderBy('priority','desc')
+            ->select('price')->limit(1)
+        ]);
+        $sql->addSelect(['discount'=>ProductDiscount::whereColumn('product_id','p.id')
+            ->where('quantity',1)
+            ->select('price')->limit(1)
+        ]);
+        return $sql->get()->keyBy('id')->toArray();
+    }
+
     function findAttribute($id){
         return ProductAttribute::with('attribute')->where('product_id',$id)->get()->toArray();
     }
 
     function findSpecial($id){
         $time = time();
-        return ProductSpecial::where('product_id',$id)->where(function ($query) use ($time){
+        $special = ProductSpecial::where('product_id',$id)->where(function ($query) use ($time){
             $query->where('date_start',0)->orWhere('date_start','<',$time);
         })->where(function ($query) use ($time){
             $query->where('date_end',0)->orWhere('date_end','>',$time);
-        })->orderBy('priority','desc')
-            ->select('price')->first();
+        })->orderBy('priority','desc')->select('price')->firstToArray();
+        if($special){
+            return Currency::format($special['price']);
+        }
+        return '';
     }
 
     function findReward($id,$group_id){
@@ -185,7 +207,11 @@ class Product extends Model
     }
 
     function findDiscount($id){
-        return ProductDiscount::where('product_id',$id)->get()->toArray();
+        $arr = ProductDiscount::where('product_id',$id)->get()->toArray();
+        foreach ($arr as $key=>$val){
+            $arr[$key]['price'] = Currency::format($val['price']);
+        }
+        return $arr;
     }
 
     function findOption($id,$render=false){

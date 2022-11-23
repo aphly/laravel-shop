@@ -6,6 +6,7 @@ use Aphly\LaravelCommon\Models\Category;
 use Aphly\LaravelCommon\Models\Currency;
 use Aphly\LaravelCommon\Models\User;
 use Aphly\LaravelShop\Controllers\Front\Controller;
+use Aphly\LaravelShop\Models\Account\Wishlist;
 use Aphly\LaravelShop\Models\Catalog\Product;
 use Aphly\LaravelShop\Models\Catalog\ProductImage;
 use Aphly\LaravelShop\Models\Catalog\Shipping;
@@ -35,17 +36,19 @@ class ProductController extends Controller
         $res['list'] = $product->getList($filter_data);
 
         $product_ids = [];
-        foreach ($res['list']->items() as $key=>$val){
-            $product_ids[] = $res['list']->items()[$key]->id;
-            $res['list']->items()[$key]->image_src= ProductImage::render($res['list']->items()[$key]->image,true);
-            $res['list']->items()[$key]->price= Currency::format($res['list']->items()[$key]->price);
-            $res['list']->items()[$key]->special= $res['list']->items()[$key]->special?Currency::format($res['list']->items()[$key]->special):0;
-            $res['list']->items()[$key]->discount= Currency::format($res['list']->items()[$key]->discount);
+        foreach ($res['list'] as $key=>$val){
+            $product_ids[] = $val->id;
+            $val->image_src= ProductImage::render($val->image,true);
+            $val->price= Currency::format($val->price);
+            $val->special= $val->special?Currency::format($val->special):0;
+            $val->discount= $val->discount?Currency::format($val->discount):0;
         }
         $res['product_option'] = $product->optionValueByName($product_ids);
         $res['product_image'] = $product->imgByIds($product_ids);
+        $res['wishlist_product_ids'] = Wishlist::$product_ids;
         return $this->makeView('laravel-shop-front::product.category',['res'=>$res]);
     }
+
 
     public function detail(Request $request)
     {
@@ -56,10 +59,11 @@ class ProductController extends Controller
         $group_id = User::groupId();
         $res['info_attr'] = $res['info']->findAttribute($res['info']->id);
         $res['info_option'] = $res['info']->findOption($res['info']->id,true);
-        $res['info_special'] = $res['info']->findSpecial($res['info']->id);
+        $res['special_price'] = $res['info']->findSpecial($res['info']->id);
         $res['info_reward'] = $res['info']->findReward($res['info']->id,$group_id);
         $res['info_discount'] = $res['info']->findDiscount($res['info']->id);
         $res['shipping'] = Shipping::where('cost',0)->firstToArray();
+        $res['wishlist_product_ids'] = Wishlist::$product_ids;
         return $this->makeView('laravel-shop-front::product.detail',['res'=>$res]);
     }
 

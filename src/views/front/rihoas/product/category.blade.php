@@ -7,7 +7,6 @@
     .product-category li .price{font-size:14px;margin-bottom:5px}
     .img-responsive{max-width:100%;height:auto}
     .product-category > li:nth-child(5n),.product-category li:last-child{margin-right:0}
-
 </style>
 
 <div class="container">
@@ -31,27 +30,46 @@
                         </a>
                     @endif
                 </div>
-                <div class="name"><a href="/product/{{$val->id}}">{{$val->name}}</a></div>
-                <div class="d-flex price">
-                    <span class="normal">{{$val->price}}</span>
-                    @if($val->special)
-                    <span class="special_price">{{$val->special}}</span>
-                    <span class="price_sale">Sale</span>
-                    @endif
-                </div>
                 <div class="product_option">
                     @if(isset($res['product_option'][$val->id]['product_option_value']))
-                    <dl>
-                        @foreach($res['product_option'][$val->id]['product_option_value'] as $v)
-                            @if($v['product_image'] && $v['product_image']['image_src'])
-                                <dd data-image_id="{{$v['product_image']['id']}}"><img src="{{$v['product_image']['image_src']}}" alt=""></dd>
-                            @elseif($v['option_value'] && $v['option_value']['image_src'])
-                                <dd><img src="{{$v['option_value']['image_src']}}" alt=""></dd>
-                            @endif
-                        @endforeach
-                    </dl>
+                        <dl>
+                            @foreach($res['product_option'][$val->id]['product_option_value'] as $v)
+                                @if($v['product_image'] && $v['product_image']['image_src'])
+                                    <dd data-image_id="{{$v['product_image']['id']}}"><img src="{{$v['product_image']['image_src']}}" alt=""></dd>
+                                @elseif($v['option_value'] && $v['option_value']['image_src'])
+                                    <dd><img src="{{$v['option_value']['image_src']}}" alt=""></dd>
+                                @endif
+                            @endforeach
+                        </dl>
                     @endif
                 </div>
+                <div class="p_name"><a href="/product/{{$val->id}}">{{$val->name}}</a></div>
+                <div class="p_name_x d-flex justify-content-between">
+                    <div class="d-flex price">
+                        @if($val->special)
+                            <span class="normal">{{$val->special}}</span>
+                            <span class="special_price">{{$val->price}}</span>
+                            <span class="price_sale">Sale</span>
+                        @else
+                            @if($val->discount)
+                                <span class="normal">{{$val->discount}}</span>
+                                <span class="special_price">{{$val->price}}</span>
+                                <span class="price_sale">Sale</span>
+                            @else
+                                <span class="normal">{{$val->price}}</span>
+                            @endif
+                        @endif
+                    </div>
+                    <div class="wishlist_one">
+                        @if(in_array($val->id,$res['wishlist_product_ids']))
+                            <i class="common-iconfont icon-aixin_shixin" data-product_id="{{$val->id}}" data-csrf="{{csrf_token()}}"></i>
+                        @else
+                            <i class="common-iconfont icon-aixin" data-product_id="{{$val->id}}" data-csrf="{{csrf_token()}}"></i>
+                        @endif
+                    </div>
+                </div>
+
+
             </li>
         @endforeach
     </ul>
@@ -73,6 +91,8 @@
 .product_image img{width: 100%;}
 .product_image dd{display: none}
 .product_image dd.active{display: block}
+.wishlist_one{}
+.wishlist_one i{width: 20px;height: 20px;display: block;cursor: pointer;text-align: center;}
 </style>
 
 <script>
@@ -88,6 +108,8 @@
             }
         })
     })
+
+
 </script>
 
 @include('laravel-shop-front::common.footer')

@@ -60,7 +60,7 @@ class Coupon extends Model
             }
 
             if ($coupon_product_data || $coupon_category_data) {
-                foreach ($cart->getProducts() as $product) {
+                foreach ($cart->getList() as $product) {
                     if (in_array($product['product_id'], $coupon_product_data)) {
                         $product_data[$product['product_id']] = $product['product_id'];
                         continue;
@@ -103,7 +103,7 @@ class Coupon extends Model
                     $sub_total = $cart->getSubTotal();
                 } else {
                     $sub_total = 0;
-                    foreach ($cart->getProducts() as $product) {
+                    foreach ($cart->getList() as $product) {
                         if (in_array($product['product_id'], $info['product'])) {
                             $sub_total += $product['total'];
                         }
@@ -112,7 +112,7 @@ class Coupon extends Model
                 if ($info['type'] == 2) {
                     $info['discount'] = min($info['discount'], $sub_total);
                 }
-                foreach ($cart->getProducts() as $product) {
+                foreach ($cart->getList() as $product) {
                     $discount = 0;
                     if (!$info['product']) {
                         $status = true;

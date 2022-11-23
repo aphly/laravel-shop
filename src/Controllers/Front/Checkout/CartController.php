@@ -7,7 +7,6 @@ use Aphly\LaravelCommon\Models\User;
 use Aphly\LaravelShop\Controllers\Front\Controller;
 use Aphly\LaravelShop\Models\Account\Wishlist;
 use Aphly\LaravelShop\Models\Catalog\Coupon;
-use Aphly\LaravelShop\Models\Catalog\ProductImage;
 use Aphly\LaravelShop\Models\Checkout\Cart;
 use Aphly\LaravelShop\Models\Catalog\Product;
 use Illuminate\Http\Request;
@@ -20,14 +19,8 @@ class CartController extends Controller
         $res['title'] = '';
         $cart = new Cart;
         $cart->initCart();
-        list($res['count'],$res['list']) = $cart->countProducts();
-        $res['items'] = 0;
-        if($res['list']){
-            foreach ($res['list'] as $key=>$product) {
-                $res['list'][$key]['product']['image_src'] = ProductImage::render($res['list'][$key]['product']['image'],true);
-                $res['items'] += $product['quantity'];
-            }
-        }
+        list($res['count'],$res['list']) = $cart->countList();
+
         $res['total_data'] = $cart->totalData();
         $res['coupon'] = Cookie::get('shop_coupon');
         return $this->makeView('laravel-shop-front::checkout.cart',['res'=>$res]);
@@ -47,7 +40,7 @@ class CartController extends Controller
             }
             $cart = new Cart;
             $cart->add($res['info']->id, $quantity, $option);
-            list($count,$list) = $cart->countProducts(true);
+            list($count,$list) = $cart->countList(true);
             throw new ApiException(['code'=>0,'msg'=>'success','data'=>['count'=>$count,'list'=>$list]]);
         }
     }
@@ -59,7 +52,7 @@ class CartController extends Controller
         $quantity = $request->input('quantity',1);
         $cartInfo->quantity = $quantity>1?$quantity:1;
         if($cartInfo->save()){
-            list($res['count'],$res['list']) = $cart->countProducts(true);
+            list($res['count'],$res['list']) = $cart->countList(true);
             $res['total_data'] = $cart->totalData();
             throw new ApiException(['code'=>0,'msg'=>'success','data'=>$res]);
         }else{

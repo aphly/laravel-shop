@@ -20,26 +20,6 @@ use Illuminate\Support\Facades\Cookie;
 
 class CheckoutController extends Controller
 {
-    public function index()
-    {
-		$res['title'] = 'Checkout';
-    	$cart = new Cart;
-        $res['list'] = $cart->getProducts();
-        $res['items'] = 0;
-        if($res['list']){
-            foreach ($res['list'] as $key=>$cart1) {
-                $res['list'][$key]['product']['image_src'] = ProductImage::render($res['list'][$key]['product']['image'],true);
-                $res['items'] += $cart1['quantity'];
-            }
-            $res['total_data'] = $cart->totalData();
-            $res['address'] = (new UserAddress)->getAddresses();
-			$res['shipping'] = (new Shipping)->getList();
-			$res['paymentMethod'] = (new PaymentMethod)->findAll();
-            return $this->makeView('laravel-shop-front::checkout.checkout',['res'=>$res]);
-        }else{
-            return redirect('cart');
-        }
-    }
 
     public function address(Request $request)
     {
@@ -57,12 +37,15 @@ class CheckoutController extends Controller
 		}else{
             Cookie::queue('shop_address_id', null , -1);
             Cookie::queue('shop_shipping_id', null, -1);
-            Cookie::queue('payment_method_id', null, -1);
             $cart = new Cart;
-            $res['list'] = $cart->getProducts();
-            $res['total_data'] = $cart->totalData();
-			$res['address'] = (new UserAddress)->getAddresses();
-			return $this->makeView('laravel-shop-front::checkout.address',['res'=>$res]);
+            list($res['count'],$res['list']) = $cart->countList();
+            if($res['list']) {
+                $res['total_data'] = $cart->totalData();
+                $res['address'] = (new UserAddress)->getAddresses();
+                return $this->makeView('laravel-shop-front::checkout.address', ['res' => $res]);
+            }else{
+                return redirect('cart');
+            }
 		}
     }
 
@@ -89,9 +72,8 @@ class CheckoutController extends Controller
 			throw new ApiException(['code' => 1, 'msg' => 'shipping method fail']);
 		}else{
             Cookie::queue('shop_shipping_id', null, -1);
-            Cookie::queue('payment_method_id', null, -1);
             $cart = new Cart;
-            $res['list'] = $cart->getProducts();
+            $res['list'] = $cart->getList();
             $res['total_data'] = $cart->totalData();
 			$res['shipping'] = (new Shipping)->getList();
 			return $this->makeView('laravel-shop-front::checkout.shipping',['res'=>$res]);
@@ -112,7 +94,7 @@ class CheckoutController extends Controller
             return redirect('/checkout/shipping');
         }
         $cart = new Cart;
-        $res['list'] = $cart->getProducts();
+        $res['list'] = $cart->getList();
         $res['total_data'] = $cart->totalData();
 		if($request->isMethod('post')) {
             $input['uuid'] = $this->user->uuid;

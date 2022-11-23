@@ -7,6 +7,7 @@ use Aphly\LaravelCommon\Models\User;
 use Aphly\LaravelShop\Models\Catalog\Coupon;
 use Aphly\LaravelShop\Models\Catalog\Product;
 use Aphly\LaravelShop\Models\Catalog\ProductDiscount;
+use Aphly\LaravelShop\Models\Catalog\ProductImage;
 use Aphly\LaravelShop\Models\Catalog\ProductReward;
 use Aphly\LaravelShop\Models\Catalog\ProductSpecial;
 use Aphly\LaravelShop\Models\Catalog\Shipping;
@@ -68,7 +69,7 @@ class Cart extends Model
         return 0;
     }
 
-    public function getProducts($refresh=false){
+    public function getList($refresh=false){
         if(!self::$products || $refresh) {
             $product_data = [];
             $uuid = User::uuid();
@@ -157,6 +158,7 @@ class Cart extends Model
 
                     $price = ($price + $option_price);
                     $total = $price * $cart['quantity'];
+                    $cart['product']['image_src'] = ProductImage::render($cart['product']['image'],true);
                     $product_data[$cart['id']] = $cart;
                     $product_data[$cart['id']]['option'] = $option_value;
                     $product_data[$cart['id']]['stock'] = $stock;
@@ -178,7 +180,7 @@ class Cart extends Model
     }
 
     public function getSubTotal() {
-        $products = $this->getProducts();
+        $products = $this->getList();
         $total = 0;
         foreach ($products as $cart) {
             $total += $cart['total'];
@@ -187,7 +189,7 @@ class Cart extends Model
     }
 
     public function hasShipping() {
-        $products = $this->getProducts();
+        $products = $this->getList();
         foreach ($products as $product) {
             if ($product['shipping']) {
                 return true;
@@ -196,13 +198,13 @@ class Cart extends Model
         return false;
     }
 
-    public function countProducts($refresh=false) {
+    public function countList($refresh=false) {
         $product_count = 0;
-        $products = $this->getProducts($refresh);
-        foreach ($products as $product) {
+        $list = $this->getList($refresh);
+        foreach ($list as $product) {
             $product_count += $product['quantity'];
         }
-        return [$product_count,$products];
+        return [$product_count,$list];
     }
 
     public function remove($cart_id) {

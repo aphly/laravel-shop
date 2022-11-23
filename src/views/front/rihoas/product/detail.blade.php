@@ -1,7 +1,6 @@
 @include('laravel-shop-front::common.header')
 <link rel="stylesheet" href="{{ URL::asset('static/shop/css/idangerous.swiper.css') }}"/>
 <style>
-
     .product_detail_img{max-width:500px;width:100%;position:relative}
     .product_detail_img .big_img{border-right:1px solid #f1f1f1;border-bottom:1px solid #f1f1f1;width:100%;height:500px}
     .product_detail_img .big_img img{width:100%;height:100%}
@@ -17,7 +16,6 @@
     .product_detail_img .lr_icon > div{background:url({{URL::asset('static/shop/img/leftright.png')}}) no-repeat;width:100%;height:100%;margin:0 auto;cursor:pointer}
     .product_detail_img .lr_icon.right{right:0px;top:10px;width:25px}
     .product_detail_img .lr_icon.right > div{background-position:right center}
-
 </style>
 <div class="container">
     <div>
@@ -48,20 +46,40 @@
                     </div>
                 @endif
             </div>
-            <div>
+            <div style="">
                 {{$res['info']->name}}
             </div>
             <div class="d-flex price">
-                <span class="normal">{{$res['info']->price}}</span>
-                @if(!empty($res['info_special']) && $res['info_special']->price)
-                    <span class="special_price">{{$res['info_special']->price}}</span>
+                @if($res['special_price'])
+                    <span class="normal">{{$res['special_price']}}</span>
+                    <span class="special_price">{{$res['info']->price}}</span>
                     <span class="price_sale">Sale</span>
+                @else
+                    @if($res['info_discount'])
+                        <ul class="d-flex">
+                            @foreach($res['info_discount'] as $v)
+                                <li class="item" style="margin-right: 10px;">
+                                    {{$v['quantity']}} {{$v['price']}}
+                                </li>
+                            @endforeach
+                        </ul>
+                        <span class="special_price">{{$res['info']->price}}</span>
+                    @else
+                        <span class="normal">{{$res['info']->price}}</span>
+                    @endif
+                @endif
+            </div>
+            <div class="wishlist_one">
+                @if(in_array($res['info']->id,$res['wishlist_product_ids']))
+                    <i class="common-iconfont icon-aixin_shixin" data-product_id="{{$res['info']->id}}" data-csrf="{{csrf_token()}}"></i>
+                @else
+                    <i class="common-iconfont icon-aixin" data-product_id="{{$res['info']->id}}" data-csrf="{{csrf_token()}}"></i>
                 @endif
             </div>
             <div>
                 @if($res['shipping'])
                     <div style="text-align: left;margin-bottom:0px">
-                        <span style="font-size: 14px; color: #E36254">
+                        <span style="color: #E36254">
                             <strong>Free Standard Shipping</strong>
                         </span>
                     </div>
@@ -78,15 +96,7 @@
         @endforeach
     </ul>
 
-    <ul class=" ">
-        @foreach($res['info_discount'] as $v)
-            <li class="item">
-                {{$v['quantity']}} {{$v['price']}}
-            </li>
-        @endforeach
-    </ul>
-
-    <form id="product" class="" method="post" action="/cart/add">
+    <form id="product" class="form_request" method="post" action="/cart/add" data-fn="detail_res">
         @csrf
         <input type="hidden" name="product_id" value="{{$res['info']->id}}">
         <div class="info_option">
@@ -123,39 +133,9 @@
     .add_cart_btn:hover{background: #212b36;color: #fff;}
 </style>
 <script>
-    let form_id = '#product'
-    $(function (){
-        $(form_id).submit(function (){
-            const form = $(this)
-            if(form[0].checkValidity()===false){
-            }else{
-                let url = form.attr("action");
-                let type = form.attr("method");
-                if(url && type){
-                    $(form_id+' input.form-control').removeClass('is-valid').removeClass('is-invalid');
-                    let btn_html = $(form_id+' button[type="submit"]').html();
-                    $.ajax({
-                        type,url,
-                        data: form.serialize(),
-                        dataType: "json",
-                        beforeSend:function () {
-                            $(form_id+' button[type="submit"]').attr('disabled',true).html('<i class="btn_loading app-jiazai uni"></i>');
-                        },
-                        success: function(res){
-                            $('.cart_num').text(res.data.count);
-                        },
-                        complete:function(XMLHttpRequest,textStatus){
-                            $(form_id+' button[type="submit"]').removeAttr('disabled').html(btn_html);
-                        }
-                    })
-                }else{
-                    console.log('no action')
-                }
-            }
-            return false;
-        })
-
-    });
+    function detail_res(res) {
+        $('.cart_num').text(res.data.count);
+    }
 </script>
 
 <script src="{{ URL::asset('static/shop/js/idangerous.swiper.min.js') }}" type="text/javascript"></script>

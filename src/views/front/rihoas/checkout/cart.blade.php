@@ -201,7 +201,7 @@
                         </dl>
 
                         <div class="cart-proceed-checkout">
-                            <button type="button" class="btn btn-checkout proceed-to-checkout" @if(!$res['items']) disabled @endif>
+                            <button type="button" class="btn btn-checkout proceed-to-checkout" @if(!$res['count']) disabled @endif>
                                 Proceed to Checkout
                             </button>
                         </div>

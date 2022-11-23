@@ -30,7 +30,7 @@ class HomeController extends Controller
         $res['list'] = $product->getList($filter_data,true);
         dd($res['list']);
         $cart = new Cart;
-        $res['list'] = $cart->getProducts();
+        $res['list'] = $cart->getList();
         $res['total_data'] = $cart->totalData();
 
         dd($res['list']);

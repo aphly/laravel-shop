@@ -139,7 +139,7 @@
                 $('.country_option[value="'+country_id+'"]').attr("selected", true)
                 let zone_id = $(this).data('zone_id');
                 $('select[name="zone_id"]').attr('selected',false)
-                setCountry(country_id,setZone)
+                setCountry(country_id,setZone,zone_id)
             }
         })
 
@@ -157,11 +157,14 @@
         })
     })
 
-    function setZone(res) {
-
+    function setZone(res,country_id,zone_id) {
+        country_zone[country_id] = res.data;
+        makeZone(country_zone[country_id])
+        console.log(zone_id)
+        $('#input-zone .zone_option[value="'+zone_id+'"]').attr("selected", true)
     }
-    
-    function setCountry(country_id,fn=false) {
+
+    function setCountry(country_id,fn=false,zone_id) {
         if(country_id in country_zone){
             makeZone(country_zone[country_id])
         }else{
@@ -171,7 +174,7 @@
                     dataType: "json",
                     success: function(res){
                         if(fn){
-                            fn(res)
+                            fn(res,country_id,zone_id)
                         }else{
                             country_zone[country_id] = res.data;
                             makeZone(country_zone[country_id])

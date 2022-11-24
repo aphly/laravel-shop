@@ -27,7 +27,7 @@ class Cart extends Model
         'uuid','product_id','guest','quantity','option'
     ];
 
-    static public $list=[];
+    static public $list=false;
 
     function product(){
         return $this->hasOne(Product::class,'id','product_id');
@@ -70,7 +70,7 @@ class Cart extends Model
     }
 
     public function getList($refresh=false){
-        if(!self::$list || $refresh) {
+        if(self::$list===false || $refresh) {
             $list = [];
             $uuid = User::uuid();
             $cart_data = self::when($uuid, function ($query, $uuid) {
@@ -85,10 +85,8 @@ class Cart extends Model
                     $cart['option'] = json_decode($cart['option'], true);
                     if ($cart['option']) {
                         $option_value = (new Product)->optionValue($cart['product_id'], array_keys($cart['option']));
-
                         foreach ($cart['option'] as $k => $v) {
                             if (!empty($option_value[$k])) {
-
                                 if ($option_value[$k]['option']['type'] == 'select' || $option_value[$k]['option']['type'] == 'radio') {
                                     $option_value_name_arr[] = $option_value[$k]['product_option_value'][$v]['option_value']['name'];
                                     if (!empty($option_value[$k]['product_option_value'][$v])) {
@@ -102,13 +100,13 @@ class Cart extends Model
                                     }
                                 } else if ($option_value[$k]['option']['type'] == 'text' || $option_value[$k]['option']['type'] == 'textarea' || $option_value[$k]['option']['type'] == 'file'
                                     || $option_value[$k]['option']['type'] == 'date' || $option_value[$k]['option']['type'] == 'datetime' || $option_value[$k]['option']['type'] == 'time') {
-                                    $option_value_name_arr[] = $option_value[$k]['product_option_value'][$v]['option_value']['name'];
+                                    $option_value_name_arr[] = $v;
                                     $option_value[$k]['product_option_value'] = $v;
                                 } else if ($option_value[$k]['option']['type'] == 'checkbox' && is_array($v)) {
-                                    $option_value_name_arr[] = $option_value[$k]['product_option_value'][$v]['option_value']['name'];
                                     $arr = [];
                                     foreach ($v as $v1) {
                                         if (!empty($option_value[$k]['product_option_value'][$v1])) {
+                                            $option_value_name_arr[] = $option_value[$k]['product_option_value'][$v1]['option_value']['name'];
                                             $option_price += $option_value[$k]['product_option_value'][$v1]['price'];
                                             $option_weight += $option_value[$k]['product_option_value'][$v1]['weight'];
                                             $arr[$v1] = $option_value[$k]['product_option_value'][$v1];
@@ -187,18 +185,18 @@ class Cart extends Model
     }
 
     public function getSubTotal() {
-        $products = $this->getList();
+        $list = $this->getList();
         $total = 0;
-        foreach ($products as $cart) {
+        foreach ($list as $cart) {
             $total += $cart['total'];
         }
         return $total;
     }
 
     public function hasShipping() {
-        $products = $this->getList();
-        foreach ($products as $product) {
-            if ($product['shipping']) {
+        $list = $this->getList();
+        foreach ($list as $cart) {
+            if ($cart['shipping']) {
                 return true;
             }
         }
@@ -206,12 +204,12 @@ class Cart extends Model
     }
 
     public function countList($refresh=false) {
-        $product_count = 0;
+        $count = 0;
         $list = $this->getList($refresh);
-        foreach ($list as $product) {
-            $product_count += $product['quantity'];
+        foreach ($list as $cart) {
+            $count += $cart['quantity'];
         }
-        return [$product_count,$list];
+        return [$count,$list];
     }
 
     public function remove($cart_id) {
@@ -234,30 +232,34 @@ class Cart extends Model
     ];
 
     public function totalData() {
+        list($count,$list) = $this->countList();
         $totals = [];
         $total = 0;
         $total_data = [
             'totals' => &$totals,
             'total'  => &$total
         ];
-        $sub_total = $this->getSubTotal();
-        list($value,$value_format) = Currency::format($sub_total,2);
-//        $total_data['totals'][] = [
-//            'title'      => 'Sub_total',
-//            'value'      => $value,
-//            'value_format'      => $value_format,
-//            'sort' => 1
-//        ];
-        $total_data['sub_total'] = $value;
-        $total_data['sub_total_format'] = $value_format;
-
+        list($value,$value_format) = Currency::format($this->getSubTotal(),2);
+        $total_data['totals']['sub_total'] = [
+            'title'      => 'SubTotal',
+            'value'      => $value,
+            'value_format'      => $value_format,
+            'sort' => 1,
+            'ext'=>$count
+        ];
         $total_data['total'] += $value;
 
 		(new Coupon())->getTotal($total_data);
 
 		(new Shipping())->getTotal($total_data);
-
-		$total_data['total_format'] = Currency::_format($total_data['total']);
-        return $total_data;
+        $total_data['total_format'] = Currency::_format($total_data['total']);
+        $total_data['totals']['total'] = [
+            'title'      => 'Total',
+            'value'      => $total_data['total'],
+            'value_format'      => $total_data['total_format'],
+            'sort' => 1,
+            'ext'=>''
+        ];
+        return [$count,$list,$total_data];
     }
 }

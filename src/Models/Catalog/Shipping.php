@@ -80,20 +80,22 @@ class Shipping extends Model
         $shipping = $this->getList();
         if(!empty($shipping[$shop_shipping_id])){
             if($shipping[$shop_shipping_id]['free']){
-                $total_data['totals'][] = [
-                    'title'      => 'shipping',
+                $total_data['totals']['shipping'] = [
+                    'title'      => 'Shipping',
                     'value'      => 0,
                     'value_format'      => 'Free',
-                    'sort' => 3
+                    'sort' => 3,
+                    'ext'=>$shop_shipping_id
                 ];
             }else{
                 $price = $shipping[$shop_shipping_id]['cost'];
                 list($value,$value_format) = Currency::format($price,2);
-                $total_data['totals'][] = [
-                    'title'      => 'shipping',
+                $total_data['totals']['shipping'] = [
+                    'title'      => 'Shipping',
                     'value'      => $value,
                     'value_format'      => $value?$value_format:'Free',
-                    'sort' => 3
+                    'sort' => 3,
+                    'ext'=>$shop_shipping_id
                 ];
                 $total_data['total'] += $value;
             }

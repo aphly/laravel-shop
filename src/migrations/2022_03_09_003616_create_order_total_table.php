@@ -20,6 +20,7 @@ return new class extends Migration
             $table->decimal('value',15,2);
             $table->string('value_format',255);
             $table->integer('sort')->nullable()->default(0);
+            $table->string('ext',32)->nullable();
         });
     }
 

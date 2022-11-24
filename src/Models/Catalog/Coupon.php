@@ -132,11 +132,12 @@ class Coupon extends Model
                     $discount_total = $total_data['total'];
                 }
                 if ($discount_total > 0) {
-                    $total_data['totals'][] = array(
+                    $total_data['totals']['coupon'] = array(
                         'title'      => 'Coupon',
                         'value'      => $discount_total,
                         'value_format'=> '-'.Currency::format($discount_total),
-                        'sort_order' => 2
+                        'sort_order' => 2,
+                        'ext'=>$coupon
                     );
                     $total_data['total'] -= $discount_total;
                 }

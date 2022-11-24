@@ -72,7 +72,7 @@
                                 <div class="d-flex">
                                     <div class="cart-img">
                                         <a href="" class="img-product">
-                                            <img class="h-100 w-100" src="{{$val['product']['image_src']}}" alt="">
+                                            <a href="/product/{{$val['product_id']}}"><img class="h-100 w-100" src="{{$val['product']['image_src']}}" alt=""></a>
                                         </a>
                                     </div>
                                     <div class="cart-img_r">
@@ -80,11 +80,9 @@
                                             <li class="cart-product-info">
                                                 <span class="cart-product-name">{{$val['product']['name']}}</span>
                                             </li>
-                                            @if($val['option'])
+                                            @if($val['option_name_str'])
                                                 <li class="cart-product-info-x">
-                                                    @foreach($val['option'] as $v)
-                                                        <span class="">{{$v['product_option_value']['option_value']['name']}}</span>
-                                                    @endforeach
+                                                    <span class="">{{$val['option_name_str']}}</span>
                                                 </li>
                                             @endif
                                             <li class="cart-product-info">
@@ -168,11 +166,11 @@
 
                         <div class="summarytip">
                             <div class="coupon-used text-left  hide-item">
-                                @if($res['coupon'])
+                                @if(isset($res['total_data']['totals']['coupon']))
                                 <div class="d-flex justify-content-between">
                                     <div>
                                         Applied Coupon:
-                                        <strong class="coupon-code cart-list-coupon-code">{{$res['coupon']}}</strong>
+                                        <strong class="coupon-code cart-list-coupon-code">{{$res['total_data']['totals']['coupon']['ext']}}</strong>
                                     </div>
                                     <div class="coupon-remove" onclick="couponRemove()">Remove</div>
                                 </div>
@@ -184,10 +182,12 @@
                             <div class="total-summary">Summary</div>
                             <dl>
                                 <dd><span>Items:</span> <span class="cart-order-total-items-quantity js_cart_count">{{$res['count']}}</span></dd>
-                                <dd><span>Subtotal:</span> <span class=" cart-order-total-items js_cart_sub_total_format">{{$res['total_data']['sub_total_format']}}</span></dd>
+                                <dd><span>Subtotal:</span> <span class=" cart-order-total-items js_cart_sub_total_format">{{$res['total_data']['totals']['sub_total']['value_format']}}</span></dd>
                             @if(isset($res['total_data']['totals']))
-                                @foreach($res['total_data']['totals'] as $val)
+                                @foreach($res['total_data']['totals'] as $key=>$val)
+                                    @if($key=='coupon' || $key=='shipping')
                                     <dd><span>{{$val['title']}}:</span><span class=" cart-order-total-items">{{$val['value_format']}}</span> </dd>
+                                    @endif
                                 @endforeach
                             @endif
                             </dl>

@@ -166,10 +166,21 @@
         })
 
         $('.info_option').on('click',' label',function () {
-            $(this).closest('div').find('label').removeClass('active')
-            $(this).addClass('active')
-            if($(this).data('image_src')){
-                $('.product_detail_img .swiper-slide[data-image_id="'+$(this).data('image_id')+'"]').click()
+            let flag_radio = $(this).closest('.flag_radio')
+            if(flag_radio.length>0){
+                $(this).closest('div').find('label').removeClass('active')
+                $(this).addClass('active')
+                if($(this).data('image_src')){
+                    $('.product_detail_img .swiper-slide[data-image_id="'+$(this).data('image_id')+'"]').click()
+                }
+            }
+            let flag_checkbox = $(this).closest('.flag_checkbox')
+            if(flag_checkbox.length>0){
+                if($(this).hasClass('active')){
+                    $(this).removeClass('active')
+                }else{
+                    $(this).addClass('active')
+                }
             }
         })
 

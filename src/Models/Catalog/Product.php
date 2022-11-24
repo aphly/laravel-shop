@@ -273,7 +273,7 @@ class Product extends Model
                 }
                 $html .= '</select></div>';
             }else if($val['option']['type']=='radio'){
-                $html .= '<div class="form-group radio '.($val['required']==1?'required':'').'">
+                $html .= '<div class="form-group flag_radio '.($val['required']==1?'required':'').'">
                               <div class="control-label">'.$val['option']['name'].'</div>
                               <div class="div_ul">';
                 foreach ($val['product_option_value'] as $v){
@@ -294,12 +294,12 @@ class Product extends Model
                 }
                 $html .= '</div></div>';
             }else if($val['option']['type']=='checkbox'){
-                $html .= '<div class="form-group '.($val['required']==1?'required':'').'">
+                $html .= '<div class="form-group flag_checkbox '.($val['required']==1?'required':'').'">
                               <div class="control-label">'.$val['option']['name'].'</div>
                               <div class="div_ul">';
                 foreach ($val['product_option_value'] as $v){
                     $img = $v['option_value']['image']?'<img src="'.$v['option_value']['image_src'].'" />':'';
-                    $html .= '<input type="checkbox" name="option['.$val['id'].'][]" id="option_'.$val['id'].'" value="'.$v['id'].'" /><label for="option_'.$val['id'].'">'
+                    $html .= '<input type="checkbox" name="option['.$val['id'].'][]" id="option_'.$val['id'].'_'.$v['id'].'" value="'.$v['id'].'" /><label for="option_'.$val['id'].'_'.$v['id'].'">'
                         .$img.$v['option_value']['name'].(intval($v['price'])?'(+'.$v['price_format'].')':'').'</label>';
                 }
                 $html .= '</div></div>';

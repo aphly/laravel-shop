@@ -19,10 +19,7 @@ class CartController extends Controller
         $res['title'] = '';
         $cart = new Cart;
         $cart->initCart();
-        list($res['count'],$res['list']) = $cart->countList();
-
-        $res['total_data'] = $cart->totalData();
-        $res['coupon'] = Cookie::get('shop_coupon');
+        list($res['count'],$res['list'],$res['total_data']) = $cart->totalData();
         return $this->makeView('laravel-shop-front::checkout.cart',['res'=>$res]);
     }
 

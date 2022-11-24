@@ -3,7 +3,10 @@
 namespace Aphly\LaravelShop\Controllers\Front\Checkout;
 
 use Aphly\Laravel\Exceptions\ApiException;
+use Aphly\LaravelCommon\Models\Country;
 use Aphly\LaravelCommon\Models\Currency;
+use Aphly\LaravelCommon\Models\User;
+use Aphly\LaravelCommon\Models\Zone;
 use Aphly\LaravelPayment\Models\Payment;
 use Aphly\LaravelPayment\Models\PaymentMethod;
 use Aphly\LaravelShop\Controllers\Front\Controller;
@@ -34,13 +37,17 @@ class CheckoutController extends Controller
 				throw new ApiException(['code'=>1,'msg'=>'shipping address fail']);
 			}
 		}else{
-            Cookie::queue('shop_address_id', null , -1);
             Cookie::queue('shop_shipping_id', null, -1);
             $cart = new Cart;
-            list($res['count'],$res['list']) = $cart->countList();
-            if($res['list']) {
-                $res['total_data'] = $cart->totalData();
-                $res['address'] = (new UserAddress)->getAddresses();
+            list($res['count'],$res['list'],$res['total_data']) = $cart->totalData();
+            if($res['count']) {
+                $res['my_address'] = UserAddress::where(['uuid'=>User::uuid()])->orderBy('id','desc')->Paginate(config('admin.perPage'))->withQueryString();
+                $zone_ids = [];
+                foreach ($res['my_address'] as $val){
+                    $zone_ids[] = $val['zone_id'];
+                }
+                $res['zone'] = (new Zone)->findAllIds($zone_ids);
+                $res['country'] = (new Country)->findAll();
                 return $this->makeView('laravel-shop-front::checkout.address', ['res' => $res]);
             }else{
                 return redirect('cart');
@@ -72,8 +79,7 @@ class CheckoutController extends Controller
 		}else{
             Cookie::queue('shop_shipping_id', null, -1);
             $cart = new Cart;
-            $res['list'] = $cart->getList();
-            $res['total_data'] = $cart->totalData();
+            list($res['count'],$res['list'],$res['total_data']) = $cart->totalData();
 			$res['shipping'] = (new Shipping)->getList();
 			return $this->makeView('laravel-shop-front::checkout.shipping',['res'=>$res]);
 		}

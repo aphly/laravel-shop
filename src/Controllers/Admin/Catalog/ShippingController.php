@@ -30,6 +30,9 @@ class ShippingController extends Controller
     public function save(Request $request){
         $id = $request->query('id',0);
         $input = $request->all();
+        if($input['default']==1){
+            Shipping::whereRaw('1')->update(['default'=>2]);
+        }
         $input['cost'] = floatval($input['cost']);
         $input['free_cost'] = floatval($input['free_cost']);
         Shipping::updateOrCreate(['id'=>$id],$input);

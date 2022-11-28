@@ -4,37 +4,79 @@
 
 </style>
 <div class="container">
-    <div class="row">
-        <div class="col-12">
-            {{$res['address']['firstname']}} {{$res['address']['lastname']}} {{$res['address']['address_1']}}
-        </div>
-        <div class="col-8">
-            <form action="/checkout/shipping" method="post" class="save_form">
+    <div class="checkout">
+        <div class="checkout_l">
+            <div class="checkout_box">
+                <div class="checkout_title">
+                    Contact information
+                </div>
+                <ul class="checkout_info">
+                    <li>
+                        <span>Contact</span>
+                        <span>{{$id}}</span>
+                        <span></span>
+                    </li>
+                    <li>
+                        <span>Ship to</span>
+                        <span>{{$res['address']['address_1']}}, {{$res['address']['city']}}, {{$res['address']['zone_name']}}, {{$res['address']['country_name']}}</span>
+                        <span><a href="/checkout/address">Change</a></span>
+                    </li>
+                </ul>
+            </div>
+            <form action="/checkout/shipping" method="post" class="form_request" data-fn="checkout_shipping">
                 @csrf
-                @foreach($res['shipping'] as $val)
-                    <label class="checkout-shipping" data-id="{{$val['id']}}">
-                        <input type="radio" class="checkout-form-radio col-1 shipping-address" name="shipping_id" value="{{$val['id']}}">
-                        <div class="col-11 pl-3">
-                            <div>{{$val['name']}}</div>
-                            <a href="javascript:;"
-                               class="checkout-address-edit color-link d-inline-block pt-3 pr-3"
-                               data-address-id="375308">Edit</a>
-                        </div>
-                    </label>
-                @endforeach
-                <button> next</button>
+                <input type="hidden" name="shipping_id" value="0">
+                <div class="my_address checkout_box">
+                    <div class="checkout_title">
+                        Shipping method
+                    </div>
+                    <ul class="checkout_ul">
+                        @foreach($res['shipping'] as $val)
+                            <li class="" data-id="{{$val['id']}}">
+                                <div class="">
+                                    {{$val['name']}}
+                                </div>
+                                <div>
+                                    {{$val['desc']}}
+                                </div>
+                                <div>
+                                    {{$val['cost_format']}}
+                                </div>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+
+                <div class="checkout_btn">
+                    <div class="checkout_btn_l"><a href="/checkout/address"><i class="common-iconfont icon-xiangl"></i>Return to Address</a></div>
+                    <button>Continue to payment</button>
+                </div>
             </form>
         </div>
-        <div class="col-4">
+        <div class="checkout_r">
             @include('laravel-shop-front::checkout.right')
         </div>
     </div>
 
+
 </div>
 <style>
-
+    .checkout_ul li{display: flex;justify-content: space-between;}
+    .checkout_ul li div:first-child{margin-right: 10px;}
+    .checkout_ul li div:nth-child(2){margin-right: auto;}
 </style>
 <script>
-
+function checkout_shipping(res) {
+    if(!res.code){
+        location.href = res.data.redirect
+    }
+}
+$(function () {
+    $('.checkout_ul').on('click','li',function () {
+        $('.checkout_ul li').removeClass('active')
+        $(this).addClass('active')
+        $('input[name="shipping_id"]').val($(this).data('id'))
+    })
+})
 </script>
 @include('laravel-shop-front::common.footer')

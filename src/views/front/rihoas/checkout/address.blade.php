@@ -1,23 +1,32 @@
 @include('laravel-shop-front::common.header')
 
 <style>
-    .my_address{margin-bottom: 40px;}
-    .my_address li{display: flex;cursor: pointer;}
 
-    .my_address li.active{border:1px solid #333;}
 </style>
 
 <div class="container">
     <div class="checkout">
         <div class="checkout_l">
+            <div class="checkout_box">
+                <div class="checkout_title">
+                    Contact information
+                </div>
+                <ul class="checkout_info">
+                    <li>
+                        <span>Contact</span>
+                        <span>{{$id}}</span>
+                        <span></span>
+                    </li>
+                </ul>
+            </div>
             <form action="/checkout/address" method="post" class="form_request" data-fn="checkout_address" id="checkout_address">
                 @csrf
                 <input type="hidden" name="address_id" value="0">
-                <div class="my_address">
+                <div class="my_address checkout_box">
                     <div class="checkout_title">
                         My Address
                     </div>
-                    <ul>
+                    <ul class="checkout_ul">
                     @foreach($res['my_address'] as $val)
                         <li data-id="{{$val['id']}}" data-firstname="{{$val['firstname']}}" data-lastname="{{$val['lastname']}}"
                             data-address_1="{{$val['address_1']}}" data-address_2="{{$val['address_2']}}"
@@ -85,8 +94,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="address_btn">
-                    <div><i class="common-iconfont icon-xiangl"></i>Return to cart</div>
+                <div class="checkout_btn">
+                    <div class="checkout_btn_l"><a href="/cart"><i class="common-iconfont icon-xiangl"></i>Return to cart</a></div>
                     <button>Continue to shipping</button>
                 </div>
             </form>
@@ -98,7 +107,7 @@
 
 </div>
 <style>
-    .checkout_title{margin-bottom: 20px;font-size: 18px;}
+
 
     .checkout_address_group_p{display: flex;justify-content: space-between;}
     .checkout_address_group_p>div{width: 48%;}
@@ -111,13 +120,13 @@
     .checkout_address_group.form-group_show input{padding-top: 20px;}
     .checkout_address_group input:focus{border-color:#0178ff;box-shadow:none;outline: none;border-width: 2px;}
 
-    .address_btn{display: flex;justify-content: space-between;align-items: center;}
-    .address_btn button{background-color: var(--default-bg);padding: 20px;color: #fff;border: none;border-radius: 4px;}
-    .address_btn>div{color: var(--default-color);}
+
 </style>
 <script>
     let country_zone = {};
+    let curr_address_id = {{$res['curr_address_id']}};
     $(function () {
+
         $('.my_address').on('click','li',function () {
             $('.my_address li').removeClass('active')
             $(this).addClass('active')
@@ -155,18 +164,24 @@
             let country_id = $(this).val();
             setCountry(country_id)
         })
+
+        if(curr_address_id){
+            $('.my_address li[data-id="'+curr_address_id+'"]').click();
+        }
     })
 
     function setZone(res,country_id,zone_id) {
         country_zone[country_id] = res.data;
         makeZone(country_zone[country_id])
-        console.log(zone_id)
         $('#input-zone .zone_option[value="'+zone_id+'"]').attr("selected", true)
     }
 
-    function setCountry(country_id,fn=false,zone_id) {
+    function setCountry(country_id,fn=false,zone_id=false) {
         if(country_id in country_zone){
             makeZone(country_zone[country_id])
+            if(zone_id){
+                $('#input-zone .zone_option[value="'+zone_id+'"]').attr("selected", true)
+            }
         }else{
             if(country_id){
                 $.ajax({
@@ -195,7 +210,9 @@
         $('#input-zone').html(html)
     }
     function checkout_address(res) {
-        console.log(res)
+        if(!res.code){
+            location.href = res.data.redirect
+        }
     }
 </script>
 @include('laravel-shop-front::common.footer')

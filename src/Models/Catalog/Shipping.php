@@ -19,7 +19,7 @@ class Shipping extends Model
     //public $timestamps = false;
 
     protected $fillable = [
-        'name','desc','cost','free_cost','geo_group_id','sort','status'
+        'name','desc','cost','free_cost','geo_group_id','sort','status','default'
     ];
 
     static public function findAll() {
@@ -43,12 +43,15 @@ class Shipping extends Model
                     $subTotal = $cart->getSubTotal();
 
                     $shipping = (new Shipping())->findAll();
+
                     foreach ($shipping as $val) {
                         if($val['free_cost']>0?($subTotal>=$val['free_cost']):false){
                             $val['free']=1;
                         }else{
                             $val['free']=0;
                         }
+                        list($val['cost'],$val['cost_format']) = Currency::format($val['cost'],2);
+                        list($val['free_cost'],$val['free_cost_format']) = Currency::format($val['free_cost'],2);
                         if($shipping_id && $val['id']==$shipping_id){
                             return $val;
                         }

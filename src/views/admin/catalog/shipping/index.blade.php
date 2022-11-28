@@ -21,6 +21,7 @@
                     <li >价格</li>
                     <li >满免邮</li>
                     <li >geo</li>
+                    <li >默认</li>
                     <li >状态</li>
                     <li >操作</li>
                 </ul>
@@ -40,6 +41,15 @@
                                 {{ $v->geoGroup->name }}
                             @else
                                 无
+                            @endif
+                        </li>
+                        <li>
+                            @if($dict['yes_no'])
+                                @if($v->default==1)
+                                    <span class="badge badge-success">{{$dict['yes_no'][$v->default]}}</span>
+                                @else
+                                    <span class="badge badge-secondary">{{$dict['yes_no'][$v->default]}}</span>
+                                @endif
                             @endif
                         </li>
                         <li>

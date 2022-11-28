@@ -27,26 +27,19 @@ class CheckoutController extends Controller
     {
         $res['title'] = 'Checkout Address';
     	if($request->isMethod('post')){
-			$res['info'] = (new UserAddress)->getAddress($request->input('address_id'));
-			if($res['info']){
-				Cookie::queue('shop_address_id',$res['info']['id']);
-				$shipping_method = (new Shipping)->getList($res['info']['id']);
-				throw new ApiException(['code'=>0,'msg'=>'shipping address success','data'=>['redirect'=>'/checkout/shipping','list'=>$shipping_method]]);
-			}else{
-				Cookie::queue('shop_address_id', null , -1);
-				throw new ApiException(['code'=>1,'msg'=>'shipping address fail']);
-			}
+            $input = $request->all();
+            $input['uuid'] = User::uuid();
+            $userAddress = UserAddress::updateOrCreate(['id'=>$request->input('address_id',0)],$input);
+            Cookie::queue('shop_address_id',$userAddress->id);
+            $shipping_method = (new Shipping)->getList($userAddress->id);
+            throw new ApiException(['code'=>0,'msg'=>'shipping address success','data'=>['redirect'=>'/checkout/shipping','list'=>$shipping_method]]);
 		}else{
             Cookie::queue('shop_shipping_id', null, -1);
+            $res['curr_address_id'] = Cookie::get('shop_address_id',0);
             $cart = new Cart;
             list($res['count'],$res['list'],$res['total_data']) = $cart->totalData();
             if($res['count']) {
                 $res['my_address'] = UserAddress::where(['uuid'=>User::uuid()])->orderBy('id','desc')->Paginate(config('admin.perPage'))->withQueryString();
-                $zone_ids = [];
-                foreach ($res['my_address'] as $val){
-                    $zone_ids[] = $val['zone_id'];
-                }
-                $res['zone'] = (new Zone)->findAllIds($zone_ids);
                 $res['country'] = (new Country)->findAll();
                 return $this->makeView('laravel-shop-front::checkout.address', ['res' => $res]);
             }else{
@@ -77,7 +70,7 @@ class CheckoutController extends Controller
 			Cookie::queue('shop_shipping_id', null, -1);
 			throw new ApiException(['code' => 1, 'msg' => 'shipping method fail']);
 		}else{
-            Cookie::queue('shop_shipping_id', null, -1);
+            $res['curr_shipping_id'] = Cookie::get('shop_shipping_id',0);
             $cart = new Cart;
             list($res['count'],$res['list'],$res['total_data']) = $cart->totalData();
 			$res['shipping'] = (new Shipping)->getList();
@@ -99,8 +92,7 @@ class CheckoutController extends Controller
             return redirect('/checkout/shipping');
         }
         $cart = new Cart;
-        $res['list'] = $cart->getList();
-        $res['total_data'] = $cart->totalData();
+        list($res['count'],$res['list'],$res['total_data']) = $cart->totalData();
 		if($request->isMethod('post')) {
             $input['uuid'] = $this->user->uuid;
 
@@ -153,13 +145,6 @@ class CheckoutController extends Controller
                     $val['order_id'] = $order->id;
                     $orderTotal_input[] = $val;
                 }
-                $orderTotal_input[] = [
-                    'order_id'=>$order->id,
-                    "title" => "Total",
-                    "value" => $res['total_data']['total'],
-                    "value_format" => $res['total_data']['total_format'],
-                    "sort" => 0,
-                ];
                 OrderTotal::insert($orderTotal_input);
 
                 foreach ($res['list'] as $val){

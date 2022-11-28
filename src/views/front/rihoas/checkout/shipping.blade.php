@@ -1,7 +1,6 @@
 @include('laravel-shop-front::common.header')
 <link rel="stylesheet" href="{{ URL::asset('static/shop/css/checkout.css') }}"/>
 <style>
-
 </style>
 <div class="container">
     <div class="checkout">
@@ -25,14 +24,14 @@
             </div>
             <form action="/checkout/shipping" method="post" class="form_request" data-fn="checkout_shipping">
                 @csrf
-                <input type="hidden" name="shipping_id" value="0">
+                <input type="hidden" name="shipping_id" value="{{$res['shipping_default_id']}}">
                 <div class="my_address checkout_box">
                     <div class="checkout_title">
                         Shipping method
                     </div>
                     <ul class="checkout_ul">
                         @foreach($res['shipping'] as $val)
-                            <li class="" data-id="{{$val['id']}}">
+                            <li class="@if($res['shipping_default_id']==$val['id']) active @endif" data-id="{{$val['id']}}">
                                 <div class="">
                                     {{$val['name']}}
                                 </div>

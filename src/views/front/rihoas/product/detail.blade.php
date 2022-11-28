@@ -51,21 +51,21 @@
             </div>
             <div class="d-flex price">
                 @if($res['special_price'])
-                    <span class="normal">{{$res['special_price']}}</span>
-                    <span class="special_price">{{$res['info']->price}}</span>
+                    <span class="normal real_price" data-price="{{$res['special_price']}}">{{$res['special_price_format']}}</span>
+                    <span class="special_price">{{$res['info']->price_format}}</span>
                     <span class="price_sale">Sale</span>
                 @else
                     @if($res['info_discount'])
                         <ul class="d-flex">
                             @foreach($res['info_discount'] as $v)
                                 <li class="item" style="margin-right: 10px;">
-                                    {{$v['quantity']}} {{$v['price']}}
+                                    {{$v['quantity']}} {{$v['price_format']}}
                                 </li>
                             @endforeach
                         </ul>
-                        <span class="special_price">{{$res['info']->price}}</span>
+                        <span class="special_price">{{$res['info']->price_format}}</span>
                     @else
-                        <span class="normal">{{$res['info']->price}}</span>
+                        <span class="normal" data-price="{{$res['info']->price}}">{{$res['info']->price_format}}</span>
                     @endif
                 @endif
             </div>
@@ -184,7 +184,7 @@
             }
         })
 
-        $('.info_option .radio').each(function () {
+        $('.info_option .flag_radio').each(function () {
             $(this).find('label:first').click();
         })
 
@@ -206,6 +206,7 @@
         })
 
     })
+
 </script>
 
 @include('laravel-shop-front::common.footer')

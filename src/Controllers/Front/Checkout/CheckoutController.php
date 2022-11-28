@@ -3,6 +3,7 @@
 namespace Aphly\LaravelShop\Controllers\Front\Checkout;
 
 use Aphly\Laravel\Exceptions\ApiException;
+use Aphly\Laravel\Libs\Func;
 use Aphly\LaravelCommon\Models\Country;
 use Aphly\LaravelCommon\Models\Currency;
 use Aphly\LaravelCommon\Models\User;
@@ -26,6 +27,11 @@ class CheckoutController extends Controller
     public function address(Request $request)
     {
         $res['title'] = 'Checkout Address';
+        $cart = new Cart;
+        list($res['count'],$res['list'],$res['total_data']) = $cart->totalData();
+        if(!$res['count']){
+            throw new ApiException(['code'=>11,'msg'=>'no cart','data'=>['redirect'=>'/cart']]);
+        }
     	if($request->isMethod('post')){
             $input = $request->all();
             $input['uuid'] = User::uuid();
@@ -36,25 +42,24 @@ class CheckoutController extends Controller
 		}else{
             Cookie::queue('shop_shipping_id', null, -1);
             $res['curr_address_id'] = Cookie::get('shop_address_id',0);
-            $cart = new Cart;
-            list($res['count'],$res['list'],$res['total_data']) = $cart->totalData();
-            if($res['count']) {
-                $res['my_address'] = UserAddress::where(['uuid'=>User::uuid()])->orderBy('id','desc')->Paginate(config('admin.perPage'))->withQueryString();
-                $res['country'] = (new Country)->findAll();
-                return $this->makeView('laravel-shop-front::checkout.address', ['res' => $res]);
-            }else{
-                return redirect('cart');
-            }
+            $res['my_address'] = UserAddress::where(['uuid'=>User::uuid()])->orderBy('id','desc')->Paginate(config('admin.perPage'))->withQueryString();
+            $res['country'] = (new Country)->findAll();
+            return $this->makeView('laravel-shop-front::checkout.address', ['res' => $res]);
 		}
     }
 
     public function shipping(Request $request)
     {
         $res['title'] = 'Checkout Shipping';
+        $cart = new Cart;
+        list($res['count'],$res['list'],$res['total_data']) = $cart->totalData();
+        if(!$res['count']){
+            throw new ApiException(['code'=>11,'msg'=>'no cart','data'=>['redirect'=>'/cart']]);
+        }
         $address_id = Cookie::get('shop_address_id');
         $res['address'] = (new UserAddress)->getAddress($address_id);
         if(!$res['address']){
-            return redirect('/checkout/address');
+            throw new ApiException(['code'=>12,'msg'=>'no address','data'=>['redirect'=>'/checkout/address']]);
         }
 		if($request->isMethod('post')) {
 			$shipping_method_all = (new Shipping)->getList();
@@ -71,9 +76,8 @@ class CheckoutController extends Controller
 			throw new ApiException(['code' => 1, 'msg' => 'shipping method fail']);
 		}else{
             $res['curr_shipping_id'] = Cookie::get('shop_shipping_id',0);
-            $cart = new Cart;
-            list($res['count'],$res['list'],$res['total_data']) = $cart->totalData();
 			$res['shipping'] = (new Shipping)->getList();
+            $res['shipping_default_id'] = Func::defaultId($res['shipping']);
 			return $this->makeView('laravel-shop-front::checkout.shipping',['res'=>$res]);
 		}
     }
@@ -81,18 +85,21 @@ class CheckoutController extends Controller
     public function pay(Request $request)
     {
         $res['title'] = 'Checkout Pay';
+        $cart = new Cart;
+        list($res['count'],$res['list'],$res['total_data']) = $cart->totalData();
+        if(!$res['count']){
+            throw new ApiException(['code'=>11,'msg'=>'no cart','data'=>['redirect'=>'/cart']]);
+        }
         $address_id = Cookie::get('shop_address_id');
         $res['address'] = (new UserAddress)->getAddress($address_id);
         if(!$res['address']){
-            return redirect('/checkout/address');
+            throw new ApiException(['code'=>12,'msg'=>'no address','data'=>['redirect'=>'/checkout/address']]);
         }
         $shipping_id = Cookie::get('shop_shipping_id');
         $res['shipping'] = (new Shipping)->getList($address_id,$shipping_id);
         if(!$res['shipping']){
-            return redirect('/checkout/shipping');
+            throw new ApiException(['code'=>13,'msg'=>'no shipping','data'=>['redirect'=>'/checkout/shipping']]);
         }
-        $cart = new Cart;
-        list($res['count'],$res['list'],$res['total_data']) = $cart->totalData();
 		if($request->isMethod('post')) {
             $input['uuid'] = $this->user->uuid;
 
@@ -159,11 +166,23 @@ class CheckoutController extends Controller
                             $orderOption['order_id'] = $order->id;
                             $orderOption['order_product_id'] = $orderProduct->id;
                             $orderOption['product_option_id'] = $v['option_id'];
-                            $orderOption['product_option_value_id'] = $v['product_option_value']['id'];
                             $orderOption['name'] = $v['option']['name'];
-                            $orderOption['value'] = $v['product_option_value']['option_value']['name'];
                             $orderOption['type'] = $v['option']['type'];
-                            OrderOption::create($orderOption);
+                            if($v['option']['type']=='radio' || $v['option']['type']=='select'){
+                                $orderOption['product_option_value_id'] = $v['product_option_value']['id'];
+                                $orderOption['value'] = $v['product_option_value']['option_value']['name'];
+                                OrderOption::create($orderOption);
+                            }else if($v['option']['type']=='checkbox'){
+                                foreach ($v['product_option_value'] as $v1){
+                                    $orderOption['product_option_value_id'] = $v1['id'];
+                                    $orderOption['value'] = $v1['option_value']['name'];
+                                    OrderOption::create($orderOption);
+                                }
+                            }else{
+                                $orderOption['product_option_value_id'] = 0;
+                                $orderOption['value'] = $v['product_option_value'];
+                                OrderOption::create($orderOption);
+                            }
                         }
                     }
                 }
@@ -178,7 +197,7 @@ class CheckoutController extends Controller
                 if($payment->id){
                     $order->payment_id = $payment->id;
                     if($order->save()){
-                        $cart->delUuid();
+                        $cart->clearUuid();
                         throw new ApiException(['code' => 1, 'msg' => 'payment hhh']);
                         //$payment->pay(false);
                     }
@@ -187,6 +206,7 @@ class CheckoutController extends Controller
 			throw new ApiException(['code' => 1, 'msg' => 'payment method fail']);
 		}else{
 			$res['paymentMethod'] = (new PaymentMethod)->findAll();
+            $res['paymentMethod_default_id'] = Func::defaultId($res['paymentMethod']);
 			return $this->makeView('laravel-shop-front::checkout.payment_method',['res'=>$res]);
 		}
     }

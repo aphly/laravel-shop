@@ -30,14 +30,14 @@
             </div>
             <form action="/checkout/pay" method="post" class="form_request" data-fn="checkout_pay" id="checkout_pay">
                 @csrf
-                <input type="hidden" name="payment_method_id" value="0">
+                <input type="hidden" name="payment_method_id" value="{{$res['paymentMethod_default_id']}}">
                 <div class="checkout_box">
                     <div class="checkout_title">
                         Payment
                     </div>
                     <ul class="checkout_ul">
                         @foreach($res['paymentMethod'] as $val)
-                            <li data-id="{{$val['id']}}">
+                            <li class="@if($res['paymentMethod_default_id']==$val['id']) active @endif" data-id="{{$val['id']}}">
                                 {{$val['name']}}
                             </li>
                         @endforeach

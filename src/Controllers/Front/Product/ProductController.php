@@ -54,14 +54,14 @@ class ProductController extends Controller
     {
         $res['title'] = '';
         $res['info'] = Product::where('id',$request->id)->with('desc')->firstOrError();
-        $res['info']->price = Currency::format($res['info']->price);
+        list($res['info']->price,$res['info']->price_format) = Currency::format($res['info']->price,2);
         $res['info_img'] = $res['info']->imgById($res['info']->id);
         $group_id = User::groupId();
         $res['info_attr'] = $res['info']->findAttribute($res['info']->id);
         $res['info_option'] = $res['info']->findOption($res['info']->id,true);
-        $res['special_price'] = $res['info']->findSpecial($res['info']->id);
-        $res['info_reward'] = $res['info']->findReward($res['info']->id,$group_id);
+        list($res['special_price'],$res['special_price_format']) = $res['info']->findSpecial($res['info']->id);
         $res['info_discount'] = $res['info']->findDiscount($res['info']->id);
+        $res['info_reward'] = $res['info']->findReward($res['info']->id,$group_id);
         $res['shipping'] = Shipping::where('cost',0)->firstToArray();
         $res['wishlist_product_ids'] = Wishlist::$product_ids;
         return $this->makeView('laravel-shop-front::product.detail',['res'=>$res]);

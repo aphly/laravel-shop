@@ -216,7 +216,7 @@ class Cart extends Model
         return self::where(['id'=>$cart_id])->delete();
     }
 
-    public function delUuid(){
+    public function clearUuid(){
         return self::where(['uuid'=>User::uuid()])->delete();
     }
 

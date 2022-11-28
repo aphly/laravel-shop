@@ -197,9 +197,9 @@ class Product extends Model
             $query->where('date_end',0)->orWhere('date_end','>',$time);
         })->orderBy('priority','desc')->select('price')->firstToArray();
         if($special){
-            return Currency::format($special['price']);
+            return Currency::format($special['price'],2);
         }
-        return '';
+        return [0,''];
     }
 
     function findReward($id,$group_id){
@@ -209,7 +209,7 @@ class Product extends Model
     function findDiscount($id){
         $arr = ProductDiscount::where('product_id',$id)->get()->toArray();
         foreach ($arr as $key=>$val){
-            $arr[$key]['price'] = Currency::format($val['price']);
+            list($arr[$key]['price'],$arr[$key]['price_format']) = Currency::format($val['price'],2);
         }
         return $arr;
     }
@@ -246,7 +246,7 @@ class Product extends Model
         $productOptionValue = ProductOptionValue::whereIn('product_option_id',$product_option_ids)->with('option_value')->with('productImage')->get()->keyBy('id')->toArray();
         $productOptionValueGroup = [] ;
         foreach ($productOptionValue as $key=>$val){
-            $val['price_format'] = Currency::format($val['price']);
+            list($val['price'],$val['price_format']) = Currency::format($val['price'],2);
             $val['option_value']['image_src'] = ProductImage::render($val['option_value']['image']);
             if($val['product_image']){
                 $val['product_image']['image_src'] = ProductImage::render($val['product_image']['image']);
@@ -265,11 +265,11 @@ class Product extends Model
         $html = '';
         foreach ($options as $val){
             if($val['option']['type']=='select'){
-                $html .= '<div class="form-group '.($val['required']==1?'required':'').'">
+                $html .= '<div class="form-group flag_select'.($val['required']==1?'required':'').'">
                               <div class="control-label">'.$val['option']['name'].'</div>
                               <select name="option['.$val['id'].']" class="form-control">';
                 foreach ($val['product_option_value'] as $v){
-                    $html .= '<option value="'.$v['id'].'">'.$v['option_value']['name'].(intval($v['price'])?'(+'.$v['price_format'].')':'').'</option>';
+                    $html .= '<option data-price="'.$v['price'].'" value="'.$v['id'].'">'.$v['option_value']['name'].'</option>';
                 }
                 $html .= '</select></div>';
             }else if($val['option']['type']=='radio'){
@@ -288,9 +288,9 @@ class Product extends Model
                     }else{
                         $img = $v['option_value']['image']?'<img src="'.$v['option_value']['image_src'].'" />':'';
                     }
-                    $html .= '<input type="radio" name="option['.$val['id'].']" id="option_'.$val['id'].'" value="'.$v['id'].'" />
-                            <label for="option_'.$val['id'].'" data-image_id="'.$v['product_image_id'].'" '.$data_image_src.'>'
-                        .$img.$v['option_value']['name'].(intval($v['price'])?'(+'.$v['price_format'].')':'').'</label>';
+                    $html .= '<input data-price="'.$v['price'].'" type="radio" name="option['.$val['id'].']" id="option_'.$val['id'].'_'.$v['id'].'" value="'.$v['id'].'" />
+                            <label for="option_'.$val['id'].'_'.$v['id'].'" data-image_id="'.$v['product_image_id'].'" '.$data_image_src.'>'
+                        .$img.$v['option_value']['name'].'</label>';
                 }
                 $html .= '</div></div>';
             }else if($val['option']['type']=='checkbox'){
@@ -299,8 +299,8 @@ class Product extends Model
                               <div class="div_ul">';
                 foreach ($val['product_option_value'] as $v){
                     $img = $v['option_value']['image']?'<img src="'.$v['option_value']['image_src'].'" />':'';
-                    $html .= '<input type="checkbox" name="option['.$val['id'].'][]" id="option_'.$val['id'].'_'.$v['id'].'" value="'.$v['id'].'" /><label for="option_'.$val['id'].'_'.$v['id'].'">'
-                        .$img.$v['option_value']['name'].(intval($v['price'])?'(+'.$v['price_format'].')':'').'</label>';
+                    $html .= '<input data-price="'.$v['price'].'" type="checkbox" name="option['.$val['id'].'][]" id="option_'.$val['id'].'_'.$v['id'].'" value="'.$v['id'].'" /><label for="option_'.$val['id'].'_'.$v['id'].'">'
+                        .$img.$v['option_value']['name'].'</label>';
                 }
                 $html .= '</div></div>';
             }else if($val['option']['type']=='text'){

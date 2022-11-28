@@ -3,6 +3,7 @@
 namespace Aphly\LaravelShop\Controllers\Front;
 
 
+use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\LaravelCommon\Models\User;
 use Aphly\LaravelCommon\Models\UserAddress;
 use Aphly\LaravelCommon\Models\GeoGroup;
@@ -22,18 +23,10 @@ class HomeController extends Controller
 
     public function home1(Request $request)
     {
-        $filter_data = [
-            'name'      => $request->query('name',false),
-            'sort'      => $request->query('sort',false),
-        ];
-        $product = new Product;
-        $res['list'] = $product->getList($filter_data,true);
-        dd($res['list']);
-        $cart = new Cart;
-        $res['list'] = $cart->getList();
-        $res['total_data'] = $cart->totalData();
-
-        dd($res['list']);
+//        $cart = new Cart;
+//        $res['list'] = $cart->getList();
+//        $res['total_data'] = $cart->totalData();
+        throw new ApiException(['code'=>1,'msg'=>'cccc','data'=>['redirect'=>'/aaa']]);
         $shipping = (new Shipping())->getTotal();
         dd($shipping);
     }

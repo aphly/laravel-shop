@@ -228,7 +228,7 @@ class Product extends Model
                             $productOption_ids,function ($query,$productOption_ids){
                                 return $query->whereIn('id',$productOption_ids);
                             }
-                        )->with('option')->get()->keyBy('id')->toArray();
+                        )->with('option')->orderBy('id','desc')->get()->keyBy('id')->toArray();
         return $this->_optionValue($productOption);
     }
 
@@ -288,9 +288,8 @@ class Product extends Model
                     }else{
                         $img = $v['option_value']['image']?'<img src="'.$v['option_value']['image_src'].'" />':'';
                     }
-                    $html .= '<input data-price="'.$v['price'].'" type="radio" name="option['.$val['id'].']" id="option_'.$val['id'].'_'.$v['id'].'" value="'.$v['id'].'" />
-                            <label for="option_'.$val['id'].'_'.$v['id'].'" data-image_id="'.$v['product_image_id'].'" '.$data_image_src.'>'
-                        .$img.$v['option_value']['name'].'</label>';
+                    $html .= '<input data-image_id="'.$v['product_image_id'].'" '.$data_image_src.' data-price="'.$v['price'].'" type="radio" name="option['.$val['id'].']" id="option_'.$val['id'].'_'.$v['id'].'" value="'.$v['id'].'" />
+                            <label for="option_'.$val['id'].'_'.$v['id'].'" >'.$img.$v['option_value']['name'].'</label>';
                 }
                 $html .= '</div></div>';
             }else if($val['option']['type']=='checkbox'){

@@ -51,21 +51,21 @@
             </div>
             <div class="d-flex price">
                 @if($res['special_price'])
-                    <span class="normal real_price" data-price="{{$res['special_price']}}">{{$res['special_price_format']}}</span>
+                    <span class="normal price_js" data-price="{{$res['special_price']}}">{{$res['special_price_format']}}</span>
                     <span class="special_price">{{$res['info']->price_format}}</span>
                     <span class="price_sale">Sale</span>
                 @else
                     @if($res['info_discount'])
-                        <ul class="d-flex">
+                        <span class="normal price_js" data-price="{{$res['info']->price}}">{{$res['info']->price_format}}</span>
+                        <ul class="d-flex discount_js">
                             @foreach($res['info_discount'] as $v)
-                                <li class="item" style="margin-right: 10px;">
+                                <li class="item" style="margin-right: 10px;" data-price="{{$v['price']}}" data-quantity="{{$v['quantity']}}">
                                     {{$v['quantity']}} {{$v['price_format']}}
                                 </li>
                             @endforeach
                         </ul>
-                        <span class="special_price">{{$res['info']->price_format}}</span>
                     @else
-                        <span class="normal" data-price="{{$res['info']->price}}">{{$res['info']->price_format}}</span>
+                        <span class="normal price_js" data-price="{{$res['info']->price}}">{{$res['info']->price_format}}</span>
                     @endif
                 @endif
             </div>
@@ -106,7 +106,7 @@
             <div class="control-label">Quantity</div>
             <div class="quantity-wrapper">
                 <div class="quantity-down">-</div>
-                <input type="number" name="quantity" onblur="if(value<1)value=1" value="1" class="form-control">
+                <input type="number" name="quantity" onblur="if(value<1)value=1" value="1" class="form-control quantity_js">
                 <div class="quantity-up">+</div>
             </div>
         </div>
@@ -165,27 +165,68 @@
             detailSwiper.swipeNext()
         })
 
-        $('.info_option').on('click',' label',function () {
+        $('.info_option').on('click','input',function () {
             let flag_radio = $(this).closest('.flag_radio')
             if(flag_radio.length>0){
                 $(this).closest('div').find('label').removeClass('active')
-                $(this).addClass('active')
+                $(this).next('label').addClass('active')
                 if($(this).data('image_src')){
                     $('.product_detail_img .swiper-slide[data-image_id="'+$(this).data('image_id')+'"]').click()
                 }
             }
             let flag_checkbox = $(this).closest('.flag_checkbox')
             if(flag_checkbox.length>0){
-                if($(this).hasClass('active')){
-                    $(this).removeClass('active')
+                let label = $(this).next('label')
+                if(label.hasClass('active')){
+                    label.removeClass('active')
                 }else{
-                    $(this).addClass('active')
+                    label.addClass('active')
                 }
             }
+            price()
         })
+        $('.info_option').on('change','select',function () {
+            price()
+        })
+        
+        function price() {
+            let price_js = $('.price_js').data('price')
+            let discount_js = $('.discount_js')
+            if(discount_js.length>0){
+                let quantity_js = $('.quantity_js').val()
+                let discount_js_arr = [],arr = [];
+                discount_js.find('li').each(function () {
+                    if(quantity_js>=$(this).data('quantity')){
+                        arr.push($(this).data('quantity'))
+                        discount_js_arr.push({quantity:$(this).data('quantity'),price:$(this).data('price')})
+                    }
+                })
+                let max = Math.max.apply(null, arr);
+                for(let i in arr){
+                    if(discount_js_arr[i].quantity===max){
+                        price_js=discount_js_arr[i].price
+                    }
+                }
+            }
+
+            let radio_price = $('.flag_radio input[type="radio"]:checked').data('price')
+            if(typeof radio_price==='undefined'){
+                radio_price=0;
+            }
+            let checkbox_price = 0;
+            $('.flag_checkbox input[type="checkbox"]:checked').each(function () {
+                checkbox_price+=$(this).data('price')
+            })
+            let select_price = 0;
+            $('.flag_select select option:selected').each(function () {
+                select_price+=$(this).data('price')
+            })
+            let price = new Decimal(price_js).plus(radio_price).plus(checkbox_price).plus(select_price).toFixed();
+            $('.price_js').html(currency.format(price,'{{$currency[2]['symbol_left']}}','{{$currency[2]['symbol_right']}}'))
+        }
 
         $('.info_option .flag_radio').each(function () {
-            $(this).find('label:first').click();
+            $(this).find('input:first').click();
         })
 
         $('.quantity-wrapper').on('click','.quantity-down', function (e) {
@@ -197,12 +238,18 @@
             }else{
                 input.val(1)
             }
+            price()
         })
 
         $('.quantity-wrapper').on('click','.quantity-up', function (e) {
             let input = $(this).parent().find('input')
             let q_curr = parseInt(input.val());
             input.val(q_curr+1)
+            price()
+        })
+
+        $('.quantity_js').change(function () {
+            price()
         })
 
     })

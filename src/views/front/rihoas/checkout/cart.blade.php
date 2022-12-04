@@ -76,7 +76,7 @@
                                         </a>
                                     </div>
                                     <div class="cart-img_r">
-                                        <ul class=" shopping-info  ">
+                                        <ul class="cart_product">
                                             <li class="cart-product-info">
                                                 <span class="cart-product-name">{{$val['product']['name']}}</span>
                                             </li>
@@ -87,7 +87,7 @@
                                             @endif
                                             <li class="cart-product-info">
                                                 <span class="cart-label">Price:</span>
-                                                <span class="">{{$val['price_format']}}</span>
+                                                <span class="cart_product_price_js">{{$val['price_format']}}</span>
                                             </li>
                                         </ul>
                                         <div class="qtyInfo">
@@ -285,7 +285,9 @@
                 dataType: "json",
                 success:function (res) {
                     if(!res.code){
-                        $(_this).closest('.cart-img_r').find('.item-total').text(res.data.list[cart_id].total_format)
+                        let cart_img_r = $(_this).closest('.cart-img_r')
+                        cart_img_r.find('.item-total').text(res.data.list[cart_id].total_format)
+                        cart_img_r.find('.cart_product_price_js').text(res.data.list[cart_id].price_format)
                         $('.cart_num').text(res.data.count)
                         $('.js_cart_count').text(res.data.count)
                         $('.js_cart_sub_total_format').text(res.data.total_data.sub_total_format)

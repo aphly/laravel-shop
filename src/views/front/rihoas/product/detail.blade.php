@@ -112,7 +112,7 @@
         </div>
         <button id="save-address" class="add_cart_btn " >Add To Cart</button>
     </form>
-
+    <input type="hidden" id="quantityInCart" value="{{$res['quantityInCart']}}">
 </div>
 <style>
     .info_option input[type="radio"]{display: none;}
@@ -126,9 +126,7 @@
     .quantity-wrapper div{color: #aaa;font-size: 30px;cursor: pointer;user-select: none}
     .quantity-wrapper input{margin: 0 10px;}
 
-    input[type='number']::-webkit-outer-spin-button,input[type='number']::-webkit-inner-spin-button {
-        -webkit-appearance: none !important;
-    }
+    input[type='number']::-webkit-outer-spin-button,input[type='number']::-webkit-inner-spin-button {-webkit-appearance: none !important;}
     .add_cart_btn{height: 48px;background: #fff;border: 1px solid #212b36;width: 100%;border-radius: 2px;}
     .add_cart_btn:hover{background: #212b36;color: #fff;}
 </style>
@@ -188,12 +186,12 @@
         $('.info_option').on('change','select',function () {
             price()
         })
-        
+
         function price() {
             let price_js = $('.price_js').data('price')
             let discount_js = $('.discount_js')
             if(discount_js.length>0){
-                let quantity_js = $('.quantity_js').val()
+                let quantity_js = parseInt($('.quantity_js').val())+parseInt($('#quantityInCart').val())
                 let discount_js_arr = [],arr = [];
                 discount_js.find('li').each(function () {
                     if(quantity_js>=$(this).data('quantity')){
@@ -208,18 +206,21 @@
                     }
                 }
             }
-
-            let radio_price = $('.flag_radio input[type="radio"]:checked').data('price')
-            if(typeof radio_price==='undefined'){
-                radio_price=0;
-            }
+            let radio_price = 0
+            $('.flag_radio').each(function () {
+                radio_price += $(this).find('input[type="radio"]:checked').data('price')
+            })
             let checkbox_price = 0;
-            $('.flag_checkbox input[type="checkbox"]:checked').each(function () {
-                checkbox_price+=$(this).data('price')
+            $('.flag_checkbox').each(function () {
+                $(this).find('input[type="checkbox"]:checked').each(function () {
+                    checkbox_price+=$(this).data('price')
+                })
             })
             let select_price = 0;
-            $('.flag_select select option:selected').each(function () {
-                select_price+=$(this).data('price')
+            $('.flag_select').each(function () {
+                $(this).find('select option:selected').each(function () {
+                    select_price+=$(this).data('price')
+                })
             })
             let price = new Decimal(price_js).plus(radio_price).plus(checkbox_price).plus(select_price).toFixed();
             $('.price_js').html(currency.format(price,'{{$currency[2]['symbol_left']}}','{{$currency[2]['symbol_right']}}'))

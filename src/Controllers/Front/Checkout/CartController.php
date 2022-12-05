@@ -49,8 +49,21 @@ class CartController extends Controller
         $quantity = $request->input('quantity',1);
         $cartInfo->quantity = $quantity>1?$quantity:1;
         if($cartInfo->save()){
-            list($res['count'],$res['list']) = $cart->countList(true);
-            $res['total_data'] = $cart->totalData();
+            list($res['count'],$res['list'],$res['total_data']) = $cart->totalData(true);
+            throw new ApiException(['code'=>0,'msg'=>'success','data'=>$res]);
+        }else{
+            throw new ApiException(['code'=>1,'msg'=>'fail']);
+        }
+    }
+
+    public function del(Request $request)
+    {
+        $cart = new Cart;
+        $cartInfo = $cart->where(['id'=>$request->input('cart_id',0)])->firstOrError();
+        $quantity = $request->input('quantity',1);
+        $cartInfo->quantity = $quantity>1?$quantity:1;
+        if($cartInfo->save()){
+            list($res['count'],$res['list'],$res['total_data']) = $cart->totalData(true);
             throw new ApiException(['code'=>0,'msg'=>'success','data'=>$res]);
         }else{
             throw new ApiException(['code'=>1,'msg'=>'fail']);

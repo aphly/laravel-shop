@@ -212,6 +212,17 @@ class Cart extends Model
         return [$count,$list];
     }
 
+    public function quantityInCart($product_id) {
+        $count = 0;
+        $list = $this->getList();
+        foreach ($list as $cart) {
+            if($cart['product_id']==$product_id){
+                $count += $cart['quantity'];
+            }
+        }
+        return $count;
+    }
+
     public function remove($cart_id) {
         return self::where(['id'=>$cart_id])->delete();
     }
@@ -231,8 +242,8 @@ class Cart extends Model
         'shipping','coupon','sub_total','total'
     ];
 
-    public function totalData() {
-        list($count,$list) = $this->countList();
+    public function totalData($refresh=false) {
+        list($count,$list) = $this->countList($refresh);
         $totals = [];
         $total = 0;
         $total_data = [

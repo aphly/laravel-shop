@@ -75,7 +75,7 @@
                                             <a href="/product/{{$val['product_id']}}"><img class="h-100 w-100" src="{{$val['product']['image_src']}}" alt=""></a>
                                         </a>
                                     </div>
-                                    <div class="cart-img_r">
+                                    <div class="cart-img_r cart_product_js" data-cart_id="{{$val['id']}}">
                                         <ul class="cart_product">
                                             <li class="cart-product-info">
                                                 <span class="cart-product-name">{{$val['product']['name']}}</span>
@@ -87,7 +87,7 @@
                                             @endif
                                             <li class="cart-product-info">
                                                 <span class="cart-label">Price:</span>
-                                                <span class="cart_product_price_js">{{$val['price_format']}}</span>
+                                                <span class="item_price_js">{{$val['price_format']}}</span>
                                             </li>
                                         </ul>
                                         <div class="qtyInfo">
@@ -105,21 +105,17 @@
                                     </div>
                                 </div>
                                 <div class="close-btn">
-                                    <a href="javascript:;">
-                                        <img class="img-fluid" src="{{ URL::asset('static/shop/img/cart/close_mobile.svg') }}">
-                                    </a>
+                                    <img class="img-fluid" src="{{ URL::asset('static/shop/img/cart/close_mobile.svg') }}">
                                 </div>
                                 <div class="close-bac d-none">
-                                    <div class="remove-bac"></div>
                                     <div class="close-content">
                                         <span class="close-title">Remove from Cart?</span>
                                         <div class="btn-remove">
-                                            <button type="button" class="btn-close btn-y btn-remove-item-y">
-                                                Yes
-                                            </button>
-                                            <button type="button" class="btn-close btn-n btn-remove-item-n">
-                                                No
-                                            </button>
+                                            <form action="" method="post" data-fn="close_cart" class="form_request">
+                                                <input type="hidden" name="cart_id" value="{{$val['id']}}">
+                                                <button type="submit" class="btn-close btn-y btn-remove-item-y">Yes</button>
+                                            </form>
+                                            <button type="button" class="btn-close btn-n btn-remove-item-n">No</button>
                                         </div>
                                     </div>
                                 </div>
@@ -181,8 +177,8 @@
                         <div class="cart-total-summary">
                             <div class="total-summary">Summary</div>
                             <dl>
-                                <dd><span>Items:</span> <span class="cart-order-total-items-quantity js_cart_count">{{$res['count']}}</span></dd>
-                                <dd><span>Subtotal:</span> <span class=" cart-order-total-items js_cart_sub_total_format">{{$res['total_data']['totals']['sub_total']['value_format']}}</span></dd>
+                                <dd><span>Items:</span> <span class="cart-order-total-items-quantity cart_count_js">{{$res['count']}}</span></dd>
+                                <dd><span>Subtotal:</span> <span class=" cart-order-total-items cart_sub_total_js">{{$res['total_data']['totals']['sub_total']['value_format']}}</span></dd>
                             @if(isset($res['total_data']['totals']))
                                 @foreach($res['total_data']['totals'] as $key=>$val)
                                     @if($key=='coupon' || $key=='shipping')
@@ -196,7 +192,7 @@
                         <dl class="cart-total-detail">
                             <dd class="cart-order-total">
                                 <span>Order Total:</span>
-                                <span class="cart-order-grand-total js_cart_total">{{$res['total_data']['total_format']}}</span>
+                                <span class="cart-order-grand-total cart_total_js">{{$res['total_data']['total_format']}}</span>
                             </dd>
                         </dl>
 
@@ -274,6 +270,11 @@
             edit_cart(cart_id,quantity,this)
         }))
 
+        $('.close-btn').click(function () {
+            $('.close-bac').addClass('d-none');
+            $(this).next().removeClass('d-none');
+        })
+
     })
 
     function edit_cart(cart_id,quantity,_this) {
@@ -285,13 +286,15 @@
                 dataType: "json",
                 success:function (res) {
                     if(!res.code){
-                        let cart_img_r = $(_this).closest('.cart-img_r')
-                        cart_img_r.find('.item-total').text(res.data.list[cart_id].total_format)
-                        cart_img_r.find('.cart_product_price_js').text(res.data.list[cart_id].price_format)
+                        for(let i in res.data.list){
+                            let cart_product_js = $('.cart_product_js[data-cart_id="'+i+'"]');
+                            cart_product_js.find('.item-total').text(res.data.list[i].total_format)
+                            cart_product_js.find('.item_price_js').text(res.data.list[i].price_format)
+                        }
                         $('.cart_num').text(res.data.count)
-                        $('.js_cart_count').text(res.data.count)
-                        $('.js_cart_sub_total_format').text(res.data.total_data.sub_total_format)
-                        $('.js_cart_total').text(res.data.total_data.total_format)
+                        $('.cart_count_js').text(res.data.count)
+                        $('.cart_sub_total_js').text(res.data.total_data.totals.sub_total.value_format)
+                        $('.cart_total_js').text(res.data.total_data.totals.total.value_format)
                     }
                 }
             })

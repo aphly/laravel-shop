@@ -10,6 +10,7 @@ use Aphly\LaravelShop\Models\Account\Wishlist;
 use Aphly\LaravelShop\Models\Catalog\Product;
 use Aphly\LaravelShop\Models\Catalog\ProductImage;
 use Aphly\LaravelShop\Models\Catalog\Shipping;
+use Aphly\LaravelShop\Models\Checkout\Cart;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -54,6 +55,7 @@ class ProductController extends Controller
     {
         $res['title'] = '';
         $res['info'] = Product::where('id',$request->id)->with('desc')->firstOrError();
+        $res['quantityInCart'] = (new Cart)->quantityInCart($request->id);
         list($res['info']->price,$res['info']->price_format) = Currency::format($res['info']->price,2);
         $res['info_img'] = $res['info']->imgById($res['info']->id);
         $group_id = User::groupId();

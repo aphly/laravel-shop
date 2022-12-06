@@ -12,8 +12,10 @@ class OrderProduct extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'order_id','product_id','name','sku','quantity','price','total','reward'
+        'order_id','product_id','name','sku','quantity','price','price_format','total','total_format','reward'
     ];
 
-
+    function orderOption(){
+        return $this->hasMany(OrderOption::class,'order_product_id','id');
+    }
 }

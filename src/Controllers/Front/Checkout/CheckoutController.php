@@ -68,7 +68,7 @@ class CheckoutController extends Controller
 					if ($key == $request->input('shipping_id')) {
 						Cookie::queue('shop_shipping_id', $key);
 						$payment_method = (new PaymentMethod)->findAll();
-						throw new ApiException(['code' => 0, 'msg' => 'shipping method success', 'data' => ['redirect'=>'/checkout/pay','list' => $payment_method]]);
+						throw new ApiException(['code' => 0, 'msg' => 'shipping method success', 'data' => ['redirect'=>'/checkout/payment','list' => $payment_method]]);
 					}
 				}
 			}
@@ -82,7 +82,7 @@ class CheckoutController extends Controller
 		}
     }
 
-    public function pay(Request $request)
+    public function payment(Request $request)
     {
         $res['title'] = 'Checkout Pay';
         $cart = new Cart;
@@ -125,18 +125,17 @@ class CheckoutController extends Controller
 
             $input['payment_method_id'] = $request->input('payment_method_id');
             if(!intval($input['payment_method_id'])){
-                throw new ApiException(['code' => 2, 'msg' => 'payment method fail']);
+                throw new ApiException(['code' => 2, 'msg' => 'payment method fail','data'=>['redirect'=>'/checkout/payment']]);
             }
 
+            $input['items'] = $res['count'];
             $input['total'] = $res['total_data']['total'];
-            if($input['total']>0){
-            }else{
-                throw new ApiException(['code' => 3, 'msg' => 'amount error']);
-            }
+            $input['total_format'] = $res['total_data']['total_format'];
+
             $input['comment'] = '';
             $currency = Currency::defaultCurr(true);
             if(!$currency){
-                throw new ApiException(['code' => 4, 'msg' => 'currency error']);
+                throw new ApiException(['code' => 4, 'msg' => 'currency error','data'=>['redirect'=>'/cart']]);
             }
             $input['currency_id'] = $currency['id'];
             $input['currency_code'] = $currency['code'];
@@ -159,6 +158,7 @@ class CheckoutController extends Controller
                     $orderProduct_input['order_id'] = $order->id;
                     $orderProduct_input['name'] = $val['product']['name'];
                     $orderProduct_input['sku'] = $val['product']['sku'];
+                    $orderProduct_input['image'] = $val['product']['image_src'];
                     $orderProduct = OrderProduct::create($orderProduct_input);
                     if($orderProduct->id){
                         foreach ($val['option'] as $v){
@@ -186,6 +186,7 @@ class CheckoutController extends Controller
                         }
                     }
                 }
+                $order->addOrderHistory($order, 1);
 
                 $payment_input['amount'] = $res['total_data']['total'];
                 $payment_input['currency_code'] = $currency['code'];

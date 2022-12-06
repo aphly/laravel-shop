@@ -23,8 +23,9 @@ class HomeController extends Controller
 
     public function home1(Request $request)
     {
-//        $cart = new Cart;
-//        $res['list'] = $cart->getList();
+        $cart = new Cart;
+        $res['list'] = $cart->getList();
+        dd($res['list']);
 //        $res['total_data'] = $cart->totalData();
         throw new ApiException(['code'=>1,'msg'=>'cccc','data'=>['redirect'=>'/aaa']]);
         $shipping = (new Shipping())->getTotal();

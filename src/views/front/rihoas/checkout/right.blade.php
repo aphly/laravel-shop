@@ -16,7 +16,7 @@
     .checkout_ul li.active{border:1px solid #333;}
 
     .checkout_btn{display: flex;justify-content: space-between;align-items: center;}
-    .checkout_btn button{background-color: var(--default-bg);padding: 20px;color: #fff;border: none;border-radius: 4px;}
+    .checkout_btn button{background-color: var(--default-bg);padding: 14px 20px;color: #fff;border: none;border-radius: 4px;}
     .checkout_btn_l a{color: var(--default-color);}
 
     .items-info-list-all{padding: 20px;}

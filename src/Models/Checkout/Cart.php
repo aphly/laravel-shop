@@ -268,7 +268,7 @@ class Cart extends Model
             'title'      => 'Total',
             'value'      => $total_data['total'],
             'value_format'      => $total_data['total_format'],
-            'sort' => 1,
+            'sort' => 99,
             'ext'=>''
         ];
         return [$count,$list,$total_data];

@@ -107,15 +107,16 @@
                                 <div class="close-btn">
                                     <img class="img-fluid" src="{{ URL::asset('static/shop/img/cart/close_mobile.svg') }}">
                                 </div>
-                                <div class="close-bac d-none">
+                                <div class="close-bac d-none close-bac{{$val['id']}}">
                                     <div class="close-content">
-                                        <span class="close-title">Remove from Cart?</span>
+                                        <p class="close-title">Remove from Cart?</p>
                                         <div class="btn-remove">
-                                            <form action="" method="post" data-fn="close_cart" class="form_request">
+                                            <form action="/cart/del" method="post" data-fn="close_cart" class="form_request">
+                                                @csrf
                                                 <input type="hidden" name="cart_id" value="{{$val['id']}}">
-                                                <button type="submit" class="btn-close btn-y btn-remove-item-y">Yes</button>
+                                                <button type="submit" class="btn-close active">Yes</button>
                                             </form>
-                                            <button type="button" class="btn-close btn-n btn-remove-item-n">No</button>
+                                            <button type="button" class="btn-close" onclick="$('.close-bac{{$val['id']}}').addClass('d-none')">No</button>
                                         </div>
                                     </div>
                                 </div>
@@ -229,14 +230,17 @@
 </div>
 
 <style>
-
+    .close-bac{position: absolute;height: 100%;left: 0;top: 0; width: 100%;z-index: 2;display: flex;align-items: center;justify-content: center; background: #fff;}
+    .close-bac .btn-remove{display: flex;}
+    .close-bac button{border:none;border-radius:4px;color:#333;height:30px;line-height:30px;margin:25px 15px 0;text-align:center;width:80px}
+    .close-bac .close-title{text-align: center}
+    .btn-close.active{background: #0da9c4;color: #fff;}
 </style>
 
 <script>
     $(function () {
-
         $('.proceed-to-checkout').click(function () {
-            location.href = '/checkout/address'
+            location.href = '/checkout/address?redirect='+urlencode('{{url('/cart')}}')
         })
 
         $('.quantity-wrapper').on('click','.quantity-down', function () {
@@ -271,7 +275,6 @@
         }))
 
         $('.close-btn').click(function () {
-            $('.close-bac').addClass('d-none');
             $(this).next().removeClass('d-none');
         })
 
@@ -299,6 +302,10 @@
                 }
             })
         }
+    }
+
+    function close_cart(res) {
+        location.href = '/cart'
     }
 
     function couponRemove() {

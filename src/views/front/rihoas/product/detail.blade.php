@@ -129,6 +129,7 @@
     input[type='number']::-webkit-outer-spin-button,input[type='number']::-webkit-inner-spin-button {-webkit-appearance: none !important;}
     .add_cart_btn{height: 48px;background: #fff;border: 1px solid #212b36;width: 100%;border-radius: 2px;}
     .add_cart_btn:hover{background: #212b36;color: #fff;}
+    .flag_checkbox input{display: none;}
 </style>
 <script>
     function detail_res(res) {

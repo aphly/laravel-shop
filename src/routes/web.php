@@ -31,13 +31,14 @@ Route::middleware(['web'])->group(function () {
 
             //order
             Route::get('order', 'Aphly\LaravelShop\Controllers\Front\Account\OrderController@index');
-            Route::get('order/{id}/detail', 'Aphly\LaravelShop\Controllers\Front\Account\OrderController@detail')->where('id', '[0-9]+');
+            Route::get('order/detail', 'Aphly\LaravelShop\Controllers\Front\Account\OrderController@detail');
+
         });
 
         //Checkout
         Route::match(['get', 'post'],'/checkout/address', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@address');
         Route::match(['get', 'post'],'/checkout/shipping', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@shipping');
-        Route::match(['get', 'post'],'/checkout/pay', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@pay');
+        Route::match(['get', 'post'],'/checkout/payment', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@payment');
     });
 
     Route::middleware(['guest'])->group(function () {
@@ -53,6 +54,7 @@ Route::middleware(['web'])->group(function () {
         //cart
         Route::post('/cart/add', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@add');
         Route::post('/cart/edit', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@edit');
+        Route::post('/cart/del', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@del');
         Route::get('/cart', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@index');
         Route::post('/cart/coupon', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@coupon');
         Route::get('/cart/coupon_remove', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@couponRemove');

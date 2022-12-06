@@ -1,12 +1,12 @@
 @include('laravel-shop-front::common.header')
-<div class="container">
+<section class="container">
     <style>
         .wishlist_img{width: 80px;height: 80px;margin-right: 20px;}
         .wishlist_img img{width: 100%;height: 100%;border-radius: 4px;}
         .wishlist_name{margin-bottom: 10px;}
         .delete i{margin-right: 5px;}
     </style>
-    <div class="d-flex justify-content-between account_info">
+    <div class="account_info">
         @include('laravel-common-front::account_ext.left_menu')
         <div class="account-main-section">
             <div class="">
@@ -53,7 +53,7 @@
             </div>
         </div>
     </div>
-</div>
+</section>
 <script>
 $(function () {
     $('.list_index').on('click','.delete',function () {

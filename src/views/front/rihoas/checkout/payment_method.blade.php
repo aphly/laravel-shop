@@ -1,5 +1,4 @@
 @include('laravel-shop-front::common.header')
-<link rel="stylesheet" href="{{ URL::asset('static/shop/css/checkout.css') }}"/>
 <style>
 
 </style>
@@ -28,7 +27,7 @@
                     </li>
                 </ul>
             </div>
-            <form action="/checkout/pay" method="post" class="form_request" data-fn="checkout_pay" id="checkout_pay">
+            <form action="/checkout/payment" method="post" class="form_request" data-fn="checkout_pay" id="checkout_pay">
                 @csrf
                 <input type="hidden" name="payment_method_id" value="{{$res['paymentMethod_default_id']}}">
                 <div class="checkout_box">
@@ -63,6 +62,10 @@
     function checkout_pay(res) {
         if(!res.code){
             location.href = res.data.redirect
+        }else{
+            if(typeof res.data.redirect !=='undefined'){
+                location.href = res.data.redirect
+            }
         }
     }
     $(function () {

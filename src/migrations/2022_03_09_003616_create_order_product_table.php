@@ -18,10 +18,13 @@ return new class extends Migration
             $table->integer('order_id')->unsigned()->index();
             $table->integer('product_id')->unsigned();
             $table->string('name',128);
+            $table->string('image',255);
             $table->string('sku',64);
             $table->integer('quantity')->default(0)->nullable();
             $table->decimal('price',15,2);
+            $table->string('price_format',255);
             $table->decimal('total',15,2);
+            $table->string('total_format',255);
             $table->unsignedInteger('reward');
         });
     }

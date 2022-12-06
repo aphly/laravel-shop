@@ -25,9 +25,9 @@ return new class extends Migration
             $table->string('address_city',128);
             $table->string('address_postcode',10);
             $table->string('address_country',128);
-            $table->unsignedInteger('address_country_id');
+            $table->unsignedBigInteger('address_country_id');
             $table->string('address_zone',128);
-            $table->unsignedInteger('address_zone_id');
+            $table->unsignedBigInteger('address_zone_id');
             $table->string('address_telephone',255);
 
             $table->unsignedBigInteger('shipping_id');
@@ -38,8 +38,9 @@ return new class extends Migration
             $table->unsignedBigInteger('shipping_geo_group_id')->nullable();
 
             $table->unsignedBigInteger('payment_method_id');
-
+            $table->unsignedBigInteger('items');
             $table->decimal('total',15,2);
+            $table->string('total_format',255);
             $table->text('comment')->nullable();
 
             $table->unsignedBigInteger('currency_id');

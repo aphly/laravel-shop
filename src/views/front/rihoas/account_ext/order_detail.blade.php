@@ -1,17 +1,26 @@
 @include('laravel-shop-front::common.header')
 <section class="container">
     <style>
-
+        .order ul li{display: flex;margin-bottom: 5px;}
+        .order ul li>div{flex: 1;display: flex;align-items: center;}
+        .order .detail{margin-bottom: 20px;}
+        .order .detail .title{margin-bottom: 5px;font-size: 16px;font-weight: 600}
+        .order .detail .product{}
+        .order .detail .product .option{display: flex;align-items: center;flex-wrap: wrap;width: 100%}
+        .order .detail .product .option li{width: 100%;margin-bottom: 0}
+        .order .detail .product img{width: 80px;height: 80px;margin-right: 10px;}
+        .product_title{font-weight: 600;width: 100%;}
+        .total_data li:last-child{font-weight: 600}
     </style>
     <div class="account_info">
         @include('laravel-common-front::account_ext.left_menu')
         <div class="account-main-section">
-            <div class="">
+            <div class="order">
                 <div class="top-desc d-flex justify-content-between">
                     <h2>ORDER INFORMATION</h2>
                 </div>
-                <div>
-                    <div>The shipping details</div>
+                <div class="detail">
+                    <div class="title">The shipping details</div>
                     <ul>
                         <li>
                             <div>Date Added</div>
@@ -29,8 +38,8 @@
                         @endif
                     </ul>
                 </div>
-                <div>
-                    <div>The order details</div>
+                <div class="detail">
+                    <div class="title">The order details</div>
                     <ul>
                         <li><div>Order ID:</div><div>{{$res['info']->id}}</div></li>
                         <li><div>Date Added:</div><div>{{$res['info']->created_at}}</div></li>
@@ -41,12 +50,12 @@
                                 {{$res['info']->address_city}}, {{$res['info']->address_zone}}, {{$res['info']->address_country}},
                                 {{$res['info']->address_postcode}}, {{$res['info']->address_telephone}}
                             </div></li>
-
+                        <li><div>Shipping Tracking:</div><div>{{$res['info']->tracking??'-'}}</div></li>
                     </ul>
                 </div>
-                <div>
-                    <div>The order product</div>
-                    <ul>
+                <div class="detail">
+                    <div class="title">The order product</div>
+                    <ul class="product">
                         <li>
                             <div>Product Name</div>
                             <div>Quantity</div>
@@ -57,8 +66,21 @@
                             @foreach($res['orderProduct'] as $val)
                                 <li>
                                     <div>
-                                        <img src="{{$val->image}}" style="width: 100px;height: 100px;">
-                                        {{$val->name}}
+                                        <a style="display: flex;" href="/product/{{$val->product_id}}">
+                                            <img src="{{$val->image}}">
+                                            <div style="display: flex;align-items: center;">
+                                                <div>
+                                                    <div class="product_title wenzi">{{$val->name}}</div>
+                                                    @if($val->orderOption)
+                                                    <ul class="option">
+                                                        @foreach($val->orderOption as $v)
+                                                        <li>{{$v->name}} : {{$v->value}}</li>
+                                                        @endforeach
+                                                    </ul>
+                                                </div>
+                                                @endif
+                                            </div>
+                                        </a>
                                     </div>
                                     <div>{{$val->quantity}}</div>
                                     <div>{{$val->price_format}}</div>
@@ -69,9 +91,9 @@
                     </ul>
                     <div>
                         @if($res['info']->orderTotal)
-                        <ul>
+                        <ul class="total_data">
                             @foreach($res['info']->orderTotal as $val)
-                            <li><div>{{$val->title}}</div><div>{{$val->value_format}}</div></li>
+                            <li><div></div><div></div><div>{{$val->title}}</div><div>{{$val->value_format}}</div></li>
                             @endforeach
                         </ul>
                         @endif

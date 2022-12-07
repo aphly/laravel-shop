@@ -19,12 +19,12 @@ class OrderController extends Controller
     }
 
     public function detail(Request $request){
-        $res['info'] = Order::where(['uuid'=>User::uuid(),'id'=>$request->query('id',0)])->with('orderStatus')
+        $res['info'] = Order::where(['uuid'=>User::uuid(),'id'=>$request->query('id',0)])->where('delete_at',0)->with('orderStatus')
             ->with(['orderTotal'=>function ($query) {
                     $query->orderBy('sort', 'asc');
                 }])->firstOrError();
         $res['orderProduct'] = OrderProduct::where('order_id',$res['info']->id)->with('orderOption')->get();
-        $res['orderHistory'] = OrderHistory::where('order_id',$res['info']->id)->with('orderStatus')->get();
+        $res['orderHistory'] = OrderHistory::where('order_id',$res['info']->id)->with('orderStatus')->orderBy('created_at','asc')->get();
         return $this->makeView('laravel-shop-front::account_ext.order_detail',['res'=>$res]);
     }
 

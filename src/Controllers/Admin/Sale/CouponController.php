@@ -26,7 +26,7 @@ class CouponController extends Controller
                 })
             ->orderBy('id','desc')
             ->Paginate(config('admin.perPage'))->withQueryString();
-        return $this->makeView('laravel-shop::admin.catalog.coupon.index',['res'=>$res]);
+        return $this->makeView('laravel-shop::admin.sale.coupon.index',['res'=>$res]);
     }
 
     public function form(Request $request)
@@ -40,7 +40,7 @@ class CouponController extends Controller
         $product_ids = array_column($res['coupon_product'],'product_id');
         $res['product'] = Product::whereIn('id',$product_ids)->select('name','id')->get()->keyBy('id')->toArray();
 
-        return $this->makeView('laravel-shop::admin.catalog.coupon.form',['res'=>$res]);
+        return $this->makeView('laravel-shop::admin.sale.coupon.form',['res'=>$res]);
     }
 
     public function save(Request $request){
@@ -88,7 +88,7 @@ class CouponController extends Controller
     {
         $res['list'] = CouponHistory::where('coupon_id',$request->query('id',0))->orderBy('id','desc')
             ->Paginate(config('admin.perPage'))->withQueryString();
-        return $this->makeView('laravel-shop::admin.catalog.coupon.history',['res'=>$res]);
+        return $this->makeView('laravel-shop::admin.sale.coupon.history',['res'=>$res]);
     }
 
 }

@@ -42,7 +42,7 @@ class CheckoutController extends Controller
 		}else{
             Cookie::queue('shop_shipping_id', null, -1);
             $res['curr_address_id'] = Cookie::get('shop_address_id',0);
-            $res['my_address'] = UserAddress::where(['uuid'=>User::uuid()])->orderBy('id','desc')->Paginate(config('admin.perPage'))->withQueryString();
+            $res['my_address'] = (new UserAddress)->getAddresses();
             $res['country'] = (new Country)->findAll();
             return $this->makeView('laravel-shop-front::checkout.address', ['res' => $res]);
 		}
@@ -107,6 +107,7 @@ class CheckoutController extends Controller
             }
 
             $input['uuid'] = $this->user->uuid;
+            $input['email'] = $this->user->initId();
 
             $input['address_id'] = $res['address']['id'];
             $input['address_firstname'] = $res['address']['firstname'];

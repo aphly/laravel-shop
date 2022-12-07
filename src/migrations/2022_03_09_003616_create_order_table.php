@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('shop_order', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('uuid')->index();
+            $table->string('email',255)->nullable();
             $table->unsignedBigInteger('payment_id')->nullable()->index();
             $table->unsignedBigInteger('address_id');
             $table->string('address_firstname',32);
@@ -36,6 +37,7 @@ return new class extends Migration
             $table->decimal('shipping_cost',15,2);
             $table->decimal('shipping_free_cost',15,2)->nullable();
             $table->unsignedBigInteger('shipping_geo_group_id')->nullable();
+            $table->string('tracking',255)->nullable();
 
             $table->unsignedBigInteger('payment_method_id');
             $table->string('payment_method_name',32);

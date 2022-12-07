@@ -21,7 +21,7 @@ class Order extends Model
 		'address_city','address_postcode','address_country','address_country_id','address_zone','address_zone_id','address_telephone',
 		'shipping_id','shipping_name','shipping_desc','shipping_cost','shipping_free_cost','shipping_geo_group_id','payment_method_id',
 		'payment_method_name','items','total','total_format','comment','currency_id','currency_code','currency_value','order_status_id',
-		'ip','user_agent','accept_language'
+		'ip','user_agent','accept_language','tracking'
     ];
 
     public function notify($payment)
@@ -63,6 +63,9 @@ class Order extends Model
                     ProductOptionValue::where(['product_option_value_id'=>$v['product_option_value_id'],'subtract'=>1])->increment('quantity',$val['quantity']);
                 }
             }
+        }else if($order_status_id==3){
+            $info->tracking = $comment;
+            $info->save();
         }
 
         OrderHistory::create([

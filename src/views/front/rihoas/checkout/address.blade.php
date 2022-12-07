@@ -33,7 +33,7 @@
                             data-city="{{$val['city']}}" data-postcode="{{$val['postcode']}}" data-zone_id="{{$val['zone_id']}}" data-country_id="{{$val['country_id']}}"
                             data-telephone="{{$val['telephone']}}"><div>
                                 {{$val['firstname']}} {{$val['lastname']}}, {{$val['address_1']}}, {{$val['address_2']}},
-                                {{$val['city']}}, {{$val['zone_id']}}, {{$val['country_id']}}, {{$val['postcode']}}, {{$val['telephone']}}
+                                {{$val['city']}}, {{$val['zone_name']}}, {{$val['country_name']}}, {{$val['postcode']}}, {{$val['telephone']}}
                             </div>
                         </li>
                     @endforeach

@@ -69,7 +69,7 @@ Route::middleware(['web'])->group(function () {
 
             $route_arr = [
                 ['attribute','\Catalog\AttributeController'],['option','\Catalog\OptionController'],['review','\Catalog\ReviewController'],
-                ['shipping','\Catalog\ShippingController'],['coupon','\Sale\CouponController']
+                ['shipping','\Catalog\ShippingController'],['coupon','\Sale\CouponController'],['order','\Sale\OrderController'],['refund','\Sale\RefundController']
             ];
 
             foreach ($route_arr as $val){
@@ -108,6 +108,8 @@ Route::middleware(['web'])->group(function () {
             Route::get('/product/ajax', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@ajax');
             Route::get('/attribute/ajax', 'Aphly\LaravelShop\Controllers\Admin\Catalog\AttributeController@ajax');
             Route::get('/option/ajax', 'Aphly\LaravelShop\Controllers\Admin\Catalog\OptionController@ajax');
+
+            Route::get('/order/view', 'Aphly\LaravelShop\Controllers\Admin\Sale\OrderController@view');
         });
     });
 });

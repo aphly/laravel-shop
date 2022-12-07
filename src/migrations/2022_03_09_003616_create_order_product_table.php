@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer('order_id')->unsigned()->index();
             $table->integer('product_id')->unsigned();
-            $table->string('name',128);
+            $table->string('name',255);
             $table->string('image',255);
             $table->string('sku',64);
             $table->integer('quantity')->default(0)->nullable();

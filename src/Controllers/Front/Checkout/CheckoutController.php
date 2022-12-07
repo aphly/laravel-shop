@@ -101,6 +101,11 @@ class CheckoutController extends Controller
             throw new ApiException(['code'=>13,'msg'=>'no shipping','data'=>['redirect'=>'/checkout/shipping']]);
         }
 		if($request->isMethod('post')) {
+            $input['payment_method_id'] = $request->input('payment_method_id');
+            if(!intval($input['payment_method_id'])){
+                throw new ApiException(['code' => 2, 'msg' => 'payment method fail','data'=>['redirect'=>'/checkout/payment']]);
+            }
+
             $input['uuid'] = $this->user->uuid;
 
             $input['address_id'] = $res['address']['id'];
@@ -122,11 +127,6 @@ class CheckoutController extends Controller
             $input['shipping_cost'] = $res['shipping']['cost'];
             $input['shipping_free_cost'] = $res['shipping']['free_cost'];
             $input['shipping_geo_group_id'] = $res['shipping']['geo_group_id'];
-
-            $input['payment_method_id'] = $request->input('payment_method_id');
-            if(!intval($input['payment_method_id'])){
-                throw new ApiException(['code' => 2, 'msg' => 'payment method fail','data'=>['redirect'=>'/checkout/payment']]);
-            }
 
             $input['items'] = $res['count'];
             $input['total'] = $res['total_data']['total'];
@@ -187,7 +187,7 @@ class CheckoutController extends Controller
                     }
                 }
                 $order->addOrderHistory($order, 1);
-
+                $payment_input['method_id'] = $input['payment_method_id'];
                 $payment_input['amount'] = $res['total_data']['total'];
                 $payment_input['currency_code'] = $currency['code'];
                 $payment_input['cancel_url'] = url('/checkout/payment_method');
@@ -197,6 +197,7 @@ class CheckoutController extends Controller
                 $payment = (new Payment)->make($payment_input);
                 if($payment->id){
                     $order->payment_id = $payment->id;
+                    $order->payment_method_name = $payment->method_name;
                     if($order->save()){
                         $cart->clearUuid();
                         throw new ApiException(['code' => 1, 'msg' => 'payment hhh']);

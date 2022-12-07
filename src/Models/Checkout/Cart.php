@@ -81,14 +81,14 @@ class Cart extends Model
                 if ($cart['product']['status'] == 1 && $cart['product']['date_available'] < time() && $cart['quantity'] > 0) {
                     $option_price = 0;
                     $option_weight = 0;
-                    $option_value_name_arr = [];
+                    $option_value_arr = [];
                     $cart['option'] = json_decode($cart['option'], true);
                     if ($cart['option']) {
                         $option_value = (new Product)->optionValue($cart['product_id'], array_keys($cart['option']));
                         foreach ($cart['option'] as $k => $v) {
                             if (!empty($option_value[$k])) {
                                 if ($option_value[$k]['option']['type'] == 'select' || $option_value[$k]['option']['type'] == 'radio') {
-                                    $option_value_name_arr[] = $option_value[$k]['product_option_value'][$v]['option_value']['name'];
+                                    $option_value_arr[] = $option_value[$k]['product_option_value'][$v]['option_value']['name'];
                                     if (!empty($option_value[$k]['product_option_value'][$v])) {
                                         $option_price += $option_value[$k]['product_option_value'][$v]['price'];
                                         $option_weight += $option_value[$k]['product_option_value'][$v]['weight'];
@@ -100,13 +100,13 @@ class Cart extends Model
                                     }
                                 } else if ($option_value[$k]['option']['type'] == 'text' || $option_value[$k]['option']['type'] == 'textarea' || $option_value[$k]['option']['type'] == 'file'
                                     || $option_value[$k]['option']['type'] == 'date' || $option_value[$k]['option']['type'] == 'datetime' || $option_value[$k]['option']['type'] == 'time') {
-                                    $option_value_name_arr[] = $v;
+                                    //$option_value_arr[] = $v;
                                     $option_value[$k]['product_option_value'] = $v;
                                 } else if ($option_value[$k]['option']['type'] == 'checkbox' && is_array($v)) {
                                     $arr = [];
                                     foreach ($v as $v1) {
                                         if (!empty($option_value[$k]['product_option_value'][$v1])) {
-                                            $option_value_name_arr[] = $option_value[$k]['product_option_value'][$v1]['option_value']['name'];
+                                            $option_value_arr[] = $option_value[$k]['product_option_value'][$v1]['option_value']['name'];
                                             $option_price += $option_value[$k]['product_option_value'][$v1]['price'];
                                             $option_weight += $option_value[$k]['product_option_value'][$v1]['weight'];
                                             $arr[$v1] = $option_value[$k]['product_option_value'][$v1];
@@ -165,7 +165,7 @@ class Cart extends Model
                     $cart['product']['image_src'] = ProductImage::render($cart['product']['image'],true);
                     $list[$cart['id']] = $cart;
                     $list[$cart['id']]['option'] = $option_value;
-                    $list[$cart['id']]['option_name_str'] = implode(' / ',$option_value_name_arr);
+                    $list[$cart['id']]['option_value_str'] = implode(' / ',$option_value_arr);
                     $list[$cart['id']]['stock'] = $stock;
                     $list[$cart['id']]['price'] = $price;
                     $list[$cart['id']]['price_format'] = Currency::format($price);

@@ -46,9 +46,9 @@
                         <li>
                             <strong>{{$val['product']['name']}}</strong>
                         </li>
-                        @if($val['option_name_str'])
+                        @if($val['option_value_str'])
                             <li class="option_name_str">
-                                {{$val['option_name_str']}}
+                                {{$val['option_value_str']}}
                             </li>
                         @endif
                         <li>

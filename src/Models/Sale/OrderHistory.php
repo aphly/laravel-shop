@@ -9,11 +9,13 @@ class OrderHistory extends Model
 {
     use HasFactory;
     protected $table = 'shop_order_history';
-    public $timestamps = false;
+    //public $timestamps = false;
 
     protected $fillable = [
         'order_id','order_status_id','notify','comment'
     ];
 
-
+    function orderStatus(){
+        return $this->hasOne(OrderStatus::class,'id','order_status_id');
+    }
 }

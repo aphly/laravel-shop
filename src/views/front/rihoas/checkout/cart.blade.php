@@ -80,9 +80,9 @@
                                             <li class="cart-product-info">
                                                 <span class="cart-product-name">{{$val['product']['name']}}</span>
                                             </li>
-                                            @if($val['option_name_str'])
+                                            @if($val['option_value_str'])
                                                 <li class="cart-product-info-x">
-                                                    <span class="">{{$val['option_name_str']}}</span>
+                                                    <span class="">{{$val['option_value_str']}}</span>
                                                 </li>
                                             @endif
                                             <li class="cart-product-info">

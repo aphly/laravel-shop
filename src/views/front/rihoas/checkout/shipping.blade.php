@@ -1,5 +1,4 @@
 @include('laravel-shop-front::common.header')
-<link rel="stylesheet" href="{{ URL::asset('static/shop/css/checkout.css') }}"/>
 <style>
 </style>
 <div class="container">

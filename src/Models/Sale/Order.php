@@ -86,4 +86,7 @@ class Order extends Model
         return $this->hasMany(OrderTotal::class,'order_id','id');
     }
 
+    function orderHistory(){
+        return $this->hasMany(OrderHistory::class,'order_id','id');
+    }
 }

@@ -11,9 +11,9 @@ use Aphly\LaravelShop\Models\Sale\OrderProduct;
 use Aphly\LaravelShop\Models\Sale\OrderStatus;
 use Illuminate\Http\Request;
 
-class OrderController extends Controller
+class RefundController extends Controller
 {
-    public $index_url='/shop_admin/order/index';
+    public $index_url='/shop_admin/refund/index';
 
     public function index(Request $request)
     {
@@ -54,21 +54,21 @@ class OrderController extends Controller
         throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>'/shop_admin/order/view?id='.$res['info']->id]]);
     }
 
-//    public function form(Request $request)
-//    {
-//        $order_id = $request->query('id',0);
-//        $res['order'] = Order::where('id',$order_id)->firstOrNew();
-//        return $this->makeView('laravel-shop::admin.sale.order.form',['res'=>$res]);
-//    }
-//
-//    public function save(Request $request){
-//        $input = $request->all();
-//        $input['date_add'] = $input['date_add']??time();
-//        $input['date_start'] = $input['date_start']?strtotime($input['date_start']):0;
-//        $input['date_end'] = $input['date_end']?strtotime($input['date_end']):0;
-//        Order::updateOrCreate(['id'=>$request->query('id',0)],$input);
-//        throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
-//    }
+    public function form(Request $request)
+    {
+        $order_id = $request->query('id',0);
+        $res['order'] = Order::where('id',$order_id)->firstOrNew();
+        return $this->makeView('laravel-shop::admin.sale.order.form',['res'=>$res]);
+    }
+
+    public function save(Request $request){
+        $input = $request->all();
+        $input['date_add'] = $input['date_add']??time();
+        $input['date_start'] = $input['date_start']?strtotime($input['date_start']):0;
+        $input['date_end'] = $input['date_end']?strtotime($input['date_end']):0;
+        Order::updateOrCreate(['id'=>$request->query('id',0)],$input);
+        throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
+    }
 
     public function del(Request $request)
     {

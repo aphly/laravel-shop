@@ -2,6 +2,8 @@
 
 namespace Aphly\LaravelShop\Controllers\Front\Product;
 
+use Aphly\Laravel\Exceptions\ApiException;
+use Aphly\Laravel\Libs\UploadFile;
 use Aphly\LaravelCommon\Models\Category;
 use Aphly\LaravelCommon\Models\Currency;
 use Aphly\LaravelCommon\Models\User;
@@ -9,9 +11,12 @@ use Aphly\LaravelShop\Controllers\Front\Controller;
 use Aphly\LaravelShop\Models\Account\Wishlist;
 use Aphly\LaravelShop\Models\Catalog\Product;
 use Aphly\LaravelShop\Models\Catalog\ProductImage;
+use Aphly\LaravelShop\Models\Catalog\Review;
+use Aphly\LaravelShop\Models\Catalog\ReviewImage;
 use Aphly\LaravelShop\Models\Catalog\Shipping;
 use Aphly\LaravelShop\Models\Checkout\Cart;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -66,9 +71,30 @@ class ProductController extends Controller
         $res['info_reward'] = $res['info']->findReward($res['info']->id,$group_id);
         $res['shipping'] = Shipping::where('cost',0)->firstToArray();
         $res['wishlist_product_ids'] = Wishlist::$product_ids;
+        $res['review'] = (new Review)->findAllByProductId($res['info']->id);
         return $this->makeView('laravel-shop-front::product.detail',['res'=>$res]);
     }
 
-
+    public function reviewAdd(Request $request)
+    {
+        $input = $request->all();
+        $input['author'] = $this->user->nickname;
+        $input['uuid'] = $this->user->uuid;
+        $input['product_id'] = $request->id;
+        $review = Review::create($input);
+        if($review->id){
+            $file_path = (new UploadFile(1,4))->uploads($request->file('image'), 'public/shop/product/review');
+            $img_src = $insertData = [];
+            foreach ($file_path as $key=>$val) {
+                $img_src[] = Storage::url($val);
+                $insertData[] = ['review_id'=>$review->id,'image'=>$val];
+            }
+            if ($insertData) {
+                ReviewImage::insert($insertData);
+                throw new ApiException(['code' => 0, 'msg' => 'success', 'data' => ['redirect' => '/shop_admin/product/img','imgs'=>$img_src]]);
+            }
+        }
+        throw new ApiException(['code'=>0,'msg'=>'success']);
+    }
 
 }

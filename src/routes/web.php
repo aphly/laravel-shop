@@ -51,6 +51,9 @@ Route::middleware(['web'])->group(function () {
         Route::get('/product/category', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@category');
         Route::get('/product/{id}', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@detail')->where('id', '[0-9]+');
 
+        Route::post('/product/{id}/review/add', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@reviewAdd')->where('id', '[0-9]+');
+
+
         //cart
         Route::post('/cart/add', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@add');
         Route::post('/cart/edit', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@edit');
@@ -110,6 +113,8 @@ Route::middleware(['web'])->group(function () {
             Route::get('/option/ajax', 'Aphly\LaravelShop\Controllers\Admin\Catalog\OptionController@ajax');
 
             Route::get('/order/view', 'Aphly\LaravelShop\Controllers\Admin\Sale\OrderController@view');
+            Route::post('/order/history_save', 'Aphly\LaravelShop\Controllers\Admin\Sale\OrderController@historySave');
+
         });
     });
 });

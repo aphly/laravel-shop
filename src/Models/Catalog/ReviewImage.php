@@ -8,7 +8,7 @@ use Aphly\Laravel\Models\Model;
 class ReviewImage extends Model
 {
     use HasFactory;
-    protected $table = 'shop_review';
+    protected $table = 'shop_review_image';
     public $timestamps = false;
 
     protected $fillable = [

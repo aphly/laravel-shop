@@ -50,9 +50,12 @@ class Order extends Model
                 Product::where(['subtract'=>1,'id'=>$val['product_id']])->decrement('quantity',$val['quantity']);
                 $orderOption = OrderOption::where(['order_id'=>$info->id,'order_product_id'=>$val['id']])->get()->toArray();
                 foreach ($orderOption as $v){
-                    ProductOptionValue::where(['product_option_value_id'=>$v['product_option_value_id'],'subtract'=>1])->decrement('quantity',$val['quantity']);
+                    ProductOptionValue::where(['id'=>$v['product_option_value_id'],'subtract'=>1])->decrement('quantity',$val['quantity']);
                 }
             }
+        }else if($order_status_id==3){
+            $info->tracking = $comment;
+            $info->save();
         }else if($order_status_id==5){
             $orderProduct = OrderProduct::where('order_id',$info->id)->get()->toArray();
             foreach ($orderProduct as $val){
@@ -60,12 +63,9 @@ class Order extends Model
                 Product::where(['subtract'=>1,'id'=>$val['product_id']])->increment('quantity',$val['quantity']);
                 $orderOption = OrderOption::where(['order_id'=>$info->id,'order_product_id'=>$val['id']])->get()->toArray();
                 foreach ($orderOption as $v){
-                    ProductOptionValue::where(['product_option_value_id'=>$v['product_option_value_id'],'subtract'=>1])->increment('quantity',$val['quantity']);
+                    ProductOptionValue::where(['id'=>$v['product_option_value_id'],'subtract'=>1])->increment('quantity',$val['quantity']);
                 }
             }
-        }else if($order_status_id==3){
-            $info->tracking = $comment;
-            $info->save();
         }
 
         OrderHistory::create([

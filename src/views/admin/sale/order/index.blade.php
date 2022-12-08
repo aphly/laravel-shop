@@ -42,7 +42,6 @@
                         <li>{{ $v->orderStatus->name }}</li>
                         <li>
                             <a class="badge badge-info ajax_get" data-href="/shop_admin/order/view?id={{$v['id']}}">查看</a>
-                            <a class="badge badge-info ajax_get" data-href="/shop_admin/order/form?id={{$v['id']}}">编辑</a>
                         </li>
                     </ul>
                     @endforeach

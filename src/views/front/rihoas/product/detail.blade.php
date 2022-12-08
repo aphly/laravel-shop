@@ -113,6 +113,61 @@
         <button id="save-address" class="add_cart_btn " >Add To Cart</button>
     </form>
     <input type="hidden" id="quantityInCart" value="{{$res['quantityInCart']}}">
+
+    <div class="review">
+        <div>
+            @if($res['review'])
+                <ul>
+                @foreach($res['review'] as $val)
+                    <li>
+                        <div>
+                            <div>{{$val->author}}</div>
+                            <div>{{$val->rating}}</div>
+                            <div>{{$val->text}}</div>
+                        </div>
+                        <div>
+                            @foreach($val->img as $v)
+                                <img src="{{$val->img_src}}" alt="">
+                            @endforeach
+                        </div>
+                    </li>
+                @endforeach
+                </ul>
+            @endif
+        </div>
+        <div>
+            <form class="form_request" enctype="multipart/form-data" method="post" action="/product/{{$res['info']->id}}/review/add" data-fn="review_res" >
+                @csrf
+                <input type="text" name="rating" value="">
+                <textarea name="text"></textarea>
+                <input type="file" accept="image/gif,image/jpeg,image/jpg,image/png" name="image" class="form-control-file " multiple="multiple">
+                <div class="review_img"></div>
+                <button class="">review</button>
+            </form>
+        </div>
+    </div>
+    <style>
+        .review_img img{width: 100px;height: 100px;}
+    </style>
+    <script>
+        $('.form-control-file').on("change" , function(){
+            let files = this.files;
+            let length = files.length;
+            $('.review_img').html('')
+            for( let i = 0 ; i < length ; i++ ){
+                let fr = new FileReader(),
+                    img = document.createElement("img");
+                fr.onload = function(e){
+                    img.src = this.result;
+                    $('.review_img').append(img)
+                }
+                fr.readAsDataURL(files[i]);
+            }
+        })
+        function review_res(res) {
+            console.log(res)
+        }
+    </script>
 </div>
 <style>
     .info_option input[type="radio"]{display: none;}

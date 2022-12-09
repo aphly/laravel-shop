@@ -25,28 +25,35 @@
                 </ul>
                 @if($res['list']->total())
                     @foreach($res['list'] as $v)
-                    <ul class="table_tbody">
-                        <li><input type="checkbox" class="delete_box" name="delete[]" value="{{$v['id']}}">{{$v['id']}}</li>
-                        <li>{{ $v['author'] }}</li>
-                        <li>
-                            {{$v->product->name}}
-                        </li>
-                        <li>
-                            {{$v['rating']}}星
-                        </li>
-                        <li>
-                            @if($dict['status'])
-                                @if($v->status==1)
-                                    <span class="badge badge-success">{{$dict['status'][$v->status]}}</span>
-                                @else
-                                    <span class="badge badge-secondary">{{$dict['status'][$v->status]}}</span>
+                        <ul class="table_tbody">
+                            <li><input type="checkbox" class="delete_box" name="delete[]" value="{{$v['id']}}">{{$v['id']}}</li>
+                            <li>{{ $v['author'] }}</li>
+                            <li>
+                                {{$v->product->name}}
+                            </li>
+                            <li>
+                                {{$v['rating']}}星
+                            </li>
+                            <li>
+                                @if($dict['status'])
+                                    @if($v->status==1)
+                                        <span class="badge badge-success">{{$dict['status'][$v->status]}}</span>
+                                    @else
+                                        <span class="badge badge-secondary">{{$dict['status'][$v->status]}}</span>
+                                    @endif
                                 @endif
-                            @endif
-                        </li>
-                        <li>
-                            <a class="badge badge-info ajax_get" data-href="/shop_admin/review/form?id={{$v['id']}}">编辑</a>
-                        </li>
-                    </ul>
+                            </li>
+                            <li>
+                                <a class="badge badge-info ajax_get" data-href="/shop_admin/review/form?id={{$v['id']}}">编辑</a>
+                            </li>
+                        </ul>
+                        @if(isset($res['reviewImage'][$v['id']]))
+                        <ul style="display: flex;">
+                            @foreach($res['reviewImage'][$v['id']] as $val)
+                            <li><img src="{{$val}}" alt="" style="width: 40px;height: 40px;"></li>
+                            @endforeach
+                        </ul>
+                        @endif
                     @endforeach
                     <ul class="table_bottom">
                         <li>

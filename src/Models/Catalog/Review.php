@@ -25,10 +25,10 @@ class Review extends Model
     }
 
     function findAllByProductId($product_id){
-        $review = self::where('product_id',$product_id)->with('img')->get();
+        $review = self::where('product_id',$product_id)->with('img')->orderBy('created_at','desc')->get();
         foreach ($review as $val){
             foreach ($val->img as $v){
-                $val->img->image_src = ProductImage::render($v->image,true);
+                $v->image_src = ProductImage::render($v->image,true);
             }
         }
         return $review;

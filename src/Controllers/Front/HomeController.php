@@ -8,6 +8,7 @@ use Aphly\LaravelCommon\Models\User;
 use Aphly\LaravelCommon\Models\UserAddress;
 use Aphly\LaravelCommon\Models\GeoGroup;
 use Aphly\LaravelShop\Models\Catalog\Product;
+use Aphly\LaravelShop\Models\Catalog\Review;
 use Aphly\LaravelShop\Models\Catalog\Shipping;
 use Aphly\LaravelShop\Models\Checkout\Cart;
 use Illuminate\Http\Request;
@@ -23,6 +24,7 @@ class HomeController extends Controller
 
     public function home1(Request $request)
     {
+
         $cart = new Cart;
         $res['list'] = $cart->getList();
         dd($res['list']);

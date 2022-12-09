@@ -33,12 +33,19 @@ Route::middleware(['web'])->group(function () {
             Route::get('order', 'Aphly\LaravelShop\Controllers\Front\Account\OrderController@index');
             Route::get('order/detail', 'Aphly\LaravelShop\Controllers\Front\Account\OrderController@detail');
 
+            //review
+            Route::get('review', 'Aphly\LaravelShop\Controllers\Front\Account\ReviewController@index');
+            Route::get('review/detail', 'Aphly\LaravelShop\Controllers\Front\Account\ReviewController@detail');
+
         });
 
         //Checkout
         Route::match(['get', 'post'],'/checkout/address', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@address');
         Route::match(['get', 'post'],'/checkout/shipping', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@shipping');
         Route::match(['get', 'post'],'/checkout/payment', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@payment');
+
+        //review
+        Route::post('/product/{id}/review/add', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@reviewAdd')->where('id', '[0-9]+');
     });
 
     Route::middleware(['guest'])->group(function () {
@@ -50,9 +57,6 @@ Route::middleware(['web'])->group(function () {
         //product
         Route::get('/product/category', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@category');
         Route::get('/product/{id}', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@detail')->where('id', '[0-9]+');
-
-        Route::post('/product/{id}/review/add', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@reviewAdd')->where('id', '[0-9]+');
-
 
         //cart
         Route::post('/cart/add', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@add');

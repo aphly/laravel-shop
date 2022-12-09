@@ -59,51 +59,20 @@
             <button class="btn btn-primary" type="submit">保存</button>
         </div>
     </form>
-
+    <style>
+        .reviewImage ul img{width: 100px;height: 100px;}
+        .reviewImage ul{display: flex;flex-wrap: wrap;}
+    </style>
+    <div class="reviewImage">
+        @if($res['reviewImage'])
+            <ul>
+            @foreach($res['reviewImage'] as $val)
+                <li><img src="{{$val->image_src}}" alt=""></li>
+            @endforeach
+            </ul>
+        @endif
+    </div>
 </div>
 <script>
-    function search_ajax(_this,type) {
-        $.ajax({
-            url:'/shop_admin/'+type+'/ajax?name='+$(_this).val(),
-            dataType: "json",
-            success:function (res) {
-                let arr = res.data.list;
-                let html = ``
-                for(let i in arr){
-                    if(type=='category'){
-                        html += `<div class="search_res_item"><div class="name" data-id="${arr[i][type+'_id']}" data-name="${arr[i]['name']}" onclick="show_input(this,'${type}')">${arr[i]['name']}</div><ul></div>`
-                    }else{
-                        html += `<div class="search_res_item"><div class="name" data-id="${arr[i]['id']}" data-name="${arr[i]['name']}" onclick="show_input(this,'${type}')">${arr[i]['name']}</div><ul></div>`
-                    }
-                }
-                $(_this).next().html(html).show()
-            }
-        })
-    }
 
-    function show_input(_this,type) {
-        let id = $(_this).data('id');
-        let name = $(_this).data('name');
-        $('.search_input_product').val(name);
-        $('#product_id').val(id)
-    }
-
-    $(function () {
-        $('body').off('click').on("click", function (e) {
-            //let id = $(e.target).data('id')
-            if (e.target.className !== 'search_input') {
-                $('.search_res').hide();
-            }
-        });
-        $('.review').on('focus', '.search_input_product', function (e) {
-            e.stopPropagation()
-            $('.search_res_cate').hide();
-            search_ajax(this,'product')
-        })
-        $('.review').on('keyup', '.search_input_product', function (e) {
-            e.stopPropagation()
-            $('.search_res_cate').hide();
-            search_ajax(this,'product')
-        })
-    })
 </script>

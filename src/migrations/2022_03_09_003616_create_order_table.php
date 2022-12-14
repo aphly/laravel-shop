@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('uuid')->index();
             $table->string('email',255)->nullable();
-            $table->unsignedBigInteger('payment_id')->nullable()->index();
+            $table->char('payment_id',32)->nullable()->index();
             $table->unsignedBigInteger('address_id');
             $table->string('address_firstname',32);
             $table->string('address_lastname',32);

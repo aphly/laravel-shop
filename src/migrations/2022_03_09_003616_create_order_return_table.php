@@ -15,16 +15,20 @@ return new class extends Migration
     {
         Schema::create('shop_order_return', function (Blueprint $table) {
             $table->id();
-            $table->integer('order_id')->unsigned()->index();
-            $table->integer('product_id')->unsigned()->index();
+            $table->unsignedBigInteger('order_id')->index();
+            $table->unsignedBigInteger('product_id')->index();
             $table->unsignedBigInteger('uuid')->index();
             $table->string('firstname',32);
             $table->string('lastname',32);
             $table->string('email',128);
             $table->string('telephone',32);
             $table->string('product',255);
-            $table->integer('quantity')->unsigned();
+            $table->unsignedBigInteger('quantity');
+            $table->tinyInteger('opened');
             $table->text('comment');
+
+            $table->unsignedBigInteger('created_at');
+            $table->unsignedBigInteger('updated_at');
         });
     }
 

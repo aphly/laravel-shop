@@ -1,8 +1,8 @@
 <style>
     .order ul li{display: flex;margin-bottom: 5px;}
     .order ul li>div{flex: 1;display: flex;align-items: center;}
-    .order .detail{margin-bottom: 20px;}
-    .order .detail .title{margin-bottom: 10px;font-size: 16px;font-weight: 600;border-left: 4px solid #03850d;padding-left: 10px;}
+    .order .detail{margin-bottom: 20px;border-bottom: 1px solid #f1f1f1;padding-bottom: 20px;}
+    .order .detail .title{margin-bottom: 10px;font-size: 16px;font-weight: 600;padding-left: 10px;}
     .order .detail .product{}
     .order .detail .product .option{display: flex;align-items: center;flex-wrap: wrap;width: 100%}
     .order .detail .product .option li{width: 100%;margin-bottom: 0}
@@ -48,7 +48,7 @@
                         <li><div>支付方式:</div><div>{{$res['info']->payment_method_name}}</div></li>
                         <li><div>支付流水号:</div><div>{{$res['info']->payment_id}}</div></li>
                         <li><div>货币代码:</div><div>{{$res['info']->currency_code}}</div></li>
-                        <li><div>货币值:</div><div>{{$res['info']->currency_value}}</div></li>
+                        <li><div>货币汇率比例:</div><div>{{$res['info']->currency_value}}</div></li>
                     </ul>
                 </div>
                 <div class="info">

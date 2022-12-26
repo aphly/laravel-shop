@@ -4,17 +4,17 @@
     .product_detail_img{max-width:500px;width:100%;position:relative}
     .product_detail_img .big_img{border-right:1px solid #f1f1f1;border-bottom:1px solid #f1f1f1;width:100%;height:500px}
     .product_detail_img .big_img img{width:100%;height:100%}
-    .product_detail_img .small_img{height:100px;padding-top:10px;position:relative}
-    .product_detail_img .small_img .swiper-container_pc{height:80px}
+    .product_detail_img .small_img{height:100px;margin-top: 10px;}
+    .product_detail_img .small_img .swiper-container_pc{height:100px}
     .product_detail_img .small_img .swiper-container,.lr_icon{width:450px}
     .product_detail_img .small_img .swiper-container{color:#fff;text-align:center}
-    .product_detail_img .small_img .swiper-slide img{height:100%;width:100%}
-    .product_detail_img .small_img .swiper-wrapper .swiper-slide.active img{border:1px solid #9d1000}
-    .product_detail_img .lr_icon.left{left:0px;top:10px;width:25px}
-    .product_detail_img .lr_icon{position:absolute;width:25px;height:80px}
+    .product_detail_img .small_img .swiper-slide img{height:100px;width:100px}
+    .product_detail_img .small_img .swiper-wrapper .swiper-slide.active img{border:1px solid #000}
+    .product_detail_img .lr_icon.left{left:0px;top:0px;width:25px}
+    .product_detail_img .lr_icon{position:absolute;width:25px;height:100px}
     .product_detail_img .lr_icon.left > div{background-position:left center}
     .product_detail_img .lr_icon > div{background:url({{URL::asset('static/shop/img/leftright.png')}}) no-repeat;width:100%;height:100%;margin:0 auto;cursor:pointer}
-    .product_detail_img .lr_icon.right{right:0px;top:10px;width:25px}
+    .product_detail_img .lr_icon.right{right:0px;top:0px;width:25px}
     .product_detail_img .lr_icon.right > div{background-position:right center}
 </style>
 <div class="container">
@@ -22,7 +22,7 @@
         <div>
             <div class="product_detail_img" id="aphly_viewerjs">
                 <div class="big_img ">
-                    <img src="{{ $res['info_img'][0]['image_src']??URL::asset('static/admin/img/none.png') }}" id="big_pic" class="aphly_viewer">
+                    <img src="{{ $res['info_img'][0]['image_src']??URL::asset('static/admin/img/none.png') }}" class="aphly_viewer">
                 </div>
                 @if($res['info_img'])
                     <div class="small_img  position-relative ">
@@ -184,17 +184,19 @@
 <script>
     var detailSwiper = new Swiper('.swiper-container_pc', {
         paginationClickable: true,
-        slidesPerView: 5,
+        slidesPerView: 4,
     })
-    var detailSwiper_m = new Swiper('.swiper-container_m', {
-        //loop:true,
-        grabCursor: true,
-        pagination: '.pagination_img',
-        paginationClickable: true
-    })
+    // var detailSwiper_m = new Swiper('.swiper-container_m', {
+    //     //loop:true,
+    //     grabCursor: true,
+    //     pagination: '.pagination_img',
+    //     paginationClickable: true
+    // })
 
     function changepic(_this) {
-        $('#big_pic').attr('src', $(_this).data('src')).attr('data-original',$(_this).data('src'));
+        $('.swiper-container .swiper-slide').removeClass('active')
+        $(_this).addClass('active')
+        $('.big_img img').attr('src', $(_this).data('src')).attr('data-original',$(_this).data('src'));
     }
 
     $(function () {

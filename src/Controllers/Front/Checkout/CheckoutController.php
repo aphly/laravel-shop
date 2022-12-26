@@ -201,8 +201,8 @@ class CheckoutController extends Controller
                     $order->payment_method_name = $payment->method_name;
                     if($order->save()){
                         $cart->clearUuid();
-                        throw new ApiException(['code' => 1, 'msg' => 'payment hhh']);
-                        //$payment->pay(false);
+                        //throw new ApiException(['code' => 1, 'msg' => 'payment hhh']);
+                        $payment->pay(false);
                     }
                 }
             }

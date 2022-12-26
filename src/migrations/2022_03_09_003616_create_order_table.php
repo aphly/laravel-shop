@@ -40,7 +40,7 @@ return new class extends Migration
             $table->string('tracking',255)->nullable();
 
             $table->unsignedBigInteger('payment_method_id');
-            $table->string('payment_method_name',32);
+            $table->string('payment_method_name',32)->nullable();
             $table->unsignedBigInteger('items');
             $table->decimal('total',15,2);
             $table->string('total_format',255);

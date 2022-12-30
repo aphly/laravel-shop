@@ -79,14 +79,14 @@ class ProductController extends Controller
 
     public function reviewAdd(Request $request)
     {
-        $count = Review::where(['uuid'=>$this->user->uuid,'product_id'=>$request->id])->count();
-        if($count>0){
-            throw new ApiException(['code'=>1,'msg'=>'A product can only be evaluated once']);
-        }
-        $orderProductCount = OrderProduct::leftJoin('shop_order','shop_order.id','=','shop_order_product.order_id')->where(['shop_order.uuid'=>$this->user->uuid,'shop_order_product.product_id'=>$request->id])->count();
-        if(!$orderProductCount){
-            throw new ApiException(['code'=>2,'msg'=>'Only after purchasing the product can you evaluate it']);
-        }
+//        $count = Review::where(['uuid'=>$this->user->uuid,'product_id'=>$request->id])->count();
+//        if($count>0){
+//            throw new ApiException(['code'=>1,'msg'=>'A product can only be evaluated once']);
+//        }
+//        $orderProductCount = OrderProduct::leftJoin('shop_order','shop_order.id','=','shop_order_product.order_id')->where(['shop_order.uuid'=>$this->user->uuid,'shop_order_product.product_id'=>$request->id])->count();
+//        if(!$orderProductCount){
+//            throw new ApiException(['code'=>2,'msg'=>'Only after purchasing the product can you evaluate it']);
+//        }
         $input = $request->all();
         $input['author'] = $this->user->nickname;
         $input['uuid'] = $this->user->uuid;

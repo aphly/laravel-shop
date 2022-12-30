@@ -1,25 +1,38 @@
 @include('laravel-shop-front::common.header')
 <link rel="stylesheet" href="{{ URL::asset('static/shop/css/idangerous.swiper.css') }}"/>
 <style>
-    .product_detail_img{max-width:500px;width:100%;position:relative}
-    .product_detail_img .big_img{border-right:1px solid #f1f1f1;border-bottom:1px solid #f1f1f1;width:100%;height:500px}
+    .product_detail_img{width:700px;position:relative}
+    .product_detail_img .big_img{border-right:1px solid #f1f1f1;border-bottom:1px solid #f1f1f1;width:100%;height:600px}
     .product_detail_img .big_img img{width:100%;height:100%}
-    .product_detail_img .small_img{height:100px;margin-top: 10px;}
-    .product_detail_img .small_img .swiper-container_pc{height:100px}
-    .product_detail_img .small_img .swiper-container,.lr_icon{width:450px}
-    .product_detail_img .small_img .swiper-container{color:#fff;text-align:center}
-    .product_detail_img .small_img .swiper-slide img{height:100px;width:100px}
+    .product_detail_img .small_img{margin-top: 10px;}
+    .product_detail_img .small_img .swiper-container{text-align:center;width:calc(100% - 50px);}
+    .product_detail_img .small_img .swiper-slide{height:90px;width: 90px;}
+    .product_detail_img .small_img .swiper-slide img{height:80px;width:80px;margin: 5px;border-radius: 4px;}
     .product_detail_img .small_img .swiper-wrapper .swiper-slide.active img{border:1px solid #000}
     .product_detail_img .lr_icon.left{left:0px;top:0px;width:25px}
-    .product_detail_img .lr_icon{position:absolute;width:25px;height:100px}
+    .product_detail_img .lr_icon{position:absolute;width:25px;height:90px}
     .product_detail_img .lr_icon.left > div{background-position:left center}
     .product_detail_img .lr_icon > div{background:url({{URL::asset('static/shop/img/leftright.png')}}) no-repeat;width:100%;height:100%;margin:0 auto;cursor:pointer}
     .product_detail_img .lr_icon.right{right:0px;top:0px;width:25px}
     .product_detail_img .lr_icon.right > div{background-position:right center}
+
+    .product_detail{display: flex;justify-content: space-between;}
+    .product_detail_info{width: calc(100% - 740px);margin-left: 40px;}
+    .product_detail_info_title{font-size: 40px;}
+    .price {font-size: 24px;font-weight: 600;margin-bottom: 10px;}
+    .wishlist_one{margin-bottom: 10px;}
+    .quantity-label{font-size: 16px;font-weight: 500;margin-bottom: 5px;}
+    @media (max-width: 1199.98px) {
+        .product_detail_img .big_img{height:400px}
+        .product_detail{flex-wrap: wrap;}
+        .product_detail_img{width:100%;}
+        .product_detail_info{width: 100%;margin-left: 0;}
+        .product_detail_info_title{font-size: 30px;}
+    }
 </style>
 <div class="container">
     <div>
-        <div>
+        <div class="product_detail">
             <div class="product_detail_img" id="aphly_viewerjs">
                 <div class="big_img ">
                     <img src="{{ $res['info_img'][0]['image_src']??URL::asset('static/admin/img/none.png') }}" class="aphly_viewer">
@@ -46,113 +59,187 @@
                     </div>
                 @endif
             </div>
-            <div style="">
-                {{$res['info']->name}}
-            </div>
-            <div class="d-flex price">
-                @if($res['special_price'])
-                    <span class="normal price_js" data-price="{{$res['special_price']}}">{{$res['special_price_format']}}</span>
-                    <span class="special_price">{{$res['info']->price_format}}</span>
-                    <span class="price_sale">Sale</span>
-                @else
-                    @if($res['info_discount'])
-                        <span class="normal price_js" data-price="{{$res['info']->price}}">{{$res['info']->price_format}}</span>
-                        <ul class="d-flex discount_js">
-                            @foreach($res['info_discount'] as $v)
-                                <li class="item" style="margin-right: 10px;" data-price="{{$v['price']}}" data-quantity="{{$v['quantity']}}">
-                                    {{$v['quantity']}} {{$v['price_format']}}
-                                </li>
-                            @endforeach
-                        </ul>
+            <div class="product_detail_info">
+                <div class="product_detail_info_title">
+                    {{$res['info']->name}}
+                </div>
+                <div class="d-flex price">
+                    @if($res['special_price'])
+                        <span class="normal price_js" data-price="{{$res['special_price']}}">{{$res['special_price_format']}}</span>
+                        <span class="special_price">{{$res['info']->price_format}}</span>
+                        <span class="price_sale">Sale</span>
                     @else
-                        <span class="normal price_js" data-price="{{$res['info']->price}}">{{$res['info']->price_format}}</span>
-                    @endif
-                @endif
-            </div>
-            <div class="wishlist_one">
-                @if(in_array($res['info']->id,$res['wishlist_product_ids']))
-                    <i class="common-iconfont icon-aixin_shixin" data-product_id="{{$res['info']->id}}" data-csrf="{{csrf_token()}}"></i>
-                @else
-                    <i class="common-iconfont icon-aixin" data-product_id="{{$res['info']->id}}" data-csrf="{{csrf_token()}}"></i>
-                @endif
-            </div>
-            <div>
-                @if($res['shipping'])
-                    <div style="text-align: left;margin-bottom:0px">
-                        <span style="color: #E36254">
-                            <strong>Free Standard Shipping</strong>
-                        </span>
-                    </div>
-                @endif
-            </div>
-        </div>
-    </div>
-
-    <ul class=" ">
-        @foreach($res['info_attr'] as $v)
-            <li class="item">
-                {{$v['attribute']['name']}} {{$v['text']}}
-            </li>
-        @endforeach
-    </ul>
-
-    <form id="product" class="form_request" method="post" action="/cart/add" data-fn="detail_res">
-        @csrf
-        <input type="hidden" name="product_id" value="{{$res['info']->id}}">
-        <div class="info_option">
-            {!! $res['info_option'] !!}
-        </div>
-        <div class="form-group">
-            <div class="control-label">Quantity</div>
-            <div class="quantity-wrapper">
-                <div class="quantity-down">-</div>
-                <input type="number" name="quantity" onblur="if(value<1)value=1" value="1" class="form-control quantity_js">
-                <div class="quantity-up">+</div>
-            </div>
-        </div>
-        <button id="save-address" class="add_cart_btn " >Add To Cart</button>
-    </form>
-    <input type="hidden" id="quantityInCart" value="{{$res['quantityInCart']}}">
-
-    <div class="review">
-
-        <div>
-            <form class="form_request_file" enctype="multipart/form-data" method="post" action="/product/{{$res['info']->id}}/review/add" data-fn="review_res" >
-                @csrf
-                <input type="text" name="rating" value="">
-                <textarea name="text"></textarea>
-                <input type="file" accept="image/gif,image/jpeg,image/jpg,image/png" name="files[image][]" data-next_class="review_img" class="form_input_file " multiple="multiple">
-                <div class="review_img"></div>
-                <button class="">review</button>
-            </form>
-        </div>
-        <div>
-            @if($res['review'])
-                <ul>
-                    @foreach($res['review'] as $val)
-                        <li>
-                            <div>
-                                <div>{{$val->author}}</div>
-                                <div>{{$val->rating}}</div>
-                                <div>{{$val->text}}</div>
-                            </div>
-                            <div>
-                                @foreach($val->img as $v)
-                                    <img src="{{$v->image_src}}" alt="">
+                        @if($res['info_discount'])
+                            <span class="normal price_js" data-price="{{$res['info']->price}}">{{$res['info']->price_format}}</span>
+                            <ul class="d-flex discount_js">
+                                @foreach($res['info_discount'] as $v)
+                                    <li class="item" style="margin-right: 10px;" data-price="{{$v['price']}}" data-quantity="{{$v['quantity']}}">
+                                        {{$v['quantity']}} {{$v['price_format']}}
+                                    </li>
                                 @endforeach
-                            </div>
+                            </ul>
+                        @else
+                            <span class="normal price_js" data-price="{{$res['info']->price}}">{{$res['info']->price_format}}</span>
+                        @endif
+                    @endif
+                </div>
+
+                <div class="wishlist_one">
+                    @if(in_array($res['info']->id,$res['wishlist_product_ids']))
+                        <i class="common-iconfont icon-aixin_shixin" data-product_id="{{$res['info']->id}}" data-csrf="{{csrf_token()}}"></i>
+                    @else
+                        <i class="common-iconfont icon-aixin" data-product_id="{{$res['info']->id}}" data-csrf="{{csrf_token()}}"></i>
+                    @endif
+                </div>
+
+                <div>
+                    @if($res['shipping'])
+                        <div style="text-align: left;margin-bottom:0px">
+                            <span style="color: #E36254">
+                                <strong>Free Standard Shipping</strong>
+                            </span>
+                        </div>
+                    @endif
+                </div>
+
+                <ul class=" ">
+                    @foreach($res['info_attr'] as $v)
+                        <li class="item">
+                            {{$v['attribute']['name']}} {{$v['text']}}
                         </li>
                     @endforeach
                 </ul>
-            @endif
+
+                <form id="product" class="form_request" method="post" action="/cart/add" data-fn="detail_res">
+                    @csrf
+                    <input type="hidden" name="product_id" value="{{$res['info']->id}}">
+                    <div class="info_option">
+                        {!! $res['info_option'] !!}
+                    </div>
+                    <div class="form-group quantity">
+                        <div class="control-label quantity-label">Quantity</div>
+                        <div class="quantity-wrapper">
+                            <div class="quantity-down">-</div>
+                            <input type="number" name="quantity" onblur="if(value<1)value=1" value="1" class="form-control quantity_js">
+                            <div class="quantity-up">+</div>
+                        </div>
+                    </div>
+                    <button id="save-address" class="add_cart_btn " >Add To Cart</button>
+                </form>
+
+            </div>
+
         </div>
     </div>
+
+    <input type="hidden" id="quantityInCart" value="{{$res['quantityInCart']}}">
+
+    <div class="review">
+        <div class="write_a_review" data-toggle="modal" data-target="#reviewModal">
+            Write a review
+        </div>
+        <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="reviewModalLabel">Write Review</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form_request_file" enctype="multipart/form-data" method="post" action="/product/{{$res['info']->id}}/review/add" data-fn="review_res" >
+                            @csrf
+                            <div class="review_form">
+                                <ul class="input_star">
+                                    <li data-val="1" class="on"><i class="common-iconfont icon-xingxing"></i></li>
+                                    <li data-val="2" class="on"><i class="common-iconfont icon-xingxing"></i></li>
+                                    <li data-val="3" class="on"><i class="common-iconfont icon-xingxing"></i></li>
+                                    <li data-val="4" class="on"><i class="common-iconfont icon-xingxing"></i></li>
+                                    <li data-val="5" class="on"><i class="common-iconfont icon-xingxing"></i></li>
+                                </ul>
+                                <input type="hidden" name="rating" class="rating_js" value="5">
+                                <textarea name="text" class="form-control"></textarea>
+                                <div class="add_photo"><i class="common-iconfont icon-zhaoxiangji"></i>Add Photo</div>
+                                <input type="file"  style="display: none" accept="image/gif,image/jpeg,image/jpg,image/png" name="files[image][]" data-next_class="review_img" class="form_input_file add_photo_file" multiple="multiple">
+                                <div class="review_img"></div>
+                                <button class="">Submit Review</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @if($res['review'])
+            <ul class="review_list">
+                @foreach($res['review'] as $val)
+                    <li>
+                        <div class="review_list_img">
+                            @foreach($val->img as $v)
+                                <img src="{{$v->image_src}}" alt="">
+                            @endforeach
+                        </div>
+                        <div class="review_list_content">
+                            <div>{{$val->author}}</div>
+                            <div>{{$val->created_at}}</div>
+                            <div>
+                                <div class="grade-star-bg">
+                                    <div class="star-progress" style="width: {{$val->rating*20}}%;">
+                                        <i class="common-iconfont icon-xingxing"></i>
+                                        <i class="common-iconfont icon-xingxing"></i>
+                                        <i class="common-iconfont icon-xingxing"></i>
+                                        <i class="common-iconfont icon-xingxing"></i>
+                                        <i class="common-iconfont icon-xingxing"></i>
+                                    </div>
+                                    <div class="star-bg">
+                                        <i class="common-iconfont icon-xingxing"></i>
+                                        <i class="common-iconfont icon-xingxing"></i>
+                                        <i class="common-iconfont icon-xingxing"></i>
+                                        <i class="common-iconfont icon-xingxing"></i>
+                                        <i class="common-iconfont icon-xingxing"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>{{$val->text}}</div>
+                        </div>
+                    </li>
+                @endforeach
+            </ul>
+        @endif
+    </div>
     <style>
-        .review_img img{width: 100px;height: 100px;}
+        .write_a_review{font-size: 16px;text-align: center; margin-top: 8px;background: #ddd;border-radius: 4px; height: 48px;line-height: 48px;margin-bottom: 10px;}
+        .review_list{display: flex;flex-wrap: wrap;}
+        .review_list li{width: 50%;box-shadow: 0 0 3px rgba(0,0,0,0.2);background: #fff;}
+        .review_list li img{width: 100%;max-height: 100%;}
+        .review_list_content{padding: 10px;}
+        .review_img{margin-bottom: 10px;display: flex;flex-wrap: wrap;}
+        .review_img img{width: 100px;height: 100px;margin: 10px;}
+        .review_form textarea{width: 100%;height: 100px;}
+        .add_photo{height: 40px;line-height: 40px;text-align: center;border:1px dashed #ddd;margin: 10px 0;cursor: pointer;}
+        .add_photo i{margin-right: 5px;font-size: 20px;position: relative;top: 2px;}
+        .review_form button{width: 100%;text-align: center;border: none;background: #000;height: 40px;line-height: 40px;color: #fff;}
+        .input_star{margin: 10px 0;}
+        .input_star li.on i{color:#e17a10;}
+        .input_star li i{color: #ddd;}
+        .input_star li{margin-right: 5px;}
+        .input_star{display: flex;}
+
+        .grade-star-bg{width: 100px;height: 20px;position: relative;}
+        .grade-star-bg .star-progress {height: 100%;position: absolute;left: 0;top: 0;display: flex;z-index: 1;overflow: hidden;}
+        .grade-star-bg .star-progress i{color: #e17a10;}
+        .grade-star-bg i{flex-grow: 0;flex-shrink: 0;display: block;width: 20px;height: 20px;}
+        .grade-star-bg .star-bg{height: 100%;position: absolute;left: 0;top: 0; width: 100%;display: flex;}
+        .grade-star-bg .star-bg i{color: #ddd;}
     </style>
     <script>
         function review_res(res) {
             console.log(res)
+            if(res.code===1 && res.data.redirect){
+                location.href = res.data.redirect+'?redirect={{urlencode(request()->url())}}'
+            }else if(res.code===0){
+                location.reload()
+            }
         }
     </script>
 </div>
@@ -184,14 +271,8 @@
 <script>
     var detailSwiper = new Swiper('.swiper-container_pc', {
         paginationClickable: true,
-        slidesPerView: 4,
+        slidesPerView: "auto"
     })
-    // var detailSwiper_m = new Swiper('.swiper-container_m', {
-    //     //loop:true,
-    //     grabCursor: true,
-    //     pagination: '.pagination_img',
-    //     paginationClickable: true
-    // })
 
     function changepic(_this) {
         $('.swiper-container .swiper-slide').removeClass('active')
@@ -200,6 +281,7 @@
     }
 
     $(function () {
+
         $('.lr_icon.left').on('click', function (e) {
             detailSwiper.swipePrev()
         })
@@ -298,6 +380,16 @@
             price()
         })
 
+        $('.input_star').on('click','li',function () {
+            $(this).addClass('on')
+            $(this).prevAll().addClass('on')
+            $(this).nextAll().removeClass('on')
+            $('.rating_js').val($(this).data('val'))
+        })
+
+        $('.add_photo').click(function () {
+            $('.add_photo_file').click();
+        })
     })
 
 </script>

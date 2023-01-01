@@ -33,8 +33,8 @@
 <div class="container">
     <div>
         <div class="product_detail">
-            <div class="product_detail_img" id="aphly_viewerjs">
-                <div class="big_img ">
+            <div class="product_detail_img">
+                <div class="big_img aphly_viewer_js">
                     <img src="{{ $res['info_img'][0]['image_src']??URL::asset('static/admin/img/none.png') }}" class="aphly_viewer">
                 </div>
                 @if($res['info_img'])
@@ -131,88 +131,139 @@
 
         </div>
     </div>
-
-    <input type="hidden" id="quantityInCart" value="{{$res['quantityInCart']}}">
-
-    <div class="review">
-        <div class="write_a_review" data-toggle="modal" data-target="#reviewModal">
-            Write a review
-        </div>
-        <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="reviewModalLabel">Write Review</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+    <style>
+        .my_tab{border-bottom: 1px solid #d1d1d1;margin-top: 30px;display: flex;}
+        .my_tab .my_bt{line-height: 50px;padding: 0 20px;cursor: pointer;color: #888; font-weight: 600;font-size: 16px;}
+        .my_tab .my_bt.active{color: #333;border-bottom: 4px solid #333;}
+        .description{padding: 15px;}
+    </style>
+    <div class="my_tab">
+        <div class="my_bt active">Description</div>
+    </div>
+    <div class="description">
+        <div>{{$res['info']->desc->description}}</div>
+    </div>
+    <div class="my_tab">
+        <div class="my_bt active">Reviews ({{$res['review']->total()}})</div>
+    </div>
+    <div>
+        <input type="hidden" id="quantityInCart" value="{{$res['quantityInCart']}}">
+        <div class="review">
+            <div style="display: flex;justify-content: space-between;">
+                <div style="display: flex;">
+                    <div>Overall Rating : </div>
+                    <div class="grade-star-bg">
+                        <div class="star-progress" style="width: 10%;">
+                            <i class="common-iconfont icon-xingxing"></i>
+                            <i class="common-iconfont icon-xingxing"></i>
+                            <i class="common-iconfont icon-xingxing"></i>
+                            <i class="common-iconfont icon-xingxing"></i>
+                            <i class="common-iconfont icon-xingxing"></i>
+                        </div>
+                        <div class="star-bg">
+                            <i class="common-iconfont icon-xingxing"></i>
+                            <i class="common-iconfont icon-xingxing"></i>
+                            <i class="common-iconfont icon-xingxing"></i>
+                            <i class="common-iconfont icon-xingxing"></i>
+                            <i class="common-iconfont icon-xingxing"></i>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        <form class="form_request_file" enctype="multipart/form-data" method="post" action="/product/{{$res['info']->id}}/review/add" data-fn="review_res" >
-                            @csrf
-                            <div class="review_form">
-                                <ul class="input_star">
-                                    <li data-val="1" class="on"><i class="common-iconfont icon-xingxing"></i></li>
-                                    <li data-val="2" class="on"><i class="common-iconfont icon-xingxing"></i></li>
-                                    <li data-val="3" class="on"><i class="common-iconfont icon-xingxing"></i></li>
-                                    <li data-val="4" class="on"><i class="common-iconfont icon-xingxing"></i></li>
-                                    <li data-val="5" class="on"><i class="common-iconfont icon-xingxing"></i></li>
-                                </ul>
-                                <input type="hidden" name="rating" class="rating_js" value="5">
-                                <textarea name="text" class="form-control"></textarea>
-                                <div class="add_photo"><i class="common-iconfont icon-zhaoxiangji"></i>Add Photo</div>
-                                <input type="file"  style="display: none" accept="image/gif,image/jpeg,image/jpg,image/png" name="files[image][]" data-next_class="review_img" class="form_input_file add_photo_file" multiple="multiple">
-                                <div class="review_img"></div>
-                                <button class="">Submit Review</button>
-                            </div>
-                        </form>
+                    <div>{{$res['reviewRatingAvg']}}/5</div>
+                </div>
+
+                <div class="write_a_review" data-toggle="modal" data-target="#reviewModal">
+                    Write a review
+                </div>
+            </div>
+
+            <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="reviewModalLabel">Write Review</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form_request_file" enctype="multipart/form-data" method="post" action="/product/{{$res['info']->id}}/review/add" data-fn="review_res" >
+                                @csrf
+                                <div class="review_form">
+                                    <div>{{$res['info']->name}}</div>
+                                    <ul class="input_star">
+                                        <li data-val="1" class="on"><i class="common-iconfont icon-xingxing"></i></li>
+                                        <li data-val="2" class="on"><i class="common-iconfont icon-xingxing"></i></li>
+                                        <li data-val="3" class="on"><i class="common-iconfont icon-xingxing"></i></li>
+                                        <li data-val="4" class="on"><i class="common-iconfont icon-xingxing"></i></li>
+                                        <li data-val="5" class="on"><i class="common-iconfont icon-xingxing"></i></li>
+                                    </ul>
+                                    <input type="hidden" name="rating" class="rating_js" value="5">
+                                    <textarea name="text" class="form-control"></textarea>
+                                    <div class="add_photo"><i class="common-iconfont icon-zhaoxiangji"></i>Add Photo</div>
+                                    <input type="file"  style="display: none" accept="image/gif,image/jpeg,image/jpg,image/png" name="files[image][]" data-next_class="review_img" class="form_input_file add_photo_file" multiple="multiple">
+                                    <div class="review_img"></div>
+                                    <button class="">Submit Review</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        @if($res['review'])
-            <ul class="review_list">
-                @foreach($res['review'] as $val)
-                    <li>
-                        <div class="review_list_img">
-                            @foreach($val->img as $v)
-                                <img src="{{$v->image_src}}" alt="">
-                            @endforeach
-                        </div>
-                        <div class="review_list_content">
-                            <div>{{$val->author}}</div>
-                            <div>{{$val->created_at}}</div>
-                            <div>
-                                <div class="grade-star-bg">
-                                    <div class="star-progress" style="width: {{$val->rating*20}}%;">
-                                        <i class="common-iconfont icon-xingxing"></i>
-                                        <i class="common-iconfont icon-xingxing"></i>
-                                        <i class="common-iconfont icon-xingxing"></i>
-                                        <i class="common-iconfont icon-xingxing"></i>
-                                        <i class="common-iconfont icon-xingxing"></i>
-                                    </div>
-                                    <div class="star-bg">
-                                        <i class="common-iconfont icon-xingxing"></i>
-                                        <i class="common-iconfont icon-xingxing"></i>
-                                        <i class="common-iconfont icon-xingxing"></i>
-                                        <i class="common-iconfont icon-xingxing"></i>
-                                        <i class="common-iconfont icon-xingxing"></i>
+            @if($res['review'])
+                <ul class="review_list">
+                    @foreach($res['review'] as $val)
+                        <li>
+                            <div class="review_left">
+                                <div>{{$val->author}}</div>
+                                <div class="created_at">{{$val->created_at->format('m-d , Y')}}</div>
+                            </div>
+                            <div class="review_right">
+                                <div>
+                                    <div class="review_content">{{$val->text}}</div>
+                                    <div class="grade-star-bg">
+                                        <div class="star-progress" style="width: {{$val->rating*20}}%;">
+                                            <i class="common-iconfont icon-xingxing"></i>
+                                            <i class="common-iconfont icon-xingxing"></i>
+                                            <i class="common-iconfont icon-xingxing"></i>
+                                            <i class="common-iconfont icon-xingxing"></i>
+                                            <i class="common-iconfont icon-xingxing"></i>
+                                        </div>
+                                        <div class="star-bg">
+                                            <i class="common-iconfont icon-xingxing"></i>
+                                            <i class="common-iconfont icon-xingxing"></i>
+                                            <i class="common-iconfont icon-xingxing"></i>
+                                            <i class="common-iconfont icon-xingxing"></i>
+                                            <i class="common-iconfont icon-xingxing"></i>
+                                        </div>
                                     </div>
                                 </div>
+                                <div class="review_list_img aphly_viewer_js">
+                                    @foreach($val->img as $v)
+                                        <img src="{{$v->image_src}}"  class="aphly_viewer">
+                                    @endforeach
+                                </div>
                             </div>
-                            <div>{{$val->text}}</div>
-                        </div>
-                    </li>
-                @endforeach
-            </ul>
-        @endif
+                        </li>
+                    @endforeach
+                </ul>
+                <div>
+                    {{$res['review']->links('laravel-common-front::common.pagination')}}
+                </div>
+            @endif
+        </div>
     </div>
+
     <style>
-        .write_a_review{font-size: 16px;text-align: center; margin-top: 8px;background: #ddd;border-radius: 4px; height: 48px;line-height: 48px;margin-bottom: 10px;}
+        .write_a_review{font-size: 16px;text-align: center; margin-top: 8px;background: #ddd;border-radius: 4px; height: 48px;line-height: 48px;margin-bottom: 10px;cursor: pointer}
         .review_list{display: flex;flex-wrap: wrap;}
-        .review_list li{width: 50%;box-shadow: 0 0 3px rgba(0,0,0,0.2);background: #fff;}
-        .review_list li img{width: 100%;max-height: 100%;}
-        .review_list_content{padding: 10px;}
+        .review_list li{display: flex;justify-content: space-between;width: 100%;margin-bottom: 10px;padding-bottom: 10px;border-bottom: 1px dashed #ddd;}
+        .review_left{width: 200px;}
+        .review_right{width: calc(100% - 220px);margin-left: 20px;}
+        .created_at{color:#888;}
+        .review_list_img{display: flex;flex-wrap: wrap;}
+        .review_list_img img{width: 50px;height: 50px;margin-right: 10px;}
+        .review_content{margin-bottom: 10px;}
+
         .review_img{margin-bottom: 10px;display: flex;flex-wrap: wrap;}
         .review_img img{width: 100px;height: 100px;margin: 10px;}
         .review_form textarea{width: 100%;height: 100px;}
@@ -222,23 +273,29 @@
         .input_star{margin: 10px 0;}
         .input_star li.on i{color:#e17a10;}
         .input_star li i{color: #ddd;}
-        .input_star li{margin-right: 5px;}
+        .input_star li{margin-right: 5px;cursor: pointer}
         .input_star{display: flex;}
 
-        .grade-star-bg{width: 100px;height: 20px;position: relative;}
+        .grade-star-bg{width: 100px;height: 20px;position: relative;margin-bottom: 10px;}
         .grade-star-bg .star-progress {height: 100%;position: absolute;left: 0;top: 0;display: flex;z-index: 1;overflow: hidden;}
         .grade-star-bg .star-progress i{color: #e17a10;}
         .grade-star-bg i{flex-grow: 0;flex-shrink: 0;display: block;width: 20px;height: 20px;}
         .grade-star-bg .star-bg{height: 100%;position: absolute;left: 0;top: 0; width: 100%;display: flex;}
         .grade-star-bg .star-bg i{color: #ddd;}
+
+        @media (max-width: 1199.98px) {
+
+        }
     </style>
     <script>
         function review_res(res) {
-            console.log(res)
             if(res.code===1 && res.data.redirect){
                 location.href = res.data.redirect+'?redirect={{urlencode(request()->url())}}'
             }else if(res.code===0){
                 location.reload()
+            }else{
+                console.log(res)
+                alert_msg(res)
             }
         }
     </script>

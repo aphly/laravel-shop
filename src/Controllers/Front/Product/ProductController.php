@@ -72,8 +72,16 @@ class ProductController extends Controller
         $res['info_reward'] = $res['info']->findReward($res['info']->id,$group_id);
         $res['shipping'] = Shipping::where('cost',0)->firstToArray();
         $res['wishlist_product_ids'] = Wishlist::$product_ids;
-        $res['review'] = (new Review)->findAllByProductId($res['info']->id);
+        $res['review'] = Review::where('product_id',$res['info']->id)->with('img')->orderBy('created_at','desc')
+            ->Paginate(config('admin.perPage'))->withQueryString();
+        $res['reviewRatingAvg'] = Review::where('product_id',$res['info']->id)->avg('rating');
+        $res['reviewRatingAvg'] = intval($res['reviewRatingAvg']*10)/10;
 
+        foreach ($res['review'] as $val){
+            foreach ($val->img as $v){
+                $v->image_src = ProductImage::render($v->image,true);
+            }
+        }
         return $this->makeView('laravel-shop-front::product.detail',['res'=>$res]);
     }
 
@@ -87,16 +95,21 @@ class ProductController extends Controller
 //        if(!$orderProductCount){
 //            throw new ApiException(['code'=>2,'msg'=>'Only after purchasing the product can you evaluate it']);
 //        }
+        $insertData = $img_src = $file_paths =  [];
+        if($request->file("files")){
+            foreach ($request->file("files") as $val){
+                $file_paths[] = (new UploadFile(1,4))->uploads($val, 'public/shop/product/review');
+            }
+        }
+
         $input = $request->all();
         $input['author'] = $this->user->nickname;
         $input['uuid'] = $this->user->uuid;
         $input['product_id'] = $request->id;
         $review = Review::create($input);
         if($review->id){
-            $insertData = $img_src =  [];
-            foreach ($request->file("files") as $val){
-                $file_path = (new UploadFile(1,4))->uploads($val, 'public/shop/product/review');
-                foreach ($file_path as $v) {
+            foreach ($file_paths as $val){
+                foreach ($val as $v) {
                     $img_src[] = Storage::url($v);
                     $insertData[] = ['review_id'=>$review->id,'image'=>$v];
                 }

@@ -70,13 +70,13 @@ class ProductController extends Controller
         list($res['special_price'],$res['special_price_format']) = $res['info']->findSpecial($res['info']->id);
         $res['info_discount'] = $res['info']->findDiscount($res['info']->id);
         $res['info_reward'] = $res['info']->findReward($res['info']->id,$group_id);
-        $res['shipping'] = Shipping::where('cost',0)->firstToArray();
+        //$res['shipping'] = Shipping::where('cost',0)->firstToArray();
         $res['wishlist_product_ids'] = Wishlist::$product_ids;
         $res['review'] = Review::where('product_id',$res['info']->id)->with('img')->orderBy('created_at','desc')
             ->Paginate(config('admin.perPage'))->withQueryString();
         $res['reviewRatingAvg'] = Review::where('product_id',$res['info']->id)->avg('rating');
         $res['reviewRatingAvg'] = intval($res['reviewRatingAvg']*10)/10;
-
+        $res['reviewRatingAvg_100'] = $res['reviewRatingAvg']/5*100;
         foreach ($res['review'] as $val){
             foreach ($val->img as $v){
                 $v->image_src = ProductImage::render($v->image,true);

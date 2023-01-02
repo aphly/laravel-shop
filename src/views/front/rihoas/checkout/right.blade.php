@@ -33,6 +33,12 @@
     .items-price{padding-bottom: 10px;}
     .order-list .items-right{font-weight: 600;}
     .items-info-list{padding: 20px 0;}
+    @media (max-width: 1199.98px) {
+        .checkout{}
+        .checkout_l,.checkout_r{width: 100%;margin-right: 0;}
+        .checkout_btn button{padding: 14px 10px;width: 100%;margin-bottom: 20px;}
+        .checkout_btn{flex-wrap: wrap;flex-direction: column-reverse;}
+    }
 </style>
 <div class="items-info-list-all">
     <div class="items-info-list">

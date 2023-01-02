@@ -93,6 +93,12 @@
 .product_image dd.active{display: block}
 .wishlist_one{}
 .wishlist_one i{width: 20px;height: 20px;display: block;cursor: pointer;text-align: center;}
+.p_name{font-weight: 600;}
+@media (max-width: 1199.98px) {
+    .product-category li{width: calc(50% - 5px);}
+    .product-category > li:nth-child(2n),.product-category li:last-child{margin-right:0}
+    .product-category > li:nth-child(5n),.product-category li:last-child{margin-right:10px}
+}
 </style>
 
 <script>

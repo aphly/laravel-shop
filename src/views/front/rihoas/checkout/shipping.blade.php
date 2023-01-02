@@ -62,6 +62,8 @@
     .checkout_ul li{display: flex;justify-content: space-between;}
     .checkout_ul li div:first-child{margin-right: 10px;}
     .checkout_ul li div:nth-child(2){margin-right: auto;}
+
+
 </style>
 <script>
 function checkout_shipping(res) {

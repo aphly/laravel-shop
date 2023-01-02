@@ -8,7 +8,7 @@
     .cart-shopping{background:#fff;box-shadow:0 0 15px 0 #e3e3e3;margin-top:0;margin-bottom:10px;padding:50px 30px 30px;position:relative;border-radius: 4px;}
     .close-btn{cursor:pointer;position:absolute;right:10px;top:10px;width:18px}
 
-    .cart-img{width: 40%;padding:0 35px;}
+    .cart-img{width: calc(40% - 20px);margin-right: 20px;}
     .cart-img_r{width: 60%;}
     .cart-product-name{font-size: 18px;font-weight: 700;}
     .shopping-info .cart-product-info{display: flex;justify-content: space-between;padding: 5px 0;}

@@ -19,15 +19,16 @@
     .product_detail{display: flex;justify-content: space-between;}
     .product_detail_info{width: calc(100% - 740px);margin-left: 40px;}
     .product_detail_info_title{font-size: 40px;}
-    .price {font-size: 24px;font-weight: 600;margin-bottom: 10px;}
-    .wishlist_one{margin-bottom: 10px;}
+    .price {font-size: 24px;font-weight: 600;}
+    .product_detail_info_title_xia{margin-bottom: 10px;}
+    .wishlist_one{}
     .quantity-label{font-size: 16px;font-weight: 500;margin-bottom: 5px;}
     @media (max-width: 1199.98px) {
-        .product_detail_img .big_img{height:400px}
+        .product_detail_img .big_img{height:320px}
         .product_detail{flex-wrap: wrap;}
         .product_detail_img{width:100%;}
         .product_detail_info{width: 100%;margin-left: 0;}
-        .product_detail_info_title{font-size: 30px;}
+        .product_detail_info_title{font-size: 30px;font-weight: 600; margin-top: 10px;}
     }
 </style>
 <div class="container">
@@ -63,43 +64,35 @@
                 <div class="product_detail_info_title">
                     {{$res['info']->name}}
                 </div>
-                <div class="d-flex price">
-                    @if($res['special_price'])
-                        <span class="normal price_js" data-price="{{$res['special_price']}}">{{$res['special_price_format']}}</span>
-                        <span class="special_price">{{$res['info']->price_format}}</span>
-                        <span class="price_sale">Sale</span>
-                    @else
-                        @if($res['info_discount'])
-                            <span class="normal price_js" data-price="{{$res['info']->price}}">{{$res['info']->price_format}}</span>
-                            <ul class="d-flex discount_js">
-                                @foreach($res['info_discount'] as $v)
-                                    <li class="item" style="margin-right: 10px;" data-price="{{$v['price']}}" data-quantity="{{$v['quantity']}}">
-                                        {{$v['quantity']}} {{$v['price_format']}}
-                                    </li>
-                                @endforeach
-                            </ul>
+
+                <div class="d-flex justify-content-between align-items-center product_detail_info_title_xia">
+                    <div class="d-flex price ">
+                        @if($res['special_price'])
+                            <span class="normal price_js" data-price="{{$res['special_price']}}">{{$res['special_price_format']}}</span>
+                            <span class="special_price">{{$res['info']->price_format}}</span>
+                            <span class="price_sale">Sale</span>
                         @else
-                            <span class="normal price_js" data-price="{{$res['info']->price}}">{{$res['info']->price_format}}</span>
+                            @if($res['info_discount'])
+                                <span class="normal price_js" data-price="{{$res['info']->price}}">{{$res['info']->price_format}}</span>
+                                <ul class="d-flex discount_js">
+                                    @foreach($res['info_discount'] as $v)
+                                        <li class="item" style="margin-right: 10px;" data-price="{{$v['price']}}" data-quantity="{{$v['quantity']}}">
+                                            {{$v['quantity']}} {{$v['price_format']}}
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @else
+                                <span class="normal price_js" data-price="{{$res['info']->price}}">{{$res['info']->price_format}}</span>
+                            @endif
                         @endif
-                    @endif
-                </div>
-
-                <div class="wishlist_one">
-                    @if(in_array($res['info']->id,$res['wishlist_product_ids']))
-                        <i class="common-iconfont icon-aixin_shixin" data-product_id="{{$res['info']->id}}" data-csrf="{{csrf_token()}}"></i>
-                    @else
-                        <i class="common-iconfont icon-aixin" data-product_id="{{$res['info']->id}}" data-csrf="{{csrf_token()}}"></i>
-                    @endif
-                </div>
-
-                <div>
-                    @if($res['shipping'])
-                        <div style="text-align: left;margin-bottom:0px">
-                            <span style="color: #E36254">
-                                <strong>Free Standard Shipping</strong>
-                            </span>
-                        </div>
-                    @endif
+                    </div>
+                    <div class="wishlist_one">
+                        @if(in_array($res['info']->id,$res['wishlist_product_ids']))
+                            <i class="common-iconfont icon-aixin_shixin" data-product_id="{{$res['info']->id}}" data-csrf="{{csrf_token()}}"></i>
+                        @else
+                            <i class="common-iconfont icon-aixin" data-product_id="{{$res['info']->id}}" data-csrf="{{csrf_token()}}"></i>
+                        @endif
+                    </div>
                 </div>
 
                 <ul class=" ">
@@ -136,12 +129,13 @@
         .my_tab .my_bt{line-height: 50px;padding: 0 20px;cursor: pointer;color: #888; font-weight: 600;font-size: 16px;}
         .my_tab .my_bt.active{color: #333;border-bottom: 4px solid #333;}
         .description{padding: 15px;}
+        .wishlist_one i{font-size: 20px;}
     </style>
     <div class="my_tab">
         <div class="my_bt active">Description</div>
     </div>
     <div class="description">
-        <div>{{$res['info']->desc->description}}</div>
+        <div>{!! $res['info']->desc->description !!}</div>
     </div>
     <div class="my_tab">
         <div class="my_bt active">Reviews ({{$res['review']->total()}})</div>
@@ -149,11 +143,11 @@
     <div>
         <input type="hidden" id="quantityInCart" value="{{$res['quantityInCart']}}">
         <div class="review">
-            <div style="display: flex;justify-content: space-between;">
-                <div style="display: flex;">
-                    <div>Overall Rating : </div>
+            <div class="review1">
+                <div class="write_a_review_pre">
+                    <div class="write_a_review_pre1">Overall Rating : </div>
                     <div class="grade-star-bg">
-                        <div class="star-progress" style="width: 10%;">
+                        <div class="star-progress" style="width: {{$res['reviewRatingAvg_100']}}%;">
                             <i class="common-iconfont icon-xingxing"></i>
                             <i class="common-iconfont icon-xingxing"></i>
                             <i class="common-iconfont icon-xingxing"></i>
@@ -168,7 +162,7 @@
                             <i class="common-iconfont icon-xingxing"></i>
                         </div>
                     </div>
-                    <div>{{$res['reviewRatingAvg']}}/5</div>
+                    <div class="write_a_review_pre2">{{$res['reviewRatingAvg']}}/5</div>
                 </div>
 
                 <div class="write_a_review" data-toggle="modal" data-target="#reviewModal">
@@ -254,7 +248,10 @@
     </div>
 
     <style>
-        .write_a_review{font-size: 16px;text-align: center; margin-top: 8px;background: #ddd;border-radius: 4px; height: 48px;line-height: 48px;margin-bottom: 10px;cursor: pointer}
+        .review1{display: flex;justify-content: space-between;margin: 20px 0 10px;align-items: center;}
+        .write_a_review_pre{display: flex;font-weight: 600;}
+        .write_a_review_pre .grade-star-bg{margin:0 10px;}
+        .write_a_review{padding: 0 26px;font-size: 16px;text-align: center; margin-top: 8px;background: #ddd;border-radius: 4px; height: 48px;line-height: 48px;margin-bottom: 10px;cursor: pointer}
         .review_list{display: flex;flex-wrap: wrap;}
         .review_list li{display: flex;justify-content: space-between;width: 100%;margin-bottom: 10px;padding-bottom: 10px;border-bottom: 1px dashed #ddd;}
         .review_left{width: 200px;}
@@ -276,7 +273,7 @@
         .input_star li{margin-right: 5px;cursor: pointer}
         .input_star{display: flex;}
 
-        .grade-star-bg{width: 100px;height: 20px;position: relative;margin-bottom: 10px;}
+        .grade-star-bg{width: 100px;height: 20px;position: relative;margin-bottom: 10px;top: -3px;}
         .grade-star-bg .star-progress {height: 100%;position: absolute;left: 0;top: 0;display: flex;z-index: 1;overflow: hidden;}
         .grade-star-bg .star-progress i{color: #e17a10;}
         .grade-star-bg i{flex-grow: 0;flex-shrink: 0;display: block;width: 20px;height: 20px;}
@@ -284,7 +281,9 @@
         .grade-star-bg .star-bg i{color: #ddd;}
 
         @media (max-width: 1199.98px) {
-
+            .review1{justify-content: left;flex-wrap: wrap;flex-direction: column-reverse;margin-top: 10px;}
+            .write_a_review_pre{width: 100%}
+            .write_a_review{width: 100%}
         }
     </style>
     <script>

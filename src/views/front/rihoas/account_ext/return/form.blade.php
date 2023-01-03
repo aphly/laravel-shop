@@ -1,50 +1,83 @@
 @include('laravel-shop-front::common.header')
 <section class="container">
     <style>
-        .order ul li{display: flex;margin-bottom: 5px;}
-        .order ul li>div{flex: 1;display: flex;align-items: center;}
-        .order .detail{margin-bottom: 20px;}
-        .order .detail .title{margin-bottom: 5px;font-size: 16px;font-weight: 600}
-        .order .detail .product{}
-        .order .detail .product .option{display: flex;align-items: center;flex-wrap: wrap;width: 100%}
-        .order .detail .product .option li{width: 100%;margin-bottom: 0}
-        .order .detail .product img{width: 80px;height: 80px;margin-right: 10px;}
-        .product_title{font-weight: 600;width: 100%;}
-        .total_data li:last-child{font-weight: 600}
+
     </style>
     <div class="account_info">
         @include('laravel-common-front::account_ext.left_menu')
         <div class="account-main-section">
             <div class="order">
                 <div class="top-desc d-flex justify-content-between">
-                    <h2>REVIEW INFORMATION</h2>
+                    <h2>Return</h2>
                 </div>
 
-                <div class="detail">
-                    <div class="title">The review details</div>
-                    <ul>
-                        <li><div>ID:</div><div>{{$res['info']->id}}</div></li>
-                        <li><div>Date Added:</div><div>{{$res['info']->created_at}}</div></li>
-                        <li><div>Author:</div><div>{{$res['info']->author}}</div></li>
-                        <li><div>Product:</div><div><a href="/product/{{$res['info']->product->id}}">{{$res['info']->product->name}}</a></div></li>
-                        <li><div>Rank:</div><div>{{$res['info']->rating}}</div></li>
-                        <li><div>Content:</div><div>{{$res['info']->text}}</div></li>
-                    </ul>
-                </div>
+                <form method="post" action="/account_ext/return/form?id={{request()->query('id')??0}}" class="form_request" data-fn="return_res">
+                    @csrf
+                    <input type="hidden" name="address_id" value="{{request()->query('address_id')??0}}">
+                    <div class="form-group">
+                        <p>First Name: <b>*</b></p>
+                        <input type="text" name="firstname" required value="{{$res['info']->firstname}}" placeholder="First Name" class="form-control" >
+                    </div>
+                    <div class="form-group">
+                        <p>Last Name: <b>*</b></p>
+                        <input type="text" name="lastname" required value="{{$res['info']->lastname}}" placeholder="Last Name" class="form-control">
+                    </div>
 
-                <style>
-                    .reviewImage ul img{width: 100px;height: 100px;}
-                    .reviewImage ul{display: flex;flex-wrap: wrap;}
-                </style>
-                <div class="reviewImage">
-                    @if($res['reviewImage'])
-                        <ul>
-                            @foreach($res['reviewImage'] as $val)
-                                <li><img src="{{$val->image_src}}" alt=""></li>
+                    <div class="form-group">
+                        <p>Address Line1: <b>*</b></p>
+                        <input required name="address_1" type="text" class="form-control address1" value="{{$res['info']->address_1}}" placeholder="Address 1" >
+                    </div>
+                    <div class="form-group">
+                        <div class=" ">
+                            <p>Address Line2: </p>
+                            <input name="address_2" type="text" class="form-control address2" value="{{$res['info']->address_2}}" placeholder="Address 2">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <p>City: <b>*</b></p>
+                        <input required name="city" type="text" class="form-control city" value="{{$res['info']->city}}" placeholder="City" >
+                    </div>
+                    <div class="form-group">
+                        <p>Post Code: <b>*</b></p>
+                        <input required name="postcode" value="{{$res['info']->postcode}}" placeholder="Post Code" type="text" class="form-control postcode">
+                    </div>
+                    <div class="form-group">
+                        <p>Country: <b>*</b></p>
+                        <select name="country_id" id="input-country" required class="form-control country">
+                            <option value=""> --- Please Select --- </option>
+                            @foreach($res['country'] as $val)
+                                <option value="{{$val['id']}}" @if($val['id']==$res['info']->country_id) selected @endif>{{$val['name']}}</option>
                             @endforeach
-                        </ul>
-                    @endif
-                </div>
+                        </select>
+                    </div>
+                    <div class="form-group is-valid">
+                        <p>State / Province: <b>*</b></p>
+                        <select name="zone_id" required id="input-zone" class="form-control country ">
+                            @if($res['zone'])
+                                <option value=""> --- Please Select --- </option>
+                                @foreach($res['zone'] as $val)
+                                    <option value="{{$val['id']}}" @if($val['id']==$res['info']->zone_id) selected @endif>{{$val['name']}}</option>
+                                @endforeach
+                            @else
+                                <option value=""> --- None --- </option>
+                            @endif
+                        </select>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group">
+                        <p>Telephone:</p>
+                        <input name="telephone" type="text" class="form-control" placeholder="Telephone" value="{{$res['info']->telephone}}">
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" name="default" value="1" @if($user->address_id == $res['info']->id) checked="checked" @endif>
+                        <span>Set as primary address</span>
+                    </div>
+                    <div class="form-group d-flex">
+                        <button class="btn-default  save-address" >Save</button>
+                        <a href="/account_ext/address" class="btn-cancel">Cancel</a>
+                    </div>
+                </form>
+
             </div>
         </div>
     </div>

@@ -20,11 +20,18 @@ class ReturnController extends Controller
 
     public function detail(Request $request){
         $res['info'] = OrderReturn::where(['uuid'=>User::uuid(),'id'=>$request->query('id',0)])->where('delete_at',0)->with('OrderReturnStatus')
-            ->with(['OrderReturnTotal'=>function ($query) {
-                    $query->OrderReturnBy('sort', 'asc');
-                }])->firstOrError();
+            ->firstOrError();
         $res['OrderReturnHistory'] = OrderReturnHistory::where('OrderReturn_id',$res['info']->id)->with('OrderReturnStatus')->OrderReturnBy('created_at','asc')->get();
         return $this->makeView('laravel-shop-front::account_ext.return.detail',['res'=>$res]);
+    }
+
+    public function form(Request $request){
+        if($request->isMethod('post')){
+
+        }else{
+            $res['info'] = OrderReturn::where(['uuid'=>User::uuid(),'id'=>$request->query('id',0)])->where('delete_at',0)->with('OrderReturnStatus')->firstOrNew();
+            return $this->makeView('laravel-shop-front::account_ext.return.form',['res'=>$res]);
+        }
     }
 
 }

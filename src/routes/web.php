@@ -35,6 +35,10 @@ Route::middleware(['web'])->group(function () {
             Route::get('review', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ReviewController@index');
             Route::get('review/detail', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ReviewController@detail');
 
+            //return
+            Route::get('return', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ReturnController@index');
+            Route::get('return/detail', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ReturnController@detail');
+            Route::match(['get', 'post'],'return/form', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ReturnController@form');
         });
 
         //Checkout

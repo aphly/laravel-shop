@@ -111,7 +111,7 @@
                                     <div class="close-content">
                                         <p class="close-title">Remove from Cart?</p>
                                         <div class="btn-remove">
-                                            <form action="/cart/del" method="post" data-fn="close_cart" class="form_request">
+                                            <form action="/cart/remove" method="post" data-fn="cart_remove_res" class="form_request">
                                                 @csrf
                                                 <input type="hidden" name="cart_id" value="{{$val['id']}}">
                                                 <button type="submit" class="btn-close active">Yes</button>
@@ -152,7 +152,7 @@
                             Discount Code:
                         </p>
                         <div class="cart-code">
-                            <form class="code-apply form_request" action="/cart/coupon" method="post" data-fn="coupon">
+                            <form class="code-apply form_request" action="/cart/coupon" method="post" data-fn="coupon_res">
                                 @csrf
                                 <div class="form-group">
                                     <input class="cart-code-input" type="text" placeholder="Promo code" name="coupon_code" value="" autocomplete="off">
@@ -180,13 +180,13 @@
                             <dl>
                                 <dd><span>Items:</span> <span class="cart-order-total-items-quantity cart_count_js">{{$res['count']}}</span></dd>
                                 <dd><span>Subtotal:</span> <span class=" cart-order-total-items cart_sub_total_js">{{$res['total_data']['totals']['sub_total']['value_format']}}</span></dd>
-                            @if(isset($res['total_data']['totals']))
-                                @foreach($res['total_data']['totals'] as $key=>$val)
-                                    @if($key=='coupon' || $key=='shipping')
-                                    <dd><span>{{$val['title']}}:</span><span class=" cart-order-total-items">{{$val['value_format']}}</span> </dd>
-                                    @endif
-                                @endforeach
-                            @endif
+                                @if(isset($res['total_data']['totals']))
+                                    @foreach($res['total_data']['totals'] as $key=>$val)
+                                        @if($key=='coupon' || $key=='shipping')
+                                        <dd><span>{{$val['title']}}:</span><span class=" cart-order-total-items">{{$val['value_format']}}</span> </dd>
+                                        @endif
+                                    @endforeach
+                                @endif
                             </dl>
                         </div>
 
@@ -304,7 +304,7 @@
         }
     }
 
-    function close_cart(res) {
+    function cart_remove_res(res,form_class) {
         location.href = '/cart'
     }
 
@@ -317,7 +317,7 @@
         })
     }
 
-    function coupon(){
+    function coupon_res(res,form_class){
         location.href = '/cart'
     }
 

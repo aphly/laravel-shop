@@ -56,7 +56,7 @@ class CartController extends Controller
         }
     }
 
-    public function del(Request $request)
+    public function remove(Request $request)
     {
         $cart = new Cart;
         $cartInfo = $cart->where(['id'=>$request->input('cart_id',0),'guest'=>Cookie::get('guest',0)])->firstOrError();

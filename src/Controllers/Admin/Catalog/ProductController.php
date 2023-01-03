@@ -132,7 +132,7 @@ class ProductController extends Controller
         $res['info_img'] = ProductImage::where('product_id',$res['product']->id)->orderBy('sort','desc')->get()->toArray();
         if($request->isMethod('post')) {
             if($request->hasFile('file')) {
-                $file_path = (new UploadFile(0.5,2))->uploads($request->file('file'), 'public/shop/product/image');
+                $file_path = (new UploadFile(1,5))->uploads($request->file('file'), 'public/shop/product/image');
                 $img_src = $insertData = [];
                 foreach ($file_path as $key=>$val) {
                     $img_src[] = Storage::url($val);

@@ -21,21 +21,19 @@ Route::middleware(['web'])->group(function () {
 
     Route::middleware(['userAuth'])->group(function () {
         //account
-        Route::prefix('account')->group(function () {
-            //wishlist
-            Route::get('wishlist', 'Aphly\LaravelShop\Controllers\Front\Account\WishlistController@index');
-            Route::post('wishlist/{id}/remove', 'Aphly\LaravelShop\Controllers\Front\Account\WishlistController@remove')->where('id', '[0-9]+');
+        Route::prefix('account_ext')->group(function () {
 
-            //cart
-            Route::post('cart/{id}/wishlist', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@addWishlist')->where('id', '[0-9]+');
+            //wishlist
+            Route::get('wishlist', 'Aphly\LaravelShop\Controllers\Front\AccountExt\WishlistController@index');
+            Route::post('wishlist/{id}/remove', 'Aphly\LaravelShop\Controllers\Front\AccountExt\WishlistController@remove')->where('id', '[0-9]+');
 
             //order
-            Route::get('order', 'Aphly\LaravelShop\Controllers\Front\Account\OrderController@index');
-            Route::get('order/detail', 'Aphly\LaravelShop\Controllers\Front\Account\OrderController@detail');
+            Route::get('order', 'Aphly\LaravelShop\Controllers\Front\AccountExt\OrderController@index');
+            Route::get('order/detail', 'Aphly\LaravelShop\Controllers\Front\AccountExt\OrderController@detail');
 
             //review
-            Route::get('review', 'Aphly\LaravelShop\Controllers\Front\Account\ReviewController@index');
-            Route::get('review/detail', 'Aphly\LaravelShop\Controllers\Front\Account\ReviewController@detail');
+            Route::get('review', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ReviewController@index');
+            Route::get('review/detail', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ReviewController@detail');
 
         });
 
@@ -46,6 +44,9 @@ Route::middleware(['web'])->group(function () {
 
         //review
         Route::post('/product/{id}/review/add', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@reviewAdd')->where('id', '[0-9]+');
+
+        //cart
+        Route::post('/cart/{id}/wishlist', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@addWishlist')->where('id', '[0-9]+');
     });
 
     Route::middleware(['guest'])->group(function () {
@@ -59,10 +60,10 @@ Route::middleware(['web'])->group(function () {
         Route::get('/product/{id}', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@detail')->where('id', '[0-9]+');
 
         //cart
+        Route::get('/cart', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@index');
         Route::post('/cart/add', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@add');
         Route::post('/cart/edit', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@edit');
-        Route::post('/cart/del', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@del');
-        Route::get('/cart', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@index');
+        Route::post('/cart/remove', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@remove');
         Route::post('/cart/coupon', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@coupon');
         Route::get('/cart/coupon_remove', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@couponRemove');
 

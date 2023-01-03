@@ -30,6 +30,17 @@
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
+                <label for="">是否使用库存</label>
+                <select name="subtract" class="form-control">
+                    @if(isset($dict['yes_no']))
+                        @foreach($dict['yes_no'] as $key=>$val)
+                            <option value="{{$key}}" @if($res['product']->subtract==$key) selected @endif>{{$val}}</option>
+                        @endforeach
+                    @endif
+                </select>
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="form-group">
                 <label for="">price</label>
                 <input type="text" name="price" class="form-control " value="{{$res['product']->price??0}}">
                 <div class="invalid-feedback"></div>
@@ -56,6 +67,7 @@
                 </select>
                 <div class="invalid-feedback"></div>
             </div>
+
             <div class="form-group">
                 <label for="">weight</label>
                 <input type="text" name="weight" class="form-control " value="{{$res['product']->weight??0}}">
@@ -68,14 +80,22 @@
                     @endif
                 </select>
             </div>
-            <div class="form-group">
-                <label for="">length</label>
-                <input type="text" name="length" class="form-control " value="{{$res['product']->length??0}}">
-                <label for="">width</label>
-                <input type="text" name="width" class="form-control " value="{{$res['product']->width??0}}">
-                <label for="">height</label>
-                <input type="text" name="height" class="form-control " value="{{$res['product']->height??0}}">
 
+            <div class="form-group">
+                <div class="d-flex justify-content-between">
+                    <div class="form-group">
+                        <label for="">length</label>
+                        <input type="text" name="length" class="form-control " value="{{$res['product']->length??0}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="">width</label>
+                        <input type="text" name="width" class="form-control " value="{{$res['product']->width??0}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="">height</label>
+                        <input type="text" name="height" class="form-control " value="{{$res['product']->height??0}}">
+                    </div>
+                </div>
                 <select name="length_class_id"  class="form-control">
                     @if(isset($dict['length_class']))
                         @foreach($dict['length_class'] as $key=>$val)
@@ -83,17 +103,6 @@
                         @endforeach
                     @endif
                 </select>
-            </div>
-            <div class="form-group">
-                <label for="">是否使用库存</label>
-                <select name="subtract" class="form-control">
-                    @if(isset($dict['yes_no']))
-                        @foreach($dict['yes_no'] as $key=>$val)
-                            <option value="{{$key}}" @if($res['product']->subtract==$key) selected @endif>{{$val}}</option>
-                        @endforeach
-                    @endif
-                </select>
-                <div class="invalid-feedback"></div>
             </div>
 
             <div class="form-group">

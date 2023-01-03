@@ -61,7 +61,7 @@ $(function () {
             let id = $(this).data('id')
             if(id){
                 $.ajax({
-                    url: '/account/wishlist/'+id+'/remove',
+                    url: '/account_ext/wishlist/'+id+'/remove',
                     dataType: 'json',
                     type:'post',
                     data:{'_token':'{{csrf_token()}}'},

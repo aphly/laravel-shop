@@ -1,6 +1,6 @@
 <?php
 
-namespace Aphly\LaravelShop\Controllers\Front\Account;
+namespace Aphly\LaravelShop\Controllers\Front\AccountExt;
 
 use Aphly\LaravelCommon\Models\User;
 use Aphly\LaravelShop\Controllers\Front\Controller;
@@ -15,7 +15,7 @@ class OrderController extends Controller
     {
         $res['list'] = Order::where(['uuid'=>User::uuid()])->where('delete_at',0)->with('orderStatus')
             ->orderBy('created_at','desc')->Paginate(config('admin.perPage'))->withQueryString();
-        return $this->makeView('laravel-shop-front::account_ext.order_index',['res'=>$res]);
+        return $this->makeView('laravel-shop-front::account_ext.order.index',['res'=>$res]);
     }
 
     public function detail(Request $request){
@@ -25,7 +25,7 @@ class OrderController extends Controller
                 }])->firstOrError();
         $res['orderProduct'] = OrderProduct::where('order_id',$res['info']->id)->with('orderOption')->get();
         $res['orderHistory'] = OrderHistory::where('order_id',$res['info']->id)->with('orderStatus')->orderBy('created_at','asc')->get();
-        return $this->makeView('laravel-shop-front::account_ext.order_detail',['res'=>$res]);
+        return $this->makeView('laravel-shop-front::account_ext.order.detail',['res'=>$res]);
     }
 
 }

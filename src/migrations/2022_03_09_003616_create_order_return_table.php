@@ -26,7 +26,10 @@ return new class extends Migration
             $table->unsignedBigInteger('quantity');
             $table->tinyInteger('opened');
             $table->text('comment');
-
+            $table->unsignedBigInteger('order_return_reason_id');
+            $table->unsignedBigInteger('order_return_action_id');
+            $table->unsignedBigInteger('order_return_status_id');
+            $table->unsignedBigInteger('delete_at');
             $table->unsignedBigInteger('created_at');
             $table->unsignedBigInteger('updated_at');
         });

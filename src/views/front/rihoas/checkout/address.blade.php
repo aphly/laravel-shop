@@ -96,7 +96,7 @@
                 </div>
                 <div class="checkout_btn">
                     <div class="checkout_btn_l"><a href="/cart"><i class="common-iconfont icon-xiangl"></i>Return to cart</a></div>
-                    <button>Continue to shipping</button>
+                    <button type="submit">Continue to shipping</button>
                 </div>
             </form>
         </div>

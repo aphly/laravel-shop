@@ -5,14 +5,14 @@ namespace Aphly\LaravelShop\Models\Sale;
 use Aphly\Laravel\Models\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class OrderReturnHistory extends Model
+class RefundHistory extends Model
 {
     use HasFactory;
-    protected $table = 'shop_order_return_history';
+    protected $table = 'shop_refund_history';
     //public $timestamps = false;
 
     protected $fillable = [
-        'order_return_id','order_return_status_id','notify','comment'
+        'refund_id','refund_status_id','notify','comment'
     ];
 
 

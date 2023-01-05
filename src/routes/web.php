@@ -30,6 +30,10 @@ Route::middleware(['web'])->group(function () {
             //order
             Route::get('order', 'Aphly\LaravelShop\Controllers\Front\AccountExt\OrderController@index');
             Route::get('order/detail', 'Aphly\LaravelShop\Controllers\Front\AccountExt\OrderController@detail');
+            Route::get('order/pay', 'Aphly\LaravelShop\Controllers\Front\AccountExt\OrderController@pay');
+            Route::post('order/close', 'Aphly\LaravelShop\Controllers\Front\AccountExt\OrderController@close');
+            Route::post('order/cancel', 'Aphly\LaravelShop\Controllers\Front\AccountExt\OrderController@cancel');
+            Route::post('order/refund', 'Aphly\LaravelShop\Controllers\Front\AccountExt\OrderController@refund');
 
             //review
             Route::get('review', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ReviewController@index');
@@ -39,6 +43,7 @@ Route::middleware(['web'])->group(function () {
             Route::get('return', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ReturnController@index');
             Route::get('return/detail', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ReturnController@detail');
             Route::match(['get', 'post'],'return/form', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ReturnController@form');
+
         });
 
         //Checkout
@@ -91,9 +96,9 @@ Route::middleware(['web'])->group(function () {
                 Route::post('/'.$val[0].'/del', 'Aphly\LaravelShop\Controllers\Admin'.$val[1].'@del');
             }
 
-            Route::get('/customer/index', 'Aphly\LaravelShop\Controllers\Admin\Customer\CustomerController@index');
-            Route::post('/customer/save', 'Aphly\LaravelShop\Controllers\Admin\Customer\CustomerController@save');
-            Route::get('/customer/form', 'Aphly\LaravelShop\Controllers\Admin\Customer\CustomerController@form');
+//            Route::get('/customer/index', 'Aphly\LaravelShop\Controllers\Admin\Customer\CustomerController@index');
+//            Route::post('/customer/save', 'Aphly\LaravelShop\Controllers\Admin\Customer\CustomerController@save');
+//            Route::get('/customer/form', 'Aphly\LaravelShop\Controllers\Admin\Customer\CustomerController@form');
 
             Route::get('/setting/index', 'Aphly\LaravelShop\Controllers\Admin\System\SettingController@index');
             Route::post('/setting/save', 'Aphly\LaravelShop\Controllers\Admin\System\SettingController@save');

@@ -10,7 +10,6 @@
                 <div class="top-desc d-flex justify-content-between">
                     <h2>Return</h2>
                 </div>
-
                 <form method="post" action="/account_ext/return/form?id={{request()->query('id')??0}}" class="form_request" data-fn="return_res">
                     @csrf
                     <input type="hidden" name="address_id" value="{{request()->query('address_id')??0}}">
@@ -41,15 +40,7 @@
                         <p>Post Code: <b>*</b></p>
                         <input required name="postcode" value="{{$res['info']->postcode}}" placeholder="Post Code" type="text" class="form-control postcode">
                     </div>
-                    <div class="form-group">
-                        <p>Country: <b>*</b></p>
-                        <select name="country_id" id="input-country" required class="form-control country">
-                            <option value=""> --- Please Select --- </option>
-                            @foreach($res['country'] as $val)
-                                <option value="{{$val['id']}}" @if($val['id']==$res['info']->country_id) selected @endif>{{$val['name']}}</option>
-                            @endforeach
-                        </select>
-                    </div>
+
                     <div class="form-group is-valid">
                         <p>State / Province: <b>*</b></p>
                         <select name="zone_id" required id="input-zone" class="form-control country ">
@@ -64,16 +55,10 @@
                         </select>
                         <div class="invalid-feedback"></div>
                     </div>
-                    <div class="form-group">
-                        <p>Telephone:</p>
-                        <input name="telephone" type="text" class="form-control" placeholder="Telephone" value="{{$res['info']->telephone}}">
-                    </div>
-                    <div class="form-group">
-                        <input type="checkbox" name="default" value="1" @if($user->address_id == $res['info']->id) checked="checked" @endif>
-                        <span>Set as primary address</span>
-                    </div>
+
+
                     <div class="form-group d-flex">
-                        <button class="btn-default  save-address" >Save</button>
+                        <button class="btn-default  save-address" type="submit">Save</button>
                         <a href="/account_ext/address" class="btn-cancel">Cancel</a>
                     </div>
                 </form>

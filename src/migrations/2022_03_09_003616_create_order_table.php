@@ -50,7 +50,7 @@ return new class extends Migration
             $table->string('currency_code',8);
             $table->decimal('currency_value',15,8);
 
-            $table->tinyInteger('order_status_id')->default(1)->index();
+            $table->unsignedBigInteger('order_status_id')->default(1)->index();
 
             $table->string('ip',64)->nullable();
             $table->string('user_agent',255)->nullable();

@@ -7,6 +7,7 @@ use Aphly\Laravel\Models\Model;
 use Aphly\LaravelCommon\Models\UserCredit;
 use Aphly\LaravelShop\Models\Catalog\Product;
 use Aphly\LaravelShop\Models\Catalog\ProductOptionValue;
+use Aphly\LaravelShop\Models\System\Setting;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\DB;
 
@@ -43,7 +44,9 @@ class Order extends Model
     }
 
     public function addOrderHistory($info, $order_status_id, $comment = '', $notify = false){
+        $shop_setting = Setting::findAll();
         if($order_status_id==2){
+            //Processing
             $orderProduct = OrderProduct::where('order_id',$info->id)->get()->toArray();
             foreach ($orderProduct as $val){
                 (new UserCredit)->handle('Reward', $info->uuid, 'point', '+', $val['reward'], 'payment_id#' . $info->payment_id);
@@ -53,10 +56,18 @@ class Order extends Model
                     ProductOptionValue::where(['id'=>$v['product_option_value_id'],'subtract'=>1])->decrement('quantity',$val['quantity']);
                 }
             }
+            if($shop_setting['order_status_processing_notify']==1){
+                //send email
+            }
         }else if($order_status_id==3){
+            //Shipped
             $info->tracking = $comment;
             $info->save();
-        }else if($order_status_id==5){
+            if($shop_setting['order_status_shipped_notify']==1){
+                //send email
+            }
+        }else if($order_status_id==6){
+            //Canceled
             $orderProduct = OrderProduct::where('order_id',$info->id)->get()->toArray();
             foreach ($orderProduct as $val){
                 (new UserCredit)->handle('Reward', $info->uuid, 'point', '-', $val['reward'], 'cancel#' . $info->payment_id);
@@ -65,6 +76,9 @@ class Order extends Model
                 foreach ($orderOption as $v){
                     ProductOptionValue::where(['id'=>$v['product_option_value_id'],'subtract'=>1])->increment('quantity',$val['quantity']);
                 }
+            }
+            if($shop_setting['order_status_canceled_notify']==1){
+                //send email
             }
         }
 

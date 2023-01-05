@@ -17,7 +17,7 @@
     .subtotalInfo{display: flex;justify-content: space-between;margin-top: 25px;font-weight: 600}
 
     .cart-code{margin-top: 10px;}
-    .cart-order-summary{padding:0 30px 30px}
+    .cart-order-summary{padding:0 10px 30px}
     .btn-apply-code,.cart-code-input{border-radius:5px;height:45px;outline:none}
     .cart-code-input{border:1px solid #ccc;padding-left:10px;width:calc(100% - 120px)}
     .btn-apply-code{background:#f16c00;border:none;color:#fff;font-size:14px;line-height:43px;padding:0;width: 110px;margin-left: 5px;position: relative;top: -1px;}
@@ -215,7 +215,6 @@
                                 <p>30-Day Free Return</p>
                             </a>
                         </div>
-                        <span class="divider">|</span>
                         <div class="cart-coupon-conent">
                             <a href="javascript:;" data-toggle="modal" data-target="#sale-after">
                                 <img class="Guarantee" src="{{ URL::asset('static/shop/img/cart/guarantee-icon.svg') }}">

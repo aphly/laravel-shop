@@ -117,7 +117,7 @@
                             <div class="quantity-up">+</div>
                         </div>
                     </div>
-                    <button id="save-address" class="add_cart_btn " >Add To Cart</button>
+                    <button id="save-address" class="add_cart_btn " type="submit">Add To Cart</button>
                 </form>
 
             </div>
@@ -135,119 +135,122 @@
         <div class="my_bt active">Description</div>
     </div>
     <div class="description">
-        <div>{!! $res['info']->desc->description !!}</div>
+        <div>{!! $res['info']->desc->description??'' !!}</div>
     </div>
-    <div class="my_tab">
-        <div class="my_bt active">Reviews ({{$res['review']->total()}})</div>
-    </div>
-    <div>
-        <input type="hidden" id="quantityInCart" value="{{$res['quantityInCart']}}">
+
+    <input type="hidden" id="quantityInCart" value="{{$res['quantityInCart']}}">
+
+    @if($shop_setting['review']['value']==1)
+        <div class="my_tab">
+            <div class="my_bt active">Reviews ({{$res['review']->total()}})</div>
+        </div>
         <div class="review">
-            <div class="review1">
-                <div class="write_a_review_pre">
-                    <div class="write_a_review_pre1">Overall Rating : </div>
-                    <div class="grade-star-bg">
-                        <div class="star-progress" style="width: {{$res['reviewRatingAvg_100']}}%;">
-                            <i class="common-iconfont icon-xingxing"></i>
-                            <i class="common-iconfont icon-xingxing"></i>
-                            <i class="common-iconfont icon-xingxing"></i>
-                            <i class="common-iconfont icon-xingxing"></i>
-                            <i class="common-iconfont icon-xingxing"></i>
-                        </div>
-                        <div class="star-bg">
-                            <i class="common-iconfont icon-xingxing"></i>
-                            <i class="common-iconfont icon-xingxing"></i>
-                            <i class="common-iconfont icon-xingxing"></i>
-                            <i class="common-iconfont icon-xingxing"></i>
-                            <i class="common-iconfont icon-xingxing"></i>
-                        </div>
+        <div class="review1">
+            <div class="write_a_review_pre">
+                <div class="write_a_review_pre1">Overall Rating : </div>
+                <div class="grade-star-bg">
+                    <div class="star-progress" style="width: {{$res['reviewRatingAvg_100']}}%;">
+                        <i class="common-iconfont icon-xingxing"></i>
+                        <i class="common-iconfont icon-xingxing"></i>
+                        <i class="common-iconfont icon-xingxing"></i>
+                        <i class="common-iconfont icon-xingxing"></i>
+                        <i class="common-iconfont icon-xingxing"></i>
                     </div>
-                    <div class="write_a_review_pre2">{{$res['reviewRatingAvg']}}/5</div>
-                </div>
-
-                <div class="write_a_review" data-toggle="modal" data-target="#reviewModal">
-                    Write a review
-                </div>
-            </div>
-
-            <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="reviewModalLabel">Write Review</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form class="form_request_file" enctype="multipart/form-data" method="post" action="/product/{{$res['info']->id}}/review/add" data-fn="review_res" >
-                                @csrf
-                                <div class="review_form">
-                                    <div>{{$res['info']->name}}</div>
-                                    <ul class="input_star">
-                                        <li data-val="1" class="on"><i class="common-iconfont icon-xingxing"></i></li>
-                                        <li data-val="2" class="on"><i class="common-iconfont icon-xingxing"></i></li>
-                                        <li data-val="3" class="on"><i class="common-iconfont icon-xingxing"></i></li>
-                                        <li data-val="4" class="on"><i class="common-iconfont icon-xingxing"></i></li>
-                                        <li data-val="5" class="on"><i class="common-iconfont icon-xingxing"></i></li>
-                                    </ul>
-                                    <input type="hidden" name="rating" class="rating_js" value="5">
-                                    <textarea name="text" class="form-control"></textarea>
-                                    <div class="add_photo"><i class="common-iconfont icon-zhaoxiangji"></i>Add Photo</div>
-                                    <input type="file"  style="display: none" accept="image/gif,image/jpeg,image/jpg,image/png" name="files[image][]" data-next_class="review_img" class="form_input_file add_photo_file" multiple="multiple">
-                                    <div class="review_img"></div>
-                                    <button class="">Submit Review</button>
-                                </div>
-                            </form>
-                        </div>
+                    <div class="star-bg">
+                        <i class="common-iconfont icon-xingxing"></i>
+                        <i class="common-iconfont icon-xingxing"></i>
+                        <i class="common-iconfont icon-xingxing"></i>
+                        <i class="common-iconfont icon-xingxing"></i>
+                        <i class="common-iconfont icon-xingxing"></i>
                     </div>
                 </div>
+                <div class="write_a_review_pre2">{{$res['reviewRatingAvg']}}/5</div>
             </div>
-            @if($res['review'])
-                <ul class="review_list">
-                    @foreach($res['review'] as $val)
-                        <li>
-                            <div class="review_left">
-                                <div>{{$val->author}}</div>
-                                <div class="created_at">{{$val->created_at->format('m-d , Y')}}</div>
+
+            <div class="write_a_review" data-toggle="modal" data-target="#reviewModal">
+                Write a review
+            </div>
+        </div>
+
+        <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="reviewModalLabel">Write Review</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form_request_file" enctype="multipart/form-data" method="post" action="/product/{{$res['info']->id}}/review/add" data-fn="review_res" >
+                            @csrf
+                            <div class="review_form">
+                                <div>{{$res['info']->name}}</div>
+                                <ul class="input_star">
+                                    <li data-val="1" class="on"><i class="common-iconfont icon-xingxing"></i></li>
+                                    <li data-val="2" class="on"><i class="common-iconfont icon-xingxing"></i></li>
+                                    <li data-val="3" class="on"><i class="common-iconfont icon-xingxing"></i></li>
+                                    <li data-val="4" class="on"><i class="common-iconfont icon-xingxing"></i></li>
+                                    <li data-val="5" class="on"><i class="common-iconfont icon-xingxing"></i></li>
+                                </ul>
+                                <input type="hidden" name="rating" class="rating_js" value="5">
+                                <textarea name="text" class="form-control"></textarea>
+                                <div class="add_photo"><i class="common-iconfont icon-zhaoxiangji"></i>Add Photo</div>
+                                <input type="file"  style="display: none" accept="image/gif,image/jpeg,image/jpg,image/png" name="files[image][]" data-next_class="review_img" class="form_input_file add_photo_file" multiple="multiple">
+                                <div class="review_img"></div>
+                                <button class="">Submit Review</button>
                             </div>
-                            <div class="review_right">
-                                <div>
-                                    <div class="review_content">{{$val->text}}</div>
-                                    <div class="grade-star-bg">
-                                        <div class="star-progress" style="width: {{$val->rating*20}}%;">
-                                            <i class="common-iconfont icon-xingxing"></i>
-                                            <i class="common-iconfont icon-xingxing"></i>
-                                            <i class="common-iconfont icon-xingxing"></i>
-                                            <i class="common-iconfont icon-xingxing"></i>
-                                            <i class="common-iconfont icon-xingxing"></i>
-                                        </div>
-                                        <div class="star-bg">
-                                            <i class="common-iconfont icon-xingxing"></i>
-                                            <i class="common-iconfont icon-xingxing"></i>
-                                            <i class="common-iconfont icon-xingxing"></i>
-                                            <i class="common-iconfont icon-xingxing"></i>
-                                            <i class="common-iconfont icon-xingxing"></i>
-                                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @if($res['review'])
+            <ul class="review_list">
+                @foreach($res['review'] as $val)
+                    <li>
+                        <div class="review_left">
+                            <div>{{$val->author}}</div>
+                            <div class="created_at">{{$val->created_at->format('m-d , Y')}}</div>
+                        </div>
+                        <div class="review_right">
+                            <div>
+                                <div class="review_content">{{$val->text}}</div>
+                                <div class="grade-star-bg">
+                                    <div class="star-progress" style="width: {{$val->rating*20}}%;">
+                                        <i class="common-iconfont icon-xingxing"></i>
+                                        <i class="common-iconfont icon-xingxing"></i>
+                                        <i class="common-iconfont icon-xingxing"></i>
+                                        <i class="common-iconfont icon-xingxing"></i>
+                                        <i class="common-iconfont icon-xingxing"></i>
+                                    </div>
+                                    <div class="star-bg">
+                                        <i class="common-iconfont icon-xingxing"></i>
+                                        <i class="common-iconfont icon-xingxing"></i>
+                                        <i class="common-iconfont icon-xingxing"></i>
+                                        <i class="common-iconfont icon-xingxing"></i>
+                                        <i class="common-iconfont icon-xingxing"></i>
                                     </div>
                                 </div>
-                                <div class="review_list_img aphly_viewer_js">
-                                    @foreach($val->img as $v)
-                                        <img src="{{$v->image_src}}"  class="aphly_viewer">
-                                    @endforeach
-                                </div>
                             </div>
-                        </li>
-                    @endforeach
-                </ul>
-                <div>
-                    {{$res['review']->links('laravel-common-front::common.pagination')}}
-                </div>
-            @endif
-        </div>
+                            <div class="review_list_img aphly_viewer_js">
+                                @foreach($val->img as $v)
+                                    <img src="{{$v->image_src}}"  class="aphly_viewer">
+                                @endforeach
+                            </div>
+                        </div>
+                    </li>
+                @endforeach
+            </ul>
+            <div>
+                {{$res['review']->links('laravel-common-front::common.pagination')}}
+            </div>
+        @endif
     </div>
+    @endif
 
     <style>
+        .review{margin-bottom: 20px;}
         .review1{display: flex;justify-content: space-between;margin: 20px 0 10px;align-items: center;}
         .write_a_review_pre{display: flex;font-weight: 600;}
         .write_a_review_pre .grade-star-bg{margin:0 10px;}

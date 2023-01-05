@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('shop_order_return_history', function (Blueprint $table) {
+        Schema::create('shop_refund_history', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('order_return_id')->index();
             $table->unsignedBigInteger('order_return_status_id')->index();
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shop_order_return_history');
+        Schema::dropIfExists('shop_refund_history');
     }
 };

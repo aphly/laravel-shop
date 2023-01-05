@@ -21,7 +21,7 @@ class Product extends Model
     ];
 
     function desc(){
-        return $this->hasOne(ProductDesc::class);
+        return $this->hasOne(ProductDesc::class,'product_id','id');
     }
 
     function img(){

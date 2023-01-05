@@ -32,13 +32,11 @@ class InstallController extends Controller
                 $data[] =['name' => 'Option','url' =>'/shop_admin/option/index','pid'=>$menu21->id,'is_leaf'=>1,'module_id'=>$this->module_id,'sort'=>0];
                 $data[] =['name' => 'Review','url' =>'/shop_admin/review/index','pid'=>$menu21->id,'is_leaf'=>1,'module_id'=>$this->module_id,'sort'=>0];
                 $data[] =['name' => 'Shipping','url' =>'/shop_admin/shipping/index','pid'=>$menu21->id,'is_leaf'=>1,'module_id'=>$this->module_id,'sort'=>0];
-
                 DB::table('admin_menu')->insert($data);
             }
             $menu22 = Menu::create(['name' => 'Sale','url' =>'','pid'=>$menu->id,'is_leaf'=>0,'module_id'=>$this->module_id,'sort'=>9]);
             if($menu22){
                 $data=[];
-
                 $data[] =['name' => 'Order','url' =>'/shop_admin/order/index','pid'=>$menu22->id,'is_leaf'=>1,'module_id'=>$this->module_id,'sort'=>0];
                 $data[] =['name' => 'Return','url' =>'/shop_admin/return/index','pid'=>$menu22->id,'is_leaf'=>1,'module_id'=>$this->module_id,'sort'=>0];
                 $data[] =['name' => 'Coupon','url' =>'/shop_admin/coupon/index','pid'=>$menu22->id,'is_leaf'=>1,'module_id'=>$this->module_id,'sort'=>0];
@@ -92,40 +90,15 @@ class InstallController extends Controller
             $data[] =['dict_id' => $dict->id,'name'=>'下架','value'=>'2','fixed'=>'0'];
             DB::table('admin_dict_value')->insert($data);
         }
-        $dict = Dict::create(['name' => '订单状态','key'=>'order_status','module_id'=>$this->module_id]);
-        if($dict->id){
-            $data=[];
-            $data[] =['dict_id' => $dict->id,'name'=>'Canceled','value'=>'1','fixed'=>'0'];
-            $data[] =['dict_id' => $dict->id,'name'=>'Canceled Reversal','value'=>'2','fixed'=>'0'];
-            $data[] =['dict_id' => $dict->id,'name'=>'Chargeback','value'=>'3','fixed'=>'0'];
-            $data[] =['dict_id' => $dict->id,'name'=>'Complete','value'=>'4','fixed'=>'0'];
-            $data[] =['dict_id' => $dict->id,'name'=>'Denied','value'=>'5','fixed'=>'0'];
-            $data[] =['dict_id' => $dict->id,'name'=>'Expired','value'=>'6','fixed'=>'0'];
-            $data[] =['dict_id' => $dict->id,'name'=>'Failed','value'=>'7','fixed'=>'0'];
-            $data[] =['dict_id' => $dict->id,'name'=>'Pending','value'=>'8','fixed'=>'0'];
-            $data[] =['dict_id' => $dict->id,'name'=>'Processed','value'=>'9','fixed'=>'0'];
-            $data[] =['dict_id' => $dict->id,'name'=>'Processing','value'=>'10','fixed'=>'0'];
-            $data[] =['dict_id' => $dict->id,'name'=>'Refunded','value'=>'11','fixed'=>'0'];
-            $data[] =['dict_id' => $dict->id,'name'=>'Reversed','value'=>'12','fixed'=>'0'];
-            $data[] =['dict_id' => $dict->id,'name'=>'Shipped','value'=>'13','fixed'=>'0'];
-            $data[] =['dict_id' => $dict->id,'name'=>'Voided','value'=>'14','fixed'=>'0'];
-            DB::table('admin_dict_value')->insert($data);
-        }
 		$data=[];
-		$data[] =['id'=>'1','name'=>'Pending','cn_name'=>'待支付'];
-		$data[] =['id'=>'2','name'=>'Processing','cn_name'=>'处理中'];
+		$data[] =['id'=>'1','name'=>'Pending payment','cn_name'=>'待支付'];
+		$data[] =['id'=>'2','name'=>'Processing','cn_name'=>'买家已支付'];
 		$data[] =['id'=>'3','name'=>'Shipped','cn_name'=>'已寄送'];
-		$data[] =['id'=>'4','name'=>'Complete','cn_name'=>'已完成'];
-		$data[] =['id'=>'5','name'=>'Canceled','cn_name'=>'已取消'];
-		$data[] =['id'=>'6','name'=>'Denied','cn_name'=>''];
-		$data[] =['id'=>'7','name'=>'Canceled Reversal','cn_name'=>''];
-		$data[] =['id'=>'8','name'=>'Failed','cn_name'=>''];
-		$data[] =['id'=>'9','name'=>'Refunded','cn_name'=>''];
-		$data[] =['id'=>'10','name'=>'Reversed','cn_name'=>''];
-		$data[] =['id'=>'11','name'=>'Chargeback','cn_name'=>''];
-		$data[] =['id'=>'12','name'=>'Expired','cn_name'=>''];
-		$data[] =['id'=>'13','name'=>'Processed','cn_name'=>''];
-		$data[] =['id'=>'14','name'=>'Voided','cn_name'=>''];
+        $data[] =['id'=>'4','name'=>'Complete','cn_name'=>'已完成'];
+        $data[] =['id'=>'5','name'=>'Closed','cn_name'=>'已关闭'];
+        $data[] =['id'=>'6','name'=>'Canceled','cn_name'=>'已取消'];
+        $data[] =['id'=>'7','name'=>'Refund in progress','cn_name'=>'退款中'];
+        $data[] =['id'=>'8','name'=>'Refunded','cn_name'=>'已退款'];
 		DB::table('shop_order_status')->insert($data);
         return 'install_ok';
     }

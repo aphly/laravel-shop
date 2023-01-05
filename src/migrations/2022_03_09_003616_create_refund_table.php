@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('shop_order_return', function (Blueprint $table) {
+        Schema::create('shop_refund', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('order_id')->index();
             $table->unsignedBigInteger('product_id')->index();
@@ -26,9 +26,9 @@ return new class extends Migration
             $table->unsignedBigInteger('quantity');
             $table->tinyInteger('opened');
             $table->text('comment');
-            $table->unsignedBigInteger('order_return_reason_id');
-            $table->unsignedBigInteger('order_return_action_id');
-            $table->unsignedBigInteger('order_return_status_id');
+            $table->unsignedBigInteger('refund_reason_id');
+            $table->unsignedBigInteger('refund_action_id');
+            $table->unsignedBigInteger('refund_status_id');
             $table->unsignedBigInteger('delete_at');
             $table->unsignedBigInteger('created_at');
             $table->unsignedBigInteger('updated_at');
@@ -42,6 +42,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shop_order_return');
+        Schema::dropIfExists('shop_refund');
     }
 };

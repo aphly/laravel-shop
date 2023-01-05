@@ -45,7 +45,7 @@
 
                 <div class="checkout_btn">
                     <div class="checkout_btn_l"><a href="/checkout/shipping"><i class="common-iconfont icon-xiangl"></i>Return to shipping</a></div>
-                    <button>Pay now</button>
+                    <button type="submit">Pay now</button>
                 </div>
             </form>
         </div>

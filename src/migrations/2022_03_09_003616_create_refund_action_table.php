@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('shop_order_return_status', function (Blueprint $table) {
+        Schema::create('shop_refund_action', function (Blueprint $table) {
             $table->id();
             $table->string('name',255);
             $table->string('cn_name',255);
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shop_order_return_status');
+        Schema::dropIfExists('shop_refund_action');
     }
 };

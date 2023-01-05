@@ -5,16 +5,20 @@ namespace Aphly\LaravelShop\Controllers\Front;
 use Aphly\LaravelCommon\Models\User;
 use Aphly\LaravelShop\Models\Account\Wishlist;
 use Aphly\LaravelShop\Models\Checkout\Cart;
+use Aphly\LaravelShop\Models\System\Setting;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\View;
 
 class Controller extends \Aphly\LaravelCommon\Controllers\Front\Controller
 {
+    public $shop_setting = [];
 
     public function __construct()
     {
         $this->middleware(function ($request, $next){
+            $this->shop_setting = Setting::findAll();
+            View::share("shop_setting",$this->shop_setting);
             $auth = Auth::guard('user');
             if($auth->check()){
             }else{

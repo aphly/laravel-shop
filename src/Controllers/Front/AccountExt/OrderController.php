@@ -69,17 +69,6 @@ class OrderController extends Controller
         }
     }
 
-    public function returnE(Request $request)
-    {
-        $res['info'] = Order::where(['uuid'=>User::uuid(),'id'=>$request->query('id',0)])->where('delete_at',0)->firstOrError();
-        if($res['info']->order_status_id==3){
-            $res['info']->addOrderHistory($res['info'], 7);
-
-            throw new ApiException(['code'=>0,'msg'=>'order option success','data'=>['redirect'=>'/account_ext/order']]);
-        }else{
-            throw new ApiException(['code'=>1,'msg'=>'order status error','data'=>['redirect'=>'/account_ext/order']]);
-        }
-    }
 
 
 }

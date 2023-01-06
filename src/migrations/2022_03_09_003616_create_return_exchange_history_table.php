@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('shop_refund_history', function (Blueprint $table) {
+        Schema::create('shop_return_exchange_history', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('order_return_id')->index();
-            $table->unsignedBigInteger('order_return_status_id')->index();
+            $table->unsignedBigInteger('return_exchange_id')->index();
+            $table->unsignedBigInteger('return_exchange_status_id')->index();
             $table->tinyInteger('notify');
             $table->text('comment');
             $table->unsignedBigInteger('created_at');
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shop_refund_history');
+        Schema::dropIfExists('shop_return_exchange_history');
     }
 };

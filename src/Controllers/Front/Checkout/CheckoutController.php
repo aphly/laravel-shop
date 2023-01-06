@@ -193,7 +193,7 @@ class CheckoutController extends Controller
                 $payment_input['currency_code'] = $currency['code'];
                 $payment_input['cancel_url'] = url('/checkout/payment');
                 $payment_input['notify_func'] = '\Aphly\LaravelShop\Models\Sale\Order@notify';
-                $payment_input['success_url'] = url('/checkout/success');
+                $payment_input['success_url'] = url('/account_ext/order');
                 $payment_input['fail_url'] = url('/checkout/fail');
                 $payment = (new Payment)->make($payment_input);
                 if($payment->id){

@@ -94,12 +94,30 @@ class InstallController extends Controller
 		$data[] =['id'=>'1','name'=>'Pending payment','cn_name'=>'待支付'];
 		$data[] =['id'=>'2','name'=>'Processing','cn_name'=>'买家已支付'];
 		$data[] =['id'=>'3','name'=>'Shipped','cn_name'=>'已寄送'];
-        $data[] =['id'=>'4','name'=>'Complete','cn_name'=>'已完成'];
+        $data[] =['id'=>'4','name'=>'Complete','cn_name'=>'完成'];
         $data[] =['id'=>'5','name'=>'Closed','cn_name'=>'已关闭'];
         $data[] =['id'=>'6','name'=>'Canceled','cn_name'=>'已取消'];
-        $data[] =['id'=>'7','name'=>'Refund in progress','cn_name'=>'退款中'];
-        $data[] =['id'=>'8','name'=>'Refunded','cn_name'=>'已退款'];
+        $data[] =['id'=>'7','name'=>'Refunded','cn_name'=>'已退款'];
+        $data[] =['id'=>'8','name'=>'Return Exchange','cn_name'=>'退货换货'];
 		DB::table('shop_order_status')->insert($data);
+
+        $data=[];
+        $data[] =['id'=>'1','name'=>'Return','cn_name'=>'退货'];
+        $data[] =['id'=>'2','name'=>'Exchange','cn_name'=>'换货'];
+        $data[] =['id'=>'3','name'=>'Refund','cn_name'=>'退款'];
+        DB::table('shop_return_exchange_action')->insert($data);
+
+        $data=[];
+        $data[] =['id'=>'1','name'=>'Received Wrong Item','cn_name'=>'退货'];
+        $data[] =['id'=>'2','name'=>'Exchange','cn_name'=>'换货'];
+        DB::table('shop_return_exchange_reason')->insert($data);
+
+        $data=[];
+        $data[] =['id'=>'1','name'=>'Pending','cn_name'=>'待定'];
+        $data[] =['id'=>'2','name'=>'Awaiting Products','cn_name'=>'等待商品'];
+        $data[] =['id'=>'3','name'=>'Complete','cn_name'=>'完成'];
+        DB::table('shop_return_exchange_status')->insert($data);
+
         return 'install_ok';
     }
     public function uninstall(){

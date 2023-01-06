@@ -85,6 +85,7 @@
                                     <div>{{$val->quantity}}</div>
                                     <div>{{$val->price_format}}</div>
                                     <div>{{$val->total_format}}</div>
+                                    <div><a href="/account_ext/return_exchange/form?order_id={{$val->order_id}}&product_id={{$val->product_id}}">Return Exchange</a></div>
                                 </li>
                             @endforeach
                         @endif

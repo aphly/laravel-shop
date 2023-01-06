@@ -33,16 +33,15 @@ Route::middleware(['web'])->group(function () {
             Route::get('order/pay', 'Aphly\LaravelShop\Controllers\Front\AccountExt\OrderController@pay');
             Route::post('order/close', 'Aphly\LaravelShop\Controllers\Front\AccountExt\OrderController@close');
             Route::post('order/cancel', 'Aphly\LaravelShop\Controllers\Front\AccountExt\OrderController@cancel');
-            Route::post('order/refund', 'Aphly\LaravelShop\Controllers\Front\AccountExt\OrderController@refund');
 
             //review
             Route::get('review', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ReviewController@index');
             Route::get('review/detail', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ReviewController@detail');
 
-            //return
-            Route::get('return', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ReturnController@index');
-            Route::get('return/detail', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ReturnController@detail');
-            Route::match(['get', 'post'],'return/form', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ReturnController@form');
+            //return exchange
+            Route::get('return_exchange', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ReturnExchangeController@index');
+            Route::get('return_exchange/detail', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ReturnExchangeController@detail');
+            Route::match(['get', 'post'],'return_exchange/form', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ReturnExchangeController@form');
 
         });
 

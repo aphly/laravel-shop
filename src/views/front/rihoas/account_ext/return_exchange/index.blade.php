@@ -5,7 +5,7 @@
         <div class="account-main-section">
             <div class="">
                 <div class="top-desc d-flex justify-content-between">
-                    <h2>Return</h2>
+                    <h2>Return Exchange</h2>
                     <a href="/account_ext/return/form">+ Add</a>
                 </div>
                 <ul class="list_index">
@@ -25,9 +25,9 @@
                             <span>{{$val->opened}}</span>
                             <span>{{$val->created_at}}</span>
                             <span>
-                                <a href="/account_ext/return/detail?id={{$val->id}}" class="btn">view</a>
-                                <a href="/account_ext/return/form?id={{$val->id}}" class="btn">edit</a>
-                                <a href="/account_ext/return/del?id={{$val->id}}" class="btn">del</a>
+                                <a href="/account_ext/return_exchange/detail?id={{$val->id}}" class="btn">view</a>
+                                <a href="/account_ext/return_exchange/form?id={{$val->id}}" class="btn">edit</a>
+                                <a href="/account_ext/return_exchange/del?id={{$val->id}}" class="btn">del</a>
                             </span>
                         </li>
                     @endforeach

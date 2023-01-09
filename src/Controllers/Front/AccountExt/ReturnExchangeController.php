@@ -37,7 +37,6 @@ class ReturnExchangeController extends Controller
         $order_id = $request->query('id',0);
         $res['info'] = ReturnExchange::where('id',$order_id)->firstOrNew();
         return $this->makeView('laravel-shop-front::account_ext.return_exchange.form',['res'=>$res]);
-
     }
 
     public function save(Request $request){

@@ -10,6 +10,18 @@
                 <div class="top-desc d-flex justify-content-between">
                     <h2>Return Exchange</h2>
                 </div>
+
+                <div class="form-group">
+                    <p>Is received: <b>*</b></p>
+                    @if(isset($dict['yes_no']))
+                        <select name="received" class="form-control">
+                            @foreach($dict['yes_no'] as $key=>$val)
+                                <option value="{{$key}}" @if(($res['info']->received??1)==$key) selected @endif>{{$val}}</option>
+                            @endforeach
+                        </select>
+                    @endif
+                </div>
+
                 <form method="post" action="/account_ext/return_exchange/save?order_id={{$res['orderInfo']->id}}&product_id={{$res['orderProduct']->product_id}}" class="form_request" data-fn="return_res">
                     @csrf
 
@@ -19,32 +31,12 @@
 
                     <div class="d-flex">
                         <p>Action: <b>*</b></p>
-                        @foreach($res['returnExchangeAction'] as $val)
+                        @foreach($dict['return_exchange_action'] as $key=>$val)
                             <div class="form-group">
-                                <input type="radio" name="return_exchange_action_id" id="return_exchange_action_id_{{$val['id']}}" required value="{{$val['id']}}" class="form-control" >
-                                <label for="return_exchange_action_id_{{$val['id']}}">{{$val['name']}}</label>
+                                <input type="radio" name="return_exchange_action_id" id="return_exchange_action_id_{{$key}}" required value="{{$key}}" class="form-control" >
+                                <label for="return_exchange_action_id_{{$key}}">{{$val}}</label>
                             </div>
                         @endforeach
-                    </div>
-
-                    <div class="form-group">
-                        <p>First Name: <b>*</b></p>
-                        <input type="text" name="firstname" required value="{{$res['info']->firstname}}" placeholder="First Name" class="form-control" >
-                    </div>
-
-                    <div class="form-group">
-                        <p>Last Name: <b>*</b></p>
-                        <input type="text" name="lastname" required value="{{$res['info']->lastname}}" placeholder="Last Name" class="form-control">
-                    </div>
-
-                    <div class="form-group">
-                        <p>Quantity: <b>*</b></p>
-                        <input type="text" name="quantity" required value="{{$res['info']->quantity}}" placeholder="Quantity" class="form-control">
-                    </div>
-
-                    <div class="form-group">
-                        <p>Telephone: <b>*</b></p>
-                        <input type="text" name="telephone" required value="{{$res['info']->telephone}}" placeholder="Telephone" class="form-control">
                     </div>
 
                     <div class="form-group">

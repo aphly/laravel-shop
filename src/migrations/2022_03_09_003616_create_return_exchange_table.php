@@ -15,20 +15,15 @@ return new class extends Migration
     {
         Schema::create('shop_return_exchange', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('order_id')->index();
-            $table->unsignedBigInteger('product_id')->index();
-            $table->unsignedBigInteger('quantity');
             $table->unsignedBigInteger('uuid')->index();
-            $table->string('firstname',32);
-            $table->string('lastname',32);
-            $table->string('email',128);
-            $table->string('telephone',32);
-            $table->string('product_name',255);
-            $table->tinyInteger('opened');
-            $table->text('comment');
-            $table->unsignedBigInteger('return_exchange_reason_id');
-            $table->unsignedBigInteger('return_exchange_action_id');
-            $table->unsignedBigInteger('return_exchange_status_id');
+            $table->unsignedBigInteger('order_id')->index();
+            $table->tinyInteger('is_received')->nullable()->default(1);
+            $table->unsignedBigInteger('product_id')->nullable()->index();
+            $table->unsignedBigInteger('quantity')->nullable();
+            $table->tinyInteger('is_opened')->nullable()->default(2);
+            $table->tinyInteger('return_exchange_action_id')->index();
+            $table->tinyInteger('return_exchange_status_id');
+            $table->text('reason');
             $table->unsignedBigInteger('delete_at');
             $table->unsignedBigInteger('created_at');
             $table->unsignedBigInteger('updated_at');

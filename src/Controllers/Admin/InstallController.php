@@ -66,6 +66,7 @@ class InstallController extends Controller
             $data[] =['dict_id' => $dict->id,'name'=>'Pre-Order','value'=>'4','fixed'=>'0'];
             DB::table('admin_dict_value')->insert($data);
         }
+
         $dict = Dict::create(['name' => '尺寸单位','key'=>'length_class','module_id'=>$this->module_id]);
         if($dict->id){
             $data=[];
@@ -74,6 +75,7 @@ class InstallController extends Controller
             $data[] =['dict_id' => $dict->id,'name'=>'mm','value'=>'3','fixed'=>'0'];
             DB::table('admin_dict_value')->insert($data);
         }
+
         $dict = Dict::create(['name' => '重量单位','key'=>'weight_class','module_id'=>$this->module_id]);
         if($dict->id){
             $data=[];
@@ -83,6 +85,7 @@ class InstallController extends Controller
             $data[] =['dict_id' => $dict->id,'name'=>'lb','value'=>'4','fixed'=>'0'];
             DB::table('admin_dict_value')->insert($data);
         }
+
         $dict = Dict::create(['name' => '商品状态','key'=>'product_status','module_id'=>$this->module_id]);
         if($dict->id){
             $data=[];
@@ -90,6 +93,7 @@ class InstallController extends Controller
             $data[] =['dict_id' => $dict->id,'name'=>'下架','value'=>'2','fixed'=>'0'];
             DB::table('admin_dict_value')->insert($data);
         }
+
 		$data=[];
 		$data[] =['id'=>'1','name'=>'Pending payment','cn_name'=>'待支付'];
 		$data[] =['id'=>'2','name'=>'Processing','cn_name'=>'买家已支付'];
@@ -97,26 +101,51 @@ class InstallController extends Controller
         $data[] =['id'=>'4','name'=>'Complete','cn_name'=>'完成'];
         $data[] =['id'=>'5','name'=>'Closed','cn_name'=>'已关闭'];
         $data[] =['id'=>'6','name'=>'Canceled','cn_name'=>'已取消'];
-        $data[] =['id'=>'7','name'=>'Refunded','cn_name'=>'已退款'];
-        $data[] =['id'=>'8','name'=>'Return Exchange','cn_name'=>'退货换货'];
+        $data[] =['id'=>'7','name'=>'Refund Return Exchange','cn_name'=>'退款退货换货'];
 		DB::table('shop_order_status')->insert($data);
 
-        $data=[];
-        $data[] =['id'=>'1','name'=>'Return','cn_name'=>'退货'];
-        $data[] =['id'=>'2','name'=>'Exchange','cn_name'=>'换货'];
-        $data[] =['id'=>'3','name'=>'Refund','cn_name'=>'退款'];
-        DB::table('shop_return_exchange_action')->insert($data);
+        $dict = Dict::create(['name' => '退换货类型','key'=>'return_exchange_action','module_id'=>$this->module_id]);
+        if($dict->id){
+            $data=[];
+            $data[] =['dict_id' => $dict->id,'name'=>'refund','value'=>'1','fixed'=>'0'];
+            $data[] =['dict_id' => $dict->id,'name'=>'return','value'=>'2','fixed'=>'0'];
+            $data[] =['dict_id' => $dict->id,'name'=>'exchange','value'=>'3','fixed'=>'0'];
+            DB::table('admin_dict_value')->insert($data);
+        }
 
-        $data=[];
-        $data[] =['id'=>'1','name'=>'Received Wrong Item','cn_name'=>'退货'];
-        $data[] =['id'=>'2','name'=>'Exchange','cn_name'=>'换货'];
-        DB::table('shop_return_exchange_reason')->insert($data);
+        $dict = Dict::create(['name' => '退款状态','key'=>'refund_status','module_id'=>$this->module_id]);
+        if($dict->id){
+            $data=[];
+            $data[] =['dict_id' => $dict->id,'name'=>'Request Refund','value'=>'1','fixed'=>'0'];
+            $data[] =['dict_id' => $dict->id,'name'=>'Agree to refund','value'=>'2','fixed'=>'0'];
+            $data[] =['dict_id' => $dict->id,'name'=>'Refusal of refund','value'=>'3','fixed'=>'0'];
+            $data[] =['dict_id' => $dict->id,'name'=>'Awaiting Products','value'=>'4','fixed'=>'0'];
+            $data[] =['dict_id' => $dict->id,'name'=>'Complete','value'=>'5','fixed'=>'0'];
+            DB::table('admin_dict_value')->insert($data);
+        }
 
-        $data=[];
-        $data[] =['id'=>'1','name'=>'Pending','cn_name'=>'待定'];
-        $data[] =['id'=>'2','name'=>'Awaiting Products','cn_name'=>'等待商品'];
-        $data[] =['id'=>'3','name'=>'Complete','cn_name'=>'完成'];
-        DB::table('shop_return_exchange_status')->insert($data);
+        $dict = Dict::create(['name' => '退货状态','key'=>'return_status','module_id'=>$this->module_id]);
+        if($dict->id){
+            $data=[];
+            $data[] =['dict_id' => $dict->id,'name'=>'Request Return','value'=>'1','fixed'=>'0'];
+            $data[] =['dict_id' => $dict->id,'name'=>'Agree to return','value'=>'2','fixed'=>'0'];
+            $data[] =['dict_id' => $dict->id,'name'=>'Refusal of return','value'=>'3','fixed'=>'0'];
+            $data[] =['dict_id' => $dict->id,'name'=>'Awaiting Products','value'=>'4','fixed'=>'0'];
+            $data[] =['dict_id' => $dict->id,'name'=>'Complete','value'=>'5','fixed'=>'0'];
+            DB::table('admin_dict_value')->insert($data);
+        }
+
+        $dict = Dict::create(['name' => '换货状态','key'=>'exchange_status','module_id'=>$this->module_id]);
+        if($dict->id){
+            $data=[];
+            $data[] =['dict_id' => $dict->id,'name'=>'Request Exchange','value'=>'1','fixed'=>'0'];
+            $data[] =['dict_id' => $dict->id,'name'=>'Agree to exchange','value'=>'2','fixed'=>'0'];
+            $data[] =['dict_id' => $dict->id,'name'=>'Refusal of exchange','value'=>'3','fixed'=>'0'];
+            $data[] =['dict_id' => $dict->id,'name'=>'Awaiting Products','value'=>'4','fixed'=>'0'];
+            $data[] =['dict_id' => $dict->id,'name'=>'Shipped','value'=>'5','fixed'=>'0'];
+            $data[] =['dict_id' => $dict->id,'name'=>'Complete','value'=>'6','fixed'=>'0'];
+            DB::table('admin_dict_value')->insert($data);
+        }
 
         return 'install_ok';
     }

@@ -38,10 +38,12 @@ Route::middleware(['web'])->group(function () {
             Route::get('review', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ReviewController@index');
             Route::get('review/detail', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ReviewController@detail');
 
-            //return exchange
-            Route::get('return_exchange', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ReturnExchangeController@index');
-            Route::get('return_exchange/detail', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ReturnExchangeController@detail');
-            Route::match(['get', 'post'],'return_exchange/form', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ReturnExchangeController@form');
+            //service
+            Route::get('service', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ServiceController@index');
+            Route::get('service/detail', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ServiceController@detail');
+            Route::get('service/form', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ServiceController@form');
+            Route::post('service/refund', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ServiceController@refund');
+            Route::post('service/return_exchange', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ServiceController@return_exchange');
 
         });
 

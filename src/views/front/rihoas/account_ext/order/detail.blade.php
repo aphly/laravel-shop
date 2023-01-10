@@ -11,6 +11,7 @@
         .order .detail .product img{width: 80px;height: 80px;margin-right: 10px;}
         .product_title{font-weight: 600;width: 100%;}
         .total_data li:last-child{font-weight: 600}
+        .info_left{color:#777;}
     </style>
     <div class="account_info">
         @include('laravel-common-front::account_ext.left_menu')
@@ -22,7 +23,7 @@
                 <div class="detail">
                     <div class="title">The shipping details</div>
                     <ul>
-                        <li>
+                        <li style="color:#777;">
                             <div>Date Added</div>
                             <div>Order Status</div>
                             <div>Notes</div>
@@ -38,19 +39,24 @@
                         @endif
                     </ul>
                 </div>
+
+                <div class="detail">
+                    <a href="/account_ext/service/form?order_id={{$val->order_id}}">Service</a>
+                </div>
+
                 <div class="detail">
                     <div class="title">The order details</div>
                     <ul>
-                        <li><div>Order ID:</div><div>{{$res['info']->id}}</div></li>
-                        <li><div>Date Added:</div><div>{{$res['info']->created_at}}</div></li>
-                        <li><div>Payment Method:</div><div>{{$res['info']->payment_method_name}}</div></li>
-                        <li><div>Shipping Method:</div><div>{{$res['info']->shipping_name}}</div></li>
-                        <li><div>Shipping Address:</div><div>{{$res['info']->address_firstname}} {{$res['info']->address_lastname}},
+                        <li><div class="info_left">Order ID:</div><div>{{$res['info']->id}}</div></li>
+                        <li><div class="info_left">Date Added:</div><div>{{$res['info']->created_at}}</div></li>
+                        <li><div class="info_left">Payment Method:</div><div>{{$res['info']->payment_method_name}}</div></li>
+                        <li><div class="info_left">Shipping Method:</div><div>{{$res['info']->shipping_name}}</div></li>
+                        <li><div class="info_left">Shipping Address:</div><div>{{$res['info']->address_firstname}} {{$res['info']->address_lastname}},
                                 {{$res['info']->address_address_1}} {{$res['info']->address_address_2}},
                                 {{$res['info']->address_city}}, {{$res['info']->address_zone}}, {{$res['info']->address_country}},
                                 {{$res['info']->address_postcode}}, {{$res['info']->address_telephone}}
                             </div></li>
-                        <li><div>Shipping Tracking:</div><div>{{$res['info']->tracking??'-'}}</div></li>
+                        <li><div class="info_left">Shipping Tracking:</div><div>{{$res['info']->tracking??'-'}}</div></li>
                     </ul>
                 </div>
                 <div class="detail">
@@ -85,7 +91,6 @@
                                     <div>{{$val->quantity}}</div>
                                     <div>{{$val->price_format}}</div>
                                     <div>{{$val->total_format}}</div>
-                                    <div><a href="/account_ext/return_exchange/form?order_id={{$val->order_id}}&product_id={{$val->product_id}}">Return Exchange</a></div>
                                 </li>
                             @endforeach
                         @endif

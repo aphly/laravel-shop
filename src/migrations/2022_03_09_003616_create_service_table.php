@@ -13,18 +13,21 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('shop_return_exchange', function (Blueprint $table) {
+        Schema::create('shop_service', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('uuid')->index();
             $table->unsignedBigInteger('order_id')->index();
             $table->tinyInteger('is_received')->nullable()->default(1);
-            $table->unsignedBigInteger('product_id')->nullable()->index();
-            $table->unsignedBigInteger('quantity')->nullable();
             $table->tinyInteger('is_opened')->nullable()->default(2);
-            $table->tinyInteger('return_exchange_action_id')->index();
-            $table->tinyInteger('return_exchange_status_id');
+            $table->tinyInteger('service_action_id')->index();
+            $table->tinyInteger('service_reason_id')->nullable();
+            $table->tinyInteger('service_status_id')->nullable()->default(1);
             $table->text('reason');
-            $table->unsignedBigInteger('delete_at');
+            $table->string('c_shipping',255)->nullable();
+            $table->string('c_shipping_no',255)->nullable();
+            $table->unsignedBigInteger('shipping_id')->nullable();
+            $table->string('b_shipping_no',255)->nullable();
+            $table->unsignedBigInteger('delete_at')->nullable()->default(0);
             $table->unsignedBigInteger('created_at');
             $table->unsignedBigInteger('updated_at');
         });
@@ -37,6 +40,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shop_return_exchange');
+        Schema::dropIfExists('shop_service');
     }
 };

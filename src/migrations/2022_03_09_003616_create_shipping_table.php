@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::create('shop_shipping', function (Blueprint $table) {
             $table->id();
-            $table->string('name',32);
+            $table->string('name',64);
+            $table->string('cn_name',64)->nullable();
             $table->string('desc',255)->nullable();
             $table->decimal('cost',15,2)->nullable();
             $table->decimal('free_cost',15,2)->nullable();

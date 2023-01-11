@@ -61,8 +61,6 @@ class Order extends Model
             }
         }else if($order_status_id==3){
             //Shipped
-            $info->tracking = $comment;
-            $info->save();
             if($shop_setting['order_status_shipped_notify']==1){
                 //send email
             }

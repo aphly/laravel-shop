@@ -16,9 +16,8 @@ return new class extends Migration
         Schema::create('shop_service_product', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('service_id')->index();
-            $table->unsignedBigInteger('product_id')->index();
+            $table->unsignedBigInteger('order_product_id')->index();
             $table->unsignedBigInteger('quantity')->nullable();
-            $table->string('product_name')->nullable();
         });
     }
 

@@ -38,7 +38,7 @@ class InstallController extends Controller
             if($menu22){
                 $data=[];
                 $data[] =['name' => 'Order','url' =>'/shop_admin/order/index','pid'=>$menu22->id,'is_leaf'=>1,'module_id'=>$this->module_id,'sort'=>0];
-                $data[] =['name' => 'Return','url' =>'/shop_admin/return/index','pid'=>$menu22->id,'is_leaf'=>1,'module_id'=>$this->module_id,'sort'=>0];
+                $data[] =['name' => 'Service','url' =>'/shop_admin/service/index','pid'=>$menu22->id,'is_leaf'=>1,'module_id'=>$this->module_id,'sort'=>0];
                 $data[] =['name' => 'Coupon','url' =>'/shop_admin/coupon/index','pid'=>$menu22->id,'is_leaf'=>1,'module_id'=>$this->module_id,'sort'=>0];
                 DB::table('admin_menu')->insert($data);
             }

@@ -80,12 +80,12 @@
 </style>
 
 <script>
-    function close_res(res,form_class) {
+    function close_res(res,_this) {
         console.log(res)
         alert_msg(res)
     }
 
-    function cancel_res(res,form_class) {
+    function cancel_res(res,_this) {
         console.log(res)
         alert_msg(res)
     }

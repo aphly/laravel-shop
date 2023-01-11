@@ -303,7 +303,7 @@
         }
     }
 
-    function cart_remove_res(res,form_class) {
+    function cart_remove_res(res,_this) {
         location.href = '/cart'
     }
 
@@ -316,7 +316,7 @@
         })
     }
 
-    function coupon_res(res,form_class){
+    function coupon_res(res,_this){
         location.href = '/cart'
     }
 

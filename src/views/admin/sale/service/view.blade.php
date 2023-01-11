@@ -14,12 +14,12 @@
     .detail_info{padding: 0 10px;}
 </style>
 <div class="top-bar">
-    <h5 class="nav-title">order</h5>
+    <h5 class="nav-title">Service</h5>
 </div>
 <div class="imain">
     <div class="order">
         <div class="detail">
-            <div class="title">The order details</div>
+            <div class="title">The service details</div>
             <div class="detail_info">
                 <div class="info">
                     <div class="ititle">Info</div>
@@ -30,35 +30,7 @@
                         <li><div>订单时间:</div><div>{{$res['info']->created_at}}</div></li>
                     </ul>
                 </div>
-                <div class="info">
-                    <div class="ititle">物流</div>
-                    <ul>
-                        <li><div>收货地址:</div><div>{{$res['info']->address_firstname}} {{$res['info']->address_lastname}},
-                                {{$res['info']->address_address_1}} {{$res['info']->address_address_2}},
-                                {{$res['info']->address_city}}, {{$res['info']->address_zone}}, {{$res['info']->address_country}},
-                                {{$res['info']->address_postcode}}, {{$res['info']->address_telephone}}
-                            </div></li>
-                        <li><div>物流方式:</div><div>{{$res['info']->shipping_name}}</div></li>
-                        <li><div>物流单号:</div><div>{{$res['info']->tracking??'-'}}</div></li>
-                    </ul>
-                </div>
-                <div class="info">
-                    <div class="ititle">支付</div>
-                    <ul>
-                        <li><div>支付方式:</div><div>{{$res['info']->payment_method_name}}</div></li>
-                        <li><div>支付流水号:</div><div>{{$res['info']->payment_id}}</div></li>
-                        <li><div>货币代码:</div><div>{{$res['info']->currency_code}}</div></li>
-                        <li><div>货币汇率比例:</div><div>{{$res['info']->currency_value}}</div></li>
-                    </ul>
-                </div>
-                <div class="info">
-                    <div class="ititle">客户浏览器</div>
-                    <ul>
-                        <li><div>IP 地址</div><div>{{$res['info']->ip}}</div></li>
-                        <li><div>user_agent</div><div>{{$res['info']->user_agent}}</div></li>
-                        <li><div>accept_language</div><div>{{$res['info']->accept_language}}</div></li>
-                    </ul>
-                </div>
+
             </div>
         </div>
         <div class="detail">
@@ -71,8 +43,8 @@
                         <div>价格</div>
                         <div>小计</div>
                     </li>
-                    @if($res['orderProduct'])
-                        @foreach($res['orderProduct'] as $val)
+                    @if($res['serviceProduct'])
+                        @foreach($res['serviceProduct'] as $val)
                             <li>
                                 <div>
                                     <a style="display: flex;" href="/product/{{$val->product_id}}">
@@ -134,7 +106,7 @@
         <div class="detail">
             <div class="title">添加状态记录</div>
             <div class="detail_info">
-                <form method="post" action="/shop_admin/order/history_save" class="save_form">
+                <form method="post" action="/shop_admin/service/history_save" class="save_form">
                     @csrf
                     <div>
                         <input type="hidden" name="order_id" value="{{$res['info']->id}}">

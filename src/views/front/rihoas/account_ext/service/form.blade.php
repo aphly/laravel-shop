@@ -7,18 +7,18 @@
             <div class="order">
 
                 <div class="top-desc d-flex justify-content-between">
-                    <h2>Return Exchange</h2>
+                    <h2>Service</h2>
                 </div>
 
                 <div class="form-group">
                     <p>Is received: <b>*</b></p>
-                    <ul>
-                        <li>yes</li>
-                        <li>no</li>
+                    <ul class="received">
+                        <li value="1">yes</li>
+                        <li value="2">no</li>
                     </ul>
                 </div>
 
-                <form action="/account_ext/service/refund?order_id={{$res['orderInfo']->id}}" method="post" class="form_request" data-fn="refund_res">
+                <form action="/account_ext/service/save?order_id={{$res['orderInfo']->id}}" method="post" class="form_request received1 received_form" data-fn="refund_res">
                     @csrf
                     <input type="hidden" name="is_received" value="2">
                     <input type="hidden" name="service_action_id" value="1">
@@ -41,20 +41,22 @@
                     </div>
                 </form>
 
-                <form action="/account_ext/service/return_exchange?order_id={{$res['orderInfo']->id}}" method="post" class="form_request" data-fn="return_res">
+                <form action="/account_ext/service/save?order_id={{$res['orderInfo']->id}}" method="post" class="form_request received2 received_form d-none" data-fn="return_res">
                     @csrf
                     <input type="hidden" name="is_received" value="1">
                     <div>
-                        <input type="radio" name="return_exchange_action_id" id="return_exchange_action_id_2" required value="2" class="form-control">
-                        <label for="return_exchange_action_id_2">return</label>
-                        <input type="radio" name="return_exchange_action_id" id="return_exchange_action_id_3" required value="3" class="form-control">
-                        <label for="return_exchange_action_id_3">exchange</label>
+                        <input type="radio" name="service_action_id" id="service_action_id_2" required value="2" class="form-control">
+                        <label for="service_action_id_2">Return</label>
+                        <input type="radio" name="service_action_id" id="service_action_id_3" required value="3" class="form-control">
+                        <label for="service_action_id_3">Exchange</label>
                     </div>
-                    <ul>
+
+                    <ul class="service_product">
                         @foreach($res['orderProduct'] as $val)
                         <li>
-                            <a href="/product/{{$val->product_id}}">{{$val->name}}</a>
-                            <input type="checkbox" name="product[]" value="{{$val->product_id}}">
+                            <input type="checkbox" name="order_product[{{$val->id}}][id]" id="service_product_{{$val->id}}" checked value="{{$val->id}}">
+                            <label for="service_product_{{$val->product_id}}">{{$val->name}} (quantity:{{$val->quantity}})</label>
+                            <input type="number" name="order_product[{{$val->id}}][quantity]" onblur="if(value<1){value=1}else if(value>={{$val->quantity}}){value={{$val->quantity}}}" value="{{$val->product_id}}">
                         </li>
                         @endforeach
                     </ul>
@@ -69,13 +71,16 @@
                         </select>
                         @endif
                     </div>
+
                     <div class="form-group" >
                         <p>Reason: <b>*</b></p>
                         <textarea name="reason" required class="form-control">{{$res['info']->reason}}</textarea>
                     </div>
+
                     <div class="form-group d-flex">
                         <button class="btn-default  save-address" type="submit">Request</button>
                     </div>
+
                 </form>
 
             </div>
@@ -84,16 +89,19 @@
 </section>
 
 <script>
-    function refund_res(res,form_class) {
-
+    function refund_res(res,_this) {
+        alert_msg(res,true)
     }
 
-    function return_res(res,form_class) {
-
+    function return_res(res,_this) {
+        alert_msg(res,true)
     }
 
 $(function () {
-
+    $('.received').on('click','li',function () {
+        $('.received_form').addClass('d-none')
+        $('.received'+$(this).val()).removeClass('d-none')
+    })
 })
 </script>
 

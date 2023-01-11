@@ -140,7 +140,7 @@
 
     <input type="hidden" id="quantityInCart" value="{{$res['quantityInCart']}}">
 
-    @if($shop_setting['review']['value']==1)
+    @if(isset($shop_setting['review']['value']) && $shop_setting['review']['value']==1)
         <div class="my_tab">
             <div class="my_bt active">Reviews ({{$res['review']->total()}})</div>
         </div>
@@ -314,7 +314,6 @@
     .quantity-wrapper div{color: #aaa;font-size: 30px;cursor: pointer;user-select: none}
     .quantity-wrapper input{margin: 0 10px;}
 
-    input[type='number']::-webkit-outer-spin-button,input[type='number']::-webkit-inner-spin-button {-webkit-appearance: none !important;}
     .add_cart_btn{height: 48px;background: #fff;border: 1px solid #212b36;width: 100%;border-radius: 2px;}
     .add_cart_btn:hover{background: #212b36;color: #fff;}
     .flag_checkbox input{display: none;}

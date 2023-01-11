@@ -5,14 +5,13 @@
         <div class="account-main-section">
             <div class="">
                 <div class="top-desc d-flex justify-content-between">
-                    <h2>Return Exchange</h2>
-                    <a href="/account_ext/return/form">+ Add</a>
+                    <h2>Service</h2>
                 </div>
                 <ul class="list_index">
                     <li>
-                        <span>Return ID</span>
-                        <span>Product</span>
+                        <span>Service ID</span>
                         <span>Order ID</span>
+                        <span>Received</span>
                         <span>Opened</span>
                         <span>Date Added</span>
                         <span>Option</span>
@@ -20,14 +19,13 @@
                     @foreach($res['list'] as $val)
                         <li class="">
                             <span>{{$val->id}}</span>
-                            <span><a href="/product/{{$val->product->id}}">{{$val->product->name}}</a></span>
                             <span>{{$val->order_id}}</span>
-                            <span>{{$val->opened}}</span>
+                            <span>{{$val->is_received}}</span>
+                            <span>{{$val->is_opened}}</span>
                             <span>{{$val->created_at}}</span>
                             <span>
-                                <a href="/account_ext/return_exchange/detail?id={{$val->id}}" class="btn">view</a>
-                                <a href="/account_ext/return_exchange/form?id={{$val->id}}" class="btn">edit</a>
-                                <a href="/account_ext/return_exchange/del?id={{$val->id}}" class="btn">del</a>
+                                <a href="/account_ext/service/detail?id={{$val->id}}" class="btn">view</a>
+                                <a href="/account_ext/service/del?id={{$val->id}}" class="btn a_request" data-fn="del_res" data-_token="{{csrf_token()}}">del</a>
                             </span>
                         </li>
                     @endforeach
@@ -46,6 +44,9 @@
     .list_index li span .btn{display: inline-block;background-color: var(--default-bg);padding:0 10px;color: #fff;border-radius: 4px;height: 30px;line-height: 30px;}
 </style>
 <script>
+    function del_res(res,_this) {
+        alert_msg(res,true)
+    }
 $(function () {
 
 })

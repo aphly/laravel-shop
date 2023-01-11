@@ -12,8 +12,11 @@ class ServiceProduct extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'service_id','product_id','product_name','quantity'
+        'service_id','order_product_id','quantity'
     ];
 
+    public function orderProduct(){
+        return $this->hasOne(OrderProduct::class,'id','order_product_id');
+    }
 
 }

@@ -39,7 +39,7 @@
                                 {{$res['info']->address_postcode}}, {{$res['info']->address_telephone}}
                             </div></li>
                         <li><div>物流方式:</div><div>{{$res['info']->shipping_name}}</div></li>
-                        <li><div>物流单号:</div><div>{{$res['info']->tracking??'-'}}</div></li>
+                        <li><div>物流单号:</div><div>{{$res['info']->shipping_no??'-'}}</div></li>
                     </ul>
                 </div>
                 <div class="info">
@@ -140,7 +140,7 @@
                         <input type="hidden" name="order_id" value="{{$res['info']->id}}">
                         <div class="form-group">
                             <label for="">订单状态</label>
-                            <select name="order_status_id" class="form-control " required>
+                            <select name="order_status_id" class="form-control" id="order_status_id" required>
                                 @foreach($res['orderStatus'] as $val)
                                     <option value="{{$val->id}}">{{$val->name}}({{$val->cn_name}})</option>
                                 @endforeach
@@ -150,6 +150,11 @@
                         <div class="form-group">
                             <label for="">状态覆盖</label>
                             <input type="checkbox" name="override" value="1">
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group d-none" id="shipping_no">
+                            <label for="">运单</label>
+                            <input type="text" name="shipping_no" class="form-control" value="">
                             <div class="invalid-feedback"></div>
                         </div>
                         <div class="form-group">
@@ -169,5 +174,13 @@
 
 </style>
 <script>
-
+$(function () {
+    $('#order_status_id').change(function () {
+        if($(this).val()==3){
+            $('#shipping_no').removeClass('d-none')
+        }else{
+            $('#shipping_no').addClass('d-none')
+        }
+    })
+})
 </script>

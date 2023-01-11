@@ -3,7 +3,7 @@
     <h5 class="nav-title">order</h5>
 </div>
 <div class="imain">
-    <form method="post" @if($res['order']->id) action="/shop_admin/order/save?id={{$res['order']->id}}" @else action="/shop_admin/order/save" @endif class="save_form">
+    <form method="post" @if($res['order']->id) action="/shop_admin/service/save?id={{$res['order']->id}}" @else action="/shop_admin/service/save" @endif class="save_form">
         @csrf
         <div class="coupon ajaxData">
             <div class="form-group">

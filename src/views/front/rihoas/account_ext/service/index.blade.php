@@ -11,8 +11,8 @@
                     <li>
                         <span>Service ID</span>
                         <span>Order ID</span>
+                        <span>Status</span>
                         <span>Received</span>
-                        <span>Opened</span>
                         <span>Date Added</span>
                         <span>Option</span>
                     </li>
@@ -20,12 +20,14 @@
                         <li class="">
                             <span>{{$val->id}}</span>
                             <span>{{$val->order_id}}</span>
+                            <span>{{$dict[$dict['service_action'][$val->service_action_id].'_status'][$val->service_status_id]}}</span>
                             <span>{{$val->is_received}}</span>
-                            <span>{{$val->is_opened}}</span>
                             <span>{{$val->created_at}}</span>
                             <span>
                                 <a href="/account_ext/service/detail?id={{$val->id}}" class="btn">view</a>
+                                @if($val->service_status_id==1 && $val->service_status_id==3)
                                 <a href="/account_ext/service/del?id={{$val->id}}" class="btn a_request" data-fn="del_res" data-_token="{{csrf_token()}}">del</a>
+                                @endif
                             </span>
                         </li>
                     @endforeach

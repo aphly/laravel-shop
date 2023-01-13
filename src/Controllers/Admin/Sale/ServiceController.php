@@ -4,6 +4,8 @@ namespace Aphly\LaravelShop\Controllers\Admin\Sale;
 
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\LaravelShop\Controllers\Admin\Controller;
+use Aphly\LaravelShop\Models\Catalog\Shipping;
+use Aphly\LaravelShop\Models\Sale\Order;
 use Aphly\LaravelShop\Models\Sale\Service;
 use Aphly\LaravelShop\Models\Sale\ServiceHistory;
 use Aphly\LaravelShop\Models\Sale\ServiceProduct;
@@ -25,6 +27,7 @@ class ServiceController extends Controller
                 function($query,$order_id) {
                     return $query->where('order_id', $order_id);
                 })
+            ->where('delete_at',0)
             ->orderBy('created_at','desc')->Paginate(config('admin.perPage'))->withQueryString();
         return $this->makeView('laravel-shop::admin.sale.service.index',['res'=>$res]);
     }
@@ -32,19 +35,22 @@ class ServiceController extends Controller
     public function view(Request $request)
     {
         $res['info'] = Service::where(['id'=>$request->query('id',0)])->firstOrError();
-        $res['serviceHistory'] = ServiceHistory::where('service_id',$res['info']->id)->get();
-        $res['serviceProduct'] = ServiceProduct::where('service_id',$res['info']->id)->with('product')->get();
+        $res['serviceHistory'] = ServiceHistory::where('service_id',$res['info']->id)->orderBy('created_at','desc')->get();
+        $res['serviceProduct'] = ServiceProduct::where('service_id',$res['info']->id)->with('orderProduct')->get();
+        $res['shipping_method'] = Shipping::get();
         return $this->makeView('laravel-shop::admin.sale.service.view',['res'=>$res]);
     }
 
     public function historySave(Request $request)
     {
         $input = $request->all();
-        $res['info'] = Service::where(['id'=>$request->input('refund_id',0)])->firstOrError();
-        if($request->input('override',0)){
-            ServiceHistory::where(['refund_id'=>$res['info']->id,'refund_status_id'=>$input['refund_status_id']])->delete();
+        $res['info'] = Service::where(['id'=>$request->input('service_id',0)])->firstOrError();
+        $res['orderInfo'] = Order::where('id',$res['info']->order_id)->firstOrError();
+        $res['info']->addServiceHistory($res['info'], $input['service_status_id'],$input);
+        if($input['service_status_id']==2){
+            $orderInput['override'] = 1;
+            $res['orderInfo']->addOrderHistory($res['orderInfo'],7,$orderInput);
         }
-        $res['info']->addOrderReturnHistory($res['info'], $input['refund_status_id'],$input['comment']);
         throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>'/shop_admin/service/view?id='.$res['info']->id]]);
     }
 

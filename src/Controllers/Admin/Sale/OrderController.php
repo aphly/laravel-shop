@@ -47,15 +47,7 @@ class OrderController extends Controller
     {
         $input = $request->all();
         $res['info'] = Order::where(['id'=>$request->input('order_id',0)])->firstOrError();
-        if($request->input('override',0)){
-            OrderHistory::where(['order_id'=>$res['info']->id,'order_status_id'=>$input['order_status_id']])->delete();
-        }
-        $res['info']->addOrderHistory($res['info'], $input['order_status_id'],$input['comment']);
-        $res['info']->order_status_id = $input['order_status_id'];
-        if($input['order_status_id']==3){
-            $res['info']->shipping_no = $input['shipping_no'];
-        }
-        $res['info']->save();
+        $res['info']->addOrderHistory($res['info'], $input['order_status_id'],$input);
         throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>'/shop_admin/order/view?id='.$res['info']->id]]);
     }
 

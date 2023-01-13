@@ -39,32 +39,34 @@
                 <ul class="product">
                     <li>
                         <div>商品名称</div>
-                        <div>数量</div>
-                        <div>价格</div>
-                        <div>小计</div>
+                        <div>购买数量</div>
+                        <div>退款数量</div>
+                        <div>购买价格</div>
+                        <div>退款价格</div>
                     </li>
                     @if($res['serviceProduct'])
                         @foreach($res['serviceProduct'] as $val)
                             <li>
                                 <div>
                                     <a style="display: flex;" href="/product/{{$val->product_id}}">
-                                        <img src="{{$val->image}}">
+                                        <img src="{{$val->orderProduct->image}}">
                                         <div style="display: flex;align-items: center;">
                                             <div>
-                                                <div class="product_title wenzi">{{$val->name}}</div>
+                                                    <div class="product_title wenzi">{{$val->orderProduct->name}}</div>
                                                 @if($val->orderOption)
                                                     <ul class="option">
                                                         @foreach($val->orderOption as $v)
                                                             <li>{{$v->name}} : {{$v->value}}</li>
                                                         @endforeach
                                                     </ul>
+                                                @endif
                                             </div>
-                                            @endif
                                         </div>
                                     </a>
                                 </div>
+                                <div>{{$val->orderProduct->quantity}}</div>
                                 <div>{{$val->quantity}}</div>
-                                <div>{{$val->price_format}}</div>
+                                <div>{{$val->orderProduct->total_format}}</div>
                                 <div>{{$val->total_format}}</div>
                             </li>
                         @endforeach
@@ -86,15 +88,17 @@
             <div class="detail_info">
                 <ul>
                     <li>
+                        <div>Action</div>
                         <div>日期</div>
                         <div>状态</div>
                         <div>备注</div>
                     </li>
-                    @if($res['orderHistory'])
-                        @foreach($res['orderHistory'] as $val)
+                    @if($res['serviceHistory'])
+                        @foreach($res['serviceHistory'] as $val)
                             <li>
+                                <div>{{$dict['service_action'][$val->service_action_id]}}</div>
                                 <div>{{$val->created_at}}</div>
-                                <div>{{$val->orderStatus->name}}</div>
+                                <div>{{$dict[$dict['service_action'][$val->service_action_id].'_status'][$val->service_status_id]}}</div>
                                 <div>{{$val->comment}}</div>
                             </li>
                         @endforeach
@@ -109,13 +113,23 @@
                 <form method="post" action="/shop_admin/service/history_save" class="save_form">
                     @csrf
                     <div>
-                        <input type="hidden" name="order_id" value="{{$res['info']->id}}">
+                        <input type="hidden" name="service_id" value="{{$res['info']->id}}">
                         <div class="form-group">
-                            <label for="">订单状态</label>
-                            <select name="order_status_id" class="form-control " required>
-                                @foreach($res['orderStatus'] as $val)
-                                    <option value="{{$val->id}}">{{$val->name}}({{$val->cn_name}})</option>
-                                @endforeach
+                            <label for="">售后状态</label>
+                            <select name="service_status_id" id="service_status_id{{$res['info']->service_action_id}}" class="form-control " required>
+                                @if($res['info']->service_action_id==1)
+                                    @foreach($dict['refund_status'] as $key=>$val)
+                                        <option value="{{$key}}">{{$val}}</option>
+                                    @endforeach
+                                @elseif($res['info']->service_action_id==2)
+                                    @foreach($dict['return_status'] as $key=>$val)
+                                        <option value="{{$key}}">{{$val}}</option>
+                                    @endforeach
+                                @elseif($res['info']->service_action_id==3)
+                                    @foreach($dict['exchange_status'] as $key=>$val)
+                                        <option value="{{$key}}">{{$val}}</option>
+                                    @endforeach
+                                @endif
                             </select>
                             <div class="invalid-feedback"></div>
                         </div>
@@ -129,6 +143,24 @@
                             <textarea class="form-control" name="comment"></textarea>
                             <div class="invalid-feedback"></div>
                         </div>
+                        @if($res['info']->service_action_id==3)
+                            <div id="shipping" style="display: none;">
+                                <div class="form-group">
+                                    <label for="">快递</label>
+                                    <select name="shipping_id" class="form-control">
+                                        @foreach($res['shipping_method'] as $key=>$val)
+                                            <option value="{{$val->id}}">{{$val->name}}</option>
+                                        @endforeach
+                                    </select>
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="">运单号</label>
+                                    <input type="text" name="b_shipping_no" class="form-control" value="">
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                            </div>
+                        @endif
                         <button class="btn btn-primary" type="submit">保存</button>
                     </div>
                 </form>
@@ -141,5 +173,15 @@
 
 </style>
 <script>
-
+    $(function () {
+        @if($res['info']->service_action_id==3)
+        $('#service_status_id3').change(function () {
+            let shipping = $('#shipping');
+            shipping.hide();
+            if($(this).val()==5){
+                shipping.show();
+            }
+        })
+        @endif
+    })
 </script>

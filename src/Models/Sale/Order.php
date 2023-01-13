@@ -43,8 +43,9 @@ class Order extends Model
         DB::commit();
     }
 
-    public function addOrderHistory($info, $order_status_id, $comment = '', $notify = false){
+    public function addOrderHistory($info, $order_status_id, $input = []){
         $shop_setting = Setting::findAll();
+        $notify = $input['notify']??0;
         if($order_status_id==2){
             //Processing
             $orderProduct = OrderProduct::where('order_id',$info->id)->get()->toArray();
@@ -56,12 +57,12 @@ class Order extends Model
                     ProductOptionValue::where(['id'=>$v['product_option_value_id'],'subtract'=>1])->decrement('quantity',$val['quantity']);
                 }
             }
-            if($shop_setting['order_status_processing_notify']==1){
+            if($shop_setting['order_status_processing_notify']==1 || $notify){
                 //send email
             }
         }else if($order_status_id==3){
             //Shipped
-            if($shop_setting['order_status_shipped_notify']==1){
+            if($shop_setting['order_status_shipped_notify']==1 || $notify){
                 //send email
             }
         }else if($order_status_id==6){
@@ -75,18 +76,33 @@ class Order extends Model
                     ProductOptionValue::where(['id'=>$v['product_option_value_id'],'subtract'=>1])->increment('quantity',$val['quantity']);
                 }
             }
-            if($shop_setting['order_status_canceled_notify']==1){
+            if($shop_setting['order_status_canceled_notify']==1 || $notify){
                 //send email
             }
+        }else if($order_status_id==7){
+            //Service
+            if($shop_setting['order_status_service_notify']==1 || $notify){
+                //send email
+            }
+
         }
 
-        OrderHistory::create([
+        if($input['override']??false){
+            OrderHistory::where(['order_id'=>$info->id,'order_status_id'=>$order_status_id])->delete();
+        }
+        $orderHistory = OrderHistory::create([
             'order_id'=>$info->id,
             'order_status_id'=>$order_status_id,
-            'comment'=>$comment,
-            'notify'=>$notify
+            'comment'=>$input['comment']??'',
+            'notify'=>$input['notify']??0
         ]);
-
+        if($orderHistory->id){
+            $info->order_status_id = $order_status_id;
+            if($order_status_id==3){
+                $info->shipping_no = $input['shipping_no']??'';
+            }
+            $info->save();
+        }
     }
 
     function orderStatus(){

@@ -3,6 +3,7 @@
 namespace Aphly\LaravelShop\Controllers\Front\AccountExt;
 
 use Aphly\Laravel\Exceptions\ApiException;
+use Aphly\LaravelCommon\Models\Currency;
 use Aphly\LaravelCommon\Models\User;
 use Aphly\LaravelShop\Controllers\Front\Controller;
 
@@ -24,7 +25,7 @@ class ServiceController extends Controller
 
     public function detail(Request $request){
         $res['info'] = Service::where(['uuid'=>User::uuid(),'id'=>$request->query('id',0)])->where('delete_at',0)->with('order')->firstOrError();
-        $res['serviceHistory'] = ServiceHistory::where('service_id',$res['info']->id)->orderBy('created_at','asc')->get();
+        $res['serviceHistory'] = ServiceHistory::where('service_id',$res['info']->id)->orderBy('created_at','desc')->get();
         $res['serviceProduct'] = ServiceProduct::where('service_id',$res['info']->id)->with('orderProduct')->get();
         return $this->makeView('laravel-shop-front::account_ext.service.detail',['res'=>$res]);
     }
@@ -50,14 +51,20 @@ class ServiceController extends Controller
             $input = $request->all();
             $input['uuid'] = User::uuid();
             $info = Service::create($input);
-            $info->addOrderHistory($info,1);
+            $info->addServiceHistory($info,1);
             if(!empty($input['order_product'])){
                 $arr = [];
-                foreach ($input['order_product'] as $val){
+                foreach ($input['order_product'] as $key=>$val){
+                    $key = intval($key);
+                    $val = intval($val);
+                    $price = $res['orderProduct'][$key]['price']??0;
+                    $total = $price*$val;
                     $arr[] = [
                         'service_id'=>$info->id,
-                        'order_product_id'=>$val['id'],
-                        'quantity'=>$val['quantity']
+                        'order_product_id'=>$key,
+                        'quantity'=>$val,
+                        'total'=>$total,
+                        'total_format'=>Currency::codeFormat($total,$res['orderInfo']->currency_code)
                     ];
                 }
                 ServiceProduct::insert($arr);
@@ -67,12 +74,44 @@ class ServiceController extends Controller
     }
 
     public function del(Request $request){
-        $info = Service::where(['uuid'=>User::uuid(),'id'=>$request->query('id',0)])->first();
+        $info = Service::where(['uuid'=>User::uuid(),'id'=>$request->query('id',0)])->whereIN('service_status_id',[1,3])->first();
         if(!empty($info)){
             $info->update(['delete_at'=>time()]);
             throw new ApiException(['code'=>0,'msg'=>'Delete success']);
         }
         throw new ApiException(['code'=>1,'msg'=>'Delete fail']);
     }
+
+    public function refund3(Request $request){
+        $input = $request->all();
+        $info = Service::where(['uuid'=>User::uuid(),'id'=>$input['service_id']])->firstOrError();
+        $info->addServiceHistory($info,1,$input);
+        throw new ApiException(['code'=>0,'msg'=>'Request success']);
+    }
+
+    public function return2(Request $request){
+        $input = $request->all();
+        $info = Service::where(['uuid'=>User::uuid(),'id'=>$input['service_id']])->firstOrError();
+        $info->addServiceHistory($info,4,$input);
+        throw new ApiException(['code'=>0,'msg'=>'Request success']);
+    }
+
+    public function return3(Request $request){
+        $input = $request->all();
+        $info = Service::where(['uuid'=>User::uuid(),'id'=>$input['service_id']])->firstOrError();
+        $info->addServiceHistory($info,1,$input);
+        throw new ApiException(['code'=>0,'msg'=>'Request success']);
+    }
+
+    public function return4(Request $request){
+        $input = $request->all();
+        $info = Service::where(['uuid'=>User::uuid(),'id'=>$input['service_id']])->firstOrError();
+        $info->c_shipping = $input['c_shipping'];
+        $info->c_shipping_no = $input['c_shipping_no'];
+        $info->save();
+        throw new ApiException(['code'=>0,'msg'=>'Request success']);
+    }
+
+
 
 }

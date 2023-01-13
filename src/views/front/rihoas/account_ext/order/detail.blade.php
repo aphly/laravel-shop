@@ -39,11 +39,11 @@
                         @endif
                     </ul>
                 </div>
-
+                @if($res['info']->order_status_id==3)
                 <div class="detail">
-                    <a href="/account_ext/service/form?order_id={{$val->order_id}}">Service</a>
+                    <a href="/account_ext/service/form?order_id={{$val->order_id}}" class="btn btn-primary">Service</a>
                 </div>
-
+                @endif
                 <div class="detail">
                     <div class="title">The order details</div>
                     <ul>

@@ -29,10 +29,7 @@
                                 @endif
                                     <a href="/account_ext/order/detail?id={{$val->id}}">view</a>
                                 @if($val->orderStatus->id==1)
-                                    <form action="/account_ext/order/close?id={{$val->id}}" method="post" data-fn="close_res" class="form_request">
-                                        @csrf
-                                        <button type="submit">close</button>
-                                    </form>
+                                    <a href="/account_ext/order/close?id={{$val->id}}" data-fn="close_res" class="a_request" data-_token="{{csrf_token()}}">close</a>
                                 @endif
                                 @if($val->orderStatus->id==2)
                                     <a href="javascript:void(0)" onclick="$('#cancelModal').modal('show')">cancel</a>
@@ -62,7 +59,7 @@
                 <div>
                     Please be informed that a management, processing and transaction fee (20% of your total order value) will be applied for the cancellation.
                 </div>
-                <form action="/account_ext/order/cancel?id={{$val->id}}" method="post" data-fn="cancel_res" class="form_request">
+                <form action="/account_ext/order/cancel?id=" method="post" data-fn="cancel_res" class="form_request">
                     @csrf
                     <button type="submit">cancel</button>
                 </form>
@@ -81,13 +78,11 @@
 
 <script>
     function close_res(res,_this) {
-        console.log(res)
-        alert_msg(res)
+        alert_msg(res,true)
     }
 
     function cancel_res(res,_this) {
-        console.log(res)
-        alert_msg(res)
+        alert_msg(res,true)
     }
 $(function () {
 

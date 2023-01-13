@@ -132,6 +132,18 @@
                             <div class="invalid-feedback"></div>
                         </div>
 
+                        <div class="form-group">
+                            <label for="">Service</label>
+                            <select name="setting[order_status_service_notify]" class="form-control" >
+                            @if(isset($dict['yes_no']))
+                                @foreach($dict['yes_no'] as $key=>$val)
+                                    <option value="{{$key}}" @if(($res['setting']['order_status_service_notify']['value']??2)==$key) selected @endif>{{$val}}</option>
+                                @endforeach
+                            @endif
+                            </select>
+                            <div class="invalid-feedback"></div>
+                        </div>
+
                     </div>
 
                 </div>

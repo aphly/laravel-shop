@@ -18,6 +18,8 @@ return new class extends Migration
             $table->unsignedBigInteger('service_id')->index();
             $table->unsignedBigInteger('order_product_id')->index();
             $table->unsignedBigInteger('quantity')->nullable();
+            $table->decimal('total',15,2);
+            $table->string('total_format',255);
         });
     }
 

@@ -45,6 +45,10 @@ Route::middleware(['web'])->group(function () {
             Route::post('service/save', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ServiceController@save');
             Route::post('service/del', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ServiceController@del');
 
+            Route::post('service/refund3', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ServiceController@refund3');
+            Route::post('service/return_exchange2', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ServiceController@return_exchange2');
+            Route::post('service/return_exchange3', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ServiceController@return_exchange3');
+            Route::post('service/return_exchange4', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ServiceController@return_exchange4');
         });
 
         //Checkout
@@ -125,6 +129,9 @@ Route::middleware(['web'])->group(function () {
 
             Route::get('/order/view', 'Aphly\LaravelShop\Controllers\Admin\Sale\OrderController@view');
             Route::post('/order/history_save', 'Aphly\LaravelShop\Controllers\Admin\Sale\OrderController@historySave');
+
+            Route::get('/service/view', 'Aphly\LaravelShop\Controllers\Admin\Sale\ServiceController@view');
+            Route::post('/service/history_save', 'Aphly\LaravelShop\Controllers\Admin\Sale\ServiceController@historySave');
 
         });
     });

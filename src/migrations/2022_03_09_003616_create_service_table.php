@@ -20,9 +20,8 @@ return new class extends Migration
             $table->tinyInteger('is_received')->nullable()->default(1);
             $table->tinyInteger('is_opened')->nullable()->default(2);
             $table->tinyInteger('service_action_id')->index();
-            $table->tinyInteger('service_reason_id')->nullable()->default(0);
             $table->tinyInteger('service_status_id')->nullable()->default(1);
-            $table->text('reason');
+            $table->text('reason')->nullable();
             $table->string('c_shipping',255)->nullable();
             $table->string('c_shipping_no',255)->nullable();
             $table->unsignedBigInteger('shipping_id')->nullable();

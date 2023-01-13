@@ -26,10 +26,9 @@
                     <li >ID</li>
                     <li >Uuid</li>
                     <li >order_id</li>
-                    <li >is_received</li>
-                    <li >is_opened</li>
-                    <li >service_action_id</li>
-                    <li >service_status_id</li>
+                    <li >action</li>
+                    <li >状态</li>
+                    <li >是否收到货</li>
                     <li >操作</li>
                 </ul>
                 @if($res['list']->total())
@@ -38,10 +37,13 @@
                         <li><input type="checkbox" class="delete_box" name="delete[]" value="{{$v['id']}}">{{$v['id']}}</li>
                         <li>{{ $v['uuid'] }}</li>
                         <li>{{ $v['order_id'] }}</li>
-                        <li>{{ $v['is_received'] }}</li>
-                        <li>{{ $v['is_opened'] }}</li>
-                        <li>{{ $v['service_action_id'] }}</li>
-                        <li>{{ $v['service_status_id'] }}</li>
+                        <li>{{ $dict['service_action'][$v->service_action_id] }}</li>
+                        <li>{{$dict[$dict['service_action'][$v->service_action_id].'_status'][$v->service_status_id]}}</li>
+                        <li>
+                            @if($dict['yes_no'])
+                                {{$dict['yes_no'][$v['is_received']]}}
+                            @endif
+                        </li>
                         <li>
                             <a class="badge badge-info ajax_get" data-href="/shop_admin/service/view?id={{$v['id']}}">查看</a>
                         </li>

@@ -9,7 +9,7 @@
     .order .detail .product img{width: 80px;height: 80px;margin-right: 10px;}
     .product_title{font-weight: 600;width: 100%;}
     .total_data li:last-child{font-weight: 600}
-    .info{margin-bottom: 10px;}
+    .info{margin-bottom: 20px;}
     .info .ititle{font-weight: 600;margin-bottom: 5px;}
     .detail_info{padding: 0 10px;}
 </style>

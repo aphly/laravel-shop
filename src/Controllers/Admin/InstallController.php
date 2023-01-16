@@ -102,6 +102,14 @@ class InstallController extends Controller
             DB::table('admin_dict_value')->insert($data);
         }
 
+        $dict = Dict::create(['name' => 'shop_op_status','key'=>'shop_op_status','module_id'=>$this->module_id]);
+        if($dict->id){
+            $data=[];
+            $data[] =['dict_id' => $dict->id,'name'=>'Success','value'=>'1'];
+            $data[] =['dict_id' => $dict->id,'name'=>'Fail','value'=>'2'];
+            DB::table('admin_dict_value')->insert($data);
+        }
+
         $data=[];
 		$data[] =['id'=>'1','name'=>'Pending payment','cn_name'=>'待支付'];
 		$data[] =['id'=>'2','name'=>'Processing','cn_name'=>'买家已支付'];

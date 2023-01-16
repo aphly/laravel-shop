@@ -137,7 +137,7 @@
                                 Continue Shopping
                             </a>
                             @if(!$user)
-                            <a class="color-link-white" href="route('login')">
+                            <a class="color-link-white" href="{{route('login')}}">
                                 Sign in / Register
                             </a>
                             @endif

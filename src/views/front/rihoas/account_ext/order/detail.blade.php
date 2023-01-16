@@ -40,9 +40,37 @@
                     </ul>
                 </div>
                 @if($res['info']->order_status_id==3)
-                <div class="detail">
-                    <a href="/account_ext/service/form?order_id={{$val->order_id}}" class="btn btn-primary">Service</a>
-                </div>
+                    <div class="detail">
+                        <a href="/account_ext/service/form?order_id={{$val->order_id}}" class="btn btn-primary">Service</a>
+                    </div>
+                @elseif($res['info']->order_status_id==6)
+                    <div class="detail">
+                        <div class="title">The order refund</div>
+                        <ul>
+                            <li>
+                                <div>Reason</div>
+                                <div>Amount</div>
+                                <div>Status</div>
+                                <div>Date Added</div>
+                            </li>
+                            @if($res['orderRefund'])
+                                @foreach($res['orderRefund'] as $val)
+                                    <li>
+                                        <div>{{$val->reason}}</div>
+                                        <div>{{$val->amount_format}}</div>
+                                        <div>
+                                            @if($val->cred_status)
+                                                {{$val->cred_status}}
+                                            @else
+                                                Pending
+                                            @endif
+                                        </div>
+                                        <div>{{$val->created_at}}</div>
+                                    </li>
+                                @endforeach
+                            @endif
+                        </ul>
+                    </div>
                 @endif
                 <div class="detail">
                     <div class="title">The order details</div>
@@ -50,13 +78,15 @@
                         <li><div class="info_left">Order ID:</div><div>{{$res['info']->id}}</div></li>
                         <li><div class="info_left">Date Added:</div><div>{{$res['info']->created_at}}</div></li>
                         <li><div class="info_left">Payment Method:</div><div>{{$res['info']->payment_method_name}}</div></li>
-                        <li><div class="info_left">Shipping Method:</div><div>{{$res['info']->shipping_name}}</div></li>
-                        <li><div class="info_left">Shipping Address:</div><div>{{$res['info']->address_firstname}} {{$res['info']->address_lastname}},
+                        <li>
+                            <div class="info_left">Shipping Address:</div><div>{{$res['info']->address_firstname}} {{$res['info']->address_lastname}},
                                 {{$res['info']->address_address_1}} {{$res['info']->address_address_2}},
                                 {{$res['info']->address_city}}, {{$res['info']->address_zone}}, {{$res['info']->address_country}},
                                 {{$res['info']->address_postcode}}, {{$res['info']->address_telephone}}
-                            </div></li>
-                        <li><div class="info_left">Shipping Tracking:</div><div>{{$res['info']->tracking??'-'}}</div></li>
+                            </div>
+                        </li>
+                        <li><div class="info_left">Shipping Method:</div><div>{{$res['info']->shipping_name}}</div></li>
+                        <li><div class="info_left">Shipping Tracking:</div><div>{{$res['info']->shipping_no??'-'}}</div></li>
                     </ul>
                 </div>
                 <div class="detail">
@@ -105,6 +135,7 @@
                         @endif
                     </div>
                 </div>
+
             </div>
         </div>
     </div>

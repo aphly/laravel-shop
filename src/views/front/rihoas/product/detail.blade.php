@@ -140,7 +140,7 @@
 
     <input type="hidden" id="quantityInCart" value="{{$res['quantityInCart']}}">
 
-    @if(isset($shop_setting['review']['value']) && $shop_setting['review']['value']==1)
+    @if(isset($shop_setting['review']) && $shop_setting['review']==1)
         <div class="my_tab">
             <div class="my_bt active">Reviews ({{$res['review']->total()}})</div>
         </div>

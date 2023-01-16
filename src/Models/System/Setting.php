@@ -18,7 +18,12 @@ class Setting extends Model
 
     static public function findAll() {
         return Cache::rememberForever('shop_setting', function () {
-            return self::get()->keyBy('key')->toArray();
+            $arr =  self::get();
+            $res = [];
+            foreach ($arr as $val){
+                $res[$val['key']] = $val['value'];
+            }
+            return $res;
         });
     }
 

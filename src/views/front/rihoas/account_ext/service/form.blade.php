@@ -1,24 +1,29 @@
 @include('laravel-shop-front::common.header')
 <section class="container">
     <style>
+        .title_p{margin-bottom: 5px;}
         .received{display: flex;}
-        .received li{}
+        .received li{width: 100px;line-height: 40px;color: #333;border-radius: 6px;text-align: center;margin-right: 20px;border: 1px solid #f1f1f1;cursor: pointer;}
+        .received li.active{background:var(--default-bg);color: #fff;}
+        .service_action{align-items: center;margin-bottom: 10px;}
+        .service_action label{margin-bottom: 0;line-height: 44px;cursor: pointer;}
+        .service_action input{ height: 44px;margin-right: 10px;}
+        .service_action>div{margin-right: 20px;}
+        .service_product{margin-bottom: 20px;}
     </style>
     <div class="account_info">
         @include('laravel-common-front::account_ext.left_menu')
         <div class="account-main-section">
             <div class="order">
-
                 <div class="top-desc d-flex justify-content-between">
                     <h2>Service</h2>
                 </div>
 
                 <div class="form-group">
-                    <p>Is received: <b>*</b></p>
+                    <p class="title_p">Is received: <b>*</b></p>
                     <ul class="received">
-
-                        <li value="1">yes</li>
-                        <li value="2">no</li>
+                        <li value="1" class="active">Yes</li>
+                        <li value="2">No</li>
                     </ul>
                 </div>
 
@@ -28,8 +33,8 @@
                     <input type="hidden" name="service_action_id" value="1">
 
                     <div class="form-group" >
-                        <p>Reason: <b>*</b></p>
-                        <textarea name="reason" required class="form-control">{{$res['info']->reason}}</textarea>
+                        <p class="title_p">Reason: <b>*</b></p>
+                        <textarea name="reason" required class="form-control" style="height: 75px;">{{$res['info']->reason}}</textarea>
                     </div>
                     <div class="form-group d-flex">
                         <button class="btn-default save-address" type="submit">Request</button>
@@ -39,25 +44,29 @@
                 <form action="/account_ext/service/save?order_id={{$res['orderInfo']->id}}" method="post" class="form_request received2 received_form d-none" data-fn="return_res">
                     @csrf
                     <input type="hidden" name="is_received" value="1">
-                    <div>
-                        <input type="radio" name="service_action_id" id="service_action_id_2" required value="2" class="form-control">
-                        <label for="service_action_id_2">Return</label>
-                        <input type="radio" name="service_action_id" id="service_action_id_3" required value="3" class="form-control">
-                        <label for="service_action_id_3">Exchange</label>
+                    <div class="d-flex service_action">
+                        <div class="d-flex">
+                            <input type="radio" name="service_action_id" id="service_action_id_2" required checked value="2" class="form-control">
+                            <label for="service_action_id_2">Return</label>
+                        </div>
+                        <div class="d-flex">
+                            <input type="radio" name="service_action_id" id="service_action_id_3" required value="3" class="form-control">
+                            <label for="service_action_id_3">Exchange</label>
+                        </div>
                     </div>
 
                     <ul class="service_product">
                         @foreach($res['orderProduct'] as $val)
                         <li>
                             <input type="checkbox" class="order_product_id" name="order_product[{{$val->id}}]" id="service_product_{{$val->id}}" checked value="{{$val->quantity}}">
-                            <label for="service_product_{{$val->product_id}}">{{$val->name}} (quantity:{{$val->quantity}})</label>
+                            <label for="service_product_{{$val->id}}">{{$val->name}} (quantity:{{$val->quantity}})</label>
                             <input type="number" class="quantity" onblur="if(value<1){value=1}else if(value>={{$val->quantity}}){value={{$val->quantity}}}" value="{{$val->quantity}}">
                         </li>
                         @endforeach
                     </ul>
 
                     <div class="form-group">
-                        <p>Is opened: <b>*</b></p>
+                        <p class="title_p">Is opened: <b>*</b></p>
                         @if(isset($dict['yes_no']))
                         <select name="is_opened" class="form-control">
                             @foreach($dict['yes_no'] as $key=>$val)
@@ -68,8 +77,8 @@
                     </div>
 
                     <div class="form-group" >
-                        <p>Reason: <b>*</b></p>
-                        <textarea name="reason" required class="form-control">{{$res['info']->reason}}</textarea>
+                        <p class="title_p">Reason: <b>*</b></p>
+                        <textarea name="reason" required class="form-control" style="height: 75px;">{{$res['info']->reason}}</textarea>
                     </div>
 
                     <div class="form-group d-flex">
@@ -94,6 +103,8 @@
 
 $(function () {
     $('.received').on('click','li',function () {
+        $('.received li').removeClass('active')
+        $(this).addClass('active')
         $('.received_form').addClass('d-none')
         $('.received'+$(this).val()).removeClass('d-none')
     })

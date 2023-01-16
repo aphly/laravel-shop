@@ -24,15 +24,15 @@
                             <span>{{$val->orderStatus->name}}</span>
                             <span>{{$val->created_at}}</span>
                             <span>
-                                @if($val->orderStatus->id==1)
-                                    <a href="/account_ext/order/pay?id={{$val->id}}">pay</a>
-                                @endif
                                     <a href="/account_ext/order/detail?id={{$val->id}}">view</a>
                                 @if($val->orderStatus->id==1)
+                                    @if($val->payment_id)
+                                    <a href="/account_ext/order/pay?id={{$val->id}}">pay</a>
+                                    @endif
                                     <a href="/account_ext/order/close?id={{$val->id}}" data-fn="close_res" class="a_request" data-_token="{{csrf_token()}}">close</a>
                                 @endif
                                 @if($val->orderStatus->id==2)
-                                    <a href="javascript:void(0)" onclick="$('#cancelModal').modal('show')">cancel</a>
+                                    <a href="javascript:void(0)" onclick="cancel('{{$val->cancelAmountFormat}}',{{$val->id}})">cancel</a>
                                 @endif
                             </span>
                         </li>
@@ -57,11 +57,14 @@
             </div>
             <div class="modal-body">
                 <div>
-                    Please be informed that a management, processing and transaction fee (20% of your total order value) will be applied for the cancellation.
+                    Please be informed that a management, processing and transaction fee ({{$shop_setting['order_cancel_fee']}}% of your total order value) will be applied for the cancellation.
                 </div>
-                <form action="/account_ext/order/cancel?id=" method="post" data-fn="cancel_res" class="form_request">
+                <div>
+                    Refund <span class="cancelAmountFormat">0</span>
+                </div>
+                <form action="" method="post" data-fn="cancel_res" class="form_request">
                     @csrf
-                    <button type="submit">cancel</button>
+                    <button type="submit">Cancel</button>
                 </form>
             </div>
         </div>
@@ -71,7 +74,7 @@
 
 <style>
     .list_index{padding: 0 10px;}
-    .list_index li{display: flex;margin-bottom: 0;height: 40px;line-height: 40px;}
+    .list_index li{display: flex;margin-bottom: 10px;height: 40px;line-height: 40px;}
     .list_index li span{flex:1;}
     .list_index li span a{display: inline-block;background-color: var(--default-bg);padding:0 10px;color: #fff;border-radius: 4px;height: 30px;line-height: 30px;}
 </style>
@@ -83,6 +86,13 @@
 
     function cancel_res(res,_this) {
         alert_msg(res,true)
+    }
+
+    function cancel(cancelAmountFormat,order_id) {
+        let  cancelModal = $('#cancelModal');
+        cancelModal.find('.cancelAmountFormat').text(cancelAmountFormat);
+        cancelModal.find('form').attr('action','/account_ext/order/cancel?id='+order_id);
+        cancelModal.modal('show')
     }
 $(function () {
 

@@ -25,6 +25,10 @@ return new class extends Migration
             $table->string('price_format',255);
             $table->decimal('total',15,2);
             $table->string('total_format',255);
+            $table->decimal('discount',15,2);
+            $table->string('discount_format',255);
+            $table->decimal('real_total',15,2);
+            $table->string('real_total_format',255);
             $table->unsignedInteger('reward');
         });
     }

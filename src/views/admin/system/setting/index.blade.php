@@ -90,8 +90,13 @@
                 </div>
                 <div class="tab-pane fade" id="nav-order" role="tabpanel" aria-labelledby="nav-order-tab">
                     <div class="form-group">
-                        <label for="">cancel (fee 30%)</label>
+                        <label for="">cancel over 24h (fee 30%)</label>
                         <input type="text" name="setting[order_cancel_fee]" class="form-control " value="{{$res['setting']['order_cancel_fee']['value']??30}}">
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="">cancel within 24h (fee 10%)</label>
+                        <input type="text" name="setting[order_cancel_fee_24]" class="form-control " value="{{$res['setting']['order_cancel_fee_24']['value']??10}}">
                         <div class="invalid-feedback"></div>
                     </div>
                     <div>
@@ -140,6 +145,18 @@
                                     <option value="{{$key}}" @if(($res['setting']['order_status_service_notify']['value']??2)==$key) selected @endif>{{$val}}</option>
                                 @endforeach
                             @endif
+                            </select>
+                            <div class="invalid-feedback"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Refunded</label>
+                            <select name="setting[order_status_refunded_notify]" class="form-control" >
+                                @if(isset($dict['yes_no']))
+                                    @foreach($dict['yes_no'] as $key=>$val)
+                                        <option value="{{$key}}" @if(($res['setting']['order_status_refunded_notify']['value']??2)==$key) selected @endif>{{$val}}</option>
+                                    @endforeach
+                                @endif
                             </select>
                             <div class="invalid-feedback"></div>
                         </div>

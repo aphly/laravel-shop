@@ -3,6 +3,8 @@
 namespace Aphly\LaravelShop\Controllers\Admin\Sale;
 
 use Aphly\Laravel\Exceptions\ApiException;
+use Aphly\LaravelCommon\Models\Currency;
+use Aphly\LaravelPayment\Models\Payment;
 use Aphly\LaravelShop\Controllers\Admin\Controller;
 use Aphly\LaravelShop\Models\Catalog\Product;
 use Aphly\LaravelShop\Models\Sale\Order;
@@ -47,6 +49,13 @@ class OrderController extends Controller
     {
         $input = $request->all();
         $res['info'] = Order::where(['id'=>$request->input('order_id',0)])->firstOrError();
+        if($input['order_status_id']==8){
+            $fee = intval($input['fee']);
+            list($amount) = Currency::codeFormat((100-$fee)/100*$res['info']->total,$res['info']->currency_code);
+            if($amount>0){
+                (new Payment)->refund_api($res['info']->payment_id,$amount,'System refund -'.$fee.'% transaction fee');
+            }
+        }
         $res['info']->addOrderHistory($res['info'], $input['order_status_id'],$input);
         throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>'/shop_admin/order/view?id='.$res['info']->id]]);
     }

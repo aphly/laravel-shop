@@ -118,6 +118,7 @@ class InstallController extends Controller
         $data[] =['id'=>'5','name'=>'Closed','cn_name'=>'已关闭'];
         $data[] =['id'=>'6','name'=>'Canceled','cn_name'=>'已取消'];
         $data[] =['id'=>'7','name'=>'Service','cn_name'=>'售后'];
+        $data[] =['id'=>'8','name'=>'Refunded','cn_name'=>'已退款'];
 		DB::table('shop_order_status')->insert($data);
 
         $dict = Dict::create(['name' => '售后类型','key'=>'service_action','module_id'=>$this->module_id]);

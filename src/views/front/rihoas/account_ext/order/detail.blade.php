@@ -12,6 +12,8 @@
         .product_title{font-weight: 600;width: 100%;}
         .total_data li:last-child{font-weight: 600}
         .info_left{color:#777;}
+        .product_total{flex-wrap: wrap;}
+        .product_total p{width: 100%;}
     </style>
     <div class="account_info">
         @include('laravel-common-front::account_ext.left_menu')
@@ -39,7 +41,16 @@
                         @endif
                     </ul>
                 </div>
-                @if($res['info']->order_status_id==3)
+                @if($res['info']->order_status_id==1)
+                    @if($res['info']->payment_id)
+                        <a href="/account_ext/order/pay?id={{$res['info']->id}}" class="btn btn-primary">Pay</a>
+                    @endif
+                    <a href="/account_ext/order/close?id={{$res['info']->id}}" data-fn="close_res" class="a_request btn btn-primary" data-_token="{{csrf_token()}}">Close</a>
+                @elseif($res['info']->order_status_id==2)
+                    <div class="detail">
+                        <a href="javascript:void(0)" onclick="cancel('{{$res['cancelAmountFormat']}}',{{$res['info']->id}})" class="btn btn-primary">Cancel</a>
+                    </div>
+                @elseif($res['info']->order_status_id==3)
                     <div class="detail">
                         <a href="/account_ext/service/form?order_id={{$val->order_id}}" class="btn btn-primary">Service</a>
                     </div>
@@ -113,14 +124,17 @@
                                                         <li>{{$v->name}} : {{$v->value}}</li>
                                                         @endforeach
                                                     </ul>
+                                                    @endif
                                                 </div>
-                                                @endif
                                             </div>
                                         </a>
                                     </div>
                                     <div>{{$val->quantity}}</div>
                                     <div>{{$val->price_format}}</div>
-                                    <div>{{$val->total_format}}</div>
+                                    <div class="product_total">
+                                        <p style="font-weight: 600">payment : {{$val->real_total_format}}</p>
+                                        <p style="color: #999;">{{$val->total_format}}</p>
+                                    </div>
                                 </li>
                             @endforeach
                         @endif
@@ -140,7 +154,48 @@
         </div>
     </div>
 </section>
+
+<div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cancelModalLabel">Order cancel</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    with in 24h {{$shop_setting['order_cancel_fee_24']}}% transaction fee <br>
+                    Please be informed that a management, processing and transaction fee ({{$shop_setting['order_cancel_fee']}}% of your total order value) will be applied for the cancellation.
+                </div>
+                <div>
+                    Refund <span class="cancelAmountFormat">0</span>
+                </div>
+                <form action="" method="post" data-fn="cancel_res" class="form_request">
+                    @csrf
+                    <button type="submit">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
+    function close_res(res,_this) {
+        alert_msg(res,true)
+    }
+
+    function cancel_res(res,_this) {
+        alert_msg(res,true)
+    }
+
+    function cancel(cancelAmountFormat,order_id) {
+        let  cancelModal = $('#cancelModal');
+        cancelModal.find('.cancelAmountFormat').text(cancelAmountFormat);
+        cancelModal.find('form').attr('action','/account_ext/order/cancel?id='+order_id);
+        cancelModal.modal('show')
+    }
 $(function () {
 
 })

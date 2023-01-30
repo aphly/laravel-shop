@@ -43,20 +43,24 @@ class Order extends Model
         DB::commit();
     }
 
+    public function rollback($info){
+        $orderProduct = OrderProduct::where('order_id',$info->id)->get()->toArray();
+        foreach ($orderProduct as $val){
+            (new UserCredit)->handle('Reward', $info->uuid, 'point', '+', $val['reward'], 'payment_id#' . $info->payment_id);
+            Product::where(['subtract'=>1,'id'=>$val['product_id']])->decrement('quantity',$val['quantity']);
+            $orderOption = OrderOption::where(['order_id'=>$info->id,'order_product_id'=>$val['id']])->get()->toArray();
+            foreach ($orderOption as $v){
+                ProductOptionValue::where(['id'=>$v['product_option_value_id'],'subtract'=>1])->decrement('quantity',$val['quantity']);
+            }
+        }
+    }
+
     public function addOrderHistory($info, $order_status_id, $input = []){
         $shop_setting = Setting::findAll();
         $notify = $input['notify']??0;
         if($order_status_id==2){
             //Processing
-            $orderProduct = OrderProduct::where('order_id',$info->id)->get()->toArray();
-            foreach ($orderProduct as $val){
-                (new UserCredit)->handle('Reward', $info->uuid, 'point', '+', $val['reward'], 'payment_id#' . $info->payment_id);
-                Product::where(['subtract'=>1,'id'=>$val['product_id']])->decrement('quantity',$val['quantity']);
-                $orderOption = OrderOption::where(['order_id'=>$info->id,'order_product_id'=>$val['id']])->get()->toArray();
-                foreach ($orderOption as $v){
-                    ProductOptionValue::where(['id'=>$v['product_option_value_id'],'subtract'=>1])->decrement('quantity',$val['quantity']);
-                }
-            }
+            $this->rollback($info);
             if($shop_setting['order_status_processing_notify']==1 || $notify){
                 //send email
             }
@@ -67,15 +71,7 @@ class Order extends Model
             }
         }else if($order_status_id==6){
             //Canceled
-            $orderProduct = OrderProduct::where('order_id',$info->id)->get()->toArray();
-            foreach ($orderProduct as $val){
-                (new UserCredit)->handle('Reward', $info->uuid, 'point', '-', $val['reward'], 'cancel#' . $info->payment_id);
-                Product::where(['subtract'=>1,'id'=>$val['product_id']])->increment('quantity',$val['quantity']);
-                $orderOption = OrderOption::where(['order_id'=>$info->id,'order_product_id'=>$val['id']])->get()->toArray();
-                foreach ($orderOption as $v){
-                    ProductOptionValue::where(['id'=>$v['product_option_value_id'],'subtract'=>1])->increment('quantity',$val['quantity']);
-                }
-            }
+            $this->rollback($info);
             if($shop_setting['order_status_canceled_notify']==1 || $notify){
                 //send email
             }
@@ -84,7 +80,12 @@ class Order extends Model
             if($shop_setting['order_status_service_notify']==1 || $notify){
                 //send email
             }
-
+        }else if($order_status_id==8){
+            //Refunded
+            $this->rollback($info);
+            if($shop_setting['order_status_refunded_notify']==1 || $notify){
+                //send email
+            }
         }
 
         if($input['override']??false){

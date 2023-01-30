@@ -31,9 +31,6 @@
                                     @endif
                                     <a href="/account_ext/order/close?id={{$val->id}}" data-fn="close_res" class="a_request" data-_token="{{csrf_token()}}">close</a>
                                 @endif
-                                @if($val->orderStatus->id==2)
-                                    <a href="javascript:void(0)" onclick="cancel('{{$val->cancelAmountFormat}}',{{$val->id}})">cancel</a>
-                                @endif
                             </span>
                         </li>
                     @endforeach
@@ -45,32 +42,6 @@
         </div>
     </div>
 </section>
-
-<div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="cancelModalLabel">Order cancel</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div>
-                    Please be informed that a management, processing and transaction fee ({{$shop_setting['order_cancel_fee']}}% of your total order value) will be applied for the cancellation.
-                </div>
-                <div>
-                    Refund <span class="cancelAmountFormat">0</span>
-                </div>
-                <form action="" method="post" data-fn="cancel_res" class="form_request">
-                    @csrf
-                    <button type="submit">Cancel</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 <style>
     .list_index{padding: 0 10px;}
@@ -84,16 +55,7 @@
         alert_msg(res,true)
     }
 
-    function cancel_res(res,_this) {
-        alert_msg(res,true)
-    }
 
-    function cancel(cancelAmountFormat,order_id) {
-        let  cancelModal = $('#cancelModal');
-        cancelModal.find('.cancelAmountFormat').text(cancelAmountFormat);
-        cancelModal.find('form').attr('action','/account_ext/order/cancel?id='+order_id);
-        cancelModal.modal('show')
-    }
 $(function () {
 
 })

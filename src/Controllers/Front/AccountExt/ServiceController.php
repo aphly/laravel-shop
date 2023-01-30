@@ -59,12 +59,13 @@ class ServiceController extends Controller
                     $val = intval($val);
                     $price = $res['orderProduct'][$key]['price']??0;
                     $total = $price*$val;
+                    list(,$total_format) = Currency::codeFormat($total,$res['orderInfo']->currency_code);
                     $arr[] = [
                         'service_id'=>$info->id,
                         'order_product_id'=>$key,
                         'quantity'=>$val,
                         'total'=>$total,
-                        'total_format'=>Currency::codeFormat($total,$res['orderInfo']->currency_code)
+                        'total_format'=>$total_format
                     ];
                 }
                 ServiceProduct::insert($arr);

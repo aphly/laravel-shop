@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('shop_order_history', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('order_id')->index();
-            $table->unsignedInteger('order_status_id');
+            $table->unsignedInteger('order_status_id')->index();
             $table->tinyInteger('notify')->default(0)->nullable();
             $table->text('comment')->nullable();
             $table->unsignedBigInteger('created_at');

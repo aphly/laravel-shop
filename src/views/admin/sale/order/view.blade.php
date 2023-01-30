@@ -152,6 +152,16 @@
                             <input type="checkbox" name="override" value="1">
                             <div class="invalid-feedback"></div>
                         </div>
+                        <div class="form-group">
+                            <label for="">邮件通知</label>
+                            <input type="checkbox" name="notify" value="1">
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group d-none" id="fee">
+                            <label for="">退款手续费（%）；当手续费设置为100，代表不退款</label>
+                            <input type="number" name="fee" class="form-control" value="5">
+                            <div class="invalid-feedback"></div>
+                        </div>
                         <div class="form-group d-none" id="shipping_no">
                             <label for="">运单</label>
                             <input type="text" name="shipping_no" class="form-control" value="">
@@ -176,10 +186,13 @@
 <script>
 $(function () {
     $('#order_status_id').change(function () {
-        if($(this).val()==3){
+        if($(this).val()==3) {
             $('#shipping_no').removeClass('d-none')
+        }else if($(this).val()==8){
+            $('#fee').removeClass('d-none')
         }else{
             $('#shipping_no').addClass('d-none')
+            $('#fee').addClass('d-none')
         }
     })
 })

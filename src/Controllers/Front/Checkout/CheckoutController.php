@@ -134,7 +134,7 @@ class CheckoutController extends Controller
             $input['total_format'] = $res['total_data']['total_format'];
 
             $input['comment'] = '';
-            $currency = Currency::defaultCurr(true);
+            list(,,$currency) = Currency::allDefaultCurr();
             if(!$currency){
                 throw new ApiException(['code' => 4, 'msg' => 'currency error','data'=>['redirect'=>'/cart']]);
             }
@@ -153,7 +153,6 @@ class CheckoutController extends Controller
                     $orderTotal_input[] = $val;
                 }
                 OrderTotal::insert($orderTotal_input);
-
                 foreach ($res['list'] as $val){
                     $orderProduct_input = $val;
                     $orderProduct_input['order_id'] = $order->id;

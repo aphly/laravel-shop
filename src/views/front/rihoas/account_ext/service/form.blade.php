@@ -10,6 +10,16 @@
         .service_action input{ height: 44px;margin-right: 10px;}
         .service_action>div{margin-right: 20px;}
         .service_product{margin-bottom: 20px;}
+        .service_product li{margin-bottom: 10px;display: flex;justify-content: space-between; padding: 0 10px;}
+        .serviceOrderOption{color: #999;display: flex;}
+        .serviceOrderOption dd{margin-right: 10px;}
+        .serviceOrderOptionx{display: flex;}
+        .serviceOrderOptionx dd{margin-right: 10px;}
+        .service_product1{display: flex;justify-content: space-between;align-items: center;}
+        .service_product1 .quantity{}
+        .service_product1 input[type="checkbox"]{ width: 20px; height: 20px;cursor: pointer;}
+        .orderProductImg{width: 90px;height: 90px;margin-right: 10px;}
+        .orderProductImg img{width: 100%;height: 100%;}
     </style>
     <div class="account_info">
         @include('laravel-common-front::account_ext.left_menu')
@@ -58,18 +68,40 @@
                     <ul class="service_product">
                         @foreach($res['orderProduct'] as $val)
                         <li>
-                            <input type="checkbox" class="order_product_id" name="order_product[{{$val->id}}]" id="service_product_{{$val->id}}" checked value="{{$val->quantity}}">
-                            <label for="service_product_{{$val->id}}">{{$val->name}} (quantity:{{$val->quantity}})</label>
-                            <input type="number" class="quantity" onblur="if(value<1){value=1}else if(value>={{$val->quantity}}){value={{$val->quantity}}}" value="{{$val->quantity}}">
+                            <div class="d-flex">
+                                <div class="orderProductImg">
+                                    <img src="{{$val->image}}" alt="">
+                                </div>
+                                <div class="service_product2">
+                                    <div>{{$val->name}}</div>
+                                    <dl class="serviceOrderOption">
+                                        @if($val->orderOption)
+                                            @foreach($val->orderOption as $v)
+                                                <dd>{{$v->name}} : {{$v->value}}</dd>
+                                            @endforeach
+                                        @endif
+                                    </dl>
+                                    <dl class="serviceOrderOptionx">
+                                        <dd>Quantity:{{$val->quantity}} </dd>
+                                        <dd>Price:{{$val->price_format}}</dd>
+                                    </dl>
+                                </div>
+                            </div>
+                            <div class="service_product1">
+                                <div>
+                                    <input type="checkbox" class="order_product_id" name="order_product[{{$val->id}}]" id="service_product_{{$val->id}}" checked value="{{$val->quantity}}">
+                                </div>
+                                <input type="number" class="quantity d-none" onblur="if(value<1){value=1}else if(value>={{$val->quantity}}){value={{$val->quantity}}}" value="{{$val->quantity}}">
+                            </div>
                         </li>
                         @endforeach
                     </ul>
 
                     <div class="form-group">
                         <p class="title_p">Is opened: <b>*</b></p>
-                        @if(isset($dict['yes_no']))
+                        @if(isset($dict['shop_yes_no']))
                         <select name="is_opened" class="form-control">
-                            @foreach($dict['yes_no'] as $key=>$val)
+                            @foreach($dict['shop_yes_no'] as $key=>$val)
                                 <option value="{{$key}}" @if(($res['info']->is_opened??1)==$key) selected @endif>{{$val}}</option>
                             @endforeach
                         </select>
@@ -82,7 +114,7 @@
                     </div>
 
                     <div class="form-group d-flex">
-                        <button class="btn-default  save-address" type="submit">Request</button>
+                        <button class="btn-default save-address" type="submit">Request</button>
                     </div>
 
                 </form>

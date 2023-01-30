@@ -160,7 +160,7 @@ class Cart extends Model
                         $stock = false;
                     }
 
-                    $price = ($price + $option_price);
+                    list($price,$price_format) = Currency::format($price + $option_price,2);
                     $total = $price * $cart['quantity'];
                     $cart['product']['image_src'] = ProductImage::render($cart['product']['image'],true);
                     $list[$cart['id']] = $cart;
@@ -168,9 +168,13 @@ class Cart extends Model
                     $list[$cart['id']]['option_value_str'] = implode(' / ',$option_value_arr);
                     $list[$cart['id']]['stock'] = $stock;
                     $list[$cart['id']]['price'] = $price;
-                    $list[$cart['id']]['price_format'] = Currency::format($price);
+                    $list[$cart['id']]['price_format'] = $price_format;
                     $list[$cart['id']]['total'] = $total;
-                    $list[$cart['id']]['total_format'] = Currency::format($total);
+                    $list[$cart['id']]['total_format'] = Currency::_format($total);
+                    $list[$cart['id']]['discount'] = 0;
+                    $list[$cart['id']]['discount_format'] = Currency::_format(0);
+                    $list[$cart['id']]['real_total'] = $total;
+                    $list[$cart['id']]['real_total_format'] = Currency::_format($total);
                     $list[$cart['id']]['shipping'] = $cart['product']['shipping'];
                     $list[$cart['id']]['reward'] = $reward * $cart['quantity'];
                     $list[$cart['id']]['weight'] = ($cart['product']['weight'] + $option_weight) * $cart['quantity'];
@@ -250,7 +254,8 @@ class Cart extends Model
             'totals' => &$totals,
             'total'  => &$total
         ];
-        list($value,$value_format) = Currency::format($this->getSubTotal(),2);
+        $value = $this->getSubTotal();
+        $value_format = Currency::_format($value);
         $total_data['totals']['sub_total'] = [
             'title'      => 'SubTotal',
             'value'      => $value,
@@ -260,9 +265,10 @@ class Cart extends Model
         ];
         $total_data['total'] += $value;
 
-		(new Coupon())->getTotal($total_data);
+		$cart_ext = (new Coupon)->getTotal($total_data);
 
-		(new Shipping())->getTotal($total_data);
+		(new Shipping)->getTotal($total_data);
+
         $total_data['total_format'] = Currency::_format($total_data['total']);
         $total_data['totals']['total'] = [
             'title'      => 'Total',
@@ -271,6 +277,11 @@ class Cart extends Model
             'sort' => 99,
             'ext'=>''
         ];
+        if(!empty($cart_ext)){
+            foreach ($list as $key=>$val){
+                $list[$key] = array_merge($val,$cart_ext[$key]);
+            }
+        }
         return [$count,$list,$total_data];
     }
 }

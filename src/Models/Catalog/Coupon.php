@@ -20,6 +20,8 @@ class Coupon extends Model
         'uses_customer','status'
     ];
 
+    static public $cart_ext = false;
+
     public function getCoupon($code) {
         $status = true;
         $time = time();
@@ -93,6 +95,7 @@ class Coupon extends Model
     }
 
     public function getTotal($total_data) {
+        $cart_ext = [];
         $coupon = Cookie::get('shop_coupon');
         if($coupon){
             $info = $this->getCoupon($coupon);
@@ -111,8 +114,11 @@ class Coupon extends Model
                 }
                 if ($info['type'] == 2) {
                     $info['discount'] = min($info['discount'], $sub_total);
+                    $info['discount'] = Currency::format($info['discount'],1);
                 }
-                foreach ($cart->getList() as $product) {
+
+
+                foreach ($cart->getList() as $key=>$product) {
                     $discount = 0;
                     if (!$info['product']) {
                         $status = true;
@@ -126,23 +132,39 @@ class Coupon extends Model
                             $discount = $product['total'] / 100 * $info['discount'];
                         }
                     }
+                    $discount = Currency::numberFormat($discount);
                     $discount_total += $discount;
+                    $cart_ext[$key]['discount'] = $discount;
+                    $cart_ext[$key]['discount_format'] = Currency::_format($discount);
+                    $real_total = $product['total'] - $discount;
+                    $cart_ext[$key]['real_total'] = $real_total;
+                    $cart_ext[$key]['real_total_format'] = Currency::_format($real_total);
                 }
+
+
                 if ($discount_total > $total_data['total']) {
                     $discount_total = $total_data['total'];
+                    foreach ($cart->getList() as $key=>$product) {
+                        $cart_ext[$key]['discount'] = $product['total'];
+                        $cart_ext[$key]['discount_format'] = Currency::_format($product['total']);
+                        $cart_ext[$key]['real_total'] = 0;
+                        $cart_ext[$key]['real_total_format'] = Currency::_format(0);
+                    }
                 }
+
                 if ($discount_total > 0) {
                     $total_data['totals']['coupon'] = array(
                         'title'      => 'Coupon',
                         'value'      => $discount_total,
-                        'value_format'=> '-'.Currency::format($discount_total),
+                        'value_format' => '-'.Currency::_format($discount_total),
                         'sort_order' => 2,
-                        'ext'=>$coupon
+                        'ext' => $coupon
                     );
                     $total_data['total'] -= $discount_total;
                 }
             }
         }
+        return $cart_ext;
     }
 
     public function getCouponHistoriesByCoupon($coupon) {

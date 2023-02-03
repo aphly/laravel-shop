@@ -8,6 +8,7 @@ use Aphly\LaravelCommon\Models\User;
 use Aphly\LaravelShop\Controllers\Front\Controller;
 
 use Aphly\LaravelShop\Models\Sale\Order;
+use Aphly\LaravelShop\Models\Sale\OrderHistory;
 use Aphly\LaravelShop\Models\Sale\OrderProduct;
 use Aphly\LaravelShop\Models\Sale\Service;
 use Aphly\LaravelShop\Models\Sale\ServiceHistory;
@@ -45,32 +46,40 @@ class ServiceController extends Controller
     public function save(Request $request){
         $info = Service::where(['uuid'=>User::uuid(),'order_id'=>$request->query('order_id',0)])->where('delete_at',0)->first();
         if(!empty($info)){
-            throw new ApiException(['code'=>1,'msg'=>'Orders service','data'=>['redirect'=>'/account_ext/service']]);
+            throw new ApiException(['code'=>0,'msg'=>'Orders have been requested for after-sales','data'=>['redirect'=>'/account_ext/service']]);
         }else{
             $res = $this->service_pre($request);
-            $input = $request->all();
-            $input['uuid'] = User::uuid();
-            $info = Service::create($input);
-            $info->addServiceHistory($info,1);
-            if(!empty($input['order_product'])){
-                $arr = [];
-                foreach ($input['order_product'] as $key=>$val){
-                    $key = intval($key);
-                    $val = intval($val);
-                    $price = $res['orderProduct'][$key]['price']??0;
-                    $total = $price*$val;
-                    list(,$total_format) = Currency::codeFormat($total,$res['orderInfo']->currency_code);
-                    $arr[] = [
-                        'service_id'=>$info->id,
-                        'order_product_id'=>$key,
-                        'quantity'=>$val,
-                        'total'=>$total,
-                        'total_format'=>$total_format
-                    ];
+            if($res['orderInfo']->status==3){
+                $orderHistory = OrderHistory::where(['order_status_id'=>2,'order_id'=>$res['orderInfo']->id])->firstOrError();
+                if($orderHistory->created_at->timestamp+180*24*3600>time()){
+                    throw new ApiException(['code'=>2,'msg'=>'After-sales time has expired']);
                 }
-                ServiceProduct::insert($arr);
+                $input = $request->all();
+                $input['uuid'] = User::uuid();
+                $info = Service::create($input);
+                $info->addServiceHistory($info,1);
+                if(!empty($input['order_product'])){
+                    $arr = [];
+                    foreach ($input['order_product'] as $key=>$val){
+                        $key = intval($key);
+                        $val = intval($val);
+                        $price = $res['orderProduct'][$key]['price']??0;
+                        $total = $price*$val;
+                        list(,$total_format) = Currency::codeFormat($total,$res['orderInfo']->currency_code);
+                        $arr[] = [
+                            'service_id'=>$info->id,
+                            'order_product_id'=>$key,
+                            'quantity'=>$val,
+                            'total'=>$total,
+                            'total_format'=>$total_format
+                        ];
+                    }
+                    ServiceProduct::insert($arr);
+                }
+                throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>'/account_ext/service']]);
+            }else{
+                throw new ApiException(['code'=>1,'msg'=>'order error']);
             }
-            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>'/account_ext/service']]);
         }
     }
 

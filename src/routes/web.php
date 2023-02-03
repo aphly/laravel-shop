@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::redirect('/contact_us', 'news/1');
 
 Route::middleware(['web'])->group(function () {
     Route::match(['get', 'post'],'/home1', 'Aphly\LaravelShop\Controllers\Front\HomeController@home1');

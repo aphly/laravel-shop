@@ -99,6 +99,17 @@
                         <input type="text" name="setting[order_cancel_fee_24]" class="form-control " value="{{$res['setting']['order_cancel_fee_24']['value']??10}}">
                         <div class="invalid-feedback"></div>
                     </div>
+                    <div class="form-group">
+                        <label for="">exchange (是否打开)</label>
+                        <select name="setting[exchange]" class="form-control" >
+                            @if(isset($dict['yes_no']))
+                                @foreach($dict['yes_no'] as $key=>$val)
+                                    <option value="{{$key}}" @if(($res['setting']['exchange']['value']??2)==$key) selected @endif>{{$val}}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                        <div class="invalid-feedback"></div>
+                    </div>
                     <div>
                         <div>
                             Order status email notify
@@ -138,6 +149,18 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="">Refunded</label>
+                            <select name="setting[order_status_refunded_notify]" class="form-control" >
+                                @if(isset($dict['yes_no']))
+                                    @foreach($dict['yes_no'] as $key=>$val)
+                                        <option value="{{$key}}" @if(($res['setting']['order_status_refunded_notify']['value']??2)==$key) selected @endif>{{$val}}</option>
+                                    @endforeach
+                                @endif
+                            </select>
+                            <div class="invalid-feedback"></div>
+                        </div>
+
+                        <div class="form-group">
                             <label for="">Service</label>
                             <select name="setting[order_status_service_notify]" class="form-control" >
                             @if(isset($dict['yes_no']))
@@ -149,17 +172,7 @@
                             <div class="invalid-feedback"></div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="">Refunded</label>
-                            <select name="setting[order_status_refunded_notify]" class="form-control" >
-                                @if(isset($dict['yes_no']))
-                                    @foreach($dict['yes_no'] as $key=>$val)
-                                        <option value="{{$key}}" @if(($res['setting']['order_status_refunded_notify']['value']??2)==$key) selected @endif>{{$val}}</option>
-                                    @endforeach
-                                @endif
-                            </select>
-                            <div class="invalid-feedback"></div>
-                        </div>
+
 
                     </div>
 

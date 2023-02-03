@@ -95,6 +95,7 @@
                 </div>
 
                 <div class="product">
+                    <div class="title">The service details</div>
                     @if($res['serviceProduct'])
                         <ul>
                             @foreach($res['serviceProduct'] as $val)

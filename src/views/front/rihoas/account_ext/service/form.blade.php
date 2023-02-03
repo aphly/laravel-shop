@@ -59,10 +59,12 @@
                             <input type="radio" name="service_action_id" id="service_action_id_2" required checked value="2" class="form-control">
                             <label for="service_action_id_2">Return</label>
                         </div>
+                        @if($shop_setting['exchange']==1)
                         <div class="d-flex">
                             <input type="radio" name="service_action_id" id="service_action_id_3" required value="3" class="form-control">
                             <label for="service_action_id_3">Exchange</label>
                         </div>
+                        @endif
                     </div>
 
                     <ul class="service_product">
@@ -83,7 +85,7 @@
                                     </dl>
                                     <dl class="serviceOrderOptionx">
                                         <dd>Quantity:{{$val->quantity}} </dd>
-                                        <dd>Price:{{$val->price_format}}</dd>
+                                        <dd>Payment:{{$val->real_total_format}}</dd>
                                     </dl>
                                 </div>
                             </div>

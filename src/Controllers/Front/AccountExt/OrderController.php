@@ -3,11 +3,13 @@
 namespace Aphly\LaravelShop\Controllers\Front\AccountExt;
 
 use Aphly\Laravel\Exceptions\ApiException;
+use Aphly\Laravel\Mail\MailSend;
 use Aphly\LaravelCommon\Models\Currency;
 use Aphly\LaravelCommon\Models\User;
 use Aphly\LaravelPayment\Models\Payment;
 use Aphly\LaravelPayment\Models\PaymentRefund;
 use Aphly\LaravelShop\Controllers\Front\Controller;
+use Aphly\LaravelShop\Mail\Order\Status\Processing;
 use Aphly\LaravelShop\Models\Sale\Order;
 use Aphly\LaravelShop\Models\Sale\OrderHistory;
 use Aphly\LaravelShop\Models\Sale\OrderProduct;
@@ -80,6 +82,7 @@ class OrderController extends Controller
             $res['info']->addOrderHistory($res['info'], 6);
             if($this->shop_setting['order_status_canceled_notify']==1){
                 //send email
+                (new MailSend())->do($res['info']->email, new Processing($res['info']));
             }
             throw new ApiException(['code'=>0,'msg'=>'order option success','data'=>['redirect'=>'/account_ext/order']]);
         }else{

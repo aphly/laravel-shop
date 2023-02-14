@@ -13,35 +13,16 @@ use Aphly\LaravelShop\Models\Catalog\Product;
 use Aphly\LaravelShop\Models\Catalog\ProductImage;
 use Aphly\LaravelShop\Models\Catalog\Review;
 use Aphly\LaravelShop\Models\Catalog\ReviewImage;
-use Aphly\LaravelShop\Models\Catalog\Shipping;
 use Aphly\LaravelShop\Models\Checkout\Cart;
-use Aphly\LaravelShop\Models\Sale\OrderProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-
-    public function category(Request $request)
+    public function listData($filter_data,$res)
     {
-        $res['title'] = '';
-        $category_info = Category::where('status',1)->where('id',$request->query('id',0))->first();
-        if(!empty($category_info)){
-            $filter_data = [
-                'category_id' => $category_info->id,
-                'filter'      => $request->query('filter',false),
-                'name'      => $request->query('name',false),
-                'sort'      => $request->query('sort',false),
-            ];
-        }else{
-            $filter_data = [
-                'name'      => $request->query('name',false),
-                'sort'      => $request->query('sort',false),
-            ];
-        }
         $product = new Product;
         $res['list'] = $product->getList($filter_data);
-
         $product_ids = [];
         foreach ($res['list'] as $key=>$val){
             $product_ids[] = $val->id;
@@ -53,13 +34,38 @@ class ProductController extends Controller
         $res['product_option'] = $product->optionValueByName($product_ids);
         $res['product_image'] = $product->imgByIds($product_ids);
         $res['wishlist_product_ids'] = Wishlist::$product_ids;
+        return $res;
+    }
+
+    public function index(Request $request)
+    {
+        $res['title'] = 'Index';
+        $filter_data = [
+            'filter'      => $request->query('filter',false),
+            'name'      => $request->query('name',false),
+            'sort'      => $request->query('sort',false),
+        ];
+        $res = $this->listData($filter_data,$res);
+        return $this->makeView('laravel-shop-front::product.index',['res'=>$res]);
+    }
+
+    public function category(Request $request)
+    {
+        $res['title'] = 'Category';
+        $category_info = Category::where('status',1)->where('id',$request->id)->firstOr404();
+        $filter_data = [
+            'category_id' => $category_info->id,
+            'filter'      => $request->query('filter',false),
+            'name'      => $request->query('name',false),
+            'sort'      => $request->query('sort',false),
+        ];
+        $res = $this->listData($filter_data,$res);
         return $this->makeView('laravel-shop-front::product.category',['res'=>$res]);
     }
 
-
     public function detail(Request $request)
     {
-        $res['title'] = '';
+        $res['title'] = 'Detail';
         $res['info'] = Product::where('id',$request->id)->with('desc')->firstOrError();
 
         $res['quantityInCart'] = (new Cart)->quantityInCart($request->id);

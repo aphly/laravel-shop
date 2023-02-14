@@ -13,8 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::redirect('/contact_us', 'news/1');
-
 Route::middleware(['web'])->group(function () {
     Route::match(['get', 'post'],'/home1', 'Aphly\LaravelShop\Controllers\Front\HomeController@home1');
 
@@ -71,8 +69,11 @@ Route::middleware(['web'])->group(function () {
         Route::get('/coupon/{code}', 'Aphly\LaravelShop\Controllers\Front\Common\CouponController@ajax');
 
         //product
-        Route::get('/product/category', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@category');
+        Route::get('/product', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@index');
+        Route::get('/product/category/{id}', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@category');
         Route::get('/product/{id}', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@detail')->where('id', '[0-9]+');
+        Route::redirect('/product/new', '/product?sort=sale');
+        Route::redirect('/product/best', '/product?sort=new');
 
         //cart
         Route::get('/cart', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@index');

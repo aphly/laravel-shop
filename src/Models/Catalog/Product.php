@@ -62,11 +62,14 @@ class Product extends Model
                 $sql = DB::table('shop_product_category as pc');
             }
             $sql->when($filter, function ($query) {
-                    return $query->leftJoin('shop_product_filter as pf','pc.product_id','=','pf.product_id');
-                });
+                return $query->leftJoin('shop_product_filter as pf','pc.product_id','=','pf.product_id');
+            });
             $sql->leftJoin('shop_product as p','pc.product_id','=','p.id' );
         }else{
             $sql = DB::table('shop_product as p');
+            $sql->when($filter, function ($query) {
+                return $query->leftJoin('shop_product_filter as pf','p.id','=','pf.product_id');
+            });
         }
         $sql->where('p.status',1)->where('p.date_available','<=',$time);
         if($data['category_id']){
@@ -75,14 +78,15 @@ class Product extends Model
             }else{
                 $sql->where('pc.category_id', $data['category_id']);
             }
-            if($filter){
-                $implode = [];
-                $filters = explode(',', $filter);
-                foreach ($filters as $filter_id) {
-                    $implode[] = (int)$filter_id;
-                }
-                $sql->whereIn('pf.filter_id',$implode);
+        }
+        if($filter){
+            $implode = [];
+            $filters = explode(',', $filter);
+            foreach ($filters as $filter_id) {
+                $implode[] = (int)$filter_id;
             }
+            $implode = array_filter($implode);
+            $sql->whereIn('pf.filter_id',$implode);
         }
         if($data['name']){
             $words = explode(' ', trim($data['name']));

@@ -14,6 +14,7 @@
         .info_left{color:#777;}
         .product_total{flex-wrap: wrap;}
         .product_total p{width: 100%;}
+        .total_format{text-decoration: line-through;font-size: 12px;color: #999;margin-left: 5px;}
     </style>
     <div class="account_info">
         @include('laravel-common-front::account_ext.left_menu')
@@ -132,8 +133,11 @@
                                     <div>{{$val->quantity}}</div>
                                     <div>{{$val->price_format}}</div>
                                     <div class="product_total">
-                                        <p style="font-weight: 600">payment : {{$val->real_total_format}}</p>
-                                        <p style="color: #999;">{{$val->total_format}}</p>
+                                        @if($val->real_total_format==$val->total_format)
+                                            <p >{{$val->real_total_format}} </p>
+                                        @else
+                                            <p >{{$val->real_total_format}} <span class="total_format"> {{$val->total_format}} </span></p>
+                                        @endif
                                     </div>
                                 </li>
                             @endforeach

@@ -66,8 +66,7 @@ class ProductController extends Controller
     public function detail(Request $request)
     {
         $res['title'] = 'Detail';
-        $res['info'] = Product::where('id',$request->id)->with('desc')->firstOrError();
-
+        $res['info'] = Product::where('id',$request->id)->with('desc')->firstOr404();
         $res['quantityInCart'] = (new Cart)->quantityInCart($request->id);
         list($res['info']->price,$res['info']->price_format) = Currency::format($res['info']->price,2);
         $res['info_img'] = $res['info']->imgById($res['info']->id);

@@ -43,7 +43,7 @@ class Order extends Model
         DB::commit();
     }
 
-    public function rollback($info){
+    public function handle($info){
         $orderProduct = OrderProduct::where('order_id',$info->id)->get()->toArray();
         foreach ($orderProduct as $val){
             (new UserCredit)->handle('Reward', $info->uuid, 'point', '+', $val['reward'], 'payment_id#' . $info->payment_id);
@@ -55,12 +55,24 @@ class Order extends Model
         }
     }
 
+    public function rollback($info){
+        $orderProduct = OrderProduct::where('order_id',$info->id)->get()->toArray();
+        foreach ($orderProduct as $val){
+            (new UserCredit)->handle('Reward', $info->uuid, 'point', '-', $val['reward'], 'cancel#' . $info->payment_id);
+            Product::where(['subtract'=>1,'id'=>$val['product_id']])->increment('quantity',$val['quantity']);
+            $orderOption = OrderOption::where(['order_id'=>$info->id,'order_product_id'=>$val['id']])->get()->toArray();
+            foreach ($orderOption as $v){
+                ProductOptionValue::where(['id'=>$v['product_option_value_id'],'subtract'=>1])->increment('quantity',$val['quantity']);
+            }
+        }
+    }
+
     public function addOrderHistory($info, $order_status_id, $input = []){
         $shop_setting = Setting::findAll();
         $notify = $input['notify']??0;
         if($order_status_id==2){
             //Processing
-            $this->rollback($info);
+            $this->handle($info);
             if($shop_setting['order_status_processing_notify']==1 || $notify){
                 //send email
             }
@@ -91,6 +103,7 @@ class Order extends Model
         if($input['override']??false){
             OrderHistory::where(['order_id'=>$info->id,'order_status_id'=>$order_status_id])->delete();
         }
+
         $orderHistory = OrderHistory::create([
             'order_id'=>$info->id,
             'order_status_id'=>$order_status_id,

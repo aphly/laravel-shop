@@ -112,7 +112,7 @@ class InstallController extends Controller
 
         $data=[];
 		$data[] =['id'=>'1','name'=>'Pending payment','cn_name'=>'待支付'];
-		$data[] =['id'=>'2','name'=>'Processing','cn_name'=>'买家已支付'];
+		$data[] =['id'=>'2','name'=>'Paid','cn_name'=>'买家已支付'];
 		$data[] =['id'=>'3','name'=>'Shipped','cn_name'=>'已寄送'];
         $data[] =['id'=>'4','name'=>'Complete','cn_name'=>'完成'];
         $data[] =['id'=>'5','name'=>'Closed','cn_name'=>'已关闭'];

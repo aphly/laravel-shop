@@ -15,6 +15,8 @@
         .product_total{flex-wrap: wrap;}
         .product_total p{width: 100%;}
         .total_format{text-decoration: line-through;font-size: 12px;color: #999;margin-left: 5px;}
+        .cancel_btn{border:none;background: #ffd539;color:#333;border-radius: 4px;font-weight: 600;}
+        .cancel2{margin-bottom: 20px;margin-top: 20px;}
     </style>
     <div class="account_info">
         @include('laravel-common-front::account_ext.left_menu')
@@ -169,16 +171,19 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div>
-                    with in 24h {{$shop_setting['order_cancel_fee_24']}}% transaction fee <br>
-                    Please be informed that a management, processing and transaction fee ({{$shop_setting['order_cancel_fee']}}% of your total order value) will be applied for the cancellation.
+                <div class="cancel1">
+                    <p>Please note that the cancellation of the order will be charged with management fee,
+                        processing fee and transaction fee, {{$shop_setting['order_cancel_fee_24']}}% of the transaction fee will be charged within 24 hours,
+                        and {{$shop_setting['order_cancel_fee']}}% of the transaction fee will be charged over 24 hours</p>
                 </div>
-                <div>
+                <div class="cancel2">
                     Refund <span class="cancelAmountFormat">0</span>
                 </div>
-                <form action="" method="post" data-fn="cancel_res" class="form_request">
+                <form action="" method="post" data-fn="cancel_res" class="form_request cancel3">
                     @csrf
-                    <button type="submit">Cancel</button>
+                    <div class="d-flex flex-row-reverse">
+                        <button type="submit" class="cancel_btn btn" style="">Cancel</button>
+                    </div>
                 </form>
             </div>
         </div>

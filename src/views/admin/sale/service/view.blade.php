@@ -24,10 +24,13 @@
                 <div class="info">
                     <div class="ititle">Info</div>
                     <ul>
-                        <li><div>订单id:</div><div>{{$res['info']->id}}</div></li>
-                        <li><div>邮箱:</div><div>{{$res['info']->email}}</div></li>
+                        <li><div>id:</div><div>{{$res['info']->id}}</div></li>
+                        <li><div>订单id:</div><div>{{$res['info']->order->id}}</div></li>
+                        <li><div>邮箱:</div><div>{{$res['info']->order->email}}</div></li>
                         <li><div>用户uuid:</div><div>{{$res['info']->uuid}}</div></li>
-                        <li><div>订单时间:</div><div>{{$res['info']->created_at}}</div></li>
+                        <li><div>申请时间:</div><div>{{$res['info']->created_at}}</div></li>
+                        <li><div>是否收到货:</div><div>{{$res['info']->is_received}}</div></li>
+                        <li><div>原因:</div><div>{{$res['info']->reason}}</div></li>
                     </ul>
                 </div>
 
@@ -35,6 +38,44 @@
         </div>
         <div class="detail">
             <div class="title">The order product</div>
+            <ul class="product">
+                <li>
+                    <div>商品名称</div>
+                    <div>数量</div>
+                    <div>价格</div>
+                    <div>小计</div>
+                </li>
+                @if($res['orderProduct'])
+                    @foreach($res['orderProduct'] as $val)
+                        <li>
+                            <div>
+                                <a style="display: flex;" href="/product/{{$val->product_id}}">
+                                    <img src="{{$val->image}}">
+                                    <div style="display: flex;align-items: center;">
+                                        <div>
+                                            <div class="product_title wenzi">{{$val->name}}</div>
+                                            @if($val->orderOption)
+                                                <ul class="option">
+                                                    @foreach($val->orderOption as $v)
+                                                        <li>{{$v->name}} : {{$v->value}}</li>
+                                                    @endforeach
+                                                </ul>
+                                        </div>
+                                        @endif
+                                    </div>
+                                </a>
+                            </div>
+                            <div>{{$val->quantity}}</div>
+                            <div>{{$val->price_format}}</div>
+                            <div>{{$val->total_format}}</div>
+                        </li>
+                    @endforeach
+                @endif
+            </ul>
+        </div>
+        @if($res['serviceProduct']->count())
+        <div class="detail">
+            <div class="title">The return product</div>
             <div class="detail_info">
                 <ul class="product">
                     <li>
@@ -44,33 +85,31 @@
                         <div>购买价格</div>
                         <div>退款价格</div>
                     </li>
-                    @if($res['serviceProduct'])
-                        @foreach($res['serviceProduct'] as $val)
-                            <li>
-                                <div>
-                                    <a style="display: flex;" href="/product/{{$val->product_id}}">
-                                        <img src="{{$val->orderProduct->image}}">
-                                        <div style="display: flex;align-items: center;">
-                                            <div>
-                                                    <div class="product_title wenzi">{{$val->orderProduct->name}}</div>
-                                                @if($val->orderOption)
-                                                    <ul class="option">
-                                                        @foreach($val->orderOption as $v)
-                                                            <li>{{$v->name}} : {{$v->value}}</li>
-                                                        @endforeach
-                                                    </ul>
-                                                @endif
-                                            </div>
+                    @foreach($res['serviceProduct'] as $val)
+                        <li>
+                            <div>
+                                <a style="display: flex;" href="/product/{{$val->product_id}}">
+                                    <img src="{{$val->orderProduct->image}}">
+                                    <div style="display: flex;align-items: center;">
+                                        <div>
+                                            <div class="product_title wenzi">{{$val->orderProduct->name}}</div>
+                                            @if($val->orderOption)
+                                                <ul class="option">
+                                                    @foreach($val->orderOption as $v)
+                                                        <li>{{$v->name}} : {{$v->value}}</li>
+                                                    @endforeach
+                                                </ul>
+                                            @endif
                                         </div>
-                                    </a>
-                                </div>
-                                <div>{{$val->orderProduct->quantity}}</div>
-                                <div>{{$val->quantity}}</div>
-                                <div>{{$val->orderProduct->total_format}}</div>
-                                <div>{{$val->total_format}}</div>
-                            </li>
-                        @endforeach
-                    @endif
+                                    </div>
+                                </a>
+                            </div>
+                            <div>{{$val->orderProduct->quantity}}</div>
+                            <div>{{$val->quantity}}</div>
+                            <div>{{$val->orderProduct->total_format}}</div>
+                            <div>{{$val->total_format}}</div>
+                        </li>
+                    @endforeach
                 </ul>
                 <div>
                     @if($res['info']->orderTotal)
@@ -83,6 +122,7 @@
                 </div>
             </div>
         </div>
+        @endif
         <div class="detail">
             <div class="title">状态记录</div>
             <div class="detail_info">

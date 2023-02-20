@@ -49,10 +49,10 @@ class ServiceController extends Controller
             throw new ApiException(['code'=>0,'msg'=>'Orders have been requested for after-sales','data'=>['redirect'=>'/account_ext/service']]);
         }else{
             $res = $this->service_pre($request);
-            if($res['orderInfo']->status==3){
+            if($res['orderInfo']->order_status_id==3){
                 $orderHistory = OrderHistory::where(['order_status_id'=>2,'order_id'=>$res['orderInfo']->id])->firstOrError();
-                if($orderHistory->created_at->timestamp+180*24*3600>time()){
-                    throw new ApiException(['code'=>2,'msg'=>'After-sales time has expired']);
+                if($orderHistory->created_at->timestamp+180*24*3600<time()){
+                    throw new ApiException(['code'=>2,'msg'=>'After-sales time has expired'.$orderHistory->created_at]);
                 }
                 $input = $request->all();
                 $input['uuid'] = User::uuid();

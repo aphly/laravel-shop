@@ -25,7 +25,7 @@
                             <span>{{$val->created_at}}</span>
                             <span>
                                 <a href="/account_ext/service/detail?id={{$val->id}}" class="btn">view</a>
-                                @if($val->service_status_id==1 && $val->service_status_id==3)
+                                @if($val->service_status_id==1)
                                 <a href="/account_ext/service/del?id={{$val->id}}" class="btn a_request" data-fn="del_res" data-_token="{{csrf_token()}}">del</a>
                                 @endif
                             </span>

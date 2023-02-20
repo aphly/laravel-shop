@@ -6,6 +6,7 @@ use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\LaravelShop\Controllers\Admin\Controller;
 use Aphly\LaravelShop\Models\Catalog\Shipping;
 use Aphly\LaravelShop\Models\Sale\Order;
+use Aphly\LaravelShop\Models\Sale\OrderProduct;
 use Aphly\LaravelShop\Models\Sale\Service;
 use Aphly\LaravelShop\Models\Sale\ServiceHistory;
 use Aphly\LaravelShop\Models\Sale\ServiceProduct;
@@ -34,7 +35,8 @@ class ServiceController extends Controller
 
     public function view(Request $request)
     {
-        $res['info'] = Service::where(['id'=>$request->query('id',0)])->firstOrError();
+        $res['info'] = Service::where(['id'=>$request->query('id',0)])->with('order')->firstOrError();
+        $res['orderProduct'] = OrderProduct::where('order_id',$res['info']->order->id)->with('orderOption')->get();
         $res['serviceHistory'] = ServiceHistory::where('service_id',$res['info']->id)->orderBy('created_at','desc')->get();
         $res['serviceProduct'] = ServiceProduct::where('service_id',$res['info']->id)->with('orderProduct')->get();
         $res['shipping_method'] = Shipping::get();

@@ -1,6 +1,6 @@
 <style>
-    .order ul li{display: flex;margin-bottom: 5px;}
-    .order ul li>div{flex: 1;display: flex;align-items: center;}
+    .detail_info ul li{display: flex;margin-bottom: 5px;}
+    .detail_info ul li>div{flex: 1;display: flex;align-items: center;}
     .order .detail{margin-bottom: 20px;border-bottom: 1px solid #f1f1f1;padding-bottom: 20px;}
     .order .detail .title{margin-bottom: 10px;font-size: 16px;font-weight: 600;padding-left: 10px;}
     .order .detail .product{}
@@ -9,9 +9,18 @@
     .order .detail .product img{width: 80px;height: 80px;margin-right: 10px;}
     .product_title{font-weight: 600;width: 100%;}
     .total_data li:last-child{font-weight: 600}
+    .detail_info{padding: 0 10px;}
     .info{margin-bottom: 20px;}
     .info .ititle{font-weight: 600;margin-bottom: 5px;}
-    .detail_info{padding: 0 10px;}
+    .fw50{display: flex;flex-wrap: wrap;}
+    .fw50 .info{width: 48%;margin: 1%;}
+    .fw50 .info ul li{display: flex;margin-bottom: 5px;}
+    .fw50 .info ul li>div{display: flex;align-items: center;}
+    .fw50 .info ul li>div:first-child{flex: 1;}
+    .fw50 .info ul li>div:last-child{flex: 2;}
+    @media (max-width: 1199.98px) {
+        .fw50 .info{width: 100%;margin: 0;}
+    }
 </style>
 <div class="top-bar">
     <h5 class="nav-title">order</h5>
@@ -20,9 +29,9 @@
     <div class="order">
         <div class="detail">
             <div class="title">The order details</div>
-            <div class="detail_info">
+            <div class="detail_info fw50">
                 <div class="info">
-                    <div class="ititle">Info</div>
+                    <div class="ititle">基础</div>
                     <ul>
                         <li><div>订单id:</div><div>{{$res['info']->id}}</div></li>
                         <li><div>邮箱:</div><div>{{$res['info']->email}}</div></li>

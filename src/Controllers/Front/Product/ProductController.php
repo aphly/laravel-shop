@@ -63,6 +63,21 @@ class ProductController extends Controller
         return $this->makeView('laravel-shop-front::product.category',['res'=>$res]);
     }
 
+    public function search(Request $request)
+    {
+        $res['title'] = 'Search';
+        $filter_data = [
+            'filter'      => $request->query('filter',false),
+            'name'      => $request->query('name',false),
+            'sort'      => $request->query('sort',false),
+        ];
+        $res = $this->listData($filter_data,$res);
+        if($res['list']->count()==1){
+            return redirect('/product/'.$res['list'][0]->id);
+        }
+        return $this->makeView('laravel-shop-front::product.search',['res'=>$res]);
+    }
+
     public function detail(Request $request)
     {
         $res['title'] = 'Detail';

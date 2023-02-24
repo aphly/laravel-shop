@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('shop_option_value', function (Blueprint $table) {
             $table->id();
-            $table->integer('option_id')->unsigned();
+            $table->unsignedBigInteger('option_id');
             $table->string('name',64);
             $table->string('image',255);
             $table->integer('sort')->unsigned();

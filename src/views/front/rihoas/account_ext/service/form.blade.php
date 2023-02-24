@@ -20,6 +20,10 @@
         .service_product1 input[type="checkbox"]{ width: 20px; height: 20px;cursor: pointer;}
         .orderProductImg{width: 90px;height: 90px;margin-right: 10px;}
         .orderProductImg img{width: 100%;height: 100%;}
+
+        .orderInfo li{display: flex;}
+        .orderInfo li>div{margin-right: 20px;}
+        .orderInfo li>div:first-child{width: 100px;}
     </style>
     <div class="account_info">
         @include('laravel-common-front::account_ext.left_menu')
@@ -29,11 +33,21 @@
                     <h2>Service</h2>
                 </div>
 
+                <div style="margin-bottom: 20px;" class="orderInfo">
+                    <h5>Order Info</h5>
+                    <ul>
+                        <li><div>Order id</div><div>{{$res['orderInfo']->id}}</div></li>
+                        <li><div>Order Total</div><div>{{$res['orderInfo']->total_format}}</div></li>
+                        <li><div>Order Status</div><div>{{$res['orderInfo']->orderStatus->name}}</div></li>
+                        <li><div>Date Added</div><div>{{$res['orderInfo']->created_at}}</div></li>
+                    </ul>
+                </div>
+
                 <div class="form-group">
                     <p class="title_p">Is received: <b>*</b></p>
                     <ul class="received">
-                        <li value="1" class="active">Yes</li>
-                        <li value="2">No</li>
+                        <li value="1" class="active">No</li>
+                        <li value="2">Yes</li>
                     </ul>
                 </div>
 

@@ -58,24 +58,37 @@ class ServiceController extends Controller
                 $input['uuid'] = User::uuid();
                 $info = Service::create($input);
                 $info->addServiceHistory($info,1);
+                $service_product_arr = [];
                 if(!empty($input['order_product'])){
-                    $arr = [];
-                    foreach ($input['order_product'] as $key=>$val){
-                        $key = intval($key);
-                        $val = intval($val);
-                        $price = $res['orderProduct'][$key]['price']??0;
-                        $total = $price*$val;
-                        list(,$total_format) = Currency::codeFormat($total,$res['orderInfo']->currency_code);
-                        $arr[] = [
+                    foreach ($res['orderProduct'] as $val){
+                        if(isset($input['order_product'][$val['id']])){
+                            $order_product_id = $val['id'];
+                            $quantity = $input['order_product'][$val['id']];
+                            $quantity = max($quantity,1);
+                            $quantity = min($quantity,$val['quantity']);
+                            $total = $val['real_total']*$quantity/$val['quantity'];
+                            list($total,$total_format) = Currency::codeFormat($total,$res['orderInfo']->currency_code);
+                            $service_product_arr[] = [
+                                'service_id'=>$info->id,
+                                'order_product_id'=>$order_product_id,
+                                'quantity'=>$quantity,
+                                'total'=>$total,
+                                'total_format'=>$total_format
+                            ];
+                        }
+                    }
+                }else{
+                    foreach ($res['orderProduct'] as $val){
+                        $service_product_arr[] = [
                             'service_id'=>$info->id,
-                            'order_product_id'=>$key,
-                            'quantity'=>$val,
-                            'total'=>$total,
-                            'total_format'=>$total_format
+                            'order_product_id'=>$val->id,
+                            'quantity'=>$val->quantity,
+                            'total'=>$val->total,
+                            'total_format'=>$val->total_format
                         ];
                     }
-                    ServiceProduct::insert($arr);
                 }
+                ServiceProduct::insert($service_product_arr);
                 throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>'/account_ext/service']]);
             }else{
                 throw new ApiException(['code'=>1,'msg'=>'order error']);

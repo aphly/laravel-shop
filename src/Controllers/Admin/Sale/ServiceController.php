@@ -52,6 +52,9 @@ class ServiceController extends Controller
         if($input['service_status_id']==2){
             $orderInput['override'] = 1;
             $res['orderInfo']->addOrderHistory($res['orderInfo'],7,$orderInput);
+        }else if($input['service_status_id']==3){
+            $orderInput['override'] = 1;
+            $res['orderInfo']->addOrderHistory($res['orderInfo'],3,$orderInput);
         }
         throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>'/shop_admin/service/view?id='.$res['info']->id]]);
     }

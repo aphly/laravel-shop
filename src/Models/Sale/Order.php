@@ -4,7 +4,9 @@ namespace Aphly\LaravelShop\Models\Sale;
 
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Models\Model;
+use Aphly\LaravelCommon\Models\Currency;
 use Aphly\LaravelCommon\Models\UserCredit;
+use Aphly\LaravelPayment\Models\Payment;
 use Aphly\LaravelShop\Models\Catalog\Product;
 use Aphly\LaravelShop\Models\Catalog\ProductOptionValue;
 use Aphly\LaravelShop\Models\System\Setting;
@@ -94,6 +96,11 @@ class Order extends Model
             }
         }else if($order_status_id==8){
             //Refunded
+            $fee = intval($input['fee']);
+            list($amount) = Currency::codeFormat((100-$fee)/100*$info->total,$info->currency_code);
+            if($amount>0){
+                (new Payment)->refund_api($info->payment_id,$amount,'System refund -'.$fee.'% transaction fee');
+            }
             $this->rollback($info);
             if($shop_setting['order_status_refunded_notify']==1 || $notify){
                 //send email
@@ -110,6 +117,7 @@ class Order extends Model
             'comment'=>$input['comment']??'',
             'notify'=>$input['notify']??0
         ]);
+
         if($orderHistory->id){
             $info->order_status_id = $order_status_id;
             if($order_status_id==3){

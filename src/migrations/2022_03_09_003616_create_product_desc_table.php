@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('shop_product_desc', function (Blueprint $table) {
-            $table->integer('product_id')->unsigned()->primary();
+            $table->unsignedBigInteger('product_id')->primary();
             $table->text('description');
             $table->string('meta_description',255)->nullable();
         });

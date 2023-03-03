@@ -309,11 +309,6 @@
     .info_option label:hover,.quantity-wrapper div:hover{border: 1px solid #ddd;}
     .info_option label.active{border: 1px solid #333;}
 
-    .quantity-wrapper{display: flex;}
-    .quantity-wrapper div,.quantity-wrapper input{text-align: center; line-height: 48px;height: 48px;width: 48px;min-width: 48px;background-color: #fff;border: 1px solid #f1f1f1;border-radius: 2px;}
-    .quantity-wrapper div{color: #aaa;font-size: 30px;cursor: pointer;user-select: none}
-    .quantity-wrapper input{margin: 0 10px;}
-
     .add_cart_btn{height: 48px;background: #fff;border: 1px solid #212b36;width: 100%;border-radius: 2px;}
     .add_cart_btn:hover{background: #212b36;color: #fff;}
     .flag_checkbox input{display: none;}
@@ -407,8 +402,8 @@
                     select_price+=$(this).data('price')
                 })
             })
-            let price = new Decimal(price_js).plus(radio_price).plus(checkbox_price).plus(select_price).toFixed();
-            $('.price_js').html(currency.format(price,'{{$currency[2]['symbol_left']}}','{{$currency[2]['symbol_right']}}'))
+            let price = new Decimal(price_js).plus(radio_price).plus(checkbox_price).plus(select_price).toNumber();
+            $('.price_js').html(currency._format(price,'{{$currency[2]['symbol_left']}}','{{$currency[2]['symbol_right']}}'))
         }
 
         $('.info_option .flag_radio').each(function () {

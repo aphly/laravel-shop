@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('shop_product_option', function (Blueprint $table) {
             $table->id();
-            $table->integer('product_id')->unsigned()->index();
-            $table->integer('option_id')->unsigned()->index();
+            $table->unsignedBigInteger('product_id')->index();
+            $table->unsignedBigInteger('option_id')->index();
             $table->text('value')->nullable();
             $table->tinyInteger('required');
         });

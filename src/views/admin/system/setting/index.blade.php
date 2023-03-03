@@ -1,6 +1,6 @@
 
 <div class="top-bar">
-    <h5 class="nav-title">setting</h5>
+    <h5 class="nav-title">setting 需要清缓存</h5>
 </div>
 <div class="imain">
     <form method="post" action="/shop_admin/setting/save" class="save_form">
@@ -11,6 +11,7 @@
                     <a class="nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">shop</a>
                     <a class="nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">params</a>
                     <a class="nav-link" id="nav-order-tab" data-toggle="tab" href="#nav-order" role="tab" aria-controls="nav-order" aria-selected="false">order</a>
+                    <a class="nav-link" id="nav-service-tab" data-toggle="tab" href="#nav-service" role="tab" aria-controls="nav-service" aria-selected="false">service</a>
                 </div>
             </nav>
             <div class="tab-content" id="nav-tabContent">
@@ -176,6 +177,38 @@
 
                     </div>
 
+                </div>
+                <div class="tab-pane fade" id="nav-service" role="tabpanel" aria-labelledby="nav-service-tab">
+                    <div class="form-group">
+                        <label for="">未收到货 - 退款手续费(%)</label>
+                        <input type="text" name="setting[service_refund_fee]" class="form-control " value="{{$res['setting']['service_refund_fee']['value']??10}}">
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="">收到货 - 退换货姓名</label>
+                        <input type="text" name="setting[service_name]" class="form-control " value="{{$res['setting']['service_name']['value']??''}}">
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="">收到货 - 退换货地址</label>
+                        <input type="text" name="setting[service_address]" class="form-control " value="{{$res['setting']['service_address']['value']??''}}">
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="">收到货 - 退换货邮编</label>
+                        <input type="text" name="setting[service_postcode]" class="form-control " value="{{$res['setting']['service_postcode']['value']??''}}">
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="">收到货 - 退换货电话</label>
+                        <input type="text" name="setting[service_phone]" class="form-control " value="{{$res['setting']['service_phone']['value']??''}}">
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="">收到货 - 退货手续费(%)</label>
+                        <input type="text" name="setting[service_return_fee]" class="form-control " value="{{$res['setting']['service_return_fee']['value']??10}}">
+                        <div class="invalid-feedback"></div>
+                    </div>
                 </div>
             </div>
 

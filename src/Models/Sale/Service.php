@@ -2,7 +2,9 @@
 
 namespace Aphly\LaravelShop\Models\Sale;
 
+use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Models\Model;
+use Aphly\LaravelPayment\Models\Payment;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Service extends Model
@@ -31,6 +33,10 @@ class Service extends Model
             }else if($service_status_id==3){
             }else if($service_status_id==4){
             }else if($service_status_id==5){
+            }else if($service_status_id==6){
+                if($info->refund_amount>0 && $info->service_status_id==5){
+                    (new Payment)->refund_api($info->order->payment_id,$info->refund_amount,'System Refund');
+                }
             }
         }else if($info->service_action_id==2){
             if($service_status_id==1){
@@ -41,6 +47,10 @@ class Service extends Model
                 $info->c_shipping_no = $input['c_shipping_no']??'';
                 $input['override'] = 1;
             }else if($service_status_id==5){
+            }else if($service_status_id==6){
+                if($info->refund_amount>0 && $info->service_status_id==5){
+                    (new Payment)->refund_api($info->order->payment_id,$info->refund_amount,'System Refund');
+                }
             }
         }else if($info->service_action_id==3){
             if($service_status_id==1){

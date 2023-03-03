@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('type',64);
             $table->string('name',64);
-            $table->integer('sort')->unsigned();
+            $table->unsignedInteger('sort');
             $table->unsignedBigInteger('filter_group_id')->index();
             $table->tinyInteger('status')->default(1)->index();
         });

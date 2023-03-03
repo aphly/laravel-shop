@@ -20,9 +20,9 @@ return new class extends Migration
             $table->char('type',1);
             $table->tinyInteger('one_get_one')->nullable()->default(2);
             $table->decimal('discount',15,2);
-            $table->decimal('total',15,2)->nullable()->default(0);
-            $table->unsignedInteger('date_start')->nullable()->default(0);
-            $table->unsignedInteger('date_end')->nullable()->default(0);
+            $table->decimal('total',15,2)->nullable();
+            $table->unsignedInteger('date_start')->nullable();
+            $table->unsignedInteger('date_end')->nullable();
             $table->integer('uses_total')->unsigned();
             $table->integer('uses_customer')->unsigned();
             $table->tinyInteger('status')->default(1);

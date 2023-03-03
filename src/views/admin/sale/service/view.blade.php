@@ -24,12 +24,16 @@
                 <div class="info">
                     <div class="ititle">Info</div>
                     <ul>
+                        <li><div>类型:</div><div>{{$dict['service_action'][$res['info']->service_action_id]}}</div></li>
                         <li><div>id:</div><div>{{$res['info']->id}}</div></li>
                         <li><div>订单id:</div><div>{{$res['info']->order->id}}</div></li>
                         <li><div>邮箱:</div><div>{{$res['info']->order->email}}</div></li>
                         <li><div>用户uuid:</div><div>{{$res['info']->uuid}}</div></li>
                         <li><div>申请时间:</div><div>{{$res['info']->created_at}}</div></li>
-                        <li><div>是否收到货:</div><div>{{$res['info']->is_received}}</div></li>
+                        <li><div>是否收到货:</div><div>{{$dict['yes_no'][$res['info']->is_received]}}</div></li>
+                        @if($res['info']->service_action_id==1 || $res['info']->service_action_id==2)
+                            <li><div>退款金额(扣除手续费后):</div><div>{{$res['info']->refund_amount_format}}</div></li>
+                        @endif
                         <li><div>原因:</div><div>{{$res['info']->reason}}</div></li>
                     </ul>
                 </div>
@@ -80,15 +84,13 @@
                 <ul class="product">
                     <li>
                         <div>商品名称</div>
-                        <div>购买数量</div>
                         <div>退款数量</div>
-                        <div>购买价格</div>
                         <div>退款价格</div>
                     </li>
                     @foreach($res['serviceProduct'] as $val)
                         <li>
                             <div>
-                                <a style="display: flex;" href="/product/{{$val->product_id}}">
+                                <a style="display: flex;" >
                                     <img src="{{$val->orderProduct->image}}">
                                     <div style="display: flex;align-items: center;">
                                         <div>
@@ -104,9 +106,7 @@
                                     </div>
                                 </a>
                             </div>
-                            <div>{{$val->orderProduct->quantity}}</div>
                             <div>{{$val->quantity}}</div>
-                            <div>{{$val->orderProduct->total_format}}</div>
                             <div>{{$val->total_format}}</div>
                         </li>
                     @endforeach
@@ -201,11 +201,14 @@
                                 </div>
                             </div>
                         @endif
+                        <div>状态必须为complete 才能进行退款操作</div>
                         <button class="btn btn-primary" type="submit">保存</button>
                     </div>
                 </form>
+
             </div>
         </div>
+
 
     </div>
 </div>

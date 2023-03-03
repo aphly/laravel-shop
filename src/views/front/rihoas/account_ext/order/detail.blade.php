@@ -53,7 +53,7 @@
                     <div class="detail">
                         <a href="javascript:void(0)" onclick="cancel('{{$res['cancelAmountFormat']}}',{{$res['info']->id}})" class="btn btn-primary">Cancel</a>
                     </div>
-                @elseif($res['info']->order_status_id==3)
+                @elseif($res['info']->order_status_id==3 || $res['info']->order_status_id==7)
                     <div class="detail">
                         <a href="/account_ext/service/form?order_id={{$val->order_id}}" class="btn btn-primary">Service</a>
                     </div>

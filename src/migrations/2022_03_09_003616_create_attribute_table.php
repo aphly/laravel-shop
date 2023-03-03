@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('shop_attribute', function (Blueprint $table) {
             $table->id();
             $table->string('name',64);
-            $table->integer('attribute_group_id')->unsigned();
+            $table->unsignedBigInteger('attribute_group_id');
             $table->integer('sort')->unsigned();
         });
     }

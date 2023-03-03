@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('shop_product_reward', function (Blueprint $table) {
             $table->unsignedInteger('product_id')->index();
             $table->unsignedInteger('group_id')->index();
-            $table->unsignedInteger('points')->nullable()->default(0);
+            $table->unsignedInteger('points')->nullable();
             $table->primary(['product_id','group_id']);
         });
     }

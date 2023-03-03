@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('shop_product', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('uuid')->index();
-            $table->string('sku',64)->nullable()->default('');
-            $table->string('model',64)->nullable()->default('')->index();
+            $table->string('sku',64)->nullable();
+            $table->string('model',64)->nullable()->index();
             $table->string('name',255)->nullable();
             $table->integer('quantity')->nullable();
             $table->string('image',255)->nullable();
@@ -31,13 +31,13 @@ return new class extends Migration
             $table->float('width')->nullable();
             $table->float('height')->nullable();
             $table->tinyInteger('length_class_id');
-            $table->tinyInteger('subtract')->default(1);
+            $table->tinyInteger('subtract')->nullable()->default(1);
             $table->tinyInteger('one_get_one')->nullable()->default(2);
             //$table->tinyInteger('minimum')->nullable()->default(1);
             $table->tinyInteger('status')->default(1)->index();
-            $table->unsignedInteger('date_available')->nullable()->default(0);
-            $table->unsignedInteger('viewed')->nullable()->default(0);
-            $table->unsignedInteger('sale')->nullable()->default(0);
+            $table->unsignedInteger('date_available')->nullable();
+            $table->unsignedInteger('viewed')->nullable();
+            $table->unsignedInteger('sale')->nullable();
             $table->unsignedInteger('sort')->nullable();
             $table->unsignedBigInteger('created_at');
             $table->unsignedBigInteger('updated_at');

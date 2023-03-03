@@ -23,7 +23,7 @@ return new class extends Migration
             $table->tinyInteger('status')->nullable()->default(1);
             $table->integer('sort')->nullable()->default(1)->index();
             $table->tinyInteger('default')->nullable()->default(2);
-            $table->unsignedInteger('geo_group_id')->nullable()->default(0)->index();
+            $table->unsignedInteger('geo_group_id')->nullable()->index();
             $table->unsignedBigInteger('created_at');
             $table->unsignedBigInteger('updated_at');
         });

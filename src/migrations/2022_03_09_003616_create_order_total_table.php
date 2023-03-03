@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('shop_order_total', function (Blueprint $table) {
             $table->id();
-            $table->integer('order_id')->unsigned()->index();
+            $table->unsignedBigInteger('order_id')->index();
             $table->string('title',255);
             $table->decimal('value',15,2);
             $table->string('value_format',255);
-            $table->integer('sort')->nullable()->default(0);
+            $table->integer('sort')->nullable();
             $table->string('ext',32)->nullable();
         });
     }

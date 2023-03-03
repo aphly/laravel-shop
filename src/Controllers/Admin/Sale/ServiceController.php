@@ -3,6 +3,8 @@
 namespace Aphly\LaravelShop\Controllers\Admin\Sale;
 
 use Aphly\Laravel\Exceptions\ApiException;
+use Aphly\LaravelCommon\Models\Currency;
+use Aphly\LaravelPayment\Models\Payment;
 use Aphly\LaravelShop\Controllers\Admin\Controller;
 use Aphly\LaravelShop\Models\Catalog\Shipping;
 use Aphly\LaravelShop\Models\Sale\Order;
@@ -37,7 +39,7 @@ class ServiceController extends Controller
     {
         $res['info'] = Service::where(['id'=>$request->query('id',0)])->with('order')->firstOrError();
         $res['orderProduct'] = OrderProduct::where('order_id',$res['info']->order->id)->with('orderOption')->get();
-        $res['serviceHistory'] = ServiceHistory::where('service_id',$res['info']->id)->orderBy('created_at','desc')->get();
+        $res['serviceHistory'] = ServiceHistory::where('service_id',$res['info']->id)->orderBy('created_at','asc')->get();
         $res['serviceProduct'] = ServiceProduct::where('service_id',$res['info']->id)->with('orderProduct')->get();
         $res['shipping_method'] = Shipping::get();
         return $this->makeView('laravel-shop::admin.sale.service.view',['res'=>$res]);
@@ -46,15 +48,11 @@ class ServiceController extends Controller
     public function historySave(Request $request)
     {
         $input = $request->all();
-        $res['info'] = Service::where(['id'=>$request->input('service_id',0)])->firstOrError();
-        $res['orderInfo'] = Order::where('id',$res['info']->order_id)->firstOrError();
+        $res['info'] = Service::where(['id'=>$request->input('service_id',0)])->with('order')->firstOrError();
         $res['info']->addServiceHistory($res['info'], $input['service_status_id'],$input);
         if($input['service_status_id']==2){
             $orderInput['override'] = 1;
-            $res['orderInfo']->addOrderHistory($res['orderInfo'],7,$orderInput);
-        }else if($input['service_status_id']==3){
-            $orderInput['override'] = 1;
-            $res['orderInfo']->addOrderHistory($res['orderInfo'],3,$orderInput);
+            (new Order)->addOrderHistory($res['info']->order,7,$orderInput);
         }
         throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>'/shop_admin/service/view?id='.$res['info']->id]]);
     }
@@ -85,7 +83,6 @@ class ServiceController extends Controller
             throw new ApiException(['code'=>0,'msg'=>'操作成功','data'=>['redirect'=>$redirect]]);
         }
     }
-
 
 
 }

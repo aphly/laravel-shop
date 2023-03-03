@@ -22,6 +22,8 @@ return new class extends Migration
             $table->tinyInteger('service_action_id')->index();
             $table->tinyInteger('service_status_id')->nullable()->default(1);
             $table->text('reason')->nullable();
+            $table->decimal('refund_amount',15,2)->nullable();
+            $table->string('refund_amount_format',255)->nullable();
             $table->string('c_shipping',255)->nullable();
             $table->string('c_shipping_no',255)->nullable();
             $table->unsignedBigInteger('shipping_id')->nullable();

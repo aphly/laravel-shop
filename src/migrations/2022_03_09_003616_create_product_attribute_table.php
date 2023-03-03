@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('shop_product_attribute', function (Blueprint $table) {
-            $table->integer('product_id')->unsigned()->index();
-            $table->integer('attribute_id')->unsigned()->index();
+            $table->unsignedBigInteger('product_id')->index();
+            $table->unsignedBigInteger('attribute_id')->index();
             $table->text('text');
             $table->primary(['product_id','attribute_id']);
         });

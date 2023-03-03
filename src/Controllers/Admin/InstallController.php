@@ -138,6 +138,7 @@ class InstallController extends Controller
             $data[] =['dict_id' => $dict->id,'name'=>'Refusal of refund','value'=>'3'];
             $data[] =['dict_id' => $dict->id,'name'=>'Awaiting Products','value'=>'4'];
             $data[] =['dict_id' => $dict->id,'name'=>'Complete','value'=>'5'];
+            $data[] =['dict_id' => $dict->id,'name'=>'Refunded','value'=>'6'];
             DB::table('admin_dict_value')->insert($data);
         }
 
@@ -149,6 +150,7 @@ class InstallController extends Controller
             $data[] =['dict_id' => $dict->id,'name'=>'Refusal of return','value'=>'3'];
             $data[] =['dict_id' => $dict->id,'name'=>'Awaiting Products','value'=>'4'];
             $data[] =['dict_id' => $dict->id,'name'=>'Complete','value'=>'5'];
+            $data[] =['dict_id' => $dict->id,'name'=>'Refunded','value'=>'6'];
             DB::table('admin_dict_value')->insert($data);
         }
 

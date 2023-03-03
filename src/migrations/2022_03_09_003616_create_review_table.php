@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('shop_review', function (Blueprint $table) {
             $table->id();
-            $table->integer('product_id')->unsigned()->index();
+            $table->unsignedBigInteger('product_id')->index();
             $table->unsignedBigInteger('uuid')->index();
             $table->string('author',64);
             $table->text('text');

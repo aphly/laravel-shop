@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('shop_review_image', function (Blueprint $table) {
             $table->id();
-            $table->integer('review_id')->unsigned()->index();
+            $table->unsignedBigInteger('review_id')->index();
             $table->string('image',255);
         });
     }

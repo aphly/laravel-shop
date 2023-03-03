@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('shop_cart', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('uuid')->index()->nullable();
-            $table->integer('product_id')->unsigned()->index();
+            $table->unsignedBigInteger('product_id')->index();
             $table->char('guest',32)->index();
             $table->unsignedInteger('quantity')->default(1);
             $table->text('option')->nullable();

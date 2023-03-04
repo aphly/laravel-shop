@@ -50,10 +50,6 @@ class ServiceController extends Controller
         $input = $request->all();
         $res['info'] = Service::where(['id'=>$request->input('service_id',0)])->with('order')->firstOrError();
         $res['info']->addServiceHistory($res['info'], $input['service_status_id'],$input);
-        if($input['service_status_id']==2){
-            $orderInput['override'] = 1;
-            (new Order)->addOrderHistory($res['info']->order,7,$orderInput);
-        }
         throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>'/shop_admin/service/view?id='.$res['info']->id]]);
     }
 

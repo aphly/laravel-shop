@@ -44,8 +44,7 @@ Route::middleware(['web'])->group(function () {
             Route::post('service/save', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ServiceController@save');
             Route::post('service/del', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ServiceController@del');
 
-            Route::post('service/refund3', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ServiceController@refund3');
-            Route::post('service/return_exchange2', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ServiceController@returnExchange2');
+            Route::post('service/return_exchange3', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ServiceController@returnExchange3');
             Route::post('service/return_exchange4', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ServiceController@returnExchange4');
         });
 

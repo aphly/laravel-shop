@@ -68,18 +68,20 @@ class ServiceController extends Controller
                     foreach ($res['orderProduct'] as $val){
                         if(isset($input['order_product'][$val['id']])){
                             $order_product_id = $val['id'];
-                            $quantity = max($input['order_product'][$val['id']],1);
+                            $quantity = max($input['order_product'][$val['id']],0);
                             $quantity = min($quantity,$val['quantity']);
-                            $total = $val['real_total']*$quantity/$val['quantity'];
-                            list($total,$total_format) = Currency::codeFormat($total,$res['orderInfo']->currency_code);
-                            $service_product_arr[] = [
-                                'service_id'=>$info->id,
-                                'order_product_id'=>$order_product_id,
-                                'quantity'=>$quantity,
-                                'total'=>$total,
-                                'total_format'=>$total_format
-                            ];
-                            $total_all += $total;
+                            if($quantity){
+                                $total = $val['real_total']*$quantity/$val['quantity'];
+                                list($total,$total_format) = Currency::codeFormat($total,$res['orderInfo']->currency_code);
+                                $service_product_arr[] = [
+                                    'service_id'=>$info->id,
+                                    'order_product_id'=>$order_product_id,
+                                    'quantity'=>$quantity,
+                                    'total'=>$total,
+                                    'total_format'=>$total_format
+                                ];
+                                $total_all += $total;
+                            }
                         }
                     }
                 }else{
@@ -113,7 +115,7 @@ class ServiceController extends Controller
     }
 
     public function del(Request $request){
-        $info = Service::where(['uuid'=>User::uuid(),'id'=>$request->query('id',0)])->whereIN('service_status_id',[1,3])->first();
+        $info = Service::where(['uuid'=>User::uuid(),'id'=>$request->query('id',0)])->whereIN('service_status_id',[1,2])->first();
         if(!empty($info)){
             $info->update(['delete_at'=>time()]);
             throw new ApiException(['code'=>0,'msg'=>'Delete success','data'=>['redirect'=>'/account_ext/service']]);
@@ -121,14 +123,7 @@ class ServiceController extends Controller
         throw new ApiException(['code'=>1,'msg'=>'Delete fail']);
     }
 
-    public function refund3(Request $request){
-        $input = $request->all();
-        $info = Service::where(['uuid'=>User::uuid(),'id'=>$input['service_id']])->firstOrError();
-        $info->addServiceHistory($info,1,$input);
-        throw new ApiException(['code'=>0,'msg'=>'Request success']);
-    }
-
-    public function returnExchange2(Request $request){
+    public function returnExchange3(Request $request){
         $input = $request->all();
         $info = Service::where(['uuid'=>User::uuid(),'id'=>$input['service_id']])->firstOrError();
         $info->addServiceHistory($info,4,$input);
@@ -141,7 +136,7 @@ class ServiceController extends Controller
         $info->c_shipping = $input['c_shipping'];
         $info->c_shipping_no = $input['c_shipping_no'];
         $info->save();
-        throw new ApiException(['code'=>0,'msg'=>'Request success']);
+        throw new ApiException(['code'=>0,'msg'=>'Request success','data'=>['redirect'=>'/account_ext/service/detail?id='.$info->id]]);
     }
 
 

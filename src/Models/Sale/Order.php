@@ -90,11 +90,6 @@ class Order extends Model
                 //send email
             }
         }else if($order_status_id==7){
-            //Service
-            if($shop_setting['order_status_service_notify']==1 || $notify){
-                //send email
-            }
-        }else if($order_status_id==8){
             //Refunded
             $fee = intval($input['fee']);
             list($amount) = Currency::codeFormat((100-$fee)/100*$info->total,$info->currency_code);

@@ -117,8 +117,7 @@ class InstallController extends Controller
         $data[] =['id'=>'4','name'=>'Complete','cn_name'=>'完成'];
         $data[] =['id'=>'5','name'=>'Closed','cn_name'=>'已关闭'];
         $data[] =['id'=>'6','name'=>'Canceled','cn_name'=>'已取消'];
-        $data[] =['id'=>'7','name'=>'Service','cn_name'=>'售后'];
-        $data[] =['id'=>'8','name'=>'Refunded','cn_name'=>'已退款'];
+        $data[] =['id'=>'7','name'=>'Refunded','cn_name'=>'已退款'];
 		DB::table('shop_order_status')->insert($data);
 
         $dict = Dict::create(['name' => '售后类型','key'=>'service_action','module_id'=>$this->module_id]);
@@ -134,8 +133,8 @@ class InstallController extends Controller
         if($dict->id){
             $data=[];
             $data[] =['dict_id' => $dict->id,'name'=>'Request Refund','value'=>'1'];
-            $data[] =['dict_id' => $dict->id,'name'=>'Agree to refund','value'=>'2'];
-            $data[] =['dict_id' => $dict->id,'name'=>'Refusal of refund','value'=>'3'];
+            $data[] =['dict_id' => $dict->id,'name'=>'Refusal of refund','value'=>'2'];
+            $data[] =['dict_id' => $dict->id,'name'=>'Agree to refund','value'=>'3'];
             $data[] =['dict_id' => $dict->id,'name'=>'Awaiting Products','value'=>'4'];
             $data[] =['dict_id' => $dict->id,'name'=>'Complete','value'=>'5'];
             $data[] =['dict_id' => $dict->id,'name'=>'Refunded','value'=>'6'];
@@ -146,8 +145,8 @@ class InstallController extends Controller
         if($dict->id){
             $data=[];
             $data[] =['dict_id' => $dict->id,'name'=>'Request Return','value'=>'1'];
-            $data[] =['dict_id' => $dict->id,'name'=>'Agree to return','value'=>'2'];
-            $data[] =['dict_id' => $dict->id,'name'=>'Refusal of return','value'=>'3'];
+            $data[] =['dict_id' => $dict->id,'name'=>'Refusal of return','value'=>'2'];
+            $data[] =['dict_id' => $dict->id,'name'=>'Agree to return','value'=>'3'];
             $data[] =['dict_id' => $dict->id,'name'=>'Awaiting Products','value'=>'4'];
             $data[] =['dict_id' => $dict->id,'name'=>'Complete','value'=>'5'];
             $data[] =['dict_id' => $dict->id,'name'=>'Refunded','value'=>'6'];
@@ -158,8 +157,8 @@ class InstallController extends Controller
         if($dict->id){
             $data=[];
             $data[] =['dict_id' => $dict->id,'name'=>'Request exchange','value'=>'1'];
-            $data[] =['dict_id' => $dict->id,'name'=>'Agree to exchange','value'=>'2'];
-            $data[] =['dict_id' => $dict->id,'name'=>'Refusal of exchange','value'=>'3'];
+            $data[] =['dict_id' => $dict->id,'name'=>'Refusal of exchange','value'=>'2'];
+            $data[] =['dict_id' => $dict->id,'name'=>'Agree to exchange','value'=>'3'];
             $data[] =['dict_id' => $dict->id,'name'=>'Awaiting products','value'=>'4'];
             $data[] =['dict_id' => $dict->id,'name'=>'Shipped','value'=>'5'];
             $data[] =['dict_id' => $dict->id,'name'=>'Complete','value'=>'6'];

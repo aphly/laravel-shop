@@ -84,8 +84,8 @@
                 <ul class="product">
                     <li>
                         <div>商品名称</div>
-                        <div>退款数量</div>
-                        <div>退款价格</div>
+                        <div>数量</div>
+                        <div>价格</div>
                     </li>
                     @foreach($res['serviceProduct'] as $val)
                         <li>
@@ -201,7 +201,9 @@
                                 </div>
                             </div>
                         @endif
+                        @if($res['info']->service_action_id<3 )
                         <div>状态必须为complete 才能进行退款操作</div>
+                        @endif
                         <button class="btn btn-primary" type="submit">保存</button>
                     </div>
                 </form>

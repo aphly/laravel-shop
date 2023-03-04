@@ -56,17 +56,6 @@
                         <div class="invalid-feedback"></div>
                     </div>
                     <div class="form-group">
-                        <label for="">货币</label>
-                        <select name="setting[currency]" class="form-control" >
-                            @if(isset($res['currency']))
-                                @foreach($res['currency'] as $key=>$val)
-                                    <option value="{{$key}}" @if(($res['setting']['currency']['value']??'')==$key) selected @endif>{{$val['name']}}</option>
-                                @endforeach
-                            @endif
-                        </select>
-                        <div class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group">
                         <label for="">尺寸单位</label>
                         <select name="setting[length_class]" class="form-control" >
                             @if(isset($dict['length_class']))
@@ -160,20 +149,6 @@
                             </select>
                             <div class="invalid-feedback"></div>
                         </div>
-
-                        <div class="form-group">
-                            <label for="">Service</label>
-                            <select name="setting[order_status_service_notify]" class="form-control" >
-                            @if(isset($dict['yes_no']))
-                                @foreach($dict['yes_no'] as $key=>$val)
-                                    <option value="{{$key}}" @if(($res['setting']['order_status_service_notify']['value']??2)==$key) selected @endif>{{$val}}</option>
-                                @endforeach
-                            @endif
-                            </select>
-                            <div class="invalid-feedback"></div>
-                        </div>
-
-
 
                     </div>
 

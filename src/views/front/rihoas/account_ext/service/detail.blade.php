@@ -45,22 +45,19 @@
                 @if($res['info']->service_action_id==1)
                     @if($res['info']->service_status_id==1)
                     @elseif($res['info']->service_status_id==2)
+                        <div>Please delete and reapply</div>
+                        <a href="/account_ext/service/del?id={{$res['info']->id}}" class="btn a_request" data-fn="service_del_res" data-_token="{{csrf_token()}}">del</a>
                     @elseif($res['info']->service_status_id==3)
-                        <form class="form_request" method="post" action="/account_ext/service/refund3" data-fn="refund3_res">
-                            @csrf
-                            <input type="hidden" name="service_id" value="{{$res['info']->id}}">
-                            <input type="hidden" name="service_action_id" value="{{$res['info']->service_action_id}}">
-                            <input type="hidden" name="service_status_id" value="1">
-                            <textarea name="comment"></textarea>
-                            <button type="submit">Request</button>
-                        </form>
                     @elseif($res['info']->service_status_id==4)
                     @elseif($res['info']->service_status_id==5)
                     @endif
-                @elseif($res['info']->service_action_id==2 && $res['info']->service_action_id==3)
+                @elseif($res['info']->service_action_id==2 || $res['info']->service_action_id==3)
                     @if($res['info']->service_status_id==1)
                     @elseif($res['info']->service_status_id==2)
-                        <form class="form_request" method="post" action="/account_ext/service/return_exchange2" data-fn="return_exchange2_res">
+                        <div>Please delete and reapply</div>
+                        <a href="/account_ext/service/del?id={{$res['info']->id}}" class="btn a_request" data-fn="service_del_res" data-_token="{{csrf_token()}}">del</a>
+                    @elseif($res['info']->service_status_id==3)
+                        <form class="form_request" method="post" action="/account_ext/service/return_exchange3" data-fn="return_exchange3_res">
                             @csrf
                             <input type="hidden" name="service_id" value="{{$res['info']->id}}">
                             <input type="hidden" name="service_action_id" value="{{$res['info']->service_action_id}}">
@@ -68,9 +65,6 @@
                             <input type="text" name="c_shipping_no" value="c_shipping_no">
                             <button type="submit">Shipping</button>
                         </form>
-                    @elseif($res['info']->service_status_id==3)
-                        <div>Please delete and reapply</div>
-                        <a href="/account_ext/service/del?id={{$val->id}}" class="btn a_request" data-fn="return_exchange3_res" data-_token="{{csrf_token()}}">del</a>
                     @elseif($res['info']->service_status_id==4)
                         <form class="form_request" method="post" action="/account_ext/service/return_exchange4" data-fn="return_exchange4_res">
                             @csrf
@@ -98,14 +92,26 @@
                             <li><div>Refund Amount ({{$shop_setting['service_return_fee']}}% fee):</div><div>{{$res['info']->refund_amount_format}}</div></li>
                         @endif
                         @if($res['info']->service_action_id==2 || $res['info']->service_action_id==3)
+                            @if($res['info']->service_status_id>=3)
                             <li><div>name </div><div>{{$shop_setting['service_name']}}</div></li>
                             <li><div>address </div><div>{{$shop_setting['service_address']}}</div></li>
                             <li><div>postcode </div><div>{{$shop_setting['service_postcode']}}</div></li>
                             <li><div>phone </div><div>{{$shop_setting['service_phone']}}</div></li>
+                            @endif
+
+                            @if($res['info']->service_status_id>=4)
+                                <li><div>c_shipping </div><div>{{$res['info']->c_shipping}}</div></li>
+                                <li><div>c_shipping_no </div><div>{{$res['info']->c_shipping_no}}</div></li>
+                            @endif
+
+                            @if($res['info']->service_action_id==3)
+                                @if($res['info']->service_status_id==5)
+                                    <li><div>b_shipping </div><div>{{$res['info']->shipping_id}}</div></li>
+                                    <li><div>b_shipping_no </div><div>{{$res['info']->b_shipping_no}}</div></li>
+                                @endif
+                            @endif
                         @endif
 
-                        <li><div>c_shipping </div><div>{{$res['info']->c_shipping}}</div></li>
-                        <li><div>c_shipping_no </div><div>{{$res['info']->c_shipping_no}}</div></li>
                     </ul>
                 </div>
 
@@ -161,12 +167,9 @@
     .product img{width: 100px;height: 100px;}
 </style>
 <script>
-    function refund3_res(res,that) {
-        console.log(res,that)
-    }
 
-    function return_exchange2_res(res,that) {
-        console.log(res,that)
+    function service_del_res(res,that) {
+        alert_msg(res,true)
     }
 
     function return_exchange3_res(res,that) {
@@ -174,7 +177,7 @@
     }
 
     function return_exchange4_res(res,that) {
-        console.log(res,that)
+        alert_msg(res,true)
     }
 
 </script>

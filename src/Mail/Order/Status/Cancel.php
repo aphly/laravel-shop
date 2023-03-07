@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class Processing extends Mailable
+class Cancel extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -31,7 +31,7 @@ class Processing extends Mailable
      */
     public function build()
     {
-        return $this->subject('Password Reset')
-            ->view('laravel-shop::mail.order.status.processing');
+        return $this->subject('Order cancel')
+            ->view('laravel-shop::mail.order.status.cancel');
     }
 }

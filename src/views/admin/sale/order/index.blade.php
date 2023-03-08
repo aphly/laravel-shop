@@ -10,11 +10,18 @@
         <div class="search_box ">
             <input type="search" name="id" placeholder="id" value="{{$res['search']['id']}}">
             <input type="search" name="email" placeholder="email" value="{{$res['search']['email']}}">
+            <select name="status">
+                <option value="0">全部</option>
+                @foreach($res['orderStatus'] as $val)
+                <option value="{{$val->id}}" @if($res['search']['status']==$val->id) selected @endif>{{$val->cn_name}}</option>
+                @endforeach
+            </select>
             <button class="" type="submit">搜索</button>
         </div>
         </form>
         <div class="">
-            <a class="badge badge-primary ajax_get show_all0_btn" data-href="/shop_admin/order/form">添加</a>
+            <a class="badge badge-primary xls_download show_all0_btn" data-href="/shop_admin/order/download?{{$res['search']['string']}}">下载</a>
+            <a class="badge badge-primary ajax_get show_all0_btn" data-href="/shop_admin/order/shipped">上传物流</a>
         </div>
     </div>
 

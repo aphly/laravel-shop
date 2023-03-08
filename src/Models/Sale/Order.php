@@ -78,7 +78,7 @@ class Order extends Model
         $shop_setting = Setting::findAll();
         $notify = $input['notify']??0;
         if($order_status_id==2){
-            //Processing
+            //Paid
             $this->handle($info);
             if($shop_setting['order_paid_notify']==1 || $notify){
                 //send email
@@ -99,15 +99,19 @@ class Order extends Model
             }
         }else if($order_status_id==7){
             //Refunded
-            $fee = intval($input['fee']);
-            list($amount) = Currency::codeFormat((100-$fee)/100*$info->total,$info->currency_code);
-            if($amount>0){
-                (new Payment)->refund_api($info->payment_id,$amount,'System refund -'.$fee.'% transaction fee');
-            }
-            $this->rollback($info);
-            if($shop_setting['order_refunded_notify']==1 || $notify){
-                //send email
-                (new MailSend())->do($info->email, new Refunded($info));
+            if($info->order_status_id>=2) {
+                $fee = intval($input['fee']);
+                list($amount) = Currency::codeFormat((100 - $fee) / 100 * $info->total, $info->currency_code);
+                if ($amount > 0) {
+                    (new Payment)->refund_api($info->payment_id, $amount, 'System refund -' . $fee . '% transaction fee');
+                }
+                if ($info->order_status_id != 6) {
+                    $this->rollback($info);
+                }
+                if ($shop_setting['order_refunded_notify'] == 1 || $notify) {
+                    //send email
+                    (new MailSend())->do($info->email, new Refunded($info));
+                }
             }
         }
 

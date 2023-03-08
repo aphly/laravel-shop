@@ -128,6 +128,8 @@ Route::middleware(['web'])->group(function () {
 
             Route::get('/order/view', 'Aphly\LaravelShop\Controllers\Admin\Sale\OrderController@view');
             Route::post('/order/history_save', 'Aphly\LaravelShop\Controllers\Admin\Sale\OrderController@historySave');
+            Route::post('/order/download', 'Aphly\LaravelShop\Controllers\Admin\Sale\OrderController@download');
+            Route::get('/order/shipped', 'Aphly\LaravelShop\Controllers\Admin\Sale\OrderController@shipped');
 
             Route::get('/service/view', 'Aphly\LaravelShop\Controllers\Admin\Sale\ServiceController@view');
             Route::post('/service/history_save', 'Aphly\LaravelShop\Controllers\Admin\Sale\ServiceController@historySave');

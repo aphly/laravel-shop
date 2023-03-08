@@ -3,15 +3,15 @@
 namespace Aphly\LaravelShop\Controllers\Admin\Sale;
 
 use Aphly\Laravel\Exceptions\ApiException;
-use Aphly\LaravelCommon\Models\Currency;
-use Aphly\LaravelPayment\Models\Payment;
+use Aphly\Laravel\Libs\UploadFile;
 use Aphly\LaravelShop\Controllers\Admin\Controller;
-use Aphly\LaravelShop\Models\Catalog\Product;
 use Aphly\LaravelShop\Models\Sale\Order;
 use Aphly\LaravelShop\Models\Sale\OrderHistory;
 use Aphly\LaravelShop\Models\Sale\OrderProduct;
 use Aphly\LaravelShop\Models\Sale\OrderStatus;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
@@ -21,6 +21,7 @@ class OrderController extends Controller
     {
         $res['search']['id'] = $id = $request->query('id',false);
         $res['search']['email'] = $email = $request->query('email',false);
+        $res['search']['status'] = $status = $request->query('status',false);
         $res['search']['string'] = http_build_query($request->query());
         $res['list'] = Order::when($id,
                 function($query,$id) {
@@ -28,8 +29,12 @@ class OrderController extends Controller
                 })->when($email,
                 function($query,$email) {
                     return $query->where('email', $email);
+                })->when($status,
+                function($query,$status) {
+                    return $query->where('order_status_id', $status);
                 })
             ->with('orderStatus')->orderBy('created_at','desc')->Paginate(config('admin.perPage'))->withQueryString();
+        $res['orderStatus'] = OrderStatus::get();
         return $this->makeView('laravel-shop::admin.sale.order.index',['res'=>$res]);
     }
 
@@ -80,6 +85,88 @@ class OrderController extends Controller
         }
     }
 
+    public function download(Request $request)
+    {
+        $res['search']['id'] = $id = $request->query('id',false);
+        $res['search']['email'] = $email = $request->query('email',false);
+        $res['search']['status'] = $status = $request->query('status',false);
 
+        $res['list'] = Order::when($id,
+            function($query,$id) {
+                return $query->where('id', $id);
+            })->when($email,
+            function($query,$email) {
+                return $query->where('email', $email);
+            })->when($status,
+            function($query,$status) {
+                return $query->where('order_status_id', $status);
+            })->get();
+        $res['orderStatus'] = OrderStatus::get()->keyBy('id')->toArray();
+        $header = ["ID", "email", "total_format", "items", "status"];
+        $listData = [];
+        foreach ($res['list'] as $v) {
+            $listData[] = [
+                $v->id,$v->email,$v->total_format,$v->items,$res['orderStatus'][$v->order_status_id]['cn_name']
+            ];
+        }
+
+        $path = public_path().'/download/';
+        File::isDirectory($path) or File::makeDirectory($path, $mode = 0777, true, true);
+
+        $config = ['path' => $path];
+        $fileName = date('Y_m_d_H_i_s').'-'.mt_rand(10000,99999).'_export.xlsx';
+        $xlsxObject = new \Vtiful\Kernel\Excel($config);
+        $filePath = $xlsxObject->fileName($fileName, 'sheet1')->header($header)->data($listData)->output();
+
+        header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        header('Content-Disposition: attachment;filename="' . $fileName . '"');
+        header('Content-Length: ' . filesize($filePath));
+        header('Content-Transfer-Encoding: binary');
+        header('Cache-Control: must-revalidate');
+        header('Cache-Control: max-age=0');
+        header('Pragma: public');
+        ob_clean();
+        flush();
+        if (copy($filePath, 'php://output') === false) {
+            // Throw exception
+        }
+        @unlink($filePath);
+    }
+
+    public function shipped(Request $request)
+    {
+        //$file_path = (new UploadFile(5,1,['xlsx']))->uploads($request->file('file'), 'private/order/shipped');
+//        $img_src = $insertData = [];
+//        foreach ($file_path as $key=>$val) {
+//            $img_src[] = Storage::url($val);
+//            $insertData[] = ['product_id'=>$res['product']->id,'image'=>$val,'sort'=>$key];
+//        }
+        //dd($file_path);
+        $path = public_path().'/download/';
+        $fileName = 'cc.xlsx';
+        $filePath = $path.$fileName;
+
+        $config   = ['path' => $path];
+        $excel    = new \Vtiful\Kernel\Excel($config);
+        $excel->openFile($fileName)->openSheet();
+        $i = 1;
+        while (($row = $excel->nextRow()) !== NULL) {
+            if ($i == 1) {
+                $i++;
+                continue;
+            } else {
+                if ($row[0]) {
+                    $input['notify']=1;
+                    $input['override']=1;
+                    $input['shipping_no'] = $row[5];
+                    $res['info'] = Order::where(['id'=>$row[0]])->whereIn('order_status_id',[2,3])->first();
+                    if(!empty($res['info'])){
+                        $res['info']->addOrderHistory($res['info'], 3,$input);
+                    }
+                }
+            }
+        }
+        @unlink($filePath);
+    }
 
 }

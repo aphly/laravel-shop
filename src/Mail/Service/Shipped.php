@@ -1,13 +1,13 @@
 <?php
 
-namespace Aphly\LaravelShop\Mail\Order\Status;
+namespace Aphly\LaravelShop\Mail\Service;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class Cancel extends Mailable
+class Shipped extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -32,6 +32,6 @@ class Cancel extends Mailable
     public function build()
     {
         return $this->subject('Order cancel')
-            ->view('laravel-shop::mail.order.status.cancel');
+            ->view('laravel-shop::mail.service.shipped');
     }
 }

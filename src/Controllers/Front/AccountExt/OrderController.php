@@ -9,7 +9,7 @@ use Aphly\LaravelCommon\Models\User;
 use Aphly\LaravelPayment\Models\Payment;
 use Aphly\LaravelPayment\Models\PaymentRefund;
 use Aphly\LaravelShop\Controllers\Front\Controller;
-use Aphly\LaravelShop\Mail\Order\Status\Cancel;
+use Aphly\LaravelShop\Mail\Order\Cancel;
 use Aphly\LaravelShop\Models\Sale\Order;
 use Aphly\LaravelShop\Models\Sale\OrderHistory;
 use Aphly\LaravelShop\Models\Sale\OrderProduct;
@@ -80,10 +80,6 @@ class OrderController extends Controller
             list($amount) = Currency::codeFormat((100 - $cancel_fee)/100*$res['info']->total,$res['info']->currency_code);
             (new Payment)->refund_api($res['info']->payment_id,$amount,'Customer cancel -'.$cancel_fee.'% fee');
             $res['info']->addOrderHistory($res['info'], 6);
-            if($this->shop_setting['order_status_canceled_notify']==1){
-                //send email
-                (new MailSend())->do($res['info']->email, new Cancel($res['info']));
-            }
             throw new ApiException(['code'=>0,'msg'=>'order option success','data'=>['redirect'=>'/account_ext/order']]);
         }else{
             throw new ApiException(['code'=>1,'msg'=>'order status error','data'=>['redirect'=>'/account_ext/order']]);

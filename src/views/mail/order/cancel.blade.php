@@ -6,7 +6,7 @@
     <div style="margin-bottom: 10px;">Hello {{$order->email}}</div>
 
     <div>
-
+        You have canceled the order. Welcome to purchase next time.
     </div>
 
     <div style="">

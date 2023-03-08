@@ -293,26 +293,26 @@ class ProductController extends Controller
         }
     }
 
-    public function reward(Request $request){
-        $res['product'] = $this->getProductId($request);
-        $product_id = $res['product']->id;
-        if($request->isMethod('post')) {
-            ProductReward::where('product_id',$product_id)->delete();
-            $product_reward = $request->input('product_reward',[]);
-            if($product_reward){
-                $update_arr = [];
-                foreach ($product_reward as $key=>$val){
-                    $update_arr[] = ['group_id'=>$key,'points'=>$val,'product_id'=>$product_id];
-                }
-                ProductReward::insert($update_arr);
-            }
-            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
-        }else{
-            $res['group'] = Group::get()->keyBy('id')->toArray();
-            $res['product_reward'] = ProductReward::where('product_id',$product_id)->get()->keyBy('group_id')->toArray();
-            return $this->makeView('laravel-shop::admin.catalog.product.reward',['res'=>$res]);
-        }
-    }
+//    public function reward(Request $request){
+//        $res['product'] = $this->getProductId($request);
+//        $product_id = $res['product']->id;
+//        if($request->isMethod('post')) {
+//            ProductReward::where('product_id',$product_id)->delete();
+//            $product_reward = $request->input('product_reward',[]);
+//            if($product_reward){
+//                $update_arr = [];
+//                foreach ($product_reward as $key=>$val){
+//                    $update_arr[] = ['group_id'=>$key,'points'=>$val,'product_id'=>$product_id];
+//                }
+//                ProductReward::insert($update_arr);
+//            }
+//            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
+//        }else{
+//            $res['group'] = Group::get()->keyBy('id')->toArray();
+//            $res['product_reward'] = ProductReward::where('product_id',$product_id)->get()->keyBy('group_id')->toArray();
+//            return $this->makeView('laravel-shop::admin.catalog.product.reward',['res'=>$res]);
+//        }
+//    }
 
     public function special(Request $request){
         $res['product'] = $this->getProductId($request);

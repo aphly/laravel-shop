@@ -3,10 +3,15 @@
 namespace Aphly\LaravelShop\Models\Sale;
 
 use Aphly\Laravel\Exceptions\ApiException;
+use Aphly\Laravel\Mail\MailSend;
 use Aphly\Laravel\Models\Model;
 use Aphly\LaravelCommon\Models\Currency;
 use Aphly\LaravelCommon\Models\UserCredit;
 use Aphly\LaravelPayment\Models\Payment;
+use Aphly\LaravelShop\Mail\Order\Cancel;
+use Aphly\LaravelShop\Mail\Order\Paid;
+use Aphly\LaravelShop\Mail\Order\Refunded;
+use Aphly\LaravelShop\Mail\Order\Shipped;
 use Aphly\LaravelShop\Models\Catalog\Product;
 use Aphly\LaravelShop\Models\Catalog\ProductOptionValue;
 use Aphly\LaravelShop\Models\System\Setting;
@@ -48,7 +53,7 @@ class Order extends Model
     public function handle($info){
         $orderProduct = OrderProduct::where('order_id',$info->id)->get()->toArray();
         foreach ($orderProduct as $val){
-            (new UserCredit)->handle('Reward', $info->uuid, 'point', '+', $val['reward'], 'payment_id#' . $info->payment_id);
+            //(new UserCredit)->handle('Reward', $info->uuid, 'point', '+', $val['reward'], 'payment_id#' . $info->payment_id);
             Product::where(['subtract'=>1,'id'=>$val['product_id']])->decrement('quantity',$val['quantity']);
             $orderOption = OrderOption::where(['order_id'=>$info->id,'order_product_id'=>$val['id']])->get()->toArray();
             foreach ($orderOption as $v){
@@ -60,7 +65,7 @@ class Order extends Model
     public function rollback($info){
         $orderProduct = OrderProduct::where('order_id',$info->id)->get()->toArray();
         foreach ($orderProduct as $val){
-            (new UserCredit)->handle('Reward', $info->uuid, 'point', '-', $val['reward'], 'cancel#' . $info->payment_id);
+            //(new UserCredit)->handle('Reward', $info->uuid, 'point', '-', $val['reward'], 'cancel#' . $info->payment_id);
             Product::where(['subtract'=>1,'id'=>$val['product_id']])->increment('quantity',$val['quantity']);
             $orderOption = OrderOption::where(['order_id'=>$info->id,'order_product_id'=>$val['id']])->get()->toArray();
             foreach ($orderOption as $v){
@@ -75,19 +80,22 @@ class Order extends Model
         if($order_status_id==2){
             //Processing
             $this->handle($info);
-            if($shop_setting['order_status_processing_notify']==1 || $notify){
+            if($shop_setting['order_paid_notify']==1 || $notify){
                 //send email
+                (new MailSend())->do($info->email, new Paid($info));
             }
         }else if($order_status_id==3){
             //Shipped
-            if($shop_setting['order_status_shipped_notify']==1 || $notify){
+            if($shop_setting['order_shipped_notify']==1 || $notify){
                 //send email
+                (new MailSend())->do($info->email, new Shipped($info));
             }
         }else if($order_status_id==6){
             //Canceled
             $this->rollback($info);
-            if($shop_setting['order_status_canceled_notify']==1 || $notify){
+            if($shop_setting['order_canceled_notify']==1 || $notify){
                 //send email
+                (new MailSend())->do($info->email, new Cancel($info));
             }
         }else if($order_status_id==7){
             //Refunded
@@ -97,8 +105,9 @@ class Order extends Model
                 (new Payment)->refund_api($info->payment_id,$amount,'System refund -'.$fee.'% transaction fee');
             }
             $this->rollback($info);
-            if($shop_setting['order_status_refunded_notify']==1 || $notify){
+            if($shop_setting['order_refunded_notify']==1 || $notify){
                 //send email
+                (new MailSend())->do($info->email, new Refunded($info));
             }
         }
 

@@ -10,7 +10,6 @@
         <a class="badge @if($curr_path=='shop_admin/product/img') badge-info @else badge-secondary @endif ajax_get" data-href="/shop_admin/product/img?product_id={{$res['product']->id}}">图片</a>
         <a class="badge @if($curr_path=='shop_admin/product/attribute') badge-info @else badge-secondary @endif ajax_get" data-href="/shop_admin/product/attribute?product_id={{$res['product']->id}}">属性</a>
         <a class="badge @if($curr_path=='shop_admin/product/option') badge-info @else badge-secondary @endif ajax_get" data-href="/shop_admin/product/option?product_id={{$res['product']->id}}">选项</a>
-        <a class="badge @if($curr_path=='shop_admin/product/reward') badge-info @else badge-secondary @endif ajax_get" data-href="/shop_admin/product/reward?product_id={{$res['product']->id}}">奖励积分</a>
         <a class="badge @if($curr_path=='shop_admin/product/discount') badge-info @else badge-secondary @endif ajax_get" data-href="/shop_admin/product/discount?product_id={{$res['product']->id}}">批发打折</a>
     </div>
 @endif

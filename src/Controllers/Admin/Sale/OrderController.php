@@ -100,24 +100,28 @@ class OrderController extends Controller
             })->when($status,
             function($query,$status) {
                 return $query->where('order_status_id', $status);
-            })->get();
+            })->with('orderHistory')->with('orderShipping')->get();
         $res['orderStatus'] = OrderStatus::get()->keyBy('id')->toArray();
-        $header = ["ID", "email", "total_format", "items", "status"];
+        $header = ["ID", "email", "total_format", "items", "status","paid time",'shipping_id','快递号'];
         $listData = [];
-        foreach ($res['list'] as $v) {
+        foreach ($res['list'] as $val) {
+            $paid_time = '';
+            foreach ($val->orderHistory as $v){
+                if($v->order_status_id==2){
+                    $paid_time = $v->created_at;
+                    break;
+                }
+            }
             $listData[] = [
-                $v->id,$v->email,$v->total_format,$v->items,$res['orderStatus'][$v->order_status_id]['cn_name']
+                $val->id,$val->email,$val->total_format,$val->items,$res['orderStatus'][$val->order_status_id]['cn_name'],$paid_time,$val->orderShipping->name,''
             ];
         }
-
         $path = public_path().'/download/';
         File::isDirectory($path) or File::makeDirectory($path, $mode = 0777, true, true);
-
         $config = ['path' => $path];
         $fileName = date('Y_m_d_H_i_s').'-'.mt_rand(10000,99999).'_export.xlsx';
         $xlsxObject = new \Vtiful\Kernel\Excel($config);
         $filePath = $xlsxObject->fileName($fileName, 'sheet1')->header($header)->data($listData)->output();
-
         header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         header('Content-Disposition: attachment;filename="' . $fileName . '"');
         header('Content-Length: ' . filesize($filePath));
@@ -151,7 +155,7 @@ class OrderController extends Controller
                     if ($row[0]) {
                         $input['notify']=1;
                         $input['override']=1;
-                        $input['shipping_no'] = $row[5];
+                        $input['shipping_no'] = $row[7];
                         $res['info'] = Order::where(['id'=>$row[0]])->whereIn('order_status_id',[2,3])->first();
                         if(!empty($res['info'])){
                             $res['info']->addOrderHistory($res['info'], 3,$input);

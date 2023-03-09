@@ -14,6 +14,7 @@ use Aphly\LaravelShop\Mail\Order\Refunded;
 use Aphly\LaravelShop\Mail\Order\Shipped;
 use Aphly\LaravelShop\Models\Catalog\Product;
 use Aphly\LaravelShop\Models\Catalog\ProductOptionValue;
+use Aphly\LaravelShop\Models\Catalog\Shipping;
 use Aphly\LaravelShop\Models\System\Setting;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\DB;
@@ -149,5 +150,9 @@ class Order extends Model
 
     function orderHistory(){
         return $this->hasMany(OrderHistory::class,'order_id','id');
+    }
+
+    function orderShipping(){
+        return $this->hasOne(Shipping::class,'id','shipping_id');
     }
 }

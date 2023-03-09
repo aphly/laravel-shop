@@ -6,7 +6,7 @@
 </div>
 <style>
     .product_img .item{margin: 0 10px;}
-    .product_img .item .img{width: 160px;height:160px;display: flex; align-items: center; box-shadow: 0 2px 4px rgb(0 0 0 / 20%);position: relative}
+    .product_img .item .img{width: 160px;height:160px;display: flex; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.2);position: relative}
     .product_img .item img{width: 100%;}
     .product_img .item input{width: 100%;    text-align: center;}
     .product_img .item .delImg{text-align: center; background: #df6767; color: #fff; border-radius: 50%; margin-top: 5px; position: absolute; right: 5px; top: 5px;height: 24px; width: 24px; cursor: pointer;}

@@ -21,7 +21,7 @@
         </form>
         <div class="">
             <a class="badge badge-primary xls_download show_all0_btn" data-href="/shop_admin/order/download?{{$res['search']['string']}}">下载</a>
-            <a class="badge badge-primary ajax_get show_all0_btn" data-href="/shop_admin/order/shipped">上传物流</a>
+            <a class="badge badge-primary  show_all0_btn" href="javascript:void(0)" onclick="$('#shipped').modal('show');">上传物流</a>
         </div>
     </div>
 
@@ -69,3 +69,35 @@
 </div>
 
 
+<div class="modal fade ajax_modal" id="shipped" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">上传物流单号</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="/shop_admin/order/shipped" class="save_form_file" enctype="multipart/form-data" data-fn="save_form_file_res">
+                    @csrf
+                    <div class="">
+                        <div class="form-group">
+                            <label for="">选择</label>
+                            <input type="file" class="form-control-file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+                        </div>
+                        <button class="btn btn-primary" type="submit">保存</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function save_form_file_res(res, that) {
+        //console.log(res,that)
+        alert_msg(res);
+        $('#shipped').modal('hide');
+    }
+</script>

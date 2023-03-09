@@ -135,38 +135,34 @@ class OrderController extends Controller
 
     public function shipped(Request $request)
     {
-        //$file_path = (new UploadFile(5,1,['xlsx']))->uploads($request->file('file'), 'private/order/shipped');
-//        $img_src = $insertData = [];
-//        foreach ($file_path as $key=>$val) {
-//            $img_src[] = Storage::url($val);
-//            $insertData[] = ['product_id'=>$res['product']->id,'image'=>$val,'sort'=>$key];
-//        }
-        //dd($file_path);
-        $path = public_path().'/download/';
-        $fileName = 'cc.xlsx';
-        $filePath = $path.$fileName;
-
-        $config   = ['path' => $path];
-        $excel    = new \Vtiful\Kernel\Excel($config);
-        $excel->openFile($fileName)->openSheet();
-        $i = 1;
-        while (($row = $excel->nextRow()) !== NULL) {
-            if ($i == 1) {
-                $i++;
-                continue;
-            } else {
-                if ($row[0]) {
-                    $input['notify']=1;
-                    $input['override']=1;
-                    $input['shipping_no'] = $row[5];
-                    $res['info'] = Order::where(['id'=>$row[0]])->whereIn('order_status_id',[2,3])->first();
-                    if(!empty($res['info'])){
-                        $res['info']->addOrderHistory($res['info'], 3,$input);
+        $file_path = (new UploadFile(5,1,['xlsx']))->upload($request->file('file'), 'private/order/shipped');
+        $path = storage_path().'\\app\\'.$file_path;
+        if(file_exists($path)){
+            $arr = pathinfo($path);
+            $config   = ['path' => $arr['dirname']];
+            $excel    = new \Vtiful\Kernel\Excel($config);
+            $excel->openFile($arr['basename'])->openSheet();
+            $i = 1;
+            while (($row = $excel->nextRow()) !== NULL) {
+                if ($i == 1) {
+                    $i++;
+                    continue;
+                } else {
+                    if ($row[0]) {
+                        $input['notify']=1;
+                        $input['override']=1;
+                        $input['shipping_no'] = $row[5];
+                        $res['info'] = Order::where(['id'=>$row[0]])->whereIn('order_status_id',[2,3])->first();
+                        if(!empty($res['info'])){
+                            $res['info']->addOrderHistory($res['info'], 3,$input);
+                        }
                     }
                 }
             }
+            $excel->close();
+            @unlink($path);
         }
-        @unlink($filePath);
+        throw new ApiException(['code'=>0,'msg'=>'操作成功']);
     }
 
 }

@@ -182,7 +182,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form class="form_request_file" enctype="multipart/form-data" method="post" action="/product/{{$res['info']->id}}/review/add" data-fn="review_res" >
+                        <form class="form_request_img_file" enctype="multipart/form-data" method="post" action="/product/{{$res['info']->id}}/review/add" data-fn="review_res" >
                             @csrf
                             <div class="review_form">
                                 <div>{{$res['info']->name}}</div>
@@ -196,7 +196,8 @@
                                 <input type="hidden" name="rating" class="rating_js" value="5">
                                 <textarea name="text" class="form-control"></textarea>
                                 <div class="add_photo"><i class="common-iconfont icon-zhaoxiangji"></i>Add Photo</div>
-                                <input type="file"  style="display: none" accept="image/gif,image/jpeg,image/jpg,image/png" name="files[image][]" data-next_class="review_img" class="form_input_file add_photo_file" multiple="multiple">
+                                <input type="file"  style="display: none" accept="image/gif,image/jpeg,image/jpg,image/png" data-img_list="review_img"
+                                       class="form_input_file_img add_photo_file" multiple="multiple">
                                 <div class="review_img"></div>
                                 <button class="">Submit Review</button>
                             </div>
@@ -291,15 +292,30 @@
     </style>
     <script>
         function review_res(res) {
-            if(res.code===1 && res.data.redirect){
-                location.href = res.data.redirect+'?redirect={{urlencode(request()->url())}}'
-            }else if(res.code===0){
-                location.reload()
+            if(res.code===0){
+                if(res.data.redirect){
+                    location.href = res.data.redirect+'?redirect={{urlencode(request()->url())}}'
+                }else{
+                    location.reload()
+                }
             }else{
-                console.log(res)
                 alert_msg(res)
             }
         }
+        $(function () {
+            $('.add_photo').click(function () {
+                $('.add_photo_file').click();
+            })
+            $('.form_input_file_img').on("change" , function(){
+                let files = this.files;
+                let img_list = $(this).data('img_list')
+                $('.'+img_list).html('')
+                img_js_obj.handle(files,function (img) {
+                    $('.'+img_list).append(img)
+                });
+            })
+
+        })
     </script>
 </div>
 <style>
@@ -440,9 +456,7 @@
             $('.rating_js').val($(this).data('val'))
         })
 
-        $('.add_photo').click(function () {
-            $('.add_photo_file').click();
-        })
+
     })
 
 </script>

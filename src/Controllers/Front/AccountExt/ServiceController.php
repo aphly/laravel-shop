@@ -3,6 +3,7 @@
 namespace Aphly\LaravelShop\Controllers\Front\AccountExt;
 
 use Aphly\Laravel\Exceptions\ApiException;
+use Aphly\LaravelAdmin\Models\UploadFile;
 use Aphly\LaravelCommon\Models\Currency;
 use Aphly\LaravelCommon\Models\User;
 use Aphly\LaravelPayment\Models\PaymentRefund;
@@ -13,8 +14,10 @@ use Aphly\LaravelShop\Models\Sale\OrderHistory;
 use Aphly\LaravelShop\Models\Sale\OrderProduct;
 use Aphly\LaravelShop\Models\Sale\Service;
 use Aphly\LaravelShop\Models\Sale\ServiceHistory;
+use Aphly\LaravelShop\Models\Sale\ServiceImage;
 use Aphly\LaravelShop\Models\Sale\ServiceProduct;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ServiceController extends Controller
 {
@@ -26,10 +29,13 @@ class ServiceController extends Controller
     }
 
     public function detail(Request $request){
-        $res['info'] = Service::where(['uuid'=>User::uuid(),'id'=>$request->query('id',0)])->where('delete_at',0)->with('order')->firstOr404();
+        $res['info'] = Service::where(['uuid'=>User::uuid(),'id'=>$request->query('id',0)])->where('delete_at',0)->with('order')->with('img')->firstOr404();
         $res['serviceHistory'] = ServiceHistory::where('service_id',$res['info']->id)->orderBy('created_at','asc')->get();
         $res['serviceProduct'] = ServiceProduct::where('service_id',$res['info']->id)->with('orderProduct')->get();
         $res['orderRefund'] = PaymentRefund::where(['payment_id'=>$res['info']->order->payment_id,'status'=>2])->get();
+        foreach ($res['info']->img as $val){
+            $val->image_src = UploadFile::getPath($val->image,true);
+        }
         return $this->makeView('laravel-shop-front::account_ext.service.detail',['res'=>$res]);
     }
 
@@ -57,6 +63,12 @@ class ServiceController extends Controller
                 $orderHistory = OrderHistory::where(['order_status_id'=>2,'order_id'=>$res['orderInfo']->id])->firstOrError();
                 if($orderHistory->created_at->timestamp+180*24*3600<time()){
                     throw new ApiException(['code'=>2,'msg'=>'After-sales time has expired'.$orderHistory->created_at,'data'=>['redirect'=>'/account_ext/service']]);
+                }
+                $insertData = $file_paths =  [];
+                if($request->file("files")){
+                    foreach ($request->file("files") as $val){
+                        $file_paths[] = (new UploadFile(1,5))->uploads($val, 'public/shop/service');
+                    }
                 }
                 $input = $request->all();
                 $input['uuid'] = User::uuid();
@@ -106,6 +118,15 @@ class ServiceController extends Controller
                 $info->refund_amount_format = $refund_amount_format;
                 if($info->save()){
                     ServiceProduct::insert($service_product_arr);
+                }
+                foreach ($file_paths as $val){
+                    foreach ($val as $v) {
+                        $img_src[] = Storage::url($v);
+                        $insertData[] = ['service_id'=>$info->id,'image'=>$v];
+                    }
+                }
+                if ($insertData) {
+                    ServiceImage::insert($insertData);
                 }
                 throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>'/account_ext/service']]);
             }else{

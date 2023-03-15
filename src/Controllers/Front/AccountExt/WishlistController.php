@@ -3,12 +3,12 @@
 namespace Aphly\LaravelShop\Controllers\Front\AccountExt;
 
 use Aphly\Laravel\Exceptions\ApiException;
+use Aphly\LaravelAdmin\Models\UploadFile;
 use Aphly\LaravelCommon\Models\Currency;
 use Aphly\LaravelCommon\Models\User;
 use Aphly\LaravelShop\Controllers\Front\Controller;
 use Aphly\LaravelShop\Models\Account\Wishlist;
 use Aphly\LaravelShop\Models\Catalog\Product;
-use Aphly\LaravelShop\Models\Catalog\ProductImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 
@@ -23,7 +23,7 @@ class WishlistController extends Controller
         }
         $res['productData'] = (new Product)->getByids($product_ids);
         foreach ($res['productData'] as $val){
-            $val->image_src= ProductImage::render($val->image,true);
+            $val->image_src= UploadFile::getPath($val->image,true);
             $val->price= Currency::format($val->price);
             $val->special= $val->special?Currency::format($val->special):0;
             $val->discount= $val->discount?Currency::format($val->discount):0;

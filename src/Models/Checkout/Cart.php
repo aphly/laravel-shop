@@ -2,12 +2,12 @@
 
 namespace Aphly\LaravelShop\Models\Checkout;
 
+use Aphly\LaravelAdmin\Models\UploadFile;
 use Aphly\LaravelCommon\Models\Currency;
 use Aphly\LaravelCommon\Models\User;
 use Aphly\LaravelShop\Models\Catalog\Coupon;
 use Aphly\LaravelShop\Models\Catalog\Product;
 use Aphly\LaravelShop\Models\Catalog\ProductDiscount;
-use Aphly\LaravelShop\Models\Catalog\ProductImage;
 use Aphly\LaravelShop\Models\Catalog\ProductReward;
 use Aphly\LaravelShop\Models\Catalog\ProductSpecial;
 use Aphly\LaravelShop\Models\Catalog\Shipping;
@@ -162,7 +162,7 @@ class Cart extends Model
 
                     list($price,$price_format) = Currency::format($price + $option_price,2);
                     $total = $price * $cart['quantity'];
-                    $cart['product']['image_src'] = ProductImage::render($cart['product']['image'],true);
+                    $cart['product']['image_src'] = UploadFile::getPath($cart['product']['image'],true);
                     $list[$cart['id']] = $cart;
                     $list[$cart['id']]['option'] = $option_value;
                     $list[$cart['id']]['option_value_str'] = implode(' / ',$option_value_arr);

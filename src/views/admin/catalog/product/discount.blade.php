@@ -50,7 +50,7 @@
         mount()
     })
     function add_discount() {
-        let id = randomId(8)
+        let id = randomStr(8)
         let html = `<li>
                         <span>
                             <input type="number" name="product_discount[${id}][quantity]" value="0">

@@ -196,9 +196,9 @@
                                 <input type="hidden" name="rating" class="rating_js" value="5">
                                 <textarea name="text" class="form-control"></textarea>
                                 <div class="add_photo"><i class="common-iconfont icon-zhaoxiangji"></i>Add Photo</div>
-                                <input type="file"  style="display: none" accept="image/gif,image/jpeg,image/jpg,image/png" data-img_list="review_img"
+                                <input type="file" style="display: none" accept="image/gif,image/jpeg,image/jpg,image/png" data-img_list="file_img"
                                        class="form_input_file_img add_photo_file" multiple="multiple">
-                                <div class="review_img"></div>
+                                <div class="file_img"></div>
                                 <button class="">Submit Review</button>
                             </div>
                         </form>
@@ -265,8 +265,6 @@
         .review_list_img img{width: 50px;height: 50px;margin-right: 10px;}
         .review_content{margin-bottom: 10px;}
 
-        .review_img{margin-bottom: 10px;display: flex;flex-wrap: wrap;}
-        .review_img img{width: 100px;height: 100px;margin: 10px;}
         .review_form textarea{width: 100%;height: 100px;}
         .add_photo{height: 40px;line-height: 40px;text-align: center;border:1px dashed #ddd;margin: 10px 0;cursor: pointer;}
         .add_photo i{margin-right: 5px;font-size: 20px;position: relative;top: 2px;}

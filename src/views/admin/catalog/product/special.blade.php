@@ -54,7 +54,7 @@
         mount()
     })
     function add_special() {
-        let id = randomId(8)
+        let id = randomStr(8)
         let html = `<li>
                         <span>
                             <input type="number" name="product_special[${id}][priority]" value="1">

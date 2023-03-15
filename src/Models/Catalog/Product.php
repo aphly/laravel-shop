@@ -2,6 +2,7 @@
 
 namespace Aphly\LaravelShop\Models\Catalog;
 
+use Aphly\LaravelAdmin\Models\UploadFile;
 use Aphly\LaravelCommon\Models\Currency;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;
@@ -32,7 +33,7 @@ class Product extends Model
         $productImage = ProductImage::where('product_id',$product_id)->orderBy('sort','desc')->get()->toArray();
         $res = [];
         foreach($productImage as $val){
-            $val['image_src'] = ProductImage::render($val['image'],true);
+            $val['image_src'] = UploadFile::getPath($val['image'],true);
             $res[] = $val;
         }
         return $res;
@@ -42,7 +43,7 @@ class Product extends Model
         $productImage = ProductImage::whereIN('product_id',$product_ids)->orderBy('sort','desc')->get()->toArray();
         $res = [];
         foreach($productImage as $val){
-            $val['image_src'] = ProductImage::render($val['image']);
+            $val['image_src'] = UploadFile::getPath($val['image']);
             $res[$val['product_id']][] = $val;
         }
         return $res;
@@ -251,9 +252,9 @@ class Product extends Model
         $productOptionValueGroup = [] ;
         foreach ($productOptionValue as $key=>$val){
             list($val['price'],$val['price_format']) = Currency::format($val['price'],2);
-            $val['option_value']['image_src'] = ProductImage::render($val['option_value']['image']);
+            $val['option_value']['image_src'] = UploadFile::getPath($val['option_value']['image']);
             if($val['product_image']){
-                $val['product_image']['image_src'] = ProductImage::render($val['product_image']['image']);
+                $val['product_image']['image_src'] = UploadFile::getPath($val['product_image']['image']);
             }
             $productOptionValueGroup[$val['product_option_id']][$key] = $val;
         }

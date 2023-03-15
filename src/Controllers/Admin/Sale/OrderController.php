@@ -3,7 +3,7 @@
 namespace Aphly\LaravelShop\Controllers\Admin\Sale;
 
 use Aphly\Laravel\Exceptions\ApiException;
-use Aphly\Laravel\Libs\UploadFile;
+use Aphly\LaravelAdmin\Models\UploadFile;
 use Aphly\LaravelShop\Controllers\Admin\Controller;
 use Aphly\LaravelShop\Models\Sale\Order;
 use Aphly\LaravelShop\Models\Sale\OrderHistory;

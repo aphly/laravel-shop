@@ -3,14 +3,13 @@
 namespace Aphly\LaravelShop\Controllers\Front\Product;
 
 use Aphly\Laravel\Exceptions\ApiException;
-use Aphly\Laravel\Libs\UploadFile;
+use Aphly\LaravelAdmin\Models\UploadFile;
 use Aphly\LaravelCommon\Models\Category;
 use Aphly\LaravelCommon\Models\Currency;
 use Aphly\LaravelCommon\Models\User;
 use Aphly\LaravelShop\Controllers\Front\Controller;
 use Aphly\LaravelShop\Models\Account\Wishlist;
 use Aphly\LaravelShop\Models\Catalog\Product;
-use Aphly\LaravelShop\Models\Catalog\ProductImage;
 use Aphly\LaravelShop\Models\Catalog\Review;
 use Aphly\LaravelShop\Models\Catalog\ReviewImage;
 use Aphly\LaravelShop\Models\Checkout\Cart;
@@ -26,7 +25,7 @@ class ProductController extends Controller
         $product_ids = [];
         foreach ($res['list'] as $key=>$val){
             $product_ids[] = $val->id;
-            $val->image_src= ProductImage::render($val->image,true);
+            $val->image_src= UploadFile::getPath($val->image,true);
             $val->price= Currency::format($val->price);
             $val->special= $val->special?Currency::format($val->special):0;
             $val->discount= $val->discount?Currency::format($val->discount):0;
@@ -100,7 +99,7 @@ class ProductController extends Controller
         $res['reviewRatingAvg_100'] = $res['reviewRatingAvg']/5*100;
         foreach ($res['review'] as $val){
             foreach ($val->img as $v){
-                $v->image_src = ProductImage::render($v->image,true);
+                $v->image_src = UploadFile::getPath($v->image,true);
             }
         }
         return $this->makeView('laravel-shop-front::product.detail',['res'=>$res]);

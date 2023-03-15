@@ -2,6 +2,7 @@
 
 namespace Aphly\LaravelShop\Models\Catalog;
 
+use Aphly\LaravelAdmin\Models\UploadFile;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;
 
@@ -28,7 +29,7 @@ class Review extends Model
         $review = self::where('product_id',$product_id)->with('img')->orderBy('created_at','desc')->get();
         foreach ($review as $val){
             foreach ($val->img as $v){
-                $v->image_src = ProductImage::render($v->image,true);
+                $v->image_src = UploadFile::getPath($v->image,true);
             }
         }
         return $review;

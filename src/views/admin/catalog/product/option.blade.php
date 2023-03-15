@@ -206,7 +206,7 @@
     }
 
     function add_option(_this) {
-        let id = randomId(8)
+        let id = randomStr(8)
         let name = $(_this).text();
         let option_id = $(_this).data('id');
         let option_type = $(_this).data('type');
@@ -277,7 +277,7 @@
     }
 
     function add_option_value(_this,id,type){
-        let vid = randomId(8)
+        let vid = randomStr(8)
         let option_id = $(_this).data('option_id')
         let option = ``
         for(let i in ajax_res_data[option_id]['value']){

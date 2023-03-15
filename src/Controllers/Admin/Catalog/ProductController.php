@@ -3,7 +3,7 @@
 namespace Aphly\LaravelShop\Controllers\Admin\Catalog;
 
 use Aphly\Laravel\Exceptions\ApiException;
-use Aphly\Laravel\Libs\UploadFile;
+use Aphly\LaravelAdmin\Models\UploadFile;
 use Aphly\LaravelCommon\Models\CategoryPath;
 use Aphly\LaravelCommon\Models\Filter;
 use Aphly\LaravelCommon\Models\Group;

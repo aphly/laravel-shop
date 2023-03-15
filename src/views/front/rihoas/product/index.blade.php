@@ -10,6 +10,22 @@
 </style>
 
 <div class="container">
+    <div>
+        <div class="filters">
+
+        </div>
+        <div class="m_filters">
+
+        </div>
+        <div >
+            <ul style="display: flex;">
+                <li style="line-height: 24px;padding: 2px 10px 2px 30px;background: #e8e8e8;border-radius: 5px;color: #000;font-weight: 500;">aaaa</li>
+            </ul>
+        </div>
+        <div class="m_filters_btn">
+            Filters
+        </div>
+    </div>
     <ul class=" product-category">
         @foreach($res['list'] as $key=>$val)
             <li class="">
@@ -94,10 +110,13 @@
 .wishlist_one{}
 .wishlist_one i{width: 20px;height: 20px;display: block;cursor: pointer;text-align: center;}
 .p_name{font-weight: 600;}
+.m_filters_btn{display: none;}
 @media (max-width: 1199.98px) {
     .product-category li{width: calc(50% - 5px);}
     .product-category > li:nth-child(2n),.product-category li:last-child{margin-right:0}
     .product-category > li:nth-child(5n),.product-category li:last-child{margin-right:10px}
+    .m_filters_btn{display:block;position:fixed;bottom:50%;right:0;background:#f2f2f2;writing-mode:vertical-rl;padding:20px 10px;z-index:100;border-bottom-right-radius:8px;border-top-right-radius:8px;transform:rotate(180deg)}
+
 }
 </style>
 

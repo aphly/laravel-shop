@@ -2,6 +2,7 @@
 
 namespace Aphly\LaravelShop\Models\Catalog;
 
+use Aphly\LaravelAdmin\Models\UploadFile;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;
 use Illuminate\Support\Facades\Storage;
@@ -19,13 +20,5 @@ class ProductImage extends Model
         'sort'
     ];
 
-    static public $oss_url = false;
 
-    static function render($img,$default=false){
-        if($img){
-            return self::$oss_url?self::$oss_url.$img:Storage::url($img);
-        }else{
-            return $default?URL::asset('static/admin/img/none.png'):null;
-        }
-    }
 }

@@ -3,9 +3,9 @@
 namespace Aphly\LaravelShop\Controllers\Admin\Catalog;
 
 use Aphly\Laravel\Exceptions\ApiException;
+use Aphly\LaravelAdmin\Models\UploadFile;
 use Aphly\LaravelShop\Controllers\Admin\Controller;
 use Aphly\LaravelShop\Models\Catalog\Product;
-use Aphly\LaravelShop\Models\Catalog\ProductImage;
 use Aphly\LaravelShop\Models\Catalog\Review;
 use Aphly\LaravelShop\Models\Catalog\ReviewImage;
 use Illuminate\Http\Request;
@@ -26,7 +26,7 @@ class ReviewController extends Controller
         }
         $reviewImage = ReviewImage::whereIn('review_id',$review_ids)->get();
         foreach ($reviewImage as $val){
-            $res['reviewImage'][$val->review_id][] = ProductImage::render($val->image);
+            $res['reviewImage'][$val->review_id][] = UploadFile::getPath($val->image);
         }
         return $this->makeView('laravel-shop::admin.catalog.review.index',['res'=>$res]);
     }
@@ -38,7 +38,7 @@ class ReviewController extends Controller
             $res['product'] = Product::where('id',$res['review']->product_id)->select('name','id')->first();
             $res['reviewImage'] = ReviewImage::where('review_id',$res['review']->id)->get();
             foreach ($res['reviewImage'] as $val){
-                $val->image_src = ProductImage::render($val->image);
+                $val->image_src = UploadFile::getPath($val->image);
             }
         }else{
             $res['product'] = $res['reviewImage'] = [];

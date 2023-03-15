@@ -159,6 +159,18 @@
                     </ul>
                 </div>
 
+                <div class="detail">
+                    <div class="title">img</div>
+                    <ul>
+                        @if($res['info']->img->count())
+                            @foreach($res['info']->img as $val)
+                                <li>
+                                    <img src="{{$val->image_src}}" alt="" style="width: 100px;height: 100px;">
+                                </li>
+                            @endforeach
+                        @endif
+                    </ul>
+                </div>
             </div>
         </div>
     </div>

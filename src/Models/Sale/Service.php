@@ -25,6 +25,10 @@ class Service extends Model
         return $this->hasOne(Order::class,'id','order_id');
     }
 
+    function img(){
+        return $this->hasMany(ServiceImage::class,'service_id');
+    }
+
     public function addServiceHistory($info, $service_status_id, $input = []){
 
         if($info->service_action_id==1){

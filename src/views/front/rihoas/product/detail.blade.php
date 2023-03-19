@@ -36,7 +36,7 @@
         <div class="product_detail">
             <div class="product_detail_img">
                 <div class="big_img aphly_viewer_js">
-                    <img src="{{ $res['info_img'][0]['image_src']??URL::asset('static/admin/img/none.png') }}" class="aphly_viewer">
+                    <img src="{{ $res['info_img'][0]['image_src']??URL::asset('static/base/img/none.png') }}" class="aphly_viewer">
                 </div>
                 @if($res['info_img'])
                     <div class="small_img  position-relative ">

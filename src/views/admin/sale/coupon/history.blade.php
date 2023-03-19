@@ -29,7 +29,7 @@
                 <ul class="table_bottom">
                     <li></li>
                     <li >
-                        {{$res['list']->links('laravel-admin::common.pagination')}}
+                        {{$res['list']->links('laravel::admin.pagination')}}
                     </li>
                 </ul>
             @endif

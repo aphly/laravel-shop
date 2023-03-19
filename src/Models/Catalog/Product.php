@@ -2,7 +2,7 @@
 
 namespace Aphly\LaravelShop\Models\Catalog;
 
-use Aphly\LaravelAdmin\Models\UploadFile;
+use Aphly\Laravel\Models\UploadFile;
 use Aphly\LaravelCommon\Models\Currency;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;
@@ -15,7 +15,7 @@ class Product extends Model
     //public $timestamps = false;
 
     protected $fillable = [
-        'sku','name','quantity','image','price','uuid','model',
+        'sku','name','quantity','image','price','uuid','spu',
         'shipping','stock_status_id','weight','weight_class_id',
         'length','width','height','length_class_id','subtract',
         'status','viewed','sale','sort','date_available'
@@ -51,9 +51,12 @@ class Product extends Model
 
     public $sub_category = false;
 
-    public function getList($data = [],$groupByModel=false) {
+    public function getList($data = [],$bySpu=false) {
+        //$type = 1 sku
+        //$type = 2 spu
         $data['category_id'] = $data['category_id']??false;
         $filter = $data['filter']??false;
+        $price = $data['price']??false;
         $sort = $data['sort'];
         $time = time();
         if($data['category_id']){
@@ -100,10 +103,10 @@ class Product extends Model
             }
         }
         $sql->groupBy('p.id')
-            ->select('p.id','p.sale','p.viewed','p.date_available','p.price','p.name','p.quantity','p.image','p.model');
+            ->select('p.id','p.sale','p.viewed','p.date_available','p.price','p.name','p.quantity','p.image','p.spu');
         $sql->addSelect(['rating'=>Review::whereColumn('product_id','p.id')->where('status',1)
             ->groupBy('product_id')
-            ->selectRaw('AVG(rating) AS total')
+            ->selectRaw('AVG(rating) AS avg')
         ]);
         $sql->addSelect(['reviews'=>Review::whereColumn('product_id','p.id')->where('status',1)
             ->groupBy('product_id')
@@ -121,60 +124,50 @@ class Product extends Model
             ->where('quantity',1)
             ->select('price')->limit(1)
         ]);
-        if($groupByModel){
-            $res = DB::table(DB::raw("({$sql->toSql()}) as temp"))
-                    ->mergeBindings($sql)
-                    ->groupBy('model')
-                    ->selectRaw('model,GROUP_CONCAT(id) as ids,max(viewed) as viewed,max(date_available) as date_available,
-                    min(price) as price,min(special) as special,min(discount) as discount,max(sale) as sale,max(rating) as rating')
-                    ->when($sort,
-                        function($query,$sort) {
-                            $sort = explode('_',$sort);
-                            if($sort[0]=='viewed'){
-                                return $query->orderBy('viewed','desc');
-                            }else if($sort[0]=='new'){
-                                return $query->orderBy('date_available','desc');
-                            }else if($sort[0]=='price'){
-                                if($sort[1]=='asc'){
-                                    return $query->orderByRaw('(CASE WHEN min(special) IS NOT NULL THEN min(special) WHEN min(discount) IS NOT NULL THEN min(discount) ELSE min(price) END) asc');
-                                }else{
-                                    return $query->orderByRaw('(CASE WHEN max(special) IS NOT NULL THEN max(special) WHEN max(discount) IS NOT NULL THEN min(discount) ELSE max(price) END) desc');
-                                }
-                            }else if($sort[0]=='sale'){
-                                return $query->orderBy('sale','desc');
-                            }else if($sort[0]=='rating'){
-                                return $query->orderBy('rating','desc');
-                            }
-                    });
-            return $res->Paginate(config('admin.perPage'))->withQueryString();
-        }else{
-            $sql->when($sort,
+        $res = DB::table($sql)
+            ->when($price,function ($query,$price){
+                $price_arr = explode('-',$price);
+                $price_min = abs((float)$price_arr[0]);
+                $price_max = abs((float)$price_arr[1]);
+                if(!$price_min && $price_max){
+                    return $query->whereRaw('IFNULL(special,IFNULL(discount,price))<='.$price_max);
+                }else if($price_min && $price_max){
+                    return $query->whereRaw('IFNULL(special,IFNULL(discount,price))>='.$price_min.' and IFNULL(special,IFNULL(discount,price))<='.$price_max);
+                }else if($price_min && !$price_max){
+                    return $query->whereRaw('IFNULL(special,IFNULL(discount,price))>='.$price_min);
+                }
+            })
+            ->when($bySpu,function ($query){
+                return $query->groupBy('spu')
+                    ->selectRaw('spu,GROUP_CONCAT(id) as ids,max(viewed) as viewed,max(date_available) as date_available,
+                            min(price) as price,min(special) as special,min(discount) as discount,max(sale) as sale,max(rating) as rating');
+            })
+            ->when($sort,
                 function($query,$sort) {
                     $sort = explode('_',$sort);
                     if($sort[0]=='viewed'){
-                        return $query->orderBy('p.viewed','desc');
+                        return $query->orderBy('viewed','desc');
                     }else if($sort[0]=='new'){
-                        return $query->orderBy('p.date_available','desc');
+                        return $query->orderBy('date_available','desc');
                     }else if($sort[0]=='price'){
                         if($sort[1]=='asc'){
-                            return $query->orderByRaw('(CASE WHEN special IS NOT NULL THEN special WHEN discount IS NOT NULL THEN discount ELSE p.price END) asc');
+                            return $query->orderByRaw('(CASE WHEN min(special) IS NOT NULL THEN min(special) WHEN min(discount) IS NOT NULL THEN min(discount) ELSE min(price) END) asc');
                         }else{
-                            return $query->orderByRaw('(CASE WHEN special IS NOT NULL THEN special WHEN discount IS NOT NULL THEN discount ELSE p.price END) desc');
+                            return $query->orderByRaw('(CASE WHEN max(special) IS NOT NULL THEN max(special) WHEN max(discount) IS NOT NULL THEN min(discount) ELSE max(price) END) desc');
                         }
                     }else if($sort[0]=='sale'){
-                        return $query->orderBy('p.sale','desc');
+                        return $query->orderBy('sale','desc');
                     }else if($sort[0]=='rating'){
                         return $query->orderBy('rating','desc');
                     }
                 });
-            return $sql->Paginate(config('admin.perPage'))->withQueryString();
-        }
+        return $res->Paginate(config('admin.perPage'))->withQueryString();
     }
 
     function getByids($product_ids){
         $time = time();
         $sql = DB::table('shop_product as p')->where('p.status',1)->where('p.date_available','<=',$time)->whereIn('p.id',$product_ids);
-        $sql->select('p.id','p.sale','p.viewed','p.date_available','p.price','p.name','p.quantity','p.image','p.model');
+        $sql->select('p.id','p.sale','p.viewed','p.date_available','p.price','p.name','p.quantity','p.image','p.spu');
         $sql->addSelect(['special'=>ProductSpecial::whereColumn('product_id','p.id')
             ->where(function ($query) use ($time){
                 $query->where('date_start',0)->orWhere('date_start','<',$time);

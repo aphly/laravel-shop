@@ -3,7 +3,7 @@
 namespace Aphly\LaravelShop\Controllers\Front\Product;
 
 use Aphly\Laravel\Exceptions\ApiException;
-use Aphly\LaravelAdmin\Models\UploadFile;
+use Aphly\Laravel\Models\UploadFile;
 use Aphly\LaravelCommon\Models\Category;
 use Aphly\LaravelCommon\Models\Currency;
 use Aphly\LaravelCommon\Models\User;
@@ -18,10 +18,11 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    public function listData($filter_data,$res)
+    public function listData($filter_data,$res,$bySpu=false)
     {
         $product = new Product;
-        $res['list'] = $product->getList($filter_data);
+        $res['list'] = $product->getList($filter_data,$bySpu);
+        //dd($res['list']);
         $product_ids = [];
         foreach ($res['list'] as $key=>$val){
             $product_ids[] = $val->id;
@@ -43,6 +44,7 @@ class ProductController extends Controller
             'filter'      => $request->query('filter',false),
             'name'      => $request->query('name',false),
             'sort'      => $request->query('sort',false),
+            'price'      => $request->query('price',false)
         ];
         $res = $this->listData($filter_data,$res);
         return $this->makeView('laravel-shop-front::product.index',['res'=>$res]);
@@ -102,6 +104,7 @@ class ProductController extends Controller
                 $v->image_src = UploadFile::getPath($v->image,true);
             }
         }
+
         return $this->makeView('laravel-shop-front::product.detail',['res'=>$res]);
     }
 

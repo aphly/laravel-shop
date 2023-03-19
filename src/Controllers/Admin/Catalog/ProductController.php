@@ -3,7 +3,7 @@
 namespace Aphly\LaravelShop\Controllers\Admin\Catalog;
 
 use Aphly\Laravel\Exceptions\ApiException;
-use Aphly\LaravelAdmin\Models\UploadFile;
+use Aphly\Laravel\Models\UploadFile;
 use Aphly\LaravelCommon\Models\CategoryPath;
 use Aphly\LaravelCommon\Models\Filter;
 use Aphly\LaravelCommon\Models\Group;
@@ -333,7 +333,7 @@ class ProductController extends Controller
                 $arr_v['date_end'] = strtotime($v['date_end']);
                 $update[] = $arr_v;
             }
-            ProductSpecial::upsert($update,['id'],['product_id','group_id','price','date_start','date_end']);
+            ProductSpecial::upsert($update,['id'],['product_id','price','date_start','date_end']);
             throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
         }else{
             //$res['group'] = Group::get()->keyBy('id')->toArray();

@@ -20,8 +20,8 @@
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">model</label>
-                <input type="text" name="model" class="form-control " value="{{$res['product']->model}}" >
+                <label for="">spu</label>
+                <input type="text" name="spu" class="form-control " value="{{$res['product']->spu}}" >
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">

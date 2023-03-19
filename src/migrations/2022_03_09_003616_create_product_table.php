@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('uuid')->index();
             $table->string('sku',64)->nullable();
-            $table->string('model',64)->nullable()->index();
+            $table->string('spu',64)->nullable()->index();
             $table->string('name',255)->nullable();
             $table->integer('quantity')->nullable();
             $table->string('image',255)->nullable();

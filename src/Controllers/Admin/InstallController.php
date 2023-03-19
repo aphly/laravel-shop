@@ -2,10 +2,10 @@
 
 namespace Aphly\LaravelShop\Controllers\Admin;
 
-use Aphly\LaravelAdmin\Models\Dict;
-use Aphly\LaravelAdmin\Models\Menu;
-use Aphly\LaravelAdmin\Models\Module;
-use Aphly\LaravelAdmin\Models\Role;
+use Aphly\Laravel\Models\Dict;
+use Aphly\Laravel\Models\Menu;
+use Aphly\Laravel\Models\Module;
+use Aphly\Laravel\Models\Role;
 use Illuminate\Support\Facades\DB;
 
 class InstallController extends Controller

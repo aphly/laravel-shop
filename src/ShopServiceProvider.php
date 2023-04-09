@@ -28,7 +28,7 @@ class ShopServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/public' => public_path('static/shop')
         ]);
-        $this->loadMigrationsFrom(__DIR__.'/migrations');
+        //$this->loadMigrationsFrom(__DIR__.'/migrations');
         $this->loadViewsFrom(__DIR__.'/views', 'laravel-shop');
         $this->loadViewsFrom(__DIR__.'/views/front/'.config('common.template'), 'laravel-shop-front');
         $this->loadRoutesFrom(__DIR__.'/routes/web.php');

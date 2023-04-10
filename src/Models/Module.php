@@ -45,7 +45,7 @@ class Module extends Module_base
         $menuData = Menu::where(['module_id'=>$module_id])->get();
         $data=[];
         foreach ($menuData as $val){
-            $data[] =['role_id' => Role::MANAGER,'menu_id'=>$val->id];
+            $data[] =['role_id' => 1,'menu_id'=>$val->id];
         }
         DB::table('admin_role_menu')->insert($data);
 

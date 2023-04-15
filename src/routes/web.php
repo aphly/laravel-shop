@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware(['web'])->group(function () {
-    Route::match(['get', 'post'],'/home1', 'Aphly\LaravelShop\Controllers\Front\HomeController@home1');
+    Route::match(['get', 'post'],'home1', 'Aphly\LaravelShop\Controllers\Front\HomeController@home1');
 
     Route::post('wishlist/product/{id}', 'Aphly\LaravelShop\Controllers\Front\Account\WishlistController@product')->where('id', '[0-9]+');
 
@@ -49,37 +49,37 @@ Route::middleware(['web'])->group(function () {
         });
 
         //Checkout
-        Route::match(['get', 'post'],'/checkout/address', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@address');
-        Route::match(['get', 'post'],'/checkout/shipping', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@shipping');
-        Route::match(['get', 'post'],'/checkout/payment', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@payment');
+        Route::match(['get', 'post'],'checkout/address', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@address');
+        Route::match(['get', 'post'],'checkout/shipping', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@shipping');
+        Route::match(['get', 'post'],'checkout/payment', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@payment');
 
         //review
-        Route::post('/product/{id}/review/add', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@reviewAdd')->where('id', '[0-9]+');
+        Route::post('product/{id}/review/add', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@reviewAdd')->where('id', '[0-9]+');
 
         //cart
-        Route::post('/cart/{id}/wishlist', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@addWishlist')->where('id', '[0-9]+');
+        Route::post('cart/{id}/wishlist', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@addWishlist')->where('id', '[0-9]+');
     });
 
     Route::middleware(['guest'])->group(function () {
-        Route::get('/index', 'Aphly\LaravelShop\Controllers\Front\HomeController@index');
+        Route::get('index', 'Aphly\LaravelShop\Controllers\Front\HomeController@index');
 
         //common
-        Route::get('/coupon/{code}', 'Aphly\LaravelShop\Controllers\Front\Common\CouponController@ajax');
+        Route::get('coupon/{code}', 'Aphly\LaravelShop\Controllers\Front\Common\CouponController@ajax');
 
         //product
-        Route::get('/product', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@index');
-        Route::get('/product/category/{id}', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@category');
-        Route::get('/product/{id}', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@detail')->where('id', '[0-9]+');
-        Route::redirect('/product/new', '/product?sort=sale');
-        Route::redirect('/product/best', '/product?sort=new');
+        Route::get('product', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@index');
+        Route::get('product/category/{id}', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@category');
+        Route::get('product/{id}', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@detail')->where('id', '[0-9]+');
+        Route::redirect('product/new', '/product?sort=sale');
+        Route::redirect('product/best', '/product?sort=new');
 
         //cart
-        Route::get('/cart', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@index');
-        Route::post('/cart/add', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@add');
-        Route::post('/cart/edit', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@edit');
-        Route::post('/cart/remove', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@remove');
-        Route::post('/cart/coupon', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@coupon');
-        Route::get('/cart/coupon_remove', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@couponRemove');
+        Route::get('cart', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@index');
+        Route::post('cart/add', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@add');
+        Route::post('cart/edit', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@edit');
+        Route::post('cart/remove', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@remove');
+        Route::post('cart/coupon', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@coupon');
+        Route::get('cart/coupon_remove', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@couponRemove');
 
     });
 });
@@ -95,44 +95,44 @@ Route::middleware(['web'])->group(function () {
             ];
 
             foreach ($route_arr as $val){
-                Route::get('/'.$val[0].'/index', 'Aphly\LaravelShop\Controllers\Admin'.$val[1].'@index');
-                Route::get('/'.$val[0].'/form', 'Aphly\LaravelShop\Controllers\Admin'.$val[1].'@form');
-                Route::post('/'.$val[0].'/save', 'Aphly\LaravelShop\Controllers\Admin'.$val[1].'@save');
-                Route::post('/'.$val[0].'/del', 'Aphly\LaravelShop\Controllers\Admin'.$val[1].'@del');
+                Route::get($val[0].'/index', 'Aphly\LaravelShop\Controllers\Admin'.$val[1].'@index');
+                Route::get($val[0].'/form', 'Aphly\LaravelShop\Controllers\Admin'.$val[1].'@form');
+                Route::post($val[0].'/save', 'Aphly\LaravelShop\Controllers\Admin'.$val[1].'@save');
+                Route::post($val[0].'/del', 'Aphly\LaravelShop\Controllers\Admin'.$val[1].'@del');
             }
 
-            Route::get('/setting/index', 'Aphly\LaravelShop\Controllers\Admin\System\SettingController@index');
-            Route::post('/setting/save', 'Aphly\LaravelShop\Controllers\Admin\System\SettingController@save');
+            Route::get('setting/index', 'Aphly\LaravelShop\Controllers\Admin\System\SettingController@index');
+            Route::post('setting/save', 'Aphly\LaravelShop\Controllers\Admin\System\SettingController@save');
 
-            Route::get('/product/index', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@index');
-            Route::match(['get', 'post'],'/product/add', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@add');
-            Route::match(['get', 'post'],'/product/edit', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@edit');
-            Route::post('/product/del', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@del');
-            Route::match(['get', 'post'],'/product/desc', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@desc');
-            Route::match(['get', 'post'],'/product/attribute', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@attribute');
-            Route::match(['get', 'post'],'/product/option', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@option');
-            Route::match(['get', 'post'],'/product/links', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@links');
+            Route::get('product/index', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@index');
+            Route::match(['get', 'post'],'product/add', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@add');
+            Route::match(['get', 'post'],'product/edit', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@edit');
+            Route::post('product/del', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@del');
+            Route::match(['get', 'post'],'product/desc', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@desc');
+            Route::match(['get', 'post'],'product/attribute', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@attribute');
+            Route::match(['get', 'post'],'product/option', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@option');
+            Route::match(['get', 'post'],'product/links', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@links');
 
-            Route::match(['get', 'post'],'/product/img', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@img');
-            Route::match(['post'],'/product/img_save', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@imgSave');
-            Route::match(['get'],'/product_img/{id}/del', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@imgDel')->where('id', '[0-9]+');
+            Route::match(['get', 'post'],'product/img', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@img');
+            Route::match(['post'],'product/img_save', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@imgSave');
+            Route::match(['get'],'product_img/{id}/del', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@imgDel')->where('id', '[0-9]+');
 
-            Route::match(['get', 'post'],'/product/special', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@special');
-            Route::match(['get', 'post'],'/product/discount', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@discount');
+            Route::match(['get', 'post'],'product/special', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@special');
+            Route::match(['get', 'post'],'product/discount', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@discount');
 
-            Route::get('/coupon/history', 'Aphly\LaravelShop\Controllers\Admin\Sale\CouponController@history');
+            Route::get('coupon/history', 'Aphly\LaravelShop\Controllers\Admin\Sale\CouponController@history');
 
-            Route::get('/product/ajax', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@ajax');
-            Route::get('/attribute/ajax', 'Aphly\LaravelShop\Controllers\Admin\Catalog\AttributeController@ajax');
-            Route::get('/option/ajax', 'Aphly\LaravelShop\Controllers\Admin\Catalog\OptionController@ajax');
+            Route::get('product/ajax', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@ajax');
+            Route::get('attribute/ajax', 'Aphly\LaravelShop\Controllers\Admin\Catalog\AttributeController@ajax');
+            Route::get('option/ajax', 'Aphly\LaravelShop\Controllers\Admin\Catalog\OptionController@ajax');
 
-            Route::get('/order/view', 'Aphly\LaravelShop\Controllers\Admin\Sale\OrderController@view');
-            Route::post('/order/history_save', 'Aphly\LaravelShop\Controllers\Admin\Sale\OrderController@historySave');
-            Route::post('/order/download', 'Aphly\LaravelShop\Controllers\Admin\Sale\OrderController@download');
-            Route::post('/order/shipped', 'Aphly\LaravelShop\Controllers\Admin\Sale\OrderController@shipped');
+            Route::get('order/view', 'Aphly\LaravelShop\Controllers\Admin\Sale\OrderController@view');
+            Route::post('order/history_save', 'Aphly\LaravelShop\Controllers\Admin\Sale\OrderController@historySave');
+            Route::post('order/download', 'Aphly\LaravelShop\Controllers\Admin\Sale\OrderController@download');
+            Route::post('order/shipped', 'Aphly\LaravelShop\Controllers\Admin\Sale\OrderController@shipped');
 
-            Route::get('/service/view', 'Aphly\LaravelShop\Controllers\Admin\Sale\ServiceController@view');
-            Route::post('/service/history_save', 'Aphly\LaravelShop\Controllers\Admin\Sale\ServiceController@historySave');
+            Route::get('service/view', 'Aphly\LaravelShop\Controllers\Admin\Sale\ServiceController@view');
+            Route::post('service/history_save', 'Aphly\LaravelShop\Controllers\Admin\Sale\ServiceController@historySave');
 
         });
     });

@@ -124,7 +124,7 @@
                     <div class="form-group">
                         <div class="add_photo"><i class="common-iconfont icon-zhaoxiangji"></i>Add Photo</div>
                         <input type="file" style="display: none" accept="image/gif,image/jpeg,image/jpg,image/png" data-img_list="file_img"
-                               class="form_input_file_img add_photo_file" multiple="multiple">
+                               class="input_file_img add_photo_file" multiple="multiple">
                         <div class="file_img"></div>
                     </div>
 
@@ -191,15 +191,6 @@ $(function () {
 
     $('.add_photo').click(function () {
         $('.add_photo_file').click();
-    })
-
-    $('.form_input_file_img').on("change" , function(){
-        let files = this.files;
-        let img_list = $(this).data('img_list')
-        $('.'+img_list).html('')
-        img_js_obj.handle(files,function (img) {
-            $('.'+img_list).append(img)
-        });
     })
 
     $('.received').on('click','li',function () {

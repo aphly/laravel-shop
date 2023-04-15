@@ -19,17 +19,17 @@ class OrderController extends Controller
 
     public function index(Request $request)
     {
-        $res['search']['id'] = $id = $request->query('id',false);
-        $res['search']['email'] = $email = $request->query('email',false);
-        $res['search']['status'] = $status = $request->query('status',false);
+        $res['search']['id'] = $request->query('id',false);
+        $res['search']['email'] = $request->query('email',false);
+        $res['search']['status'] = $request->query('status',false);
         $res['search']['string'] = http_build_query($request->query());
-        $res['list'] = Order::when($id,
+        $res['list'] = Order::when($res['search']['id'],
                 function($query,$id) {
                     return $query->where('id', $id);
-                })->when($email,
+                })->when($res['search']['email'],
                 function($query,$email) {
                     return $query->where('email', $email);
-                })->when($status,
+                })->when($res['search']['status'],
                 function($query,$status) {
                     return $query->where('order_status_id', $status);
                 })
@@ -139,7 +139,7 @@ class OrderController extends Controller
 
     public function shipped(Request $request)
     {
-        $file_path = (new UploadFile(5,1,['xlsx']))->upload($request->file('file'), 'private/order/shipped');
+        $file_path = (new UploadFile(5,['xlsx']))->upload($request->file('file'), 'private/order/shipped');
         $path = storage_path().'\\app\\'.$file_path;
         if(file_exists($path)){
             $arr = pathinfo($path);

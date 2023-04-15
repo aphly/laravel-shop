@@ -119,10 +119,8 @@ class ProductController extends Controller
 //            throw new ApiException(['code'=>2,'msg'=>'Only after purchasing the product can you evaluate it']);
 //        }
         $insertData = $img_src = $file_paths =  [];
-        if($request->file("files")){
-            foreach ($request->file("files") as $val){
-                $file_paths[] = (new UploadFile(1,4))->uploads($val, 'public/shop/product/review');
-            }
+        if($request->hasFile("files")){
+            $file_paths= (new UploadFile(1))->uploads(4,$request->file("files"), 'public/shop/product/review');
         }
 
         $input = $request->all();
@@ -131,11 +129,9 @@ class ProductController extends Controller
         $input['product_id'] = $request->id;
         $review = Review::create($input);
         if($review->id){
-            foreach ($file_paths as $val){
-                foreach ($val as $v) {
-                    $img_src[] = Storage::url($v);
-                    $insertData[] = ['review_id'=>$review->id,'image'=>$v];
-                }
+            foreach ($file_paths as $v){
+                $img_src[] = Storage::url($v);
+                $insertData[] = ['review_id'=>$review->id,'image'=>$v];
             }
             if ($insertData) {
                 ReviewImage::insert($insertData);

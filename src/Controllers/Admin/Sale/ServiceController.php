@@ -20,13 +20,13 @@ class ServiceController extends Controller
 
     public function index(Request $request)
     {
-        $res['search']['id'] = $id = $request->query('id',false);
-        $res['search']['order_id'] = $order_id = $request->query('order_id',false);
+        $res['search']['id'] = $request->query('id',false);
+        $res['search']['order_id'] = $request->query('order_id',false);
         $res['search']['string'] = http_build_query($request->query());
-        $res['list'] = Service::when($id,
+        $res['list'] = Service::when($res['search']['id'],
                 function($query,$id) {
                     return $query->where('id', $id);
-                })->when($order_id,
+                })->when($res['search']['order_id'],
                 function($query,$order_id) {
                     return $query->where('order_id', $order_id);
                 })

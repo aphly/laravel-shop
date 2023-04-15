@@ -65,10 +65,8 @@ class ServiceController extends Controller
                     throw new ApiException(['code'=>2,'msg'=>'After-sales time has expired'.$orderHistory->created_at,'data'=>['redirect'=>'/account_ext/service']]);
                 }
                 $insertData = $file_paths =  [];
-                if($request->file("files")){
-                    foreach ($request->file("files") as $val){
-                        $file_paths[] = (new UploadFile(1,5))->uploads($val, 'public/shop/service');
-                    }
+                if($request->hasFile("files")){
+                    $file_paths = (new UploadFile(1))->uploads(4,$request->file("files"), 'public/shop/service');
                 }
                 $input = $request->all();
                 $input['uuid'] = User::uuid();

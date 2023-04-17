@@ -5,7 +5,6 @@ namespace Aphly\LaravelShop\Models;
 use Aphly\Laravel\Models\Dict;
 use Aphly\Laravel\Models\Menu;
 use Aphly\Laravel\Models\Module as Module_base;
-use Aphly\Laravel\Models\Role;
 use Illuminate\Support\Facades\DB;
 
 class Module extends Module_base

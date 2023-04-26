@@ -33,7 +33,7 @@ class Module extends Module_base
                 $data[] =['name' => '优惠券','route' =>'shop_admin/coupon/index','pid'=>$menu22->id,'type'=>2,'module_id'=>$module_id,'sort'=>0];
                 DB::table('admin_menu')->insert($data);
             }
-            $menu23 = Menu::create(['name' => 'System','route' =>'','pid'=>$menu->id,'type'=>1,'module_id'=>$module_id,'sort'=>8]);
+            $menu23 = Menu::create(['name' => '配置','route' =>'','pid'=>$menu->id,'type'=>1,'module_id'=>$module_id,'sort'=>8]);
             if($menu23){
                 $data=[];
                 $data[] =['name' => '设置','route' =>'shop_admin/setting/index','pid'=>$menu23->id,'type'=>2,'module_id'=>$module_id,'sort'=>0];

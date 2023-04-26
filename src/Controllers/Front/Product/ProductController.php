@@ -22,7 +22,6 @@ class ProductController extends Controller
     {
         $product = new Product;
         $res['list'] = $product->getList($filter_data,$bySpu);
-        //dd($res['list']);
         $product_ids = [];
         foreach ($res['list'] as $key=>$val){
             $product_ids[] = $val->id;
@@ -44,7 +43,8 @@ class ProductController extends Controller
             'filter'      => $request->query('filter',false),
             'name'      => $request->query('name',false),
             'sort'      => $request->query('sort',false),
-            'price'      => $request->query('price',false)
+            'price'      => $request->query('price',false),
+            'option_value'      => $request->query('option_value',false)
         ];
         $res = $this->listData($filter_data,$res);
         return $this->makeView('laravel-shop-front::product.index',['res'=>$res]);

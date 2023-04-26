@@ -56,6 +56,7 @@ class Product extends Model
         //$type = 2 spu
         $data['category_id'] = $data['category_id']??false;
         $filter = $data['filter']??false;
+        $option_value = $data['option_value']??false;
         $price = $data['price']??false;
         $sort = $data['sort'];
         $time = time();
@@ -67,12 +68,16 @@ class Product extends Model
             }
             $sql->when($filter, function ($query) {
                 return $query->leftJoin('shop_product_filter as pf','pc.product_id','=','pf.product_id');
+            })->when($option_value, function ($query) {
+                return $query->leftJoin('shop_product_option_value as pov','pc.product_id','=','pov.product_id');
             });
             $sql->leftJoin('shop_product as p','pc.product_id','=','p.id' );
         }else{
             $sql = DB::table('shop_product as p');
             $sql->when($filter, function ($query) {
                 return $query->leftJoin('shop_product_filter as pf','p.id','=','pf.product_id');
+            })->when($option_value, function ($query) {
+                return $query->leftJoin('shop_product_option_value as pov','p.id','=','pov.product_id');
             });
         }
         $sql->where('p.status',1)->where('p.date_available','<=',$time);
@@ -92,6 +97,15 @@ class Product extends Model
             $implode = array_filter($implode);
             $sql->whereIn('pf.filter_id',$implode);
         }
+        if($option_value){
+            $implode = [];
+            $option_values = explode(',', $option_value);
+            foreach ($option_values as $option_value_id) {
+                $implode[] = (int)$option_value_id;
+            }
+            $implode = array_filter($implode);
+            $sql->whereIn('pov.option_value_id',$implode);
+        }
         if($data['name']){
             $words = explode(' ', trim($data['name']));
             if(count($words)>1){
@@ -102,28 +116,29 @@ class Product extends Model
                 $sql->where('p.name','like','%'.$data['name'].'%');
             }
         }
+
         $sql->groupBy('p.id')
             ->select('p.id','p.sale','p.viewed','p.date_available','p.price','p.name','p.quantity','p.image','p.spu');
-        $sql->addSelect(['rating'=>Review::whereColumn('product_id','p.id')->where('status',1)
-            ->groupBy('product_id')
-            ->selectRaw('AVG(rating) AS avg')
+
+        $sql->addSelect([
+            'reviews'=>Review::whereColumn('product_id','p.id')->where('status',1)
+                ->groupBy('product_id')
+                ->selectRaw('count(*)'),
+            'rating'=>Review::whereColumn('product_id','p.id')->where('status',1)
+                ->groupBy('product_id')
+                ->selectRaw('AVG(rating)'),
+            'special'=>ProductSpecial::whereColumn('product_id','p.id')
+                ->where(function ($query) use ($time){
+                    $query->where('date_start',0)->orWhere('date_start','<',$time);
+                })->where(function ($query) use ($time){
+                    $query->where('date_end',0)->orWhere('date_end','>',$time);
+                })->orderBy('priority','desc')
+                ->select('price')->limit(1),
+            'discount'=>ProductDiscount::whereColumn('product_id','p.id')
+                ->where('quantity',1)
+                ->select('price')->limit(1)
         ]);
-        $sql->addSelect(['reviews'=>Review::whereColumn('product_id','p.id')->where('status',1)
-            ->groupBy('product_id')
-            ->selectRaw('count(*) AS total')
-        ]);
-        $sql->addSelect(['special'=>ProductSpecial::whereColumn('product_id','p.id')
-            ->where(function ($query) use ($time){
-                $query->where('date_start',0)->orWhere('date_start','<',$time);
-            })->where(function ($query) use ($time){
-                $query->where('date_end',0)->orWhere('date_end','>',$time);
-            })->orderBy('priority','desc')
-            ->select('price')->limit(1)
-        ]);
-        $sql->addSelect(['discount'=>ProductDiscount::whereColumn('product_id','p.id')
-            ->where('quantity',1)
-            ->select('price')->limit(1)
-        ]);
+
         $res = DB::table($sql)
             ->when($price,function ($query,$price){
                 $price_arr = explode('-',$price);

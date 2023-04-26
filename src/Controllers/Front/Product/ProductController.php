@@ -4,11 +4,13 @@ namespace Aphly\LaravelShop\Controllers\Front\Product;
 
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Models\UploadFile;
-use Aphly\LaravelCommon\Models\Category;
 use Aphly\LaravelCommon\Models\Currency;
 use Aphly\LaravelCommon\Models\User;
 use Aphly\LaravelShop\Controllers\Front\Controller;
 use Aphly\LaravelShop\Models\Account\Wishlist;
+use Aphly\LaravelShop\Models\Catalog\Category;
+use Aphly\LaravelShop\Models\Catalog\FilterGroup;
+use Aphly\LaravelShop\Models\Catalog\Option;
 use Aphly\LaravelShop\Models\Catalog\Product;
 use Aphly\LaravelShop\Models\Catalog\Review;
 use Aphly\LaravelShop\Models\Catalog\ReviewImage;
@@ -48,7 +50,8 @@ class ProductController extends Controller
             'option_value'      => $request->query('option_value',false)
         ];
         $res = $this->listData($filter_data,$res);
-
+        $res['filterGroup'] = FilterGroup::where('status',1)->with('filter')->get();
+        $res['option'] = Option::where(['status'=>1,'is_filter'=>1])->with('value')->get();
         return $this->makeView('laravel-shop-front::product.index',['res'=>$res]);
     }
 

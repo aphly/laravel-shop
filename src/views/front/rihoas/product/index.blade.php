@@ -7,90 +7,137 @@
     .product-category li .price{font-size:14px;margin-bottom:5px}
     .img-responsive{max-width:100%;height:auto}
     .product-category > li:nth-child(5n),.product-category li:last-child{margin-right:0}
+
+    .product_list_l .filters1{font-size: 34px;margin-bottom: 20px;font-weight: 600;}
+    .product_list_l{width: 20%;margin-right: 20px;}
+    .product_list_r{width: calc(80% - 20px);}
+    .filters11{font-size: 18px;font-weight: 500; margin: 10px 0;display: flex;justify-content: space-between;cursor: pointer}
+    .filters12{display: flex;flex-wrap: wrap;}
+    .filters12 dd{width: 100%;line-height: 34px;}
+    .filters12 dd a{color:#777;position: relative;}
+    .filters12 dd a.active,.filters12 dd a:hover{color:#000;}
+    .filters12 .item-link:after{content:"";background:#000;position:absolute;bottom:0px;right:0;width:0;height:1px;-webkit-transition:all .3s ease;transition:all .3s ease}
+    .filters12 .item-link.active:not(.disabled):after,.filters12 .item-link:not(.disabled):hover:after{left:0;right:auto;width:100%}
+
 </style>
 
 <div class="container">
-    <div>
-        <div class="filters">
-
-        </div>
-        <div class="m_filters">
-
-        </div>
-        <div >
-            <ul style="display: flex;">
-                <li style="line-height: 24px;padding: 2px 10px 2px 30px;background: #e8e8e8;border-radius: 5px;color: #000;font-weight: 500;">aaaa</li>
-            </ul>
-        </div>
-        <div class="m_filters_btn">
-            Filters
-        </div>
-    </div>
-    <ul class=" product-category">
-        @foreach($res['list'] as $key=>$val)
-            <li class="">
-                <div class="image">
-                    @if(isset($res['product_option'][$val->id]['product_option_value']) && isset($res['product_image'][$val->id]))
-                        <dl class="product_image">
-                            @foreach($res['product_image'][$val->id] as $k=>$v)
-                                @if($k)
-                                    <dd data-image_id="{{$v['id']}}"><img  src="{{$v['image_src']}}" /></dd>
-                                @else
-                                    <dd class="active" data-image_id="{{$v['id']}}"><img  src="{{$v['image_src']}}" /></dd>
-                                @endif
-                            @endforeach
-                        </dl>
-                    @else
-                        <a href="/product/{{$val->id}}">
-                            <img src="{{ $val->image_src }}" class="img-responsive" >
-                        </a>
-                    @endif
+    <div class="d-flex">
+        <div class="product_list_l">
+            <div class="filters">
+                <div class="filters1">Filters</div>
+                <div>
+                    <ul>
+                        @foreach($res['filterGroup'] as $val)
+                        <li>
+                            <div class="filters11">
+                                <span>{{$val->name}}</span>
+                                <span class="uni app-jia1"></span>
+                            </div>
+                            <dl class="filters12">
+                                @foreach($val->filter as $v)
+                                <dd ><a class="item-link" href="">{{$v->name}}</a></dd>
+                                @endforeach
+                                    <dd ><a class="item-link active" href="">cc</a></dd>
+                            </dl>
+                        </li>
+                        @endforeach
+                        @foreach($res['option'] as $val)
+                            <li>
+                                <div class="filters11">
+                                    <span>{{$val->name}}</span>
+                                    <span class="uni app-jia1"></span>
+                                </div>
+                                <dl class="filters12">
+                                    @foreach($val->value as $v)
+                                        <dd>{{$v->name}}</dd>
+                                    @endforeach
+                                </dl>
+                            </li>
+                        @endforeach
+                    </ul>
                 </div>
-                <div class="product_option">
-                    @if(isset($res['product_option'][$val->id]['product_option_value']))
-                        <dl>
-                            @foreach($res['product_option'][$val->id]['product_option_value'] as $v)
-                                @if($v['product_image'] && $v['product_image']['image_src'])
-                                    <dd data-image_id="{{$v['product_image']['id']}}"><img src="{{$v['product_image']['image_src']}}" alt=""></dd>
-                                @elseif($v['option_value'] && $v['option_value']['image_src'])
-                                    <dd><img src="{{$v['option_value']['image_src']}}" alt=""></dd>
-                                @endif
-                            @endforeach
-                        </dl>
-                    @endif
-                </div>
-                <div class="p_name"><a href="/product/{{$val->id}}">{{$val->name}}</a></div>
-                <div class="p_name_x d-flex justify-content-between">
-                    <div class="d-flex price">
-                        @if($val->special)
-                            <span class="normal">{{$val->special}}</span>
-                            <span class="special_price">{{$val->price}}</span>
-                            <span class="price_sale">Sale</span>
-                        @else
-                            @if($val->discount)
-                                <span class="normal">{{$val->discount}}</span>
-                                <span class="special_price">{{$val->price}}</span>
-                                <span class="price_sale">Sale</span>
+            </div>
+            <div class="m_filters">
+
+            </div>
+            <div class="m_filters_btn">
+                Filters
+            </div>
+        </div>
+        <div class="product_list_r">
+            <div >
+                <ul style="display: flex;">
+                    <li style="line-height: 24px;padding: 2px 10px 2px 30px;background: #e8e8e8;border-radius: 5px;color: #000;font-weight: 500;">aaaa</li>
+                </ul>
+            </div>
+            <ul class=" product-category">
+                @foreach($res['list'] as $key=>$val)
+                    <li class="">
+                        <div class="image">
+                            @if(isset($res['product_option'][$val->id]['product_option_value']) && isset($res['product_image'][$val->id]))
+                                <dl class="product_image">
+                                    @foreach($res['product_image'][$val->id] as $k=>$v)
+                                        @if($k)
+                                            <dd data-image_id="{{$v['id']}}"><img  src="{{$v['image_src']}}" /></dd>
+                                        @else
+                                            <dd class="active" data-image_id="{{$v['id']}}"><img  src="{{$v['image_src']}}" /></dd>
+                                        @endif
+                                    @endforeach
+                                </dl>
                             @else
-                                <span class="normal">{{$val->price}}</span>
+                                <a href="/product/{{$val->id}}">
+                                    <img src="{{ $val->image_src }}" class="img-responsive" >
+                                </a>
                             @endif
-                        @endif
-                    </div>
-                    <div class="wishlist_one">
-                        @if(in_array($val->id,$res['wishlist_product_ids']))
-                            <i class="common-iconfont icon-aixin_shixin" data-product_id="{{$val->id}}" data-csrf="{{csrf_token()}}"></i>
-                        @else
-                            <i class="common-iconfont icon-aixin" data-product_id="{{$val->id}}" data-csrf="{{csrf_token()}}"></i>
-                        @endif
-                    </div>
-                </div>
+                        </div>
+                        <div class="product_option">
+                            @if(isset($res['product_option'][$val->id]['product_option_value']))
+                                <dl>
+                                    @foreach($res['product_option'][$val->id]['product_option_value'] as $v)
+                                        @if($v['product_image'] && $v['product_image']['image_src'])
+                                            <dd data-image_id="{{$v['product_image']['id']}}"><img src="{{$v['product_image']['image_src']}}" alt=""></dd>
+                                        @elseif($v['option_value'] && $v['option_value']['image_src'])
+                                            <dd><img src="{{$v['option_value']['image_src']}}" alt=""></dd>
+                                        @endif
+                                    @endforeach
+                                </dl>
+                            @endif
+                        </div>
+                        <div class="p_name"><a href="/product/{{$val->id}}">{{$val->name}}</a></div>
+                        <div class="p_name_x d-flex justify-content-between">
+                            <div class="d-flex price">
+                                @if($val->special)
+                                    <span class="normal">{{$val->special}}</span>
+                                    <span class="special_price">{{$val->price}}</span>
+                                    <span class="price_sale">Sale</span>
+                                @else
+                                    @if($val->discount)
+                                        <span class="normal">{{$val->discount}}</span>
+                                        <span class="special_price">{{$val->price}}</span>
+                                        <span class="price_sale">Sale</span>
+                                    @else
+                                        <span class="normal">{{$val->price}}</span>
+                                    @endif
+                                @endif
+                            </div>
+                            <div class="wishlist_one">
+                                @if(in_array($val->id,$res['wishlist_product_ids']))
+                                    <i class="common-iconfont icon-aixin_shixin" data-product_id="{{$val->id}}" data-csrf="{{csrf_token()}}"></i>
+                                @else
+                                    <i class="common-iconfont icon-aixin" data-product_id="{{$val->id}}" data-csrf="{{csrf_token()}}"></i>
+                                @endif
+                            </div>
+                        </div>
 
 
-            </li>
-        @endforeach
-    </ul>
-    <div>
-        {{$res['list']->links('laravel-common-front::common.pagination')}}
+                    </li>
+                @endforeach
+            </ul>
+            <div>
+                {{$res['list']->links('laravel-common-front::common.pagination')}}
+            </div>
+        </div>
     </div>
 </div>
 

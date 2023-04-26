@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('type',64);
             $table->string('name',64);
             $table->unsignedInteger('sort');
-            //$table->unsignedBigInteger('filter_group_id')->index();
+            $table->tinyInteger('is_filter')->default(1);
             $table->tinyInteger('status')->default(1);
         });
     }

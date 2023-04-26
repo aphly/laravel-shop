@@ -46,6 +46,17 @@
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
+                <label for="">是否筛选</label>
+                <select name="is_filter" class="form-control">
+                    @if(isset($dict['yes_no']))
+                        @foreach($dict['yes_no'] as $key=>$val)
+                            <option value="{{$key}}" @if($res['option']->is_filter==$key) selected @endif>{{$val}}</option>
+                        @endforeach
+                    @endif
+                </select>
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="form-group">
                 <label for="">排序</label>
                 <input type="number" name="sort" class="form-control " value="{{$res['option']->sort??0}}">
                 <div class="invalid-feedback"></div>

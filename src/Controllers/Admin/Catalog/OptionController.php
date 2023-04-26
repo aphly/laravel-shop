@@ -3,6 +3,7 @@
 namespace Aphly\LaravelShop\Controllers\Admin\Catalog;
 
 use Aphly\Laravel\Exceptions\ApiException;
+use Aphly\Laravel\Models\Breadcrumb;
 use Aphly\Laravel\Models\UploadFile;
 use Aphly\LaravelShop\Controllers\Admin\Controller;
 use Aphly\LaravelShop\Models\Catalog\Option;
@@ -14,6 +15,8 @@ class OptionController extends Controller
 {
     public $index_url='/shop_admin/option/index';
 
+    private $currArr = ['name'=>'选项','key'=>'option'];
+
     public function index(Request $request)
     {
         $res['search']['name'] = $request->query('name',false);
@@ -24,6 +27,9 @@ class OptionController extends Controller
                 })
             ->orderBy('id','desc')
             ->Paginate(config('admin.perPage'))->withQueryString();
+        $res['breadcrumb'] = Breadcrumb::render([
+            ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url]
+        ]);
         return $this->makeView('laravel-shop::admin.catalog.option.index',['res'=>$res]);
     }
 
@@ -34,6 +40,10 @@ class OptionController extends Controller
         if($res['option']->id){
             $res['optionValue'] = OptionValue::where('option_id',$res['option']->id)->orderBy('sort','desc')->get();
         }
+        $res['breadcrumb'] = Breadcrumb::render([
+            ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
+            ['name'=>$res['option']->id?'编辑':'新增','href'=>'/shop_admin/'.$this->currArr['key'].($res['option']->id?'/form?id='.$res['option']->id:'/form')]
+        ]);
         return $this->makeView('laravel-shop::admin.catalog.option.form',['res'=>$res]);
     }
 

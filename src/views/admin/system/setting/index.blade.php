@@ -1,6 +1,6 @@
 
 <div class="top-bar">
-    <h5 class="nav-title">setting 需要清缓存</h5>
+    <h5 class="nav-title">{!! $res['breadcrumb'] !!}</h5>
 </div>
 <div class="imain">
     <form method="post" action="/shop_admin/setting/save" class="save_form">

@@ -3,6 +3,7 @@
 namespace Aphly\LaravelShop\Controllers\Admin\Sale;
 
 use Aphly\Laravel\Exceptions\ApiException;
+use Aphly\Laravel\Models\Breadcrumb;
 use Aphly\LaravelCommon\Models\Currency;
 use Aphly\LaravelPayment\Models\Payment;
 use Aphly\LaravelShop\Controllers\Admin\Controller;
@@ -18,6 +19,8 @@ class ServiceController extends Controller
 {
     public $index_url='/shop_admin/service/index';
 
+    private $currArr = ['name'=>'售后','key'=>'service'];
+
     public function index(Request $request)
     {
         $res['search']['id'] = $request->query('id',false);
@@ -32,6 +35,9 @@ class ServiceController extends Controller
                 })
             ->where('delete_at',0)
             ->orderBy('created_at','desc')->Paginate(config('admin.perPage'))->withQueryString();
+        $res['breadcrumb'] = Breadcrumb::render([
+            ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url]
+        ]);
         return $this->makeView('laravel-shop::admin.sale.service.index',['res'=>$res]);
     }
 
@@ -42,6 +48,10 @@ class ServiceController extends Controller
         $res['serviceHistory'] = ServiceHistory::where('service_id',$res['info']->id)->orderBy('created_at','asc')->get();
         $res['serviceProduct'] = ServiceProduct::where('service_id',$res['info']->id)->with('orderProduct')->get();
         $res['shipping_method'] = Shipping::get();
+        $res['breadcrumb'] = Breadcrumb::render([
+            ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
+            ['name'=>'详情','href'=>'/shop_admin/'.$this->currArr['key'].'/view?id='.$res['info']->id]
+        ]);
         return $this->makeView('laravel-shop::admin.sale.service.view',['res'=>$res]);
     }
 
@@ -55,8 +65,11 @@ class ServiceController extends Controller
 
     public function form(Request $request)
     {
-        $refund_id = $request->query('id',0);
-        $res['refund'] = Service::where('id',$refund_id)->firstOrNew();
+        $res['refund'] = Service::where('id',$request->query('id',0))->firstOrNew();
+        $res['breadcrumb'] = Breadcrumb::render([
+            ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
+            ['name'=>$res['refund']->id?'编辑':'新增','href'=>'/shop_admin/'.$this->currArr['key'].($res['refund']->id?'/form?id='.$res['refund']->id:'/form')]
+        ]);
         return $this->makeView('laravel-shop::admin.sale.service.form',['res'=>$res]);
     }
 

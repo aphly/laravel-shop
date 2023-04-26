@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('shop_attribute_group', function (Blueprint $table) {
             $table->id();
             $table->string('name',64);
-            $table->integer('sort')->nullable()->index();
-            $table->tinyInteger('status')->default(1)->index();
+            $table->integer('sort')->nullable();
+            $table->tinyInteger('status')->default(1);
         });
     }
 

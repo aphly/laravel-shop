@@ -3,6 +3,7 @@
 namespace Aphly\LaravelShop\Controllers\Admin\Catalog;
 
 use Aphly\Laravel\Exceptions\ApiException;
+use Aphly\Laravel\Models\Breadcrumb;
 use Aphly\Laravel\Models\UploadFile;
 use Aphly\LaravelCommon\Models\CategoryPath;
 use Aphly\LaravelCommon\Models\Filter;
@@ -27,6 +28,8 @@ class ProductController extends Controller
 {
     public $index_url='/shop_admin/product/index';
 
+    private $currArr = ['name'=>'商品','key'=>'product'];
+
     public function index(Request $request)
     {
         $res['search']['name'] = $request->query('name',false);
@@ -41,6 +44,9 @@ class ProductController extends Controller
                     return $query->where('status', $status);
                 })
             ->Paginate(config('admin.perPage'))->withQueryString();
+        $res['breadcrumb'] = Breadcrumb::render([
+            ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url]
+        ]);
         return $this->makeView('laravel-shop::admin.catalog.product.index',['res'=>$res]);
     }
 
@@ -67,6 +73,10 @@ class ProductController extends Controller
             throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
         }else{
             $res['product'] = Product::where('id',$request->query('product_id',0))->firstOrNew();
+            $res['breadcrumb'] = Breadcrumb::render([
+                ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
+                ['name'=>'新增','href'=>'/shop_admin/'.$this->currArr['key'].'/add']
+            ]);
             return $this->makeView('laravel-shop::admin.catalog.product.form',['res'=>$res]);
         }
     }
@@ -80,6 +90,10 @@ class ProductController extends Controller
             $res['product']->update($input);
             throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
         }else{
+            $res['breadcrumb'] = Breadcrumb::render([
+                ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
+                ['name'=>'编辑','href'=>'/shop_admin/'.$this->currArr['key'].'/edit?product_id='.$res['product']->id]
+            ]);
             return $this->makeView('laravel-shop::admin.catalog.product.form',['res'=>$res]);
         }
     }
@@ -87,6 +101,10 @@ class ProductController extends Controller
     public function form(Request $request)
     {
         $res['product'] = Product::where('id',$request->query('id',0))->firstOrNew();
+        $res['breadcrumb'] = Breadcrumb::render([
+            ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
+            ['name'=>$res['product']->id?'编辑':'新增','href'=>'/shop_admin/'.$this->currArr['key'].($res['product']->id?'/form?id='.$res['product']->id:'/form')]
+        ]);
         return $this->makeView('laravel-shop::admin.catalog.product.form',['res'=>$res]);
     }
 
@@ -122,6 +140,11 @@ class ProductController extends Controller
             if(!empty($res['product'])){
                 $res['product_desc'] = ProductDesc::where('product_id',$res['product']->id)->firstOrNew();
             }
+            $res['breadcrumb'] = Breadcrumb::render([
+                ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
+                ['name'=>$res['product']->name],
+                ['name'=>'描述','href'=>'/shop_admin/'.$this->currArr['key'].'/desc?product_id='.$res['product']->id]
+            ]);
             return $this->makeView('laravel-shop::admin.catalog.product.desc',['res'=>$res]);
         }
     }
@@ -146,7 +169,11 @@ class ProductController extends Controller
             }
             throw new ApiException(['code'=>2,'data'=>'','msg'=>'上传错误']);
         }else{
-            $res['title'] = '';
+            $res['breadcrumb'] = Breadcrumb::render([
+                ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
+                ['name'=>$res['product']->name],
+                ['name'=>'图片','href'=>'/shop_admin/'.$this->currArr['key'].'/img?product_id='.$res['product']->id]
+            ]);
             return $this->makeView('laravel-shop::admin.catalog.product.img',['res'=>$res]);
         }
     }
@@ -202,6 +229,11 @@ class ProductController extends Controller
             throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
         }else{
             $res['product_attribute'] = ProductAttribute::where('product_id',$product_id)->with('attribute')->get()->toArray();
+            $res['breadcrumb'] = Breadcrumb::render([
+                ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
+                ['name'=>$res['product']->name],
+                ['name'=>'属性','href'=>'/shop_admin/'.$this->currArr['key'].'/attribute?product_id='.$res['product']->id]
+            ]);
             return $this->makeView('laravel-shop::admin.catalog.product.attribute',['res'=>$res]);
         }
     }
@@ -251,6 +283,11 @@ class ProductController extends Controller
             $res['product_option'] = ProductOption::where('product_id',$product_id)->with('value_arr')->orderBy('id','desc')->get()->toArray();
             $res['option'] = Option::with('value')->get()->keyBy('id')->toArray();
             $res['product_image'] = ProductImage::where('product_id',$product_id)->get()->keyBy('id')->toArray();
+            $res['breadcrumb'] = Breadcrumb::render([
+                ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
+                ['name'=>$res['product']->name],
+                ['name'=>'选项','href'=>'/shop_admin/'.$this->currArr['key'].'/option?product_id='.$res['product']->id]
+            ]);
             return $this->makeView('laravel-shop::admin.catalog.product.option',['res'=>$res]);
         }
     }
@@ -289,6 +326,11 @@ class ProductController extends Controller
                 ->whereIn('common_filter.id', $filter_ids)
                 ->selectRaw("common_filter.*,concat(group.name,' \> ',common_filter.name) as name_all")
                 ->get()->keyBy('id')->toArray();
+            $res['breadcrumb'] = Breadcrumb::render([
+                ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
+                ['name'=>$res['product']->name],
+                ['name'=>'链接','href'=>'/shop_admin/'.$this->currArr['key'].'/links?product_id='.$res['product']->id]
+            ]);
             return $this->makeView('laravel-shop::admin.catalog.product.links',['res'=>$res]);
         }
     }
@@ -338,6 +380,11 @@ class ProductController extends Controller
         }else{
             //$res['group'] = Group::get()->keyBy('id')->toArray();
             $res['product_special'] = ProductSpecial::where('product_id',$product_id)->get()->toArray();
+            $res['breadcrumb'] = Breadcrumb::render([
+                ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
+                ['name'=>$res['product']->name],
+                ['name'=>'特价','href'=>'/shop_admin/'.$this->currArr['key'].'/special?product_id='.$res['product']->id]
+            ]);
             return $this->makeView('laravel-shop::admin.catalog.product.special',['res'=>$res]);
         }
     }
@@ -364,6 +411,11 @@ class ProductController extends Controller
         }else{
             //$res['group'] = Group::get()->keyBy('id')->toArray();
             $res['product_discount'] = ProductDiscount::where('product_id',$product_id)->get()->toArray();
+            $res['breadcrumb'] = Breadcrumb::render([
+                ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
+                ['name'=>$res['product']->name],
+                ['name'=>'批发价','href'=>'/shop_admin/'.$this->currArr['key'].'/discount?product_id='.$res['product']->id]
+            ]);
             return $this->makeView('laravel-shop::admin.catalog.product.discount',['res'=>$res]);
         }
     }
@@ -386,10 +438,6 @@ class ProductController extends Controller
     }
 
     function getProductId($request){
-        $product_id = $request->input('product_id',0);
-        if(!$product_id){
-            throw new ApiException(['code'=>1,'msg'=>'fail','data'=>[]]);
-        }
-        return Product::where('id',$product_id)->firstOrError();
+        return Product::where('id',$request->input('product_id',0))->firstOrError();
     }
 }

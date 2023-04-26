@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('author',64);
             $table->text('text');
             $table->tinyInteger('rating');
-            $table->tinyInteger('status')->index()->nullable()->default(1);
+            $table->tinyInteger('status')->nullable()->default(1);
             $table->unsignedBigInteger('created_at');
             $table->unsignedBigInteger('updated_at');
         });

@@ -23,7 +23,7 @@
     }
 </style>
 <div class="top-bar">
-    <h5 class="nav-title">order</h5>
+    <h5 class="nav-title">{!! $res['breadcrumb'] !!}</h5>
 </div>
 <div class="imain">
     <div class="order">

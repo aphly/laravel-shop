@@ -1,5 +1,5 @@
 <div class="top-bar">
-    <h5 class="nav-title">图片 - {{$res['product']->name}}</h5>
+    <h5 class="nav-title">{!! $res['breadcrumb'] !!}</h5>
     <div>
         @include('laravel-shop::admin.catalog.product.submenu')
     </div>

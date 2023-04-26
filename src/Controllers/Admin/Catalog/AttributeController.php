@@ -3,6 +3,7 @@
 namespace Aphly\LaravelShop\Controllers\Admin\Catalog;
 
 use Aphly\Laravel\Exceptions\ApiException;
+use Aphly\Laravel\Models\Breadcrumb;
 use Aphly\LaravelShop\Controllers\Admin\Controller;
 use Aphly\LaravelShop\Models\Catalog\Attribute;
 use Aphly\LaravelShop\Models\Catalog\AttributeGroup;
@@ -11,6 +12,8 @@ use Illuminate\Http\Request;
 class AttributeController extends Controller
 {
     public $index_url='/shop_admin/attribute/index';
+
+    private $currArr = ['name'=>'属性','key'=>'attribute'];
 
     public function index(Request $request)
     {
@@ -22,6 +25,9 @@ class AttributeController extends Controller
                 })
             ->orderBy('id','desc')
             ->Paginate(config('admin.perPage'))->withQueryString();
+        $res['breadcrumb'] = Breadcrumb::render([
+            ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url]
+        ]);
         return $this->makeView('laravel-shop::admin.catalog.attribute.index',['res'=>$res]);
     }
 
@@ -32,6 +38,10 @@ class AttributeController extends Controller
         if($res['attributeGroup']->id){
             $res['attribute'] = Attribute::where('attribute_group_id',$res['attributeGroup']->id)->orderBy('sort','desc')->get();
         }
+        $res['breadcrumb'] = Breadcrumb::render([
+            ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
+            ['name'=>$res['attributeGroup']->id?'编辑':'新增','href'=>'/shop_admin/'.$this->currArr['key'].($res['attributeGroup']->id?'/form?id='.$res['attributeGroup']->id:'/form')]
+        ]);
         return $this->makeView('laravel-shop::admin.catalog.attribute.form',['res'=>$res]);
     }
 

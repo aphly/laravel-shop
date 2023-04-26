@@ -1,5 +1,5 @@
 <div class="top-bar">
-    <h5 class="nav-title">order</h5>
+    <h5 class="nav-title">{!! $res['breadcrumb'] !!}</h5>
 </div>
 <style>
     .table_scroll .table_header li:nth-child(2),.table_scroll .table_tbody li:nth-child(2){flex: 0 0 300px;}
@@ -14,7 +14,7 @@
         </div>
         </form>
         <div class="">
-            <a class="badge badge-primary ajax_get show_all0_btn" data-href="/shop_admin/service/form">添加</a>
+            <a class="badge badge-primary ajax_get show_all0_btn d-none" data-href="/shop_admin/service/form">添加</a>
         </div>
     </div>
 

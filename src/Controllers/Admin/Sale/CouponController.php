@@ -3,6 +3,7 @@
 namespace Aphly\LaravelShop\Controllers\Admin\Sale;
 
 use Aphly\Laravel\Exceptions\ApiException;
+use Aphly\Laravel\Models\Breadcrumb;
 use Aphly\LaravelCommon\Models\CategoryPath;
 use Aphly\LaravelShop\Controllers\Admin\Controller;
 use Aphly\LaravelShop\Models\Catalog\Coupon;
@@ -16,6 +17,8 @@ class CouponController extends Controller
 {
     public $index_url='/shop_admin/coupon/index';
 
+    private $currArr = ['name'=>'优惠券','key'=>'coupon'];
+
     public function index(Request $request)
     {
         $res['search']['name'] = $request->query('name',false);
@@ -26,6 +29,9 @@ class CouponController extends Controller
                 })
             ->orderBy('id','desc')
             ->Paginate(config('admin.perPage'))->withQueryString();
+        $res['breadcrumb'] = Breadcrumb::render([
+            ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url]
+        ]);
         return $this->makeView('laravel-shop::admin.sale.coupon.index',['res'=>$res]);
     }
 
@@ -39,7 +45,10 @@ class CouponController extends Controller
         $res['coupon_product'] = CouponProduct::where('coupon_id',$coupon_id)->get()->toArray();
         $product_ids = array_column($res['coupon_product'],'product_id');
         $res['product'] = Product::whereIn('id',$product_ids)->select('name','id')->get()->keyBy('id')->toArray();
-
+        $res['breadcrumb'] = Breadcrumb::render([
+            ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
+            ['name'=>$res['coupon']->id?'编辑':'新增','href'=>'/shop_admin/'.$this->currArr['key'].($res['coupon']->id?'/form?id='.$res['coupon']->id:'/form')]
+        ]);
         return $this->makeView('laravel-shop::admin.sale.coupon.form',['res'=>$res]);
     }
 
@@ -86,8 +95,13 @@ class CouponController extends Controller
 
     public function history(Request $request)
     {
-        $res['list'] = CouponHistory::where('coupon_id',$request->query('id',0))->orderBy('id','desc')
+        $res['info'] = Coupon::where('id',$request->query('id',0))->firstOrError();
+        $res['list'] = CouponHistory::where('coupon_id',$res['info']->id)->orderBy('id','desc')
             ->Paginate(config('admin.perPage'))->withQueryString();
+        $res['breadcrumb'] = Breadcrumb::render([
+            ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
+            ['name'=>'历史记录','href'=>'/shop_admin/'.$this->currArr['key'].'/history?id='.$res['info']->id]
+        ]);
         return $this->makeView('laravel-shop::admin.sale.coupon.history',['res'=>$res]);
     }
 

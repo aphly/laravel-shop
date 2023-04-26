@@ -13,30 +13,30 @@ class Module extends Module_base
 
     public function install($module_id){
         parent::install($module_id);
-        $menu = Menu::create(['name' => 'Shop','route' =>'','pid'=>0,'type'=>1,'module_id'=>$module_id,'sort'=>10]);
+        $menu = Menu::create(['name' => '商城','route' =>'','pid'=>0,'type'=>1,'module_id'=>$module_id,'sort'=>10]);
         if($menu){
-            $menu21 = Menu::create(['name' => 'Catalog','route' =>'','pid'=>$menu->id,'type'=>1,'module_id'=>$module_id,'sort'=>10]);
+            $menu21 = Menu::create(['name' => '目录','route' =>'','pid'=>$menu->id,'type'=>1,'module_id'=>$module_id,'sort'=>10]);
             if($menu21){
                 $data=[];
-                $data[] =['name' => 'Product','route' =>'shop_admin/product/index','pid'=>$menu21->id,'type'=>2,'module_id'=>$module_id,'sort'=>0];
-                $data[] =['name' => 'Attribute','route' =>'shop_admin/attribute/index','pid'=>$menu21->id,'type'=>2,'module_id'=>$module_id,'sort'=>0];
-                $data[] =['name' => 'Option','route' =>'shop_admin/option/index','pid'=>$menu21->id,'type'=>2,'module_id'=>$module_id,'sort'=>0];
-                $data[] =['name' => 'Review','route' =>'shop_admin/review/index','pid'=>$menu21->id,'type'=>2,'module_id'=>$module_id,'sort'=>0];
-                $data[] =['name' => 'Shipping','route' =>'shop_admin/shipping/index','pid'=>$menu21->id,'type'=>2,'module_id'=>$module_id,'sort'=>0];
+                $data[] =['name' => '商品管理','route' =>'shop_admin/product/index','pid'=>$menu21->id,'type'=>2,'module_id'=>$module_id,'sort'=>0];
+                $data[] =['name' => '属性管理','route' =>'shop_admin/attribute/index','pid'=>$menu21->id,'type'=>2,'module_id'=>$module_id,'sort'=>0];
+                $data[] =['name' => '选项管理','route' =>'shop_admin/option/index','pid'=>$menu21->id,'type'=>2,'module_id'=>$module_id,'sort'=>0];
+                $data[] =['name' => '评论管理','route' =>'shop_admin/review/index','pid'=>$menu21->id,'type'=>2,'module_id'=>$module_id,'sort'=>0];
+                $data[] =['name' => '物流管理','route' =>'shop_admin/shipping/index','pid'=>$menu21->id,'type'=>2,'module_id'=>$module_id,'sort'=>0];
                 DB::table('admin_menu')->insert($data);
             }
-            $menu22 = Menu::create(['name' => 'Sale','route' =>'','pid'=>$menu->id,'type'=>1,'module_id'=>$module_id,'sort'=>9]);
+            $menu22 = Menu::create(['name' => '销售','route' =>'','pid'=>$menu->id,'type'=>1,'module_id'=>$module_id,'sort'=>9]);
             if($menu22){
                 $data=[];
-                $data[] =['name' => 'Order','route' =>'shop_admin/order/index','pid'=>$menu22->id,'type'=>2,'module_id'=>$module_id,'sort'=>0];
-                $data[] =['name' => 'Service','route' =>'shop_admin/service/index','pid'=>$menu22->id,'type'=>2,'module_id'=>$module_id,'sort'=>0];
-                $data[] =['name' => 'Coupon','route' =>'shop_admin/coupon/index','pid'=>$menu22->id,'type'=>2,'module_id'=>$module_id,'sort'=>0];
+                $data[] =['name' => '订单','route' =>'shop_admin/order/index','pid'=>$menu22->id,'type'=>2,'module_id'=>$module_id,'sort'=>0];
+                $data[] =['name' => '售后','route' =>'shop_admin/service/index','pid'=>$menu22->id,'type'=>2,'module_id'=>$module_id,'sort'=>0];
+                $data[] =['name' => '优惠券','route' =>'shop_admin/coupon/index','pid'=>$menu22->id,'type'=>2,'module_id'=>$module_id,'sort'=>0];
                 DB::table('admin_menu')->insert($data);
             }
             $menu23 = Menu::create(['name' => 'System','route' =>'','pid'=>$menu->id,'type'=>1,'module_id'=>$module_id,'sort'=>8]);
             if($menu23){
                 $data=[];
-                $data[] =['name' => 'Setting','route' =>'shop_admin/setting/index','pid'=>$menu23->id,'type'=>2,'module_id'=>$module_id,'sort'=>0];
+                $data[] =['name' => '设置','route' =>'shop_admin/setting/index','pid'=>$menu23->id,'type'=>2,'module_id'=>$module_id,'sort'=>0];
                 DB::table('admin_menu')->insert($data);
             }
         }

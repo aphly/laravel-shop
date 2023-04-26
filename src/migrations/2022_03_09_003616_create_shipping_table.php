@@ -21,7 +21,7 @@ return new class extends Migration
             $table->decimal('cost',15,2)->nullable();
             $table->decimal('free_cost',15,2)->nullable();
             $table->tinyInteger('status')->nullable()->default(1);
-            $table->integer('sort')->nullable()->default(1)->index();
+            $table->integer('sort')->nullable()->default(1);
             $table->tinyInteger('default')->nullable()->default(2);
             $table->unsignedInteger('geo_group_id')->nullable()->index();
             $table->unsignedBigInteger('created_at');

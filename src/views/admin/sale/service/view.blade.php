@@ -14,7 +14,7 @@
     .detail_info{padding: 0 10px;}
 </style>
 <div class="top-bar">
-    <h5 class="nav-title">Service</h5>
+    <h5 class="nav-title">{!! $res['breadcrumb'] !!}</h5>
 </div>
 <div class="imain">
     <div class="order">

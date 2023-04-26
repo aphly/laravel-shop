@@ -3,6 +3,7 @@
 namespace Aphly\LaravelShop\Controllers\Admin\Catalog;
 
 use Aphly\Laravel\Exceptions\ApiException;
+use Aphly\Laravel\Models\Breadcrumb;
 use Aphly\Laravel\Models\UploadFile;
 use Aphly\LaravelShop\Controllers\Admin\Controller;
 use Aphly\LaravelShop\Models\Catalog\Product;
@@ -14,6 +15,9 @@ use Illuminate\Support\Facades\Storage;
 class ReviewController extends Controller
 {
     public $index_url='/shop_admin/review/index';
+
+    private $currArr = ['name'=>'评论','key'=>'review'];
+
     public function index(Request $request)
     {
         $res['search']['string'] = http_build_query($request->query());
@@ -28,6 +32,9 @@ class ReviewController extends Controller
         foreach ($reviewImage as $val){
             $res['reviewImage'][$val->review_id][] = UploadFile::getPath($val->image);
         }
+        $res['breadcrumb'] = Breadcrumb::render([
+            ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url]
+        ]);
         return $this->makeView('laravel-shop::admin.catalog.review.index',['res'=>$res]);
     }
 
@@ -43,6 +50,10 @@ class ReviewController extends Controller
         }else{
             $res['product'] = $res['reviewImage'] = [];
         }
+        $res['breadcrumb'] = Breadcrumb::render([
+            ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
+            ['name'=>$res['review']->id?'编辑':'新增','href'=>'/shop_admin/'.$this->currArr['key'].($res['review']->id?'/form?id='.$res['review']->id:'/form')]
+        ]);
         return $this->makeView('laravel-shop::admin.catalog.review.form',['res'=>$res]);
     }
 

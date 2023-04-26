@@ -1,5 +1,5 @@
 <div class="top-bar">
-    <h5 class="nav-title">review</h5>
+    <h5 class="nav-title">{!! $res['breadcrumb'] !!}</h5>
 </div>
 <div class="imain">
     <form method="post" @if($res['review']->id) action="/shop_admin/review/save?id={{$res['review']->id}}" @else action="/shop_admin/review/save" @endif class="save_form">

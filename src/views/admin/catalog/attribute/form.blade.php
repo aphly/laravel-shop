@@ -1,6 +1,6 @@
 
 <div class="top-bar">
-    <h5 class="nav-title">attribute</h5>
+    <h5 class="nav-title">{!! $res['breadcrumb'] !!}</h5>
 </div>
 <div class="imain">
     <form method="post" @if($res['attributeGroup']->id) action="/shop_admin/attribute/save?id={{$res['attributeGroup']->id}}" @else action="/shop_admin/attribute/save" @endif class="save_form">

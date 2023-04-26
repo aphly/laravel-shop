@@ -1,6 +1,6 @@
 
 <div class="top-bar">
-    <h5 class="nav-title">coupon</h5>
+    <h5 class="nav-title">{!! $res['breadcrumb'] !!}</h5>
 </div>
 <div class="imain">
     <form method="post" @if($res['coupon']->id) action="/shop_admin/coupon/save?id={{$res['coupon']->id}}" @else action="/shop_admin/coupon/save" @endif class="save_form">

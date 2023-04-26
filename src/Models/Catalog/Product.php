@@ -54,13 +54,9 @@ class Product extends Model
     public function getList($data = [],$bySpu=false) {
         //$type = 1 sku
         //$type = 2 spu
-        $data['category_id'] = $data['category_id']??false;
-        $filter = $data['filter']??false;
-        $option_value = $data['option_value']??false;
-        $price = $data['price']??false;
-        $sort = $data['sort'];
+        list('category_id'=>$category_id,'filter'=>$filter,'option_value'=>$option_value,'price'=>$price,'sort'=>$sort) = $data;
         $time = time();
-        if($data['category_id']){
+        if($category_id){
             if($this->sub_category){
                 $sql = DB::table('shop_category_path as cp')->leftJoin('shop_product_category as pc','cp.category_id','=','pc.category_id');
             }else{
@@ -81,11 +77,11 @@ class Product extends Model
             });
         }
         $sql->where('p.status',1)->where('p.date_available','<=',$time);
-        if($data['category_id']){
+        if($category_id){
             if($this->sub_category) {
-                $sql->where('cp.path_id', $data['category_id']);
+                $sql->where('cp.path_id', $category_id);
             }else{
-                $sql->where('pc.category_id', $data['category_id']);
+                $sql->where('pc.category_id', $category_id);
             }
         }
         if($filter){

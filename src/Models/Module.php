@@ -18,7 +18,9 @@ class Module extends Module_base
             $menu21 = Menu::create(['name' => '目录','route' =>'','pid'=>$menu->id,'type'=>1,'module_id'=>$module_id,'sort'=>10]);
             if($menu21){
                 $data=[];
+                $data[] =['name' => '分类管理','route' =>'shop_admin/category/index','pid'=>$menu21->id,'type'=>2,'module_id'=>$module_id,'sort'=>0];
                 $data[] =['name' => '商品管理','route' =>'shop_admin/product/index','pid'=>$menu21->id,'type'=>2,'module_id'=>$module_id,'sort'=>0];
+                $data[] =['name' => '筛选管理','route' =>'shop_admin/filter/index','pid'=>$menu21->id,'type'=>2,'module_id'=>$module_id,'sort'=>0];
                 $data[] =['name' => '属性管理','route' =>'shop_admin/attribute/index','pid'=>$menu21->id,'type'=>2,'module_id'=>$module_id,'sort'=>0];
                 $data[] =['name' => '选项管理','route' =>'shop_admin/option/index','pid'=>$menu21->id,'type'=>2,'module_id'=>$module_id,'sort'=>0];
                 $data[] =['name' => '评论管理','route' =>'shop_admin/review/index','pid'=>$menu21->id,'type'=>2,'module_id'=>$module_id,'sort'=>0];

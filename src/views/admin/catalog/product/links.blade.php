@@ -50,7 +50,7 @@
 <script>
     function search_ajax(_this,type) {
         $.ajax({
-            url:'/common_admin/'+type+'/ajax?name='+$(_this).val(),
+            url:'/shop_admin/'+type+'/ajax?name='+$(_this).val(),
             dataType: "json",
             success:function (res) {
                 let arr = res.data.list;

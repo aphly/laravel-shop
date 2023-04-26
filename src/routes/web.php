@@ -90,7 +90,7 @@ Route::middleware(['web'])->group(function () {
         Route::middleware(['rbac'])->group(function () {
 
             $route_arr = [
-                ['attribute','\Catalog\AttributeController'],['option','\Catalog\OptionController'],['review','\Catalog\ReviewController'],
+                ['attribute','\Catalog\AttributeController'],['option','\Catalog\OptionController'],['review','\Catalog\ReviewController'],['filter','\Catalog\FilterController'],
                 ['shipping','\Catalog\ShippingController'],['coupon','\Sale\CouponController'],['order','\Sale\OrderController'],['service','\Sale\ServiceController']
             ];
 
@@ -100,6 +100,21 @@ Route::middleware(['web'])->group(function () {
                 Route::post($val[0].'/save', 'Aphly\LaravelShop\Controllers\Admin'.$val[1].'@save');
                 Route::post($val[0].'/del', 'Aphly\LaravelShop\Controllers\Admin'.$val[1].'@del');
             }
+
+            $route_arr = [
+                ['category','\Catalog\CategoryController']
+            ];
+
+            foreach ($route_arr as $val){
+                Route::get($val[0].'/index', 'Aphly\LaravelShop\Controllers\Admin'.$val[1].'@index');
+                Route::match(['get', 'post'],$val[0].'/add', 'Aphly\LaravelShop\Controllers\Admin'.$val[1].'@add');
+                Route::match(['get', 'post'],$val[0].'/edit', 'Aphly\LaravelShop\Controllers\Admin'.$val[1].'@edit');
+                Route::post($val[0].'/del', 'Aphly\LaravelShop\Controllers\Admin'.$val[1].'@del');
+            }
+
+            Route::get('filter/ajax', 'Aphly\LaravelShop\Controllers\Admin\Catalog\FilterController@ajax');
+            Route::get('category/ajax', 'Aphly\LaravelShop\Controllers\Admin\Catalog\CategoryController@ajax');
+            Route::get('category/tree', 'Aphly\LaravelShop\Controllers\Admin\Catalog\CategoryController@tree');
 
             Route::get('setting/index', 'Aphly\LaravelShop\Controllers\Admin\System\SettingController@index');
             Route::post('setting/save', 'Aphly\LaravelShop\Controllers\Admin\System\SettingController@save');

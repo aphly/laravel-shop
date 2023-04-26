@@ -5,9 +5,8 @@ namespace Aphly\LaravelShop\Controllers\Admin\Catalog;
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Models\Breadcrumb;
 use Aphly\Laravel\Models\UploadFile;
-use Aphly\LaravelCommon\Models\CategoryPath;
-use Aphly\LaravelCommon\Models\Filter;
-use Aphly\LaravelCommon\Models\Group;
+use Aphly\LaravelShop\Models\Catalog\CategoryPath;
+use Aphly\LaravelShop\Models\Catalog\Filter;
 use Aphly\LaravelShop\Controllers\Admin\Controller;
 use Aphly\LaravelShop\Models\Catalog\Option;
 use Aphly\LaravelShop\Models\Catalog\Product;
@@ -19,7 +18,6 @@ use Aphly\LaravelShop\Models\Catalog\ProductFilter;
 use Aphly\LaravelShop\Models\Catalog\ProductImage;
 use Aphly\LaravelShop\Models\Catalog\ProductOption;
 use Aphly\LaravelShop\Models\Catalog\ProductOptionValue;
-use Aphly\LaravelShop\Models\Catalog\ProductReward;
 use Aphly\LaravelShop\Models\Catalog\ProductSpecial;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -322,9 +320,9 @@ class ProductController extends Controller
 
             $res['product_filter'] = ProductFilter::where('product_id',$product_id)->get()->toArray();
             $filter_ids = array_column($res['product_filter'],'filter_id');
-            $res['filter'] = Filter::leftJoin('common_filter_group as group','group.id','=','common_filter.filter_group_id')
-                ->whereIn('common_filter.id', $filter_ids)
-                ->selectRaw("common_filter.*,concat(group.name,' \> ',common_filter.name) as name_all")
+            $res['filter'] = Filter::leftJoin('shop_filter_group as group','group.id','=','shop_filter.filter_group_id')
+                ->whereIn('shop_filter.id', $filter_ids)
+                ->selectRaw("shop_filter.*,concat(group.name,' \> ',shop_filter.name) as name_all")
                 ->get()->keyBy('id')->toArray();
             $res['breadcrumb'] = Breadcrumb::render([
                 ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],

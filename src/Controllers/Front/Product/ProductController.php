@@ -40,13 +40,15 @@ class ProductController extends Controller
     {
         $res['title'] = 'Index';
         $filter_data = [
-            'filter'      => $request->query('filter',false),
             'name'      => $request->query('name',false),
+            'category_id' => false,
+            'filter'      => $request->query('filter',false),
             'sort'      => $request->query('sort',false),
             'price'      => $request->query('price',false),
             'option_value'      => $request->query('option_value',false)
         ];
         $res = $this->listData($filter_data,$res);
+
         return $this->makeView('laravel-shop-front::product.index',['res'=>$res]);
     }
 
@@ -57,8 +59,9 @@ class ProductController extends Controller
         $filter_data = [
             'category_id' => $category_info->id,
             'filter'      => $request->query('filter',false),
-            'name'      => $request->query('name',false),
             'sort'      => $request->query('sort',false),
+            'price'      => $request->query('price',false),
+            'option_value'      => $request->query('option_value',false)
         ];
         $res = $this->listData($filter_data,$res);
         return $this->makeView('laravel-shop-front::product.category',['res'=>$res]);

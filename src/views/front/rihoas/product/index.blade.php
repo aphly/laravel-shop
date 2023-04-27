@@ -9,7 +9,7 @@
     .product-category > li:nth-child(5n),.product-category li:last-child{margin-right:0}
 
     .product_list_l .filters1{font-size: 34px;margin-bottom: 20px;font-weight: 600;}
-    .product_list_l{width: 20%;margin-right: 20px;}
+    .product_list_l{width: 20%;margin-right: 20px;min-height: 500px;background: #fff;padding: 20px;border-radius: 4px;}
     .product_list_r{width: calc(80% - 20px);}
     .filters11{font-size: 18px;font-weight: 500; margin: 10px 0;display: flex;justify-content: space-between;cursor: pointer}
     .filters12{display: flex;flex-wrap: wrap;}
@@ -18,59 +18,86 @@
     .filters12 dd a.active,.filters12 dd a:hover{color:#000;}
     .filters12 .item-link:after{content:"";background:#000;position:absolute;bottom:0px;right:0;width:0;height:1px;-webkit-transition:all .3s ease;transition:all .3s ease}
     .filters12 .item-link.active:not(.disabled):after,.filters12 .item-link:not(.disabled):hover:after{left:0;right:auto;width:100%}
-
 </style>
+<script>
+    $(function () {
+        $('.filters11').click(function () {
+            let obj = $(this).find('.uni')
+            if(obj.hasClass('app-jia1')){
+                obj.removeClass('app-jia1').addClass('app-jian1')
+            }else{
+                obj.removeClass('app-jian1').addClass('app-jia1')
+            }
+            $(this).next().slideToggle()
+        })
 
+    })
+</script>
 <div class="container">
     <div class="d-flex">
         <div class="product_list_l">
             <div class="filters">
                 <div class="filters1">Filters</div>
                 <div>
-                    <ul>
+                    <ul class="filter_filter">
                         @foreach($res['filterGroup'] as $val)
-                        <li>
+                        <li >
                             <div class="filters11">
                                 <span>{{$val->name}}</span>
                                 <span class="uni app-jia1"></span>
                             </div>
                             <dl class="filters12">
                                 @foreach($val->filter as $v)
-                                <dd ><a class="item-link" href="">{{$v->name}}</a></dd>
+                                <dd ><a class="item-link" href="javascript:void(0)">{{$v->name}}</a></dd>
                                 @endforeach
-                                    <dd ><a class="item-link active" href="">cc</a></dd>
+                                <dd ><a class="item-link active" href="">cc</a></dd>
                             </dl>
                         </li>
+                    </ul>
+                    <ul class="filter_option">
                         @endforeach
                         @foreach($res['option'] as $val)
-                            <li>
-                                <div class="filters11">
-                                    <span>{{$val->name}}</span>
-                                    <span class="uni app-jia1"></span>
-                                </div>
-                                <dl class="filters12">
-                                    @foreach($val->value as $v)
-                                        <dd>{{$v->name}}</dd>
-                                    @endforeach
-                                </dl>
-                            </li>
+                        <li >
+                            <div class="filters11">
+                                <span>{{$val->name}}</span>
+                                <span class="uni app-jia1"></span>
+                            </div>
+                            <dl class="filters12">
+                                @foreach($val->value as $v)
+                                    <dd>{{$v->name}}</dd>
+                                @endforeach
+                            </dl>
+                        </li>
                         @endforeach
                     </ul>
                 </div>
             </div>
-            <div class="m_filters">
-
-            </div>
             <div class="m_filters_btn">
                 Filters
             </div>
-        </div>
-        <div class="product_list_r">
-            <div >
-                <ul style="display: flex;">
-                    <li style="line-height: 24px;padding: 2px 10px 2px 30px;background: #e8e8e8;border-radius: 5px;color: #000;font-weight: 500;">aaaa</li>
-                </ul>
+            <div class="m_filters">
+
             </div>
+        </div>
+        <style>
+            .filter_res{margin-bottom: 10px;display: flex;line-height: 28px;}
+            .filter_res ul{display: flex;margin-right: 10px;}
+            .filter_res ul li{margin-right:10px;line-height: 24px;padding: 2px 10px;display: flex;align-items: center;background: #e8e8e8;border-radius: 5px;color: #000;font-weight: 500;cursor: pointer}
+            .filter_res ul li .app-guanbi{margin-right:5px;font-size: 12px;font-weight: 600}
+            .filter_res ul li:hover{background: #000;color:#fff;}
+            .filter-link-text{color:#777;cursor: pointer;text-decoration: underline;font-weight: 600}
+            .filter-link-text:hover{color:#000;}
+        </style>
+        <div class="product_list_r">
+            <div>
+                <div class="filter_res">
+                    <ul>
+                        <li><span class="uni app-guanbi" ></span><span>aaaa</span></li>
+                    </ul>
+                    <div class="filter-link-text">Clear All</div>
+                </div>
+            </div>
+
             <ul class=" product-category">
                 @foreach($res['list'] as $key=>$val)
                     <li class="">

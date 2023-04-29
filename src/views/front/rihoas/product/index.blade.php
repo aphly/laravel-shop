@@ -141,6 +141,10 @@
                         $('.filter_option .active[data-id="'+id+'"]').click();
                     }
                 })
+                $('.product_list_r1_sort').on('click','a',function () {
+                    let sort = $(this).data('sort')
+                    urlOption._set('sort',sort,true)
+                })
             })
         </script>
         <style>
@@ -151,14 +155,26 @@
             .filter_res ul li:hover{background: #000;color:#fff;}
             .filter-link-text{color:#777;cursor: pointer;text-decoration: underline;font-weight: 600}
             .filter-link-text:hover{color:#000;}
+            .product_list_r1{justify-content: space-between;}
+            .product_list_r1 button{border: none;background: transparent;}
+            .product_list_r1 .dropdown-menu{border: none;box-shadow:0 10px 30px rgba(0,0,0,0.2);background: #f8f8f8;}
         </style>
         <div class="product_list_r">
-            <div class="">
+            <div class="d-flex product_list_r1">
                 <div class="filter_res">
                     <ul class="filter_res_pre"></ul>
                     <a href="/product"><div class="filter-link-text">Clear All</div></a>
                 </div>
-                <div></div>
+                <div class="btn-group">
+                    <button type="button" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        Default sorting
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right product_list_r1_sort">
+                        @foreach($res['sort'] as $key=>$val)
+                        <a class="dropdown-item" href="javascript:void(0)" data-sort="{{$key}}">{{$val}}</a>
+                        @endforeach
+                    </div>
+                </div>
             </div>
 
             <ul class=" product-category">

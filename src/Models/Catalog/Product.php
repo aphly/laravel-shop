@@ -175,6 +175,12 @@ class Product extends Model
         return $res->Paginate(config('admin.perPage'))->withQueryString();
     }
 
+    function sortArr(){
+        return [''=>'Default sorting','viewed_desc'=>'Popularity','new_desc'=>'Latest',
+            'price_asc'=>'Price: low to high','price_desc'=>'Price: high to low',
+            'sale_desc'=>'Sales volume','rating_desc'=>'Average rating'];
+    }
+
     function getByids($product_ids){
         $time = time();
         $sql = DB::table('shop_product as p')->where('p.status',1)->where('p.date_available','<=',$time)->whereIn('p.id',$product_ids);

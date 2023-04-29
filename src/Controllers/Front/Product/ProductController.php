@@ -35,6 +35,7 @@ class ProductController extends Controller
         $res['product_option'] = $product->optionValueByName($product_ids);
         $res['product_image'] = $product->imgByIds($product_ids);
         $res['wishlist_product_ids'] = Wishlist::$product_ids;
+        $res['sort'] = $product->sortArr();
         return $res;
     }
 

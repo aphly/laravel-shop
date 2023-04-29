@@ -30,53 +30,69 @@
             }
             $(this).next().slideToggle()
         })
-
+        $('.m_filters_btn').click(function () {
+            let product_list_l = $('.product_list_l')
+            let display = product_list_l.css('display')
+            if(display!=='none'){
+                $('html,body').css('height','inherit').css('overflow','inherit')
+            }else{
+                $('html,body').css('height','100%').css('overflow','hidden')
+            }
+            product_list_l.toggle();
+        })
     })
+    function m_filters_btn_hide() {
+        $('.product_list_l').toggle();
+        $('html,body').css('height','inherit').css('overflow','inherit')
+    }
 </script>
 <div class="container">
     <div class="d-flex">
         <div class="product_list_l">
-            <div class="filters">
-                <div class="filters1">Filters</div>
-                <div>
-                    <ul class="filter_filter">
-                        @foreach($res['filterGroup'] as $val)
-                        <li >
-                            <div class="filters11">
-                                <span>{{$val->name}}</span>
-                                <span class="uni app-jia1"></span>
-                            </div>
-                            <dl class="filters12">
-                                @foreach($val->filter as $v)
-                                <dd><a class="item-link @if(in_array($v->id,$res['filte_filter'])) active @endif" data-id="{{$v->id}}" href="javascript:void(0)">{{$v->name}}</a></dd>
+            <div class="product_list_l_box">
+                <div class="product_list_l_box1">
+                    <div class="filters">
+                        <div class="filters1">Filters</div>
+                        <div>
+                            <ul class="filter_filter">
+                                @foreach($res['filterGroup'] as $val)
+                                    <li >
+                                        <div class="filters11">
+                                            <span>{{$val->name}}</span>
+                                            <span class="uni app-jia1"></span>
+                                        </div>
+                                        <dl class="filters12">
+                                            @foreach($val->filter as $v)
+                                                <dd><a class="item-link @if(in_array($v->id,$res['filte_filter'])) active @endif" data-id="{{$v->id}}" href="javascript:void(0)">{{$v->name}}</a></dd>
+                                            @endforeach
+                                        </dl>
+                                    </li>
                                 @endforeach
-                            </dl>
-                        </li>
-                        @endforeach
-                    </ul>
-                    <ul class="filter_option">
-                        @foreach($res['option'] as $val)
-                        <li >
-                            <div class="filters11">
-                                <span>{{$val->name}}</span>
-                                <span class="uni app-jia1"></span>
-                            </div>
-                            <dl class="filters12">
-                                @foreach($val->value as $v)
-                                    <dd><a class="item-link @if(in_array($v->id,$res['filte_option_value'])) active @endif" data-id="{{$v->id}}" href="javascript:void(0)">{{$v->name}}</a></dd>
+                            </ul>
+                            <ul class="filter_option">
+                                @foreach($res['option'] as $val)
+                                    <li >
+                                        <div class="filters11">
+                                            <span>{{$val->name}}</span>
+                                            <span class="uni app-jia1"></span>
+                                        </div>
+                                        <dl class="filters12">
+                                            @foreach($val->value as $v)
+                                                <dd><a class="item-link @if(in_array($v->id,$res['filte_option_value'])) active @endif" data-id="{{$v->id}}" href="javascript:void(0)">{{$v->name}}</a></dd>
+                                            @endforeach
+                                        </dl>
+                                    </li>
                                 @endforeach
-                            </dl>
-                        </li>
-                        @endforeach
-                    </ul>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
+                <div class="product_list_l_box2" onclick="m_filters_btn_hide()"></div>
             </div>
-            <div class="m_filters_btn">
-                Filters
-            </div>
-            <div class="m_filters">
 
-            </div>
+        </div>
+        <div class="m_filters_btn">
+            Filters
         </div>
         <script>
             $(function () {
@@ -137,11 +153,12 @@
             .filter-link-text:hover{color:#000;}
         </style>
         <div class="product_list_r">
-            <div>
+            <div class="">
                 <div class="filter_res">
                     <ul class="filter_res_pre"></ul>
                     <a href="/product"><div class="filter-link-text">Clear All</div></a>
                 </div>
+                <div></div>
             </div>
 
             <ul class=" product-category">
@@ -235,6 +252,11 @@
     .product-category > li:nth-child(5n),.product-category li:last-child{margin-right:10px}
     .m_filters_btn{display:block;position:fixed;bottom:50%;right:0;background:#f2f2f2;writing-mode:vertical-rl;padding:20px 10px;z-index:100;border-bottom-right-radius:8px;border-top-right-radius:8px;transform:rotate(180deg)}
 
+    .product_list_r{width:100%;}
+    .product_list_l{background:transparent;display:none;position: fixed;left: 0;width: 100%;padding:0;z-index: 1002;top: 60px;height: calc(100% - 60px);}
+    .product_list_l_box1{width: calc(100% - 50px);background: #fff;padding: 20px;height: 100%;overflow-y: auto;}
+    .product_list_l_box2{width: 50px;}
+    .product_list_l_box{display: flex;height: 100%;}
 }
 </style>
 

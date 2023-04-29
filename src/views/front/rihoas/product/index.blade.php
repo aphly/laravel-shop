@@ -48,14 +48,13 @@
                             </div>
                             <dl class="filters12">
                                 @foreach($val->filter as $v)
-                                <dd ><a class="item-link" href="javascript:void(0)">{{$v->name}}</a></dd>
+                                <dd><a class="item-link @if(in_array($v->id,$res['filte_filter'])) active @endif" data-id="{{$v->id}}" href="javascript:void(0)">{{$v->name}}</a></dd>
                                 @endforeach
-                                <dd ><a class="item-link active" href="">cc</a></dd>
                             </dl>
                         </li>
+                        @endforeach
                     </ul>
                     <ul class="filter_option">
-                        @endforeach
                         @foreach($res['option'] as $val)
                         <li >
                             <div class="filters11">
@@ -64,7 +63,7 @@
                             </div>
                             <dl class="filters12">
                                 @foreach($val->value as $v)
-                                    <dd>{{$v->name}}</dd>
+                                    <dd><a class="item-link @if(in_array($v->id,$res['filte_option_value'])) active @endif" data-id="{{$v->id}}" href="javascript:void(0)">{{$v->name}}</a></dd>
                                 @endforeach
                             </dl>
                         </li>
@@ -79,6 +78,55 @@
 
             </div>
         </div>
+        <script>
+            $(function () {
+                $('.filter_filter').on('click','.item-link',function () {
+                    if($(this).hasClass('active')){
+                        $(this).removeClass('active')
+                    }else{
+                        $(this).addClass('active')
+                    }
+                    let filter_ids=[];
+                    $('.filter_filter .item-link.active').each(function (index,item) {
+                        filter_ids.push($(item).data('id'))
+                    })
+                    let filter = filter_ids.join(',');
+                    urlOption._set('filter',filter,true)
+                })
+                $('.filter_option').on('click','.item-link',function () {
+                    if($(this).hasClass('active')){
+                        $(this).removeClass('active')
+                    }else{
+                        $(this).addClass('active')
+                    }
+                    let filter_ids=[];
+                    $('.filter_option .item-link.active').each(function (index,item) {
+                        filter_ids.push($(item).data('id'))
+                    })
+                    let filter = filter_ids.join(',');
+                    urlOption._set('option_value',filter,true)
+                });
+                (()=>{
+                    let filter_res = '';
+                    $('.filter_filter .item-link.active').each(function (index,item) {
+                        filter_res+=`<li class="filter_filter_li" data-id="${$(item).data('id')}"><span class="uni app-guanbi" ></span><span>${$(item).text()}</span></li>`
+                    })
+                    $('.filter_option .item-link.active').each(function (index,item) {
+                        filter_res+=`<li class="filter_option_li" data-id="${$(item).data('id')}"><span class="uni app-guanbi" ></span><span>${$(item).text()}</span></li>`
+                    })
+                    $('.filter_res_pre').html(filter_res)
+                })();
+                $('.filter_res_pre').on('click','li',function () {
+                    if($(this).attr('class')==='filter_filter_li'){
+                        let id = $(this).data('id')
+                        $('.filter_filter .active[data-id="'+id+'"]').click();
+                    }else if($(this).attr('class')==='filter_option_li'){
+                        let id = $(this).data('id')
+                        $('.filter_option .active[data-id="'+id+'"]').click();
+                    }
+                })
+            })
+        </script>
         <style>
             .filter_res{margin-bottom: 10px;display: flex;line-height: 28px;}
             .filter_res ul{display: flex;margin-right: 10px;}
@@ -91,10 +139,8 @@
         <div class="product_list_r">
             <div>
                 <div class="filter_res">
-                    <ul>
-                        <li><span class="uni app-guanbi" ></span><span>aaaa</span></li>
-                    </ul>
-                    <div class="filter-link-text">Clear All</div>
+                    <ul class="filter_res_pre"></ul>
+                    <a href="/product"><div class="filter-link-text">Clear All</div></a>
                 </div>
             </div>
 
@@ -156,8 +202,6 @@
                                 @endif
                             </div>
                         </div>
-
-
                     </li>
                 @endforeach
             </ul>

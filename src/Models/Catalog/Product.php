@@ -49,6 +49,23 @@ class Product extends Model
         return $res;
     }
 
+    function optionValueToGroup($value=''){
+        $filter_values = explode(',', $value);
+        $filter_values = array_filter($filter_values);
+        $arr = [];
+        $option = Option::where(['is_filter'=>1,'status'=>1])->with('value')->get()->toArray();
+        foreach ($filter_values as $id){
+            foreach ($option as $val){
+                foreach ($val['value'] as $val1){
+                    if($id==$val1['id']){
+                        $arr[$val['id']][] = $val1['id'];
+                    }
+                }
+            }
+        }
+        return $arr;
+    }
+
     public $sub_category = false;
 
     public function getList($data = [],$bySpu=false) {
@@ -94,13 +111,10 @@ class Product extends Model
             $sql->whereIn('pf.filter_id',$implode);
         }
         if($option_value){
-            $implode = [];
-            $option_values = explode(',', $option_value);
-            foreach ($option_values as $option_value_id) {
-                $implode[] = (int)$option_value_id;
+            $group1 = $this->optionValueToGroup($option_value);
+            foreach ($group1 as $val){
+                $sql->whereIn('pov.option_value_id',$val);
             }
-            $implode = array_filter($implode);
-            $sql->whereIn('pov.option_value_id',$implode);
         }
         if($data['name']){
             $words = explode(' ', trim($data['name']));
@@ -180,8 +194,18 @@ class Product extends Model
                         return $query->orderBy('rating','desc');
                     }
                 });
+        dd($this->toMySql($res));
         return $res->Paginate(config('admin.perPage'))->withQueryString();
     }
+
+
+    public function toMySql($query)
+    {
+        return vsprintf(str_replace('?', '%s', $query->toSql()), collect($query->getBindings())->map(function ($binding) {
+            return is_numeric($binding) ? $binding : "'{$binding}'";
+        })->toArray());
+    }
+
 
     function sortArr(){
         return [''=>'Default sorting','viewed_desc'=>'Popularity','new_desc'=>'Latest',

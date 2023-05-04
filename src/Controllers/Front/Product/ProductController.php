@@ -23,6 +23,7 @@ class ProductController extends Controller
     public function listData($filter_data,$res,$bySpu=false)
     {
         $product = new Product;
+
         $res['list'] = $product->getList($filter_data,$bySpu);
         $product_ids = [];
         foreach ($res['list'] as $key=>$val){
@@ -52,6 +53,7 @@ class ProductController extends Controller
         ];
         $res['filte_filter'] = $filter_data['filter']?explode(',',$filter_data['filter']):[];
         $res['filte_option_value'] = $filter_data['option_value']?explode(',',$filter_data['option_value']):[];
+
         $res = $this->listData($filter_data,$res);
         $res['filterGroup'] = FilterGroup::where('status',1)->with('filter')->get();
         $res['option'] = Option::where(['status'=>1,'is_filter'=>1])->with('value')->get();

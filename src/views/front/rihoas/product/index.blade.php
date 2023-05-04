@@ -1,12 +1,12 @@
 @include('laravel-shop-front::common.header')
 <style>
     .product-category{display:flex;flex-wrap:wrap}
-    .product-category li{width:calc(20% - 8.5px);margin:0px 10px 10px 0px;padding:10px;background:#fff;box-shadow:0 2px 12px 2px #eee}
+    .product-category li{width:calc(25% - 10px);margin:0px 10px 10px 0px;padding:10px;background:#fff;box-shadow:0 2px 12px 2px #eee}
     .product-category li .image{margin-bottom:10px;position:relative;z-index:10}
     .product-category li .name{text-transform:capitalize;font-size:14px;color:#000;height:36px;line-height:18px;overflow:hidden;margin-bottom:5px}
     .product-category li .price{font-size:14px;margin-bottom:5px}
     .img-responsive{max-width:100%;height:auto}
-    .product-category > li:nth-child(5n),.product-category li:last-child{margin-right:0}
+    .product-category > li:nth-child(4n),.product-category li:last-child{margin-right:0}
 
     .product_list_l .filters1{font-size: 34px;margin-bottom: 20px;font-weight: 600;}
     .product_list_l{width: 20%;margin-right: 20px;min-height: 500px;background: #fff;padding: 20px;border-radius: 4px;}
@@ -39,11 +39,11 @@
             }else{
                 $('html,body').css('height','100%').css('overflow','hidden')
             }
-            product_list_l.toggle();
+            product_list_l.toggle(200);
         })
     })
     function m_filters_btn_hide() {
-        $('.product_list_l').toggle();
+        $('.product_list_l').toggle(200);
         $('html,body').css('height','inherit').css('overflow','inherit')
     }
 </script>
@@ -162,10 +162,13 @@
             .product_list_r1{justify-content: space-between;line-height: 44px;margin-bottom: 10px;}
             .product_list_r1 button{border: none;background: transparent;}
             .product_list_r1 .dropdown-menu{border: none;box-shadow:0 10px 30px rgba(0,0,0,0.2);background: #f8f8f8;}
+            .product_list_r1 .btn-group button,.product_list_r1 .dropdown-menu a{font-weight: 500}
+            .product_list_r1 .results{color:#777}
+
         </style>
         <div class="product_list_r">
             <div class="d-flex product_list_r1">
-                <div>
+                <div class="results">
                     Showing all {{$res['list']->count()}} results
                 </div>
                 <div class="btn-group">
@@ -185,7 +188,6 @@
             </div>
             <div class="filter_res">
                 <ul class="filter_res_pre"></ul>
-
             </div>
 
             <ul class=" product-category">
@@ -277,14 +279,14 @@
     .product-category li{width: calc(50% - 5px);}
     .product-category > li:nth-child(2n),.product-category li:last-child{margin-right:0}
 
-    .m_filters_btn{display:block;position:fixed;bottom:50%;right:0;background:#f2f2f2;writing-mode:vertical-rl;padding:20px 10px;z-index:100;border-bottom-right-radius:8px;border-top-right-radius:8px;transform:rotate(180deg)}
+    .m_filters_btn{ color: #000; font-weight: 600;font-size: 12px;display:block;position:fixed;bottom:50%;right:0;background:#fafafa;writing-mode:vertical-rl;padding:20px 10px;z-index:100;border-bottom-right-radius:8px;border-top-right-radius:8px;transform:rotate(180deg)}
 
     .product_list_r{width:100%;}
     .product_list_l{background:transparent;display:none;position: fixed;left: 0;width: 100%;padding:0;z-index: 1002;top: 60px;height: calc(100% - 60px);}
     .product_list_l_box1{width: calc(100% - 50px);background: #fff;padding: 20px;height: 100%;overflow-y: auto;}
     .product_list_l_box2{width: 50px;}
     .product_list_l_box{display: flex;height: 100%;}
-    .product_list_r1{justify-content: flex-start;flex-wrap: wrap;}
+    .product_list_r1{margin-bottom: 5px;}
 }
 </style>
 

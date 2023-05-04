@@ -42,7 +42,7 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $res['title'] = 'Index';
-        $filter_data = [
+        $res['filter_data'] = $filter_data = [
             'name'      => $request->query('name',false),
             'category_id' => false,
             'filter'      => $request->query('filter',false),

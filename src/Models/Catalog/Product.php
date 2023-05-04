@@ -154,17 +154,25 @@ class Product extends Model
                             min(price) as price,min(special) as special,min(discount) as discount,max(sale) as sale,max(rating) as rating');
             })
             ->when($sort,
-                function($query,$sort) {
+                function($query,$sort) use ($bySpu) {
                     $sort = explode('_',$sort);
                     if($sort[0]=='viewed'){
                         return $query->orderBy('viewed','desc');
                     }else if($sort[0]=='new'){
                         return $query->orderBy('date_available','desc');
                     }else if($sort[0]=='price'){
-                        if($sort[1]=='asc'){
-                            return $query->orderByRaw('(CASE WHEN min(special) IS NOT NULL THEN min(special) WHEN min(discount) IS NOT NULL THEN min(discount) ELSE min(price) END) asc');
+                        if($bySpu){
+                            if($sort[1]=='asc'){
+                                return $query->orderByRaw('(CASE WHEN min(special) IS NOT NULL THEN min(special) WHEN min(discount) IS NOT NULL THEN min(discount) ELSE min(price) END) asc');
+                            }else{
+                                return $query->orderByRaw('(CASE WHEN max(special) IS NOT NULL THEN max(special) WHEN max(discount) IS NOT NULL THEN min(discount) ELSE max(price) END) desc');
+                            }
                         }else{
-                            return $query->orderByRaw('(CASE WHEN max(special) IS NOT NULL THEN max(special) WHEN max(discount) IS NOT NULL THEN min(discount) ELSE max(price) END) desc');
+                            if($sort[1]=='asc'){
+                                return $query->orderByRaw('(CASE WHEN special IS NOT NULL THEN special WHEN discount IS NOT NULL THEN discount ELSE price END) asc');
+                            }else{
+                                return $query->orderByRaw('(CASE WHEN special IS NOT NULL THEN special WHEN discount IS NOT NULL THEN discount ELSE price END) desc');
+                            }
                         }
                     }else if($sort[0]=='sale'){
                         return $query->orderBy('sale','desc');

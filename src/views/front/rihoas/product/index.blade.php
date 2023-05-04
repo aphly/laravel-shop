@@ -18,6 +18,7 @@
     .filters12 dd a.active,.filters12 dd a:hover{color:#000;}
     .filters12 .item-link:after{content:"";background:#000;position:absolute;bottom:0px;right:0;width:0;height:1px;-webkit-transition:all .3s ease;transition:all .3s ease}
     .filters12 .item-link.active:not(.disabled):after,.filters12 .item-link:not(.disabled):hover:after{left:0;right:auto;width:100%}
+    .clear_all{background: transparent !important;}
 </style>
 <script>
     $(function () {
@@ -130,9 +131,12 @@
                     $('.filter_option .item-link.active').each(function (index,item) {
                         filter_res+=`<li class="filter_option_li" data-id="${$(item).data('id')}"><span class="uni app-guanbi" ></span><span>${$(item).text()}</span></li>`
                     })
+                    if(filter_res){
+                        filter_res+='<li class="clear_all"><a href="/product" class=" filter-link-text">Clear All</a></li>'
+                    }
                     $('.filter_res_pre').html(filter_res)
                 })();
-                $('.filter_res_pre').on('click','li',function () {
+                $('.filter_res_pre').on('click','li:not(".clear_all")',function () {
                     if($(this).attr('class')==='filter_filter_li'){
                         let id = $(this).data('id')
                         $('.filter_filter .active[data-id="'+id+'"]').click();
@@ -148,26 +152,29 @@
             })
         </script>
         <style>
-            .filter_res{margin-bottom: 10px;display: flex;line-height: 28px;}
-            .filter_res ul{display: flex;margin-right: 10px;}
-            .filter_res ul li{margin-right:10px;line-height: 24px;padding: 2px 10px;display: flex;align-items: center;background: #e8e8e8;border-radius: 5px;color: #000;font-weight: 500;cursor: pointer}
+            .filter_res{margin-bottom: 10px;display: flex;line-height: 28px;align-items: center;flex-wrap: wrap;}
+            .filter_res ul{display: flex;margin-right: 10px;flex-wrap: wrap;}
+            .filter_res ul li{margin-right:10px;margin-bottom:10px;line-height: 24px;padding: 2px 10px;display: flex;align-items: center;background: #e8e8e8;border-radius: 5px;color: #000;font-weight: 500;cursor: pointer}
             .filter_res ul li .app-guanbi{margin-right:5px;font-size: 12px;font-weight: 600}
             .filter_res ul li:hover{background: #000;color:#fff;}
             .filter-link-text{color:#777;cursor: pointer;text-decoration: underline;font-weight: 600}
             .filter-link-text:hover{color:#000;}
-            .product_list_r1{justify-content: space-between;}
+            .product_list_r1{justify-content: space-between;line-height: 44px;margin-bottom: 10px;}
             .product_list_r1 button{border: none;background: transparent;}
             .product_list_r1 .dropdown-menu{border: none;box-shadow:0 10px 30px rgba(0,0,0,0.2);background: #f8f8f8;}
         </style>
         <div class="product_list_r">
             <div class="d-flex product_list_r1">
-                <div class="filter_res">
-                    <ul class="filter_res_pre"></ul>
-                    <a href="/product"><div class="filter-link-text">Clear All</div></a>
+                <div>
+                    Showing all {{$res['list']->count()}} results
                 </div>
                 <div class="btn-group">
                     <button type="button" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                        Default sorting
+                        @foreach($res['sort'] as $key=>$val)
+                            @if($key==$res['filter_data']['sort'])
+                                {{$val}}
+                            @endif
+                        @endforeach
                     </button>
                     <div class="dropdown-menu dropdown-menu-right product_list_r1_sort">
                         @foreach($res['sort'] as $key=>$val)
@@ -175,6 +182,10 @@
                         @endforeach
                     </div>
                 </div>
+            </div>
+            <div class="filter_res">
+                <ul class="filter_res_pre"></ul>
+
             </div>
 
             <ul class=" product-category">
@@ -265,7 +276,7 @@
 @media (max-width: 1199.98px) {
     .product-category li{width: calc(50% - 5px);}
     .product-category > li:nth-child(2n),.product-category li:last-child{margin-right:0}
-    .product-category > li:nth-child(5n),.product-category li:last-child{margin-right:10px}
+
     .m_filters_btn{display:block;position:fixed;bottom:50%;right:0;background:#f2f2f2;writing-mode:vertical-rl;padding:20px 10px;z-index:100;border-bottom-right-radius:8px;border-top-right-radius:8px;transform:rotate(180deg)}
 
     .product_list_r{width:100%;}
@@ -273,6 +284,7 @@
     .product_list_l_box1{width: calc(100% - 50px);background: #fff;padding: 20px;height: 100%;overflow-y: auto;}
     .product_list_l_box2{width: 50px;}
     .product_list_l_box{display: flex;height: 100%;}
+    .product_list_r1{justify-content: flex-start;flex-wrap: wrap;}
 }
 </style>
 

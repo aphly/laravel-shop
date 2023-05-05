@@ -63,6 +63,19 @@ class Product extends Model
                 }
             }
         }
+        dd($arr);
+        $sql = ProductOptionValue::groupBy('product_id')->selectRaw('`product_id`,GROUP_CONCAT(`option_value_id`)')->when($arr,function ($query,$arr){
+            $h = '';
+            foreach ($arr as $val){
+                $h .= '(';
+                foreach ($val as $v){
+                    $h .= 'FIND_IN_SET('.$v.',GROUP_CONCAT(`option_value_id`))';
+                }
+                $h .= ')';
+            }
+            return $query->havingRaw($h);
+        })->get()->toArray();
+        dd($sql);
         return $arr;
     }
 
@@ -113,7 +126,7 @@ class Product extends Model
         if($option_value){
             $group1 = $this->optionValueToGroup($option_value);
             foreach ($group1 as $val){
-                $sql->whereIn('pov.option_value_id',$val);
+                $sql->where('pov.option_value_id',$val);
             }
         }
         if($data['name']){
@@ -194,18 +207,8 @@ class Product extends Model
                         return $query->orderBy('rating','desc');
                     }
                 });
-        dd($this->toMySql($res));
         return $res->Paginate(config('admin.perPage'))->withQueryString();
     }
-
-
-    public function toMySql($query)
-    {
-        return vsprintf(str_replace('?', '%s', $query->toSql()), collect($query->getBindings())->map(function ($binding) {
-            return is_numeric($binding) ? $binding : "'{$binding}'";
-        })->toArray());
-    }
-
 
     function sortArr(){
         return [''=>'Default sorting','viewed_desc'=>'Popularity','new_desc'=>'Latest',

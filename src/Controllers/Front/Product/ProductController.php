@@ -23,7 +23,6 @@ class ProductController extends Controller
     public function listData($filter_data,$res,$bySpu=false)
     {
         $product = new Product;
-        $product->optionValueToGroup('1,2,3');
         $res['list'] = $product->getList($filter_data,$bySpu);
         $product_ids = [];
         foreach ($res['list'] as $key=>$val){

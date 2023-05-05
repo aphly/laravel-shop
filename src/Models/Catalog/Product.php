@@ -6,6 +6,7 @@ use Aphly\Laravel\Models\UploadFile;
 use Aphly\LaravelCommon\Models\Currency;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;
+use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Facades\DB;
 
 class Product extends Model
@@ -49,7 +50,7 @@ class Product extends Model
         return $res;
     }
 
-    function optionValueToGroup($value=''){
+    function optionValueTable($value=''){
         $filter_values = explode(',', $value);
         $filter_values = array_filter($filter_values);
         $arr = [];
@@ -63,20 +64,62 @@ class Product extends Model
                 }
             }
         }
-        dd($arr);
-        $sql = ProductOptionValue::groupBy('product_id')->selectRaw('`product_id`,GROUP_CONCAT(`option_value_id`)')->when($arr,function ($query,$arr){
-            $h = '';
-            foreach ($arr as $val){
-                $h .= '(';
-                foreach ($val as $v){
-                    $h .= 'FIND_IN_SET('.$v.',GROUP_CONCAT(`option_value_id`))';
+        if($arr){
+            return ProductOptionValue::groupBy('product_id')->select('product_id')->when($arr,function ($query,$arr){
+                $h = [];
+                foreach ($arr as $val){
+                    $h1 = [];
+                    foreach ($val as $v){
+                        $h1[] = 'FIND_IN_SET('.$v.',GROUP_CONCAT(`option_value_id`))';
+                    }
+                    if($h1){
+                        $h[] = '('.implode(' or ',$h1).')';
+                    }
                 }
-                $h .= ')';
+                if($h){
+                    $h_sql = implode(' and ',$h);
+                    return $query->havingRaw($h_sql);
+                }
+                return $query;
+            });
+        }
+        return false;
+    }
+
+    function filterTable($value=''){
+        $filter_values = explode(',', $value);
+        $filter_values = array_filter($filter_values);
+        $arr = [];
+        $filter = FilterGroup::where(['status'=>1])->with('filter')->get()->toArray();
+        foreach ($filter_values as $id){
+            foreach ($filter as $val){
+                foreach ($val['filter'] as $val1){
+                    if($id==$val1['id']){
+                        $arr[$val['id']][] = $val1['id'];
+                    }
+                }
             }
-            return $query->havingRaw($h);
-        })->get()->toArray();
-        dd($sql);
-        return $arr;
+        }
+        if($arr){
+            return ProductFilter::groupBy('product_id')->select('product_id')->when($arr,function ($query,$arr){
+                $h = [];
+                foreach ($arr as $val){
+                    $h1 = [];
+                    foreach ($val as $v){
+                        $h1[] = 'FIND_IN_SET('.$v.',GROUP_CONCAT(`filter_id`))';
+                    }
+                    if($h1){
+                        $h[] = '('.implode(' or ',$h1).')';
+                    }
+                }
+                if($h){
+                    $h_sql = implode(' and ',$h);
+                    return $query->havingRaw($h_sql);
+                }
+                return $query;
+            });
+        }
+        return false;
     }
 
     public $sub_category = false;
@@ -86,24 +129,34 @@ class Product extends Model
         //$type = 2 spu
         list('category_id'=>$category_id,'filter'=>$filter,'option_value'=>$option_value,'price'=>$price,'sort'=>$sort) = $data;
         $time = time();
+        $optionValueTable = $option_value?$this->optionValueTable($option_value):false;
+        $filterTable = $filter?$this->filterTable($filter):false;
         if($category_id){
             if($this->sub_category){
                 $sql = DB::table('shop_category_path as cp')->leftJoin('shop_product_category as pc','cp.category_id','=','pc.category_id');
             }else{
                 $sql = DB::table('shop_product_category as pc');
             }
-            $sql->when($filter, function ($query) {
-                return $query->leftJoin('shop_product_filter as pf','pc.product_id','=','pf.product_id');
-            })->when($option_value, function ($query) {
-                return $query->leftJoin('shop_product_option_value as pov','pc.product_id','=','pov.product_id');
+            $sql->when($filterTable, function ($query,$filterTable)  {
+                return $query->joinSub($filterTable,'filterTable',function (JoinClause $join){
+                    $join->on('pc.product_id', '=', 'filterTable.product_id');
+                });
+            })->when($optionValueTable, function ($query,$optionValueTable)  {
+                return $query->joinSub($optionValueTable,'optionValueTable',function (JoinClause $join){
+                    $join->on('pc.product_id', '=', 'optionValueTable.product_id');
+                });
             });
             $sql->leftJoin('shop_product as p','pc.product_id','=','p.id' );
         }else{
             $sql = DB::table('shop_product as p');
-            $sql->when($filter, function ($query) {
-                return $query->leftJoin('shop_product_filter as pf','p.id','=','pf.product_id');
-            })->when($option_value, function ($query) {
-                return $query->leftJoin('shop_product_option_value as pov','p.id','=','pov.product_id');
+            $sql->when($filterTable, function ($query,$filterTable)  {
+                return $query->joinSub($filterTable,'filterTable',function (JoinClause $join){
+                    $join->on('p.id', '=', 'filterTable.product_id');
+                });
+            })->when($optionValueTable, function ($query,$optionValueTable)  {
+                return $query->joinSub($optionValueTable,'optionValueTable',function (JoinClause $join){
+                    $join->on('p.id', '=', 'optionValueTable.product_id');
+                });
             });
         }
         $sql->where('p.status',1)->where('p.date_available','<=',$time);
@@ -112,21 +165,6 @@ class Product extends Model
                 $sql->where('cp.path_id', $category_id);
             }else{
                 $sql->where('pc.category_id', $category_id);
-            }
-        }
-        if($filter){
-            $implode = [];
-            $filters = explode(',', $filter);
-            foreach ($filters as $filter_id) {
-                $implode[] = (int)$filter_id;
-            }
-            $implode = array_filter($implode);
-            $sql->whereIn('pf.filter_id',$implode);
-        }
-        if($option_value){
-            $group1 = $this->optionValueToGroup($option_value);
-            foreach ($group1 as $val){
-                $sql->where('pov.option_value_id',$val);
             }
         }
         if($data['name']){

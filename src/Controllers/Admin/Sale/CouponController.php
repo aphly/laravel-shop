@@ -4,7 +4,7 @@ namespace Aphly\LaravelShop\Controllers\Admin\Sale;
 
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Models\Breadcrumb;
-use Aphly\LaravelCommon\Models\CategoryPath;
+use Aphly\LaravelShop\Models\Catalog\CategoryPath;
 use Aphly\LaravelShop\Controllers\Admin\Controller;
 use Aphly\LaravelShop\Models\Catalog\Coupon;
 use Aphly\LaravelShop\Models\Catalog\CouponCategory;

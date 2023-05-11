@@ -54,6 +54,9 @@ class ProductController extends Controller
         $res['filte_option_value'] = $filter_data['option_value']?explode(',',$filter_data['option_value']):[];
 
         $res = $this->listData($filter_data,$res);
+        if($filter_data['name'] && $res['list']->count()==1){
+            return redirect('/product/'.$res['list'][0]->id);
+        }
         $res['filterGroup'] = FilterGroup::where('status',1)->with('filter')->get();
         $res['option'] = Option::where(['status'=>1,'is_filter'=>1])->with('value')->get();
         return $this->makeView('laravel-shop-front::product.index',['res'=>$res]);
@@ -72,21 +75,6 @@ class ProductController extends Controller
         ];
         $res = $this->listData($filter_data,$res);
         return $this->makeView('laravel-shop-front::product.category',['res'=>$res]);
-    }
-
-    public function search(Request $request)
-    {
-        $res['title'] = 'Search';
-        $filter_data = [
-            'filter'      => $request->query('filter',false),
-            'name'      => $request->query('name',false),
-            'sort'      => $request->query('sort',false),
-        ];
-        $res = $this->listData($filter_data,$res);
-        if($res['list']->count()==1){
-            return redirect('/product/'.$res['list'][0]->id);
-        }
-        return $this->makeView('laravel-shop-front::product.search',['res'=>$res]);
     }
 
     public function detail(Request $request)

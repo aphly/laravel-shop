@@ -15,8 +15,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['web'])->group(function () {
     Route::match(['get', 'post'],'home1', 'Aphly\LaravelShop\Controllers\Front\HomeController@home1');
-
-    Route::post('wishlist/product/{id}', 'Aphly\LaravelShop\Controllers\Front\Account\WishlistController@product')->where('id', '[0-9]+');
+    //wishlist
+    Route::post('wishlist/product/{id}', 'Aphly\LaravelShop\Controllers\Front\AccountExt\WishlistController@product')->where('id', '[0-9]+');
 
     Route::middleware(['userAuth'])->group(function () {
         //account

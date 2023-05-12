@@ -35,16 +35,16 @@
             let product_list_l = $('.product_list_l')
             let display = product_list_l.css('display')
             if(display!=='none'){
-                $('html,body').css('height','inherit').css('overflow','inherit')
+                $('html').removeClass('no_scroll')
             }else{
-                $('html,body').css('height','100%').css('overflow','hidden')
+                $('html').addClass('no_scroll')
             }
             product_list_l.toggle(200);
         })
     })
     function m_filters_btn_hide() {
         $('.product_list_l').toggle(200);
-        $('html,body').css('height','inherit').css('overflow','inherit')
+        $('html').removeClass('no_scroll')
     }
 </script>
 <div class="container">

@@ -20,6 +20,10 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
+    private $review_image_length = 4;
+
+    private $review_image_size = 0.2;
+
     public function listData($filter_data,$res,$bySpu=false)
     {
         $product = new Product;
@@ -102,12 +106,17 @@ class ProductController extends Controller
                 $v->image_src = UploadFile::getPath($v->image,true);
             }
         }
-
+        $res['review_image_length'] = $this->review_image_length;
+        $res['review_image_size'] = $this->review_image_size;
         return $this->makeView('laravel-shop-front::product.detail',['res'=>$res]);
     }
 
     public function reviewAdd(Request $request)
     {
+        $input = $request->all();
+        if(empty($input['text'])){
+            throw new ApiException(['code'=>1,'msg'=>'Content cannot be empty']);
+        }
 //        $count = Review::where(['uuid'=>$this->user->uuid,'product_id'=>$request->id])->count();
 //        if($count>0){
 //            throw new ApiException(['code'=>1,'msg'=>'A product can only be evaluated once']);
@@ -116,12 +125,12 @@ class ProductController extends Controller
 //        if(!$orderProductCount){
 //            throw new ApiException(['code'=>2,'msg'=>'Only after purchasing the product can you evaluate it']);
 //        }
+
         $insertData = $img_src = $file_paths =  [];
         if($request->hasFile("files")){
-            $file_paths= (new UploadFile(1))->uploads(4,$request->file("files"), 'public/shop/product/review');
+            $file_paths= (new UploadFile($this->review_image_size))->uploads($this->review_image_length,$request->file("files"), 'public/shop/product/review');
         }
 
-        $input = $request->all();
         $input['author'] = $this->user->nickname;
         $input['uuid'] = $this->user->uuid;
         $input['product_id'] = $request->id;

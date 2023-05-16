@@ -182,7 +182,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form class="form_request_img_file" enctype="multipart/form-data" method="post" action="/product/{{$res['info']->id}}/review/add" data-fn="review_res" >
+                        <form class="form_request_img_file" enctype="multipart/form-data" method="post" data-image_length="{{$res['review_image_length']}}" data-image_size="{{$res['review_image_size']}}" action="/product/{{$res['info']->id}}/review/add" data-fn="review_res" >
                             @csrf
                             <div class="review_form">
                                 <div>{{$res['info']->name}}</div>
@@ -194,7 +194,7 @@
                                     <li data-val="5" class="on"><i class="common-iconfont icon-xingxing"></i></li>
                                 </ul>
                                 <input type="hidden" name="rating" class="rating_js" value="5">
-                                <textarea name="text" class="form-control"></textarea>
+                                <textarea name="text" class="form-control" required></textarea>
                                 <div class="add_photo"><i class="common-iconfont icon-zhaoxiangji"></i>Add Photo</div>
                                 <input type="file" style="display: none" accept="image/gif,image/jpeg,image/jpg,image/png" data-img_list="file_img"
                                        class="input_file_img add_photo_file" multiple="multiple">
@@ -262,7 +262,7 @@
         .review_right{width: calc(100% - 220px);margin-left: 20px;}
         .created_at{color:#888;}
         .review_list_img{display: flex;flex-wrap: wrap;}
-        .review_list_img img{width: 50px;height: 50px;margin-right: 10px;}
+        .review_list_img img{width: 50px;height: 50px;margin-right: 10px;border-radius: 4px;}
         .review_content{margin-bottom: 10px;}
 
         .review_form textarea{width: 100%;height: 100px;}
@@ -275,17 +275,12 @@
         .input_star li{margin-right: 5px;cursor: pointer}
         .input_star{display: flex;}
 
-        .grade-star-bg{width: 100px;height: 20px;position: relative;margin-bottom: 10px;top: -3px;}
-        .grade-star-bg .star-progress {height: 100%;position: absolute;left: 0;top: 0;display: flex;z-index: 1;overflow: hidden;}
-        .grade-star-bg .star-progress i{color: #e17a10;}
-        .grade-star-bg i{flex-grow: 0;flex-shrink: 0;display: block;width: 20px;height: 20px;}
-        .grade-star-bg .star-bg{height: 100%;position: absolute;left: 0;top: 0; width: 100%;display: flex;}
-        .grade-star-bg .star-bg i{color: #ddd;}
-
         @media (max-width: 1199.98px) {
             .review1{justify-content: left;flex-wrap: wrap;flex-direction: column-reverse;margin-top: 10px;}
             .write_a_review_pre{width: 100%}
             .write_a_review{width: 100%}
+            .review_left{width: 100px;}
+            .review_right{width: calc(100% - 110px);margin-left: 10px;}
         }
     </style>
     <script>

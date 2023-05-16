@@ -4,6 +4,7 @@ namespace Aphly\LaravelShop\Controllers\Front\AccountExt;
 
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Mail\MailSend;
+use Aphly\Laravel\Models\UploadFile;
 use Aphly\LaravelCommon\Models\Currency;
 use Aphly\LaravelCommon\Models\User;
 use Aphly\LaravelPayment\Models\Payment;
@@ -19,7 +20,7 @@ class OrderController extends Controller
 {
     public function index()
     {
-        $res['list'] = Order::where(['uuid'=>User::uuid()])->where('delete_at',0)->with('orderStatus')
+        $res['list'] = Order::where(['uuid'=>User::uuid()])->where('delete_at',0)->with('orderStatus')->with('orderProduct')
             ->orderBy('created_at','desc')->Paginate(config('admin.perPage'))->withQueryString();
         $res['cancel_fee_24'] = $this->shop_setting['order_cancel_fee_24'];
         $res['cancel_fee'] = $this->shop_setting['order_cancel_fee'];

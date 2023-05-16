@@ -8,8 +8,8 @@
     .checkout_info{padding: 10px 15px;border-radius: 4px;border: 1px solid #ced4da;}
     .checkout_info li{display: flex;justify-content: space-between;margin-bottom: 10px;padding-bottom: 10px;border-bottom: 1px solid #f1f1f1;}
     .checkout_info li span:nth-child(2){margin-right: auto;}
-    .checkout_info li span:first-child{width: 70px;}
-    .checkout_info li:last-child{margin-bottom: 0px;padding-bottom: 0px;border-bottom: none}
+    .checkout_info li span:first-child{width: 70px;flex-shrink: 0;}
+    .checkout_info li:last-child{margin-bottom: 0px;padding-bottom: 0px;border-bottom: none;flex-shrink: 0;}
     .checkout_info li span:last-child a{color: var(--default-color);}
 
     .checkout_ul li{ padding: 10px;border-radius: 4px;cursor: pointer;border: 1px solid #ced4da;margin-bottom: 10px;}

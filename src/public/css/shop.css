@@ -17,4 +17,11 @@
 .quantity-wrapper input{margin: 0 10px;}
 
 .file_img{margin-bottom: 10px;display: flex;flex-wrap: wrap;}
-.file_img img{width: 100px;height: 100px;margin: 10px;}
+.file_img img{width: 100px;height: 100px;margin: 6px;}
+
+.grade-star-bg{width: 100px;height: 20px;position: relative;margin-bottom: 10px;top: -3px;}
+.grade-star-bg .star-progress {height: 100%;position: absolute;left: 0;top: 0;display: flex;z-index: 1;overflow: hidden;}
+.grade-star-bg .star-progress i{color: #e17a10;}
+.grade-star-bg i{flex-grow: 0;flex-shrink: 0;display: block;width: 20px;height: 20px;}
+.grade-star-bg .star-bg{height: 100%;position: absolute;left: 0;top: 0; width: 100%;display: flex;}
+.grade-star-bg .star-bg i{color: #ddd;}

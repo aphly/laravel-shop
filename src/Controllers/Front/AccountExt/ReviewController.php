@@ -13,7 +13,7 @@ class ReviewController extends Controller
 {
     public function index()
     {
-        $res['list'] = Review::where(['uuid'=>User::uuid()])->with('product')->orderBy('created_at','desc')->Paginate(config('admin.perPage'))->withQueryString();
+        $res['list'] = Review::where(['uuid'=>User::uuid()])->with('product')->with('img')->orderBy('created_at','desc')->Paginate(config('admin.perPage'))->withQueryString();
         return $this->makeView('laravel-shop-front::account_ext.review.index',['res'=>$res]);
     }
 

@@ -40,7 +40,7 @@
                     @if($res['reviewImage'])
                         <ul>
                             @foreach($res['reviewImage'] as $val)
-                                <li><img src="{{$val->image_src}}" alt=""></li>
+                                <li><img src="{{$val->image_src}}" alt="" class="br4" style="margin-right: 5px;"></li>
                             @endforeach
                         </ul>
                     @endif

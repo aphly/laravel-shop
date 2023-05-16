@@ -4,10 +4,8 @@
     .cart-content{display: flex;flex-wrap: wrap;}
     .myChart{width: 60%;margin-right: 20px;}
     .cart-pay{width: calc(40% - 20px);}
-
     .cart-shopping{background:#fff;box-shadow:0 0 15px 0 #e3e3e3;margin-top:0;margin-bottom:10px;padding:50px 30px 30px;position:relative;border-radius: 4px;}
     .close-btn{cursor:pointer;position:absolute;right:10px;top:10px;width:18px}
-
     .cart-img{width: calc(40% - 20px);margin-right: 20px;}
     .cart-img_r{width: 60%;}
     .cart-product-name{font-size: 18px;font-weight: 700;}
@@ -49,10 +47,13 @@
     input[type='number']::-webkit-outer-spin-button,input[type='number']::-webkit-inner-spin-button {
         -webkit-appearance: none !important;
     }
+    .img-product img{width: 100%;}
     .coupon-remove {color: #0da9c4;cursor: pointer}
     @media (max-width: 1200px) {
         .myChart{width: 100%;margin-right: 0;}
         .cart-pay{width: 100%;}
+        .img-product img{height:100px; }
+        .cart-shopping{padding:40px 20px 20px;}
     }
 </style>
 
@@ -71,8 +72,8 @@
                             <div class=" cart-shopping">
                                 <div class="d-flex">
                                     <div class="cart-img">
-                                        <a href="" class="img-product">
-                                            <a href="/product/{{$val['product_id']}}"><img class="h-100 w-100" src="{{$val['product']['image_src']}}" alt=""></a>
+                                        <a href="/product/{{$val['product_id']}}" class="img-product">
+                                            <img class="" src="{{$val['product']['image_src']}}" alt="">
                                         </a>
                                     </div>
                                     <div class="cart-img_r cart_product_js" data-cart_id="{{$val['id']}}">

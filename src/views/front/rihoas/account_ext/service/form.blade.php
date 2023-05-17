@@ -87,7 +87,7 @@
                                         @endif
                                     </dl>
                                     <dl class="serviceOrderOptionx">
-                                        <dd>Quantity:{{$val->quantity}} </dd>
+                                        <dd>Qty:{{$val->quantity}} </dd>
                                         <dd>Payment:{{$val->real_total_format}}</dd>
                                     </dl>
                                     <div class="service_product1">

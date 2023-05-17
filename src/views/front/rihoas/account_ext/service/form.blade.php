@@ -10,10 +10,10 @@
         .service_action input{ height: 44px;margin-right: 10px;}
         .service_action>div{margin-right: 20px;}
         .service_product{margin-bottom: 20px;}
-        .service_product li{margin-bottom: 10px;display: flex;justify-content: space-between; padding: 0 10px;}
+        .service_product li{margin-bottom: 10px; padding: 0 10px;}
         .serviceOrderOption{color: #999;display: flex;}
         .serviceOrderOption dd{margin-right: 10px;}
-        .serviceOrderOptionx{display: flex;}
+        .serviceOrderOptionx{}
         .serviceOrderOptionx dd{margin-right: 10px;}
         .service_product1{display: flex;justify-content: space-between;align-items: center;}
         .service_product1 .quantity{}
@@ -28,6 +28,7 @@
         .service_action_ul{display: flex;}
         .service_action_ul li{width: 100px;line-height: 40px;color: #333;border-radius: 6px;text-align: center;margin-right: 20px;border: 1px solid #f1f1f1;cursor: pointer;}
         .service_action_ul li.active{background:var(--default-bg);color: #fff;}
+        .quantity-wrapper div, .quantity-wrapper input{height: 30px;line-height: 30px;width: 30px; min-width: 30px;padding: 0;}
     </style>
     <div class="account_info">
         @include('laravel-common-front::account_ext.left_menu')
@@ -89,13 +90,13 @@
                                         <dd>Quantity:{{$val->quantity}} </dd>
                                         <dd>Payment:{{$val->real_total_format}}</dd>
                                     </dl>
-                                </div>
-                            </div>
-                            <div class="service_product1">
-                                <div class="quantity-wrapper">
-                                    <div class="quantity-down">-</div>
-                                    <input type="number" class="form-control quantity_js"  onblur="if(value<0){value=0}else if(value>={{$val->quantity}}){value={{$val->quantity}}}" value="{{$val->quantity}}">
-                                    <div class="quantity-up" data-max="{{$val->quantity}}">+</div>
+                                    <div class="service_product1">
+                                        <div class="quantity-wrapper">
+                                            <div class="quantity-down">-</div>
+                                            <input type="number" class="form-control quantity_js"  onblur="if(value<0){value=0}else if(value>={{$val->quantity}}){value={{$val->quantity}}}" value="{{$val->quantity}}">
+                                            <div class="quantity-up" data-max="{{$val->quantity}}">+</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </li>

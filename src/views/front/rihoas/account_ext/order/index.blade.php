@@ -10,6 +10,7 @@
                 <ul class="order_list">
                     @foreach($res['list'] as $val)
                         <li class="">
+                            <a href="/account_ext/order/detail?id={{$val->id}}">
                             <div class="d-flex justify-content-between order_list11">
                                 <div>OrderId#{{$val->id}}</div>
                                 <div class="order_status">
@@ -20,10 +21,10 @@
                                 @foreach($val->orderProduct as $v)
                                 <dd class="d-flex">
                                     <div class="order_list121">
-                                        <a href="/product/{{$v->product_id}}"><img src="{{$v->image}}" alt=""></a>
+                                        <img src="{{$v->image}}" alt="">
                                     </div>
                                     <div class="order_list122">
-                                        <a href="/product/{{$v->product_id}}"><div class="order_list12b wenzi">{{$v->name}}</div></a>
+                                        <div class="order_list12b wenzi">{{$v->name}}</div>
                                         <div class="order_list12c">Price: {{$v->price_format}}</div>
                                         <div class="order_list12c">Qty: {{$v->quantity}}</div>
                                     </div>
@@ -34,6 +35,7 @@
                                 <div style="color:#999;">{{$val->created_at}}</div>
                                 <div>Payment: {{$val->total_format}}</div>
                             </div>
+                            </a>
                             <div class="d-flex order_list14">
                                 <a href="/account_ext/order/detail?id={{$val->id}}">detail</a>
                                 @if($val->orderStatus->id==1)

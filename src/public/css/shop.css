@@ -25,3 +25,5 @@
 .grade-star-bg i{flex-grow: 0;flex-shrink: 0;display: block;width: 20px;height: 20px;}
 .grade-star-bg .star-bg{height: 100%;position: absolute;left: 0;top: 0; width: 100%;display: flex;}
 .grade-star-bg .star-bg i{color: #ddd;}
+
+.account_btn{border-radius: 4px;border: 1px solid #f1f1f1;}

@@ -10,7 +10,6 @@
                 <ul class="my_review">
                     @foreach($res['list'] as $val)
                         <li class="">
-
                             <div class="my_review2">
                                 <a href="/account_ext/review/detail?id={{$val->id}}">
                                 <div class="my_review21">
@@ -39,9 +38,9 @@
                                 <div class="my_review22">
                                 @if($val->img->count())
                                     <ul>
-                                        @foreach($val->img as $v)
-                                            <li><img src="{{\Aphly\Laravel\Models\UploadFile::getPath($v->image)}}" alt=""></li>
-                                        @endforeach
+                                    @foreach($val->img as $v)
+                                        <li><img src="{{\Aphly\Laravel\Models\UploadFile::getPath($v->image)}}" alt=""></li>
+                                    @endforeach
                                     </ul>
                                 @endif
                                 </div>
@@ -72,7 +71,6 @@
     .my_review23 a{display:block;padding:5px 10px;border-radius:4px;border:1px solid #f1f1f1;margin-left:20px}
     .my_review211{margin-top: 10px;}
     .my_review212{margin: 10px 0;}
-    .my_review23{margin-top: 10px;}
 </style>
 <script>
 $(function () {

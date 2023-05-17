@@ -1,22 +1,30 @@
 @include('laravel-shop-front::common.header')
 <section class="container">
     <style>
-        .order ul li{display: flex;margin-bottom: 5px;}
-        .order ul li>div{flex: 1;display: flex;align-items: center;}
-        .order .detail{margin-bottom: 20px;}
-        .order .detail .title{margin-bottom: 5px;font-size: 16px;font-weight: 600}
-        .order .detail .product{}
-        .order .detail .product .option{display: flex;align-items: center;flex-wrap: wrap;width: 100%}
-        .order .detail .product .option li{width: 100%;margin-bottom: 0}
-        .order .detail .product img{width: 80px;height: 80px;margin-right: 10px;}
-        .product_title{font-weight: 600;width: 100%;}
-        .total_data li:last-child{font-weight: 600}
-        .info_left{color:#777;}
-        .product_total{flex-wrap: wrap;}
+        .order_product .option{display: flex;align-items: center;flex-wrap: wrap;width: 100%}
+        .order_product .option li{width: 100%;margin-bottom: 0}
+        .order_product img{width: 80px;height: 80px;margin-right: 10px;}
         .product_total p{width: 100%;}
-        .total_format{text-decoration: line-through;font-size: 12px;color: #999;margin-left: 5px;}
         .cancel_btn{border:none;background: #ffd539;color:#333;border-radius: 4px;font-weight: 600;}
         .cancel2{margin-bottom: 20px;margin-top: 20px;}
+
+        .order_product1{width: 80px;}
+        .order_product2{width: calc(100% - 155px);margin-left: 10px;margin-right: 5px}
+        .order_product3{width: 60px;color:#999;text-align: right;}
+        .order_product22{color:#999;}
+        .order_total li{display: flex;justify-content: space-between;margin-bottom: 5px;}
+        .order_product dd{margin-bottom: 5px;}
+
+        .orderHistory{padding: 15px 0;}
+        .orderHistory li{margin-bottom: 5px;}
+
+        .order_info{border-top: 1px solid #f1f1f1;padding: 15px 0;}
+        .order_info li{display: flex;justify-content: space-between;margin-bottom: 5px;}
+        .order_info li .info_left{width: 46%;flex-shrink: 0;}
+        .order_btns{margin: 15px 0;}
+        .orderHistory1{display: flex;line-height: 30px;color: #999;align-items: center;}
+        .orderHistory11{background: #999;border-radius: 50%;width: 10px;height: 10px;margin: 5px;}
+        .orderHistory22{padding-left: 10px; margin-left: 10px;border-left: 1px solid #999;}
     </style>
     <div class="account_info">
         @include('laravel-common-front::account_ext.left_menu')
@@ -26,69 +34,68 @@
                     <h2>ORDER INFORMATION</h2>
                 </div>
                 <div class="detail">
-                    <div class="title">The shipping details</div>
-                    <ul>
-                        <li style="color:#777;">
-                            <div>Date Added</div>
-                            <div>Order Status</div>
-                            <div>Notes</div>
-                        </li>
+                    <div></div>
+                    <dl class="order_product">
+                        @foreach($res['orderProduct'] as $val)
+                            <dd class="d-flex">
+                                <div class="order_product1">
+                                    <a href="/product/{{$val->product_id}}"><img src="{{$val->image}}" alt=""></a>
+                                </div>
+                                <div class="order_product2">
+                                    <a href="/product/{{$val->product_id}}">
+                                        <div class="order_product21 wenzi">{{$val->name}}</div>
+                                    </a>
+                                    @if($val->orderOption)
+                                        <ul class="option order_product22">
+                                            @foreach($val->orderOption as $v)
+                                                <li>{{$v->name}} : {{$v->value}}</li>
+                                            @endforeach
+                                        </ul>
+                                    @endif
+                                </div>
+                                <div class="order_product3">
+                                    <div class="order_product23">{{$val->price_format}}</div>
+                                    <div class="order_product24">×{{$val->quantity}}</div>
+                                </div>
+                            </dd>
+                        @endforeach
+                    </dl>
+                    <div>
+                        @if($res['info']->orderTotal)
+                            <ul class="order_total">
+                                @foreach($res['info']->orderTotal as $val)
+                                    <li>
+                                        <div>{{$val->title}}</div>
+                                        <div>{{$val->value_format}}</div>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @endif
+                    </div>
+                </div>
+
+                <div class="detail">
+                    <ul class="orderHistory">
                         @if($res['orderHistory'])
                             @foreach($res['orderHistory'] as $val)
-                                <li>
-                                    <div>{{$val->created_at}}</div>
-                                    <div>{{$val->orderStatus->name}}</div>
-                                    <div>{{$val->comment}}</div>
+                                <li class=" ">
+                                    <div class="orderHistory1">
+                                        <div class="orderHistory11"></div>
+                                        <div class="orderHistory12">{{$val->created_at}}</div>
+                                    </div>
+                                    <div class="orderHistory2">
+                                        <div class="orderHistory22">
+                                            <div class="orderHistory221">{{$val->orderStatus->name}}</div>
+                                            <div class="orderHistory222">{{$val->comment}}</div>
+                                        </div>
+                                    </div>
                                 </li>
                             @endforeach
                         @endif
                     </ul>
                 </div>
-                @if($res['info']->order_status_id==1)
-                    @if($res['info']->payment_id)
-                        <a href="/account_ext/order/pay?id={{$res['info']->id}}" class="btn btn-primary">Pay</a>
-                    @endif
-                    <a href="/account_ext/order/close?id={{$res['info']->id}}" data-fn="close_res" class="a_request btn btn-primary" data-_token="{{csrf_token()}}">Close</a>
-                @elseif($res['info']->order_status_id==2)
-                    <div class="detail">
-                        <a href="javascript:void(0)" onclick="cancel('{{$res['cancelAmountFormat']}}',{{$res['info']->id}})" class="btn btn-primary">Cancel</a>
-                    </div>
-                @elseif($res['info']->order_status_id==3 || $res['info']->order_status_id==7)
-                    <div class="detail">
-                        <a href="/account_ext/service/form?order_id={{$val->order_id}}" class="btn btn-primary">Service</a>
-                    </div>
-                @elseif($res['info']->order_status_id==6)
-                    <div class="detail">
-                        <div class="title">The order refund</div>
-                        <ul>
-                            <li>
-                                <div>Reason</div>
-                                <div>Amount</div>
-                                <div>Status</div>
-                                <div>Date Added</div>
-                            </li>
-                            @if($res['orderRefund'])
-                                @foreach($res['orderRefund'] as $val)
-                                    <li>
-                                        <div>{{$val->reason}}</div>
-                                        <div>{{$val->amount_format}}</div>
-                                        <div>
-                                            @if($val->cred_status)
-                                                {{$val->cred_status}}
-                                            @else
-                                                Pending
-                                            @endif
-                                        </div>
-                                        <div>{{$val->created_at}}</div>
-                                    </li>
-                                @endforeach
-                            @endif
-                        </ul>
-                    </div>
-                @endif
                 <div class="detail">
-                    <div class="title">The order details</div>
-                    <ul>
+                    <ul class="order_info">
                         <li><div class="info_left">Order ID:</div><div>{{$res['info']->id}}</div></li>
                         <li><div class="info_left">Date Added:</div><div>{{$res['info']->created_at}}</div></li>
                         <li><div class="info_left">Payment Method:</div><div>{{$res['info']->payment_method_name}}</div></li>
@@ -103,59 +110,48 @@
                         <li><div class="info_left">Shipping Tracking:</div><div>{{$res['info']->shipping_no??'-'}}</div></li>
                     </ul>
                 </div>
-                <div class="detail">
-                    <div class="title">The order product</div>
-                    <ul class="product">
-                        <li>
-                            <div>Product Name</div>
-                            <div>Quantity</div>
-                            <div>Price</div>
-                            <div>Total</div>
-                        </li>
-                        @if($res['orderProduct'])
-                            @foreach($res['orderProduct'] as $val)
-                                <li>
-                                    <div>
-                                        <a style="display: flex;" href="/product/{{$val->product_id}}">
-                                            <img src="{{$val->image}}">
-                                            <div style="display: flex;align-items: center;">
-                                                <div>
-                                                    <div class="product_title wenzi">{{$val->name}}</div>
-                                                    @if($val->orderOption)
-                                                    <ul class="option">
-                                                        @foreach($val->orderOption as $v)
-                                                        <li>{{$v->name}} : {{$v->value}}</li>
-                                                        @endforeach
-                                                    </ul>
-                                                    @endif
+                <div class="order_btns">
+                    @if($res['info']->order_status_id==1)
+                        @if($res['info']->payment_id)
+                            <a href="/account_ext/order/pay?id={{$res['info']->id}}" class="account_btn">Pay</a>
+                        @endif
+                        <a href="/account_ext/order/close?id={{$res['info']->id}}" data-fn="close_res" class="a_request account_btn" data-_token="{{csrf_token()}}">Close</a>
+                    @elseif($res['info']->order_status_id==2)
+                        <a href="javascript:void(0)" onclick="cancel('{{$res['cancelAmountFormat']}}',{{$res['info']->id}})" class="account_btn">Cancel</a>
+                    @elseif($res['info']->order_status_id==3 || $res['info']->order_status_id==7)
+                        <a href="/account_ext/service/form?order_id={{$val->order_id}}" class="account_btn">Service</a>
+                    @elseif($res['info']->order_status_id==6)
+                        <ul class="orderRefund">
+                            @if($res['orderRefund'])
+                                @foreach($res['orderRefund'] as $val)
+                                    <li class="d-flex">
+                                        <div class="orderHistory1">
+                                            <div class="orderHistory11"></div>
+                                            <div class="orderHistory12">{{$val->created_at}}</div>
+                                        </div>
+                                        <div class="orderHistory2">
+                                            <div class="orderHistory22">
+                                                <div class="orderHistory221 d-flex justify-content-between">
+                                                    <div class="orderRefund1a">
+                                                        {{$val->amount_format}}
+                                                    </div>
+                                                    <div class="orderRefund1b">
+                                                        @if($val->cred_status)
+                                                            {{$val->cred_status}}
+                                                        @else
+                                                            Pending
+                                                        @endif
+                                                    </div>
                                                 </div>
+                                                <div class="orderHistory222">{{$val->reason}}</div>
                                             </div>
-                                        </a>
-                                    </div>
-                                    <div>{{$val->quantity}}</div>
-                                    <div>{{$val->price_format}}</div>
-                                    <div class="product_total">
-                                        @if($val->real_total_format==$val->total_format)
-                                            <p >{{$val->real_total_format}} </p>
-                                        @else
-                                            <p >{{$val->real_total_format}} <span class="total_format"> {{$val->total_format}} </span></p>
-                                        @endif
-                                    </div>
-                                </li>
-                            @endforeach
-                        @endif
-                    </ul>
-                    <div>
-                        @if($res['info']->orderTotal)
-                        <ul class="total_data">
-                            @foreach($res['info']->orderTotal as $val)
-                            <li><div></div><div></div><div>{{$val->title}}</div><div>{{$val->value_format}}</div></li>
-                            @endforeach
+                                        </div>
+                                    </li>
+                                @endforeach
+                            @endif
                         </ul>
-                        @endif
-                    </div>
+                    @endif
                 </div>
-
             </div>
         </div>
     </div>

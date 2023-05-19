@@ -31,7 +31,9 @@ class ServiceController extends Controller
     public function detail(Request $request){
         $res['info'] = Service::where(['uuid'=>User::uuid(),'id'=>$request->query('id',0)])->where('delete_at',0)->with('order')->with('img')->firstOr404();
         $res['serviceHistory'] = ServiceHistory::where('service_id',$res['info']->id)->orderBy('created_at','asc')->get();
-        $res['serviceProduct'] = ServiceProduct::where('service_id',$res['info']->id)->with('orderProduct')->get();
+        $res['serviceProduct'] = ServiceProduct::where('service_id',$res['info']->id)->with(['orderProduct'=>function ($query){
+            return $query->with(['orderOption']);
+        }])->get();
         $res['orderRefund'] = PaymentRefund::where(['payment_id'=>$res['info']->order->payment_id,'status'=>2])->get();
         foreach ($res['info']->img as $val){
             $val->image_src = UploadFile::getPath($val->image,true);
@@ -117,11 +119,9 @@ class ServiceController extends Controller
                 if($info->save()){
                     ServiceProduct::insert($service_product_arr);
                 }
-                foreach ($file_paths as $val){
-                    foreach ($val as $v) {
-                        $img_src[] = Storage::url($v);
-                        $insertData[] = ['service_id'=>$info->id,'image'=>$v];
-                    }
+                foreach ($file_paths as $v){
+                    $img_src[] = Storage::url($v);
+                    $insertData[] = ['service_id'=>$info->id,'image'=>$v];
                 }
                 if ($insertData) {
                     ServiceImage::insert($insertData);

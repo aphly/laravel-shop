@@ -26,4 +26,20 @@
 .grade-star-bg .star-bg{height: 100%;position: absolute;left: 0;top: 0; width: 100%;display: flex;}
 .grade-star-bg .star-bg i{color: #ddd;}
 
-.account_btn{border-radius: 4px;border: 1px solid #f1f1f1;}
+.account_btn{border-radius: 4px;border: 1px solid #333;padding: 0 10px;line-height: 34px;}
+
+.my_product{padding-top: 5px;background: #fff;}
+.my_product dd{margin-bottom: 5px;}
+.my_product12c{font-size: 12px;color:#999;}
+.my_product122{width: calc(100% - 100px);}
+.my_product12b{font-weight: 500;margin-bottom: 5px;margin-top: 5px;}
+.my_product img{width: 80px;height: 80px;margin-right: 20px;border-radius: 4px;}
+.my_product122_ul{color:#999;}
+
+.service_upload {display: flex;}
+.service_upload img{border-radius: 4px;}
+.my_step{padding: 15px 0;}
+.my_step dd{margin-bottom: 5px;}
+.my_step1{display: flex;line-height: 30px;color: #999;align-items: center;}
+.my_step11{background: #999;border-radius: 50%;width: 10px;height: 10px;margin: 5px;}
+.my_step22{padding-left: 10px; margin-left: 10px;border-left: 1px solid #999;margin-bottom: 10px;}

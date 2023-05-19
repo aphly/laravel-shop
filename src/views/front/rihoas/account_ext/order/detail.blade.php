@@ -20,11 +20,11 @@
 
         .order_info{border-top: 1px solid #f1f1f1;padding: 15px 0;}
         .order_info li{display: flex;justify-content: space-between;margin-bottom: 5px;}
-        .order_info li .info_left{width: 46%;flex-shrink: 0;}
-        .order_btns{margin: 15px 0;}
+        .order_info li .info_left{width: 46%;flex-shrink: 0;color: #666;}
+        .order_btns{margin: 15px 0;display: flex;}
         .orderHistory1{display: flex;line-height: 30px;color: #999;align-items: center;}
         .orderHistory11{background: #999;border-radius: 50%;width: 10px;height: 10px;margin: 5px;}
-        .orderHistory22{padding-left: 10px; margin-left: 10px;border-left: 1px solid #999;}
+        .orderHistory22{padding-left: 10px; margin-left: 10px;border-left: 1px solid #999;margin-bottom: 10px;}
     </style>
     <div class="account_info">
         @include('laravel-common-front::account_ext.left_menu')

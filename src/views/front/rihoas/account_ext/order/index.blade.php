@@ -37,12 +37,12 @@
                             </div>
                             </a>
                             <div class="d-flex order_list14">
-                                <a href="/account_ext/order/detail?id={{$val->id}}">detail</a>
+                                <a href="/account_ext/order/detail?id={{$val->id}}">Detail</a>
                                 @if($val->orderStatus->id==1)
                                     @if($val->payment_id)
-                                        <a href="/account_ext/order/pay?id={{$val->id}}">pay</a>
+                                        <a href="/account_ext/order/pay?id={{$val->id}}">Pay</a>
                                     @endif
-                                    <a href="/account_ext/order/close?id={{$val->id}}" data-fn="close_res" class="a_request" data-_token="{{csrf_token()}}">close</a>
+                                    <a href="/account_ext/order/close?id={{$val->id}}" data-fn="close_res" class="a_request" data-_token="{{csrf_token()}}">Close</a>
                                 @endif
                             </div>
                         </li>
@@ -64,8 +64,8 @@
     .order_list img{width: 80px;height: 80px;margin-right: 20px;border-radius: 4px;}
     .order_list13{font-weight: 500;padding: 5px 0;display: flex;justify-content: space-between;}
     .order_list14{flex-direction: row-reverse;margin-top: 10px;}
+    .order_list14 a{display:block;padding:0px 10px;border-radius:4px;border:1px solid #333;margin-left:20px;line-height: 34px;}
     .order_list12c{font-size: 12px;color:#999;}
-    .order_list14 a{display:block;padding:5px 10px;border-radius:4px;border:1px solid #f1f1f1;margin-left:20px}
     .order_list122{width: calc(100% - 100px);}
     .order_list12 dd{margin-bottom: 5px;}
     .order_list12b{font-weight: 500;margin-bottom: 5px;margin-top: 5px;}

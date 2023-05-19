@@ -2,33 +2,40 @@
 <section class="container">
     <div class="account_info">
         @include('laravel-common-front::account_ext.left_menu')
-        <div class="account-main-section">
+        <div class="account-main-section" style="background: transparent;padding: 0;">
             <div class="">
                 <div class="top-desc d-flex justify-content-between">
                     <h2>Service</h2>
                 </div>
                 <ul class="list_index">
-                    <li>
-                        <span>Service ID</span>
-                        <span>Order ID</span>
-                        <span>Status</span>
-                        <span>Received</span>
-                        <span>Date Added</span>
-                        <span>Option</span>
-                    </li>
                     @foreach($res['list'] as $val)
                         <li class="">
-                            <span>{{$val->id}}</span>
-                            <span>{{$val->order_id}}</span>
-                            <span>{{$dict[$dict['service_action'][$val->service_action_id].'_status'][$val->service_status_id]}}</span>
-                            <span>{{$val->is_received}}</span>
-                            <span>{{$val->created_at}}</span>
-                            <span>
-                                <a href="/account_ext/service/detail?id={{$val->id}}" class="btn">view</a>
+                            <div class="d-flex justify-content-between">
+                                <span>Service ID</span>
+                                <span>{{$val->id}}</span>
+                            </div>
+
+                            <div class="d-flex justify-content-between">
+                                <span>Status</span>
+                                <span>{{$dict[$dict['service_action'][$val->service_action_id].'_status'][$val->service_status_id]}}</span>
+                            </div>
+
+                            <div class="d-flex justify-content-between">
+                                <span>Order ID</span>
+                                <span>{{$val->order_id}}</span>
+                            </div>
+
+                            <div class="d-flex justify-content-between">
+                                <span>Date Added</span>
+                                <span>{{$val->created_at}}</span>
+                            </div>
+
+                            <div class="service_list_btn">
+                                <a href="/account_ext/service/detail?id={{$val->id}}" class="btn">Detail</a>
                                 @if($val->service_status_id==1)
-                                <a href="/account_ext/service/del?id={{$val->id}}" class="btn a_request" data-fn="del_res" data-_token="{{csrf_token()}}">del</a>
+                                    <a href="/account_ext/service/del?id={{$val->id}}" class="btn a_request" data-fn="del_res" data-_token="{{csrf_token()}}">Del</a>
                                 @endif
-                            </span>
+                            </div>
                         </li>
                     @endforeach
                 </ul>
@@ -40,10 +47,11 @@
     </div>
 </section>
 <style>
-    .list_index{padding: 0 10px;}
-    .list_index li{display: flex;margin-bottom: 0;height: 40px;line-height: 40px;}
-    .list_index li span{flex:1;}
-    .list_index li span .btn{display: inline-block;background-color: var(--default-bg);padding:0 10px;color: #fff;border-radius: 4px;height: 30px;line-height: 30px;}
+    .list_index{}
+    .list_index li{margin-bottom: 10px;background: #fff;border-radius: 8px;padding: 15px;}
+    .list_index li>div{line-height: 26px;}
+    .service_list_btn{margin-top: 10px;display: flex;flex-direction: row-reverse;padding-top: 10px;}
+    .service_list_btn a{display:block;padding:0px 10px;border-radius:4px;border:1px solid #333;margin-left:20px;line-height: 34px;}
 </style>
 <script>
     function del_res(res,_this) {

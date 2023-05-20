@@ -57,7 +57,7 @@
     }
 </style>
 
-<div class="container">
+<div class="container shop_main">
     <div class="cart">
         <div class="cart-title">
             <h2 class="">

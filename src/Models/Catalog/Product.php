@@ -257,18 +257,24 @@ class Product extends Model
     function getByids($product_ids){
         $time = time();
         $sql = DB::table('shop_product as p')->where('p.status',1)->where('p.date_available','<=',$time)->whereIn('p.id',$product_ids);
-        $sql->select('p.id','p.sale','p.viewed','p.date_available','p.price','p.name','p.quantity','p.image','p.spu');
-        $sql->addSelect(['special'=>ProductSpecial::whereColumn('product_id','p.id')
-            ->where(function ($query) use ($time){
-                $query->where('date_start',0)->orWhere('date_start','<',$time);
-            })->where(function ($query) use ($time){
-                $query->where('date_end',0)->orWhere('date_end','>',$time);
-            })->orderBy('priority','desc')
-            ->select('price')->limit(1)
-        ]);
-        $sql->addSelect(['discount'=>ProductDiscount::whereColumn('product_id','p.id')
-            ->where('quantity',1)
-            ->select('price')->limit(1)
+        $sql->select('p.id','p.sale','p.image','p.viewed','p.date_available','p.price','p.name','p.quantity','p.image','p.spu');
+        $sql->addSelect([
+            'reviews'=>Review::whereColumn('product_id','p.id')->where('status',1)
+                ->groupBy('product_id')
+                ->selectRaw('count(*)'),
+            'rating'=>Review::whereColumn('product_id','p.id')->where('status',1)
+                ->groupBy('product_id')
+                ->selectRaw('AVG(rating)'),
+            'special'=>ProductSpecial::whereColumn('product_id','p.id')
+                ->where(function ($query) use ($time){
+                    $query->where('date_start',0)->orWhere('date_start','<',$time);
+                })->where(function ($query) use ($time){
+                    $query->where('date_end',0)->orWhere('date_end','>',$time);
+                })->orderBy('priority','desc')
+                ->select('price')->limit(1),
+            'discount'=>ProductDiscount::whereColumn('product_id','p.id')
+                ->where('quantity',1)
+                ->select('price')->limit(1)
         ]);
         return $sql->get()->keyBy('id')->toArray();
     }

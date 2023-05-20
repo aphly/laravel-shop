@@ -31,7 +31,7 @@
         .product_detail_info_title{font-size: 30px;font-weight: 600; margin-top: 10px;}
     }
 </style>
-<div class="container">
+<div class="container shop_main">
     <div>
         <div class="product_detail">
             <div class="product_detail_img">

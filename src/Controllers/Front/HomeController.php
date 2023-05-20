@@ -2,36 +2,42 @@
 
 namespace Aphly\LaravelShop\Controllers\Front;
 
-
 use Aphly\Laravel\Exceptions\ApiException;
-use Aphly\LaravelCommon\Models\User;
-use Aphly\LaravelCommon\Models\UserAddress;
-use Aphly\LaravelCommon\Models\GeoGroup;
+use Aphly\Laravel\Models\UploadFile;
+use Aphly\LaravelCommon\Models\Currency;
 use Aphly\LaravelShop\Models\Catalog\Product;
-use Aphly\LaravelShop\Models\Catalog\Review;
-use Aphly\LaravelShop\Models\Catalog\Shipping;
-use Aphly\LaravelShop\Models\Checkout\Cart;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
     public function index()
     {
         $res['title'] = 'Home index';
+        $res['data_products'] = [
+            ['title'=>'Top','product_ids'=>[
+                1,2,3
+            ]],
+            ['title'=>'New','product_ids'=>[
+                1,2,3
+            ]],
+        ];
+
+        $product_ids = [];
+        foreach ($res['data_products'] as $val){
+            foreach ($val['product_ids'] as $v){
+                $product_ids[$v] = $v;
+            }
+        }
+        $product = new Product;
+        $products = $product->getByids($product_ids);
+        $res['products'] = $products;
+        foreach ($products as $key=>$val){
+            $res['products'][$key]->image_src= UploadFile::getPath($val->image,true);
+            $res['products'][$key]->price = Currency::format($val->price);
+            $res['products'][$key]->special = $val->special?Currency::format($val->special):0;
+            $res['products'][$key]->discount =  $val->discount?Currency::format($val->discount):0;
+        }
         return $this->makeView('laravel-shop-front::home.index',['res'=>$res]);
-    }
-
-    public function home1(Request $request)
-    {
-
-        $cart = new Cart;
-        $res['list'] = $cart->getList();
-        dd($res['list']);
-//        $res['total_data'] = $cart->totalData();
-        throw new ApiException(['code'=>1,'msg'=>'cccc','data'=>['redirect'=>'/aaa']]);
-        $shipping = (new Shipping())->getTotal();
-        dd($shipping);
     }
 
 }

@@ -47,7 +47,7 @@
         $('html').removeClass('no_scroll')
     }
 </script>
-<div class="container">
+<div class="container shop_main">
     <div class="d-flex">
         <div class="product_list_l">
             <div class="product_list_l_box">
@@ -194,6 +194,7 @@
                 @foreach($res['list'] as $key=>$val)
                     <li class="">
                         <div class="image">
+                            <a href="/product/{{$val->id}}">
                             @if(isset($res['product_option'][$val->id]['product_option_value']) && isset($res['product_image'][$val->id]))
                                 <dl class="product_image">
                                     @foreach($res['product_image'][$val->id] as $k=>$v)
@@ -205,10 +206,9 @@
                                     @endforeach
                                 </dl>
                             @else
-                                <a href="/product/{{$val->id}}">
-                                    <img src="{{ $val->image_src }}" class="img-responsive" >
-                                </a>
+                               <img src="{{ $val->image_src }}" class="img-responsive" >
                             @endif
+                            </a>
                         </div>
                         <div class="product_option">
                             @if(isset($res['product_option'][$val->id]['product_option_value']))

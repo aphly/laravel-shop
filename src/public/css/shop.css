@@ -43,3 +43,11 @@
 .my_step1{display: flex;line-height: 30px;color: #999;align-items: center;}
 .my_step11{background: #999;border-radius: 50%;width: 10px;height: 10px;margin: 5px;}
 .my_step22{padding-left: 10px; margin-left: 10px;border-left: 1px solid #999;margin-bottom: 10px;}
+
+.product-category{display:flex;flex-wrap:wrap}
+.product-category li{width:calc(20% - 8.5px);margin:0px 10px 10px 0px;padding:10px;background:#fff;box-shadow:0 2px 12px 2px #eee}
+.product-category li .image{margin-bottom:10px;position:relative;z-index:10}
+.product-category li .name{text-transform:capitalize;font-size:14px;color:#000;height:36px;line-height:18px;overflow:hidden;margin-bottom:5px}
+.product-category li .price{font-size:14px;margin-bottom:5px}
+.img-responsive{max-width:100%;height:auto}
+.product-category > li:nth-child(5n),.product-category li:last-child{margin-right:0}

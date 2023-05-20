@@ -1,7 +1,7 @@
 @include('laravel-shop-front::common.header')
 <style>
 </style>
-<div class="container">
+<div class="container shop_main">
     <div class="checkout">
         <div class="checkout_l">
             <div class="checkout_box">

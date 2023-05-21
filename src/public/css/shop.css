@@ -51,3 +51,8 @@
 .product-category li .price{font-size:14px;margin-bottom:5px}
 .img-responsive{max-width:100%;height:auto}
 .product-category > li:nth-child(5n),.product-category li:last-child{margin-right:0}
+.home_title{text-align: center;font-size: 30px;margin: 30px 0 20px;}
+@media (max-width: 1199.98px) {
+    .product-category li{width: calc(50% - 5px);}
+    .product-category > li:nth-child(2n),.product-category li:last-child{margin-right:0}
+}

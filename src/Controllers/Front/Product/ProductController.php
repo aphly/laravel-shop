@@ -48,7 +48,7 @@ class ProductController extends Controller
         $res['title'] = 'Index';
         $res['filter_data'] = $filter_data = [
             'name'      => $request->query('name',false),
-            'category_id' => false,
+            'category_id' => $request->query('category_id',false),
             'filter'      => $request->query('filter',false),
             'sort'      => $request->query('sort',false),
             'price'      => $request->query('price',false),
@@ -64,21 +64,6 @@ class ProductController extends Controller
         $res['filterGroup'] = FilterGroup::where('status',1)->with('filter')->get();
         $res['option'] = Option::where(['status'=>1,'is_filter'=>1])->with('value')->get();
         return $this->makeView('laravel-shop-front::product.index',['res'=>$res]);
-    }
-
-    public function category(Request $request)
-    {
-        $res['title'] = 'Category';
-        $category_info = Category::where('status',1)->where('id',$request->id)->firstOr404();
-        $filter_data = [
-            'category_id' => $category_info->id,
-            'filter'      => $request->query('filter',false),
-            'sort'      => $request->query('sort',false),
-            'price'      => $request->query('price',false),
-            'option_value'      => $request->query('option_value',false)
-        ];
-        $res = $this->listData($filter_data,$res);
-        return $this->makeView('laravel-shop-front::product.category',['res'=>$res]);
     }
 
     public function detail(Request $request)

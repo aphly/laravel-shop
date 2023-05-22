@@ -68,7 +68,6 @@ Route::middleware(['web'])->group(function () {
 
         //product
         Route::get('product', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@index');
-        Route::get('product/category/{id}', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@category');
         Route::get('product/{id}', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@detail')->where('id', '[0-9]+');
         Route::redirect('product/new', '/product?sort=sale');
         Route::redirect('product/best', '/product?sort=new');

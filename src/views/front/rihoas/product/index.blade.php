@@ -9,7 +9,8 @@
     .product-category > li:nth-child(4n),.product-category li:last-child{margin-right:0}
 
     .product_list_l .filters1{font-size: 34px;margin-bottom: 20px;font-weight: 600;}
-    .product_list_l{width: 20%;margin-right: 20px;min-height: 500px;background: #fff;padding: 20px;border-radius: 4px;}
+    .product_list_l{width: 20%;margin-right: 20px;}
+    .product_list_l1{min-height: 500px;background: #fff;padding: 20px;border-radius: 4px;}
     .product_list_r{width: calc(80% - 20px);}
     .filters11{font-size: 18px;font-weight: 500; margin: 10px 0;display: flex;justify-content: space-between;cursor: pointer}
     .filters12{display: flex;flex-wrap: wrap;}
@@ -50,47 +51,55 @@
 <div class="container shop_main">
     <div class="d-flex">
         <div class="product_list_l">
-            <div class="product_list_l_box">
-                <div class="product_list_l_box1">
-                    <div class="filters">
-                        <div class="filters1">Filters</div>
-                        <div>
-                            <ul class="filter_filter">
-                                @foreach($res['filterGroup'] as $val)
-                                    <li >
-                                        <div class="filters11">
-                                            <span>{{$val->name}}</span>
-                                            <span class="uni app-jia1"></span>
-                                        </div>
-                                        <dl class="filters12">
-                                            @foreach($val->filter as $v)
-                                                <dd><a class="item-link @if(in_array($v->id,$res['filte_filter'])) active @endif" data-id="{{$v->id}}" href="javascript:void(0)">{{$v->name}}</a></dd>
-                                            @endforeach
-                                        </dl>
-                                    </li>
-                                @endforeach
-                            </ul>
-                            <ul class="filter_option">
-                                @foreach($res['option'] as $val)
-                                    <li >
-                                        <div class="filters11">
-                                            <span>{{$val->name}}</span>
-                                            <span class="uni app-jia1"></span>
-                                        </div>
-                                        <dl class="filters12">
-                                            @foreach($val->value as $v)
-                                                <dd><a class="item-link @if(in_array($v->id,$res['filte_option_value'])) active @endif" data-id="{{$v->id}}" href="javascript:void(0)">{{$v->name}}</a></dd>
-                                            @endforeach
-                                        </dl>
-                                    </li>
-                                @endforeach
-                            </ul>
+            <div>
+                <ul class="d-flex my_breadcrumb" >
+                    <li><a href="/">Home</a></li>
+                    <li class="to"> > </li>
+                    <li>Product</li>
+                </ul>
+            </div>
+            <div class="product_list_l1">
+                <div class="product_list_l_box">
+                    <div class="product_list_l_box1">
+                        <div class="filters">
+                            <div class="filters1">Filters</div>
+                            <div>
+                                <ul class="filter_filter">
+                                    @foreach($res['filterGroup'] as $val)
+                                        <li >
+                                            <div class="filters11">
+                                                <span>{{$val->name}}</span>
+                                                <span class="uni app-jia1"></span>
+                                            </div>
+                                            <dl class="filters12">
+                                                @foreach($val->filter as $v)
+                                                    <dd><a class="item-link @if(in_array($v->id,$res['filte_filter'])) active @endif" data-id="{{$v->id}}" href="javascript:void(0)">{{$v->name}}</a></dd>
+                                                @endforeach
+                                            </dl>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                                <ul class="filter_option">
+                                    @foreach($res['option'] as $val)
+                                        <li >
+                                            <div class="filters11">
+                                                <span>{{$val->name}}</span>
+                                                <span class="uni app-jia1"></span>
+                                            </div>
+                                            <dl class="filters12">
+                                                @foreach($val->value as $v)
+                                                    <dd><a class="item-link @if(in_array($v->id,$res['filte_option_value'])) active @endif" data-id="{{$v->id}}" href="javascript:void(0)">{{$v->name}}</a></dd>
+                                                @endforeach
+                                            </dl>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
                         </div>
                     </div>
+                    <div class="product_list_l_box2" onclick="m_filters_btn_hide()"></div>
                 </div>
-                <div class="product_list_l_box2" onclick="m_filters_btn_hide()"></div>
             </div>
-
         </div>
         <div class="m_filters_btn">
             Filters
@@ -152,7 +161,7 @@
             })
         </script>
         <style>
-            .filter_res{margin-bottom: 10px;display: flex;line-height: 28px;align-items: center;flex-wrap: wrap;}
+            .filter_res{display: flex;line-height: 28px;align-items: center;flex-wrap: wrap;}
             .filter_res ul{display: flex;margin-right: 10px;flex-wrap: wrap;}
             .filter_res ul li{margin-right:10px;margin-bottom:10px;line-height: 24px;padding: 2px 10px;display: flex;align-items: center;background: #e8e8e8;border-radius: 5px;color: #000;font-weight: 500;cursor: pointer}
             .filter_res ul li .app-guanbi{margin-right:5px;font-size: 12px;font-weight: 600}

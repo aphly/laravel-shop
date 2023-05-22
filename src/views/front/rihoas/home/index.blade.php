@@ -34,16 +34,15 @@
     </div>
 </div>
 <style>
-
 </style>
 <div>
     <div class="container">
-
         @foreach($res['data_products'] as $val)
             <div>
                 <div class="home_title">{{$val['title']}}</div>
                 <ul class=" product-category">
                 @foreach($val['product_ids'] as $v)
+                    @if(!empty($res['products'][$v]))
                     <li>
                         <div class="product_image">
                             <a href="/product/{{$v}}">
@@ -69,6 +68,7 @@
                             </div>
                         </div>
                     </li>
+                    @endif
                 @endforeach
                 </ul>
             </div>

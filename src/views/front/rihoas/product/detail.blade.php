@@ -23,6 +23,7 @@
     .product_detail_info_title_xia{margin-bottom: 10px;}
     .wishlist_one{}
     .quantity-label{font-size: 16px;font-weight: 500;margin-bottom: 5px;}
+
     @media (max-width: 1199.98px) {
         .product_detail_img .big_img{height:320px}
         .product_detail{flex-wrap: wrap;}
@@ -32,6 +33,13 @@
     }
 </style>
 <div class="container shop_main">
+    <div>
+        <ul class="d-flex my_breadcrumb" >
+            <li><a href="/">Home</a></li>
+            <li class="to"> > </li>
+            <li>{{$res['info']->name}}</li>
+        </ul>
+    </div>
     <div>
         <div class="product_detail">
             <div class="product_detail_img">

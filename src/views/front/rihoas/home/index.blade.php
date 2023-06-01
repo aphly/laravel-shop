@@ -34,10 +34,9 @@
     </div>
 </div>
 <style>
+    .home_carousel .carousel-item img{ height: 600px;}
     @media (max-width: 1199.98px) {
-        .home_carousel .carousel-item img{
-            height: 240px;
-        }
+        .home_carousel .carousel-item img{height: 240px; }
     }
 </style>
 <div>

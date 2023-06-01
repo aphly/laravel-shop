@@ -204,12 +204,16 @@ class Product extends Model
             ->when($price,function ($query,$price){
                 $price_arr = explode('-',$price);
                 $price_min = abs((float)$price_arr[0]);
-                $price_max = abs((float)$price_arr[1]);
+                $price_max = !empty($price_arr[1])?abs((float)$price_arr[1]):false;
                 if(!$price_min && $price_max){
+                    $price_max = Currency::toDefault($price_max);
                     return $query->whereRaw('IFNULL(special,IFNULL(discount,price))<='.$price_max);
                 }else if($price_min && $price_max){
+                    $price_min = Currency::toDefault($price_min);
+                    $price_max = Currency::toDefault($price_max);
                     return $query->whereRaw('IFNULL(special,IFNULL(discount,price))>='.$price_min.' and IFNULL(special,IFNULL(discount,price))<='.$price_max);
                 }else if($price_min && !$price_max){
+                    $price_min = Currency::toDefault($price_min);
                     return $query->whereRaw('IFNULL(special,IFNULL(discount,price))>='.$price_min);
                 }
             })
@@ -252,6 +256,15 @@ class Product extends Model
         return [''=>'Default sorting','viewed_desc'=>'Popularity','new_desc'=>'Latest',
             'price_asc'=>'Price: low to high','price_desc'=>'Price: high to low',
             'sale_desc'=>'Sales volume','rating_desc'=>'Average rating'];
+    }
+
+    function priceArr($symbol){
+        return [
+            ['0-20','Under '.$symbol.'20'],
+            ['20-50',''.$symbol.'20 to '.$symbol.'50'],
+            ['50-100',''.$symbol.'50 to '.$symbol.'100'],
+            ['100','Over '.$symbol.'100']
+        ];
     }
 
     function getByids($product_ids){

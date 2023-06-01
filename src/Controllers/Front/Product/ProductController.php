@@ -40,6 +40,8 @@ class ProductController extends Controller
         $res['product_image'] = $product->imgByIds($product_ids);
         $res['wishlist_product_ids'] = Wishlist::$product_ids;
         $res['sort'] = $product->sortArr();
+
+        $res['price'] = $product->priceArr($this->currency[2]['symbol_left']);
         return $res;
     }
 
@@ -52,10 +54,11 @@ class ProductController extends Controller
             'filter'      => $request->query('filter',false),
             'sort'      => $request->query('sort',false),
             'price'      => $request->query('price',false),
-            'option_value'      => $request->query('option_value',false)
+            'option_value'      => $request->query('option_value',false),
         ];
         $res['filte_filter'] = $filter_data['filter']?explode(',',$filter_data['filter']):[];
         $res['filte_option_value'] = $filter_data['option_value']?explode(',',$filter_data['option_value']):[];
+
 
         $res = $this->listData($filter_data,$res);
         if($filter_data['name'] && $res['list']->count()==1){

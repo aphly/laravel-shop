@@ -79,6 +79,19 @@
                                         </li>
                                     @endforeach
                                 </ul>
+                                <ul class="filter_price">
+                                    <li >
+                                        <div class="filters11">
+                                            <span>Price</span>
+                                            <span class="uni app-jia1"></span>
+                                        </div>
+                                        <dl class="filters12">
+                                            @foreach($res['price'] as $val)
+                                            <dd><a class="item-link @if($val[0]==$res['filter_data']['price']) active @endif" data-price="{{$val[0]}}" href="javascript:void(0)">{{$val[1]}}</a></dd>
+                                            @endforeach
+                                        </dl>
+                                    </li>
+                                </ul>
                                 <ul class="filter_option">
                                     @foreach($res['option'] as $val)
                                         <li >
@@ -132,6 +145,17 @@
                     let filter = filter_ids.join(',');
                     urlOption._set('option_value',filter,true)
                 });
+                $('.filter_price').on('click','.item-link',function () {
+                    $('.filter_price .item-link').removeClass('active')
+                    $(this).addClass('active')
+                    let price='';
+                    $('.filter_price .item-link.active').each(function (index,item) {
+                        price = $(item).data('price')
+                    })
+                    if(price){
+                        urlOption._set('price',price,true)
+                    }
+                });
                 (()=>{
                     let filter_res = '';
                     $('.filter_filter .item-link.active').each(function (index,item) {
@@ -139,6 +163,9 @@
                     })
                     $('.filter_option .item-link.active').each(function (index,item) {
                         filter_res+=`<li class="filter_option_li" data-id="${$(item).data('id')}"><span class="uni app-guanbi" ></span><span>${$(item).text()}</span></li>`
+                    })
+                    $('.filter_price .item-link.active').each(function (index,item) {
+                        filter_res+=`<li class="filter_price_li" data-price="${$(item).data('price')}"><span class="uni app-guanbi" ></span><span>${$(item).text()}</span></li>`
                     })
                     if(filter_res){
                         filter_res+='<li class="clear_all"><a href="/product" class=" filter-link-text">Clear All</a></li>'
@@ -152,6 +179,8 @@
                     }else if($(this).attr('class')==='filter_option_li'){
                         let id = $(this).data('id')
                         $('.filter_option .active[data-id="'+id+'"]').click();
+                    }else if($(this).attr('class')==='filter_price_li'){
+                        urlOption._del('price',true)
                     }
                 })
                 $('.product_list_r1_sort').on('click','a',function () {

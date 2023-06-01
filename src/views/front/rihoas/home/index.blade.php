@@ -34,6 +34,11 @@
     </div>
 </div>
 <style>
+    @media (max-width: 1199.98px) {
+        .home_carousel .carousel-item img{
+            height: 240px;
+        }
+    }
 </style>
 <div>
     <div class="container">

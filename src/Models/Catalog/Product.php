@@ -19,7 +19,7 @@ class Product extends Model
         'sku','name','quantity','image','price','uuid','spu',
         'shipping','stock_status_id','weight','weight_class_id',
         'length','width','height','length_class_id','subtract',
-        'status','viewed','sale','sort','date_available'
+        'status','viewed','sale','sort','date_available','url'
     ];
 
     function desc(){

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('sku',64)->nullable();
             $table->string('spu',64)->nullable()->index();
             $table->string('name',255)->nullable();
+            $table->string('url',255)->nullable();
             $table->integer('quantity')->nullable();
             $table->string('image',255)->nullable();
             $table->decimal('price',15,2)->nullable();

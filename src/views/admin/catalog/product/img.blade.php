@@ -22,7 +22,7 @@
             <div class="btn btn-primary">
                 选择图片
             </div>
-            <input type="file" class="fileUpload" accept="image/gif,image/jpeg,image/jpg,image/png"  multiple="multiple" style="display: none" onchange="uploadImg(this)">
+            <input type="file" class="fileUpload" accept="image/gif,image/jpeg,image/jpg,image/png,image/webp"  multiple="multiple" style="display: none" onchange="uploadImg(this)">
         </label>
         <form method="post" action="/shop_admin/product/img_save?product_id={{$res['product']->id}}" class="save_form" >
             @csrf

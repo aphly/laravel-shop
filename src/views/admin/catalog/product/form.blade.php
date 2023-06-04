@@ -10,12 +10,17 @@
         @csrf
         <div class="">
             <div class="form-group">
-                <label for="">商品名称</label>
+                <label for="">商品名称 <i>*</i></label>
                 <input type="text" name="name" class="form-control " value="{{$res['product']->name}}" required>
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">sku</label>
+                <label for="">采购地址</label>
+                <input type="text" name="url" class="form-control " value="{{$res['product']->url}}" >
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="form-group">
+                <label for="">sku <i>*</i></label>
                 <input type="text" name="sku" class="form-control " value="{{$res['product']->sku}}" required>
                 <div class="invalid-feedback"></div>
             </div>
@@ -42,7 +47,7 @@
             </div>
             <div class="form-group">
                 <label for="">价格</label>
-                <input type="text" name="price" class="form-control " value="{{$res['product']->price??0}}">
+                <input type="text" name="price" class="form-control"  value="{{$res['product']->price??0}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">

@@ -103,13 +103,7 @@
                     </div>
                 </div>
 
-                <ul class=" ">
-                    @foreach($res['info_attr'] as $v)
-                        <li class="item">
-                            {{$v['attribute']['name']}} {{$v['text']}}
-                        </li>
-                    @endforeach
-                </ul>
+
 
                 <form id="product" class="form_request" method="post" action="/cart/add" data-fn="detail_res">
                     @csrf
@@ -133,17 +127,36 @@
         </div>
     </div>
     <style>
-        .my_tab{border-bottom: 1px solid #d1d1d1;margin-top: 30px;display: flex;}
+        .my_tab{border-bottom: 1px solid #d1d1d1;display: flex}
         .my_tab .my_bt{line-height: 50px;padding: 0 20px;cursor: pointer;color: #888; font-weight: 600;font-size: 16px;}
         .my_tab .my_bt.active{color: #333;border-bottom: 4px solid #333;}
         .description{padding: 15px;}
         .wishlist_one i{font-size: 20px;}
+        .info_attr{padding: 15px;display: flex;flex-wrap: wrap;}
+        .info_attr li{width: 31%;margin:5px 1%;}
+        .my_box{margin-top: 20px;}
     </style>
-    <div class="my_tab">
-        <div class="my_bt active">Description</div>
+
+    <div class="my_box">
+        <div class="my_tab">
+            <div class="my_bt active">Attribute</div>
+        </div>
+        <ul class="info_attr">
+            @foreach($res['info_attr'] as $v)
+                <li class="item wenzi">
+                    {{$v['attribute']['name']}} : {{$v['text']}}
+                </li>
+            @endforeach
+        </ul>
     </div>
-    <div class="description">
-        <div>{!! $res['info']->desc->description??'' !!}</div>
+
+    <div class="my_box">
+        <div class="my_tab">
+            <div class="my_bt active">Description</div>
+        </div>
+        <div class="description">
+            <div>{!! $res['info']->desc->description??'' !!}</div>
+        </div>
     </div>
 
     <input type="hidden" id="quantityInCart" value="{{$res['quantityInCart']}}">

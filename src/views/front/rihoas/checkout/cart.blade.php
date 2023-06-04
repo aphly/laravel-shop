@@ -2,7 +2,7 @@
 
 <style>
     .cart-content{display: flex;flex-wrap: wrap;}
-    .myChart{width: 60%;margin-right: 20px;text-align: center;background: #fff;padding: 50px 20px;margin-bottom: 20px;}
+    .myChart{width: 60%;margin-right: 20px;background: #fff;padding: 50px 20px;margin-bottom: 20px;}
     .cart-pay{width: calc(40% - 20px);}
     .cart-shopping{background:#fff;box-shadow:0 0 15px 0 #e3e3e3;margin-top:0;margin-bottom:10px;padding:50px 30px 30px;position:relative;border-radius: 4px;}
     .close-btn{cursor:pointer;position:absolute;right:10px;top:10px;width:18px}
@@ -54,6 +54,7 @@
     .btn-empty{margin-top:45px}
     .btn-empty .color-link-white{background:#0da9c4;border:none;border-radius:4px;color:#fff;display:inline-block;font-size:18px;height:50px;line-height:50px;width:40%;}
     .cart-empty img{max-width: 100%;}
+    .cart-empty{text-align: center;}
     @media (max-width: 1200px) {
         .myChart{width: 100%;margin-right: 0;}
         .cart-pay{width: 100%;}

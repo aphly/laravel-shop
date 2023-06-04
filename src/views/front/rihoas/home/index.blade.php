@@ -35,8 +35,11 @@
 </div>
 <style>
     .home_carousel .carousel-item img{ height: 600px;}
+    .product-category li .product_image{height: 170px;}
+    .product-category li .product_image img{height: 100%;width: 100%;}
     @media (max-width: 1199.98px) {
         .home_carousel .carousel-item img{height: 240px; }
+        .product-category li .product_image{height: 130px;}
     }
 </style>
 <div>

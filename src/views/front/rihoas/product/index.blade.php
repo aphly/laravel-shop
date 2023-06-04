@@ -313,12 +313,13 @@
 .wishlist_one i{width: 20px;height: 20px;display: block;cursor: pointer;text-align: center;}
 .p_name{font-weight: 600;}
 .m_filters_btn{display: none;}
+.product-category li .image{height: 170px;}
+.product-category li .image img{height: 100%;width: 100%;}
 @media (max-width: 1199.98px) {
     .product-category li{width: calc(50% - 5px);}
     .product-category > li:nth-child(2n),.product-category li:last-child{margin-right:0}
-
+    .product-category li .image{height: 130px;}
     .m_filters_btn{ color: #000; font-weight: 600;font-size: 12px;display:block;position:fixed;bottom:50%;right:0;background:#fafafa;writing-mode:vertical-rl;padding:20px 10px;z-index:100;border-bottom-right-radius:8px;border-top-right-radius:8px;transform:rotate(180deg)}
-
     .product_list_r{width:100%;}
     .product_list_l{background:transparent;display:none;position: fixed;left: 0;width: 100%;padding:0;z-index: 1002;top: 60px;height: calc(100% - 60px);}
     .product_list_l_box1{width: calc(100% - 50px);background: #fff;padding: 20px;height: 100%;overflow-y: auto;}

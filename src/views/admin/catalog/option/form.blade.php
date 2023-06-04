@@ -69,7 +69,7 @@
                     @endif
                  @endif
                      >
-                <div onclick="filter_addDiv()" class="add_div_btn"><i class="uni app-jia"></i> option Values</div>
+                <div onclick="filter_addDiv()" class="add_div_btn"><i class="uni app-jia"></i> 选项值</div>
                 <div class="add_div">
                     <ul class="add_div_ul">
                         <li class="d-flex">

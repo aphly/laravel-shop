@@ -16,7 +16,7 @@
                 @foreach($res['product_special'] as $val)
                     <li>
                         <span>
-                            <input type="text" name="product_special[{{$val['id']}}][priority]" value="{{$val['priority']??1}}">
+                            <input type="number" name="product_special[{{$val['id']}}][priority]" value="{{$val['priority']??1}}">
                         </span>
                         <span>
                             <input type="text" name="product_special[{{$val['id']}}][price]" value="{{$val['price']??0}}">
@@ -60,7 +60,7 @@
                             <input type="number" name="product_special[${id}][priority]" value="1">
                         </span>
                         <span>
-                            <input type="number" name="product_special[${id}][price]" value="0">
+                            <input type="text" name="product_special[${id}][price]" value="0">
                         </span>
                         <span>
                             <input type="datetime-local" name="product_special[${id}][date_start]" value="">

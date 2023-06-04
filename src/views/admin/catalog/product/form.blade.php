@@ -25,7 +25,7 @@
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">quantity</label>
+                <label for="">库存</label>
                 <input type="number" name="quantity" class="form-control " value="{{$res['product']->quantity??0}}">
                 <div class="invalid-feedback"></div>
             </div>
@@ -41,7 +41,7 @@
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">price</label>
+                <label for="">价格</label>
                 <input type="text" name="price" class="form-control " value="{{$res['product']->price??0}}">
                 <div class="invalid-feedback"></div>
             </div>
@@ -69,7 +69,7 @@
             </div>
 
             <div class="form-group">
-                <label for="">weight</label>
+                <label for="">重量</label>
                 <input type="text" name="weight" class="form-control " value="{{$res['product']->weight??0}}">
 
                 <select name="weight_class_id"  class="form-control">
@@ -84,15 +84,15 @@
             <div class="form-group">
                 <div class="d-flex justify-content-between">
                     <div class="form-group">
-                        <label for="">length</label>
+                        <label for="">长</label>
                         <input type="text" name="length" class="form-control " value="{{$res['product']->length??0}}">
                     </div>
                     <div class="form-group">
-                        <label for="">width</label>
+                        <label for="">宽</label>
                         <input type="text" name="width" class="form-control " value="{{$res['product']->width??0}}">
                     </div>
                     <div class="form-group">
-                        <label for="">height</label>
+                        <label for="">高</label>
                         <input type="text" name="height" class="form-control " value="{{$res['product']->height??0}}">
                     </div>
                 </div>

@@ -25,7 +25,7 @@
 
             <div class="form-group">
                 <label for="">meta_description</label>
-                <input type="text" name="meta_description" required class="form-control " value="{{$res['product_desc']->meta_description}}">
+                <input type="text" name="meta_description" class="form-control " value="{{$res['product_desc']->meta_description}}">
                 <div class="invalid-feedback"></div>
             </div>
         </div>

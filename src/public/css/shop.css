@@ -45,13 +45,21 @@
 .my_step22{padding-left: 10px; margin-left: 10px;border-left: 1px solid #999;margin-bottom: 10px;}
 
 .product-category{display:flex;flex-wrap:wrap}
-.product-category li{width:calc(20% - 8.5px);margin:0px 10px 10px 0px;padding:10px;background:#fff;box-shadow:0 2px 12px 2px #eee}
+.product-category li{width:calc(20% - 8.5px);margin:0px 10px 10px 0px;padding:10px;background:#fff;transition: box-shadow .2s ease-in-out;border-radius: 6px;}
+.product-category li:hover{box-shadow:0 2px 12px 2px #eee;}
 .product-category li .image{margin-bottom:10px;position:relative;z-index:10}
-.product-category li .name{text-transform:capitalize;font-size:14px;color:#000;height:36px;line-height:18px;overflow:hidden;margin-bottom:5px}
-.product-category li .price{font-size:14px;margin-bottom:5px}
+.product-category li .name{text-transform:capitalize;font-size:14px;color:#000;height:36px;line-height:18px;overflow:hidden;margin-bottom:5px;}
+.product-category li .price{font-weight: 600; font-size: 16px;line-height: 20px;}
+.product-category .p_name{ height: 24px;line-height: 24px;font-weight: 500;margin: 6px 0;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+.product-category li a:hover{color:#444;}
 .img-responsive{max-width:100%;height:auto}
 .product-category > li:nth-child(5n),.product-category li:last-child{margin-right:0}
 .home_title{text-align: center;font-size: 30px;margin: 30px 0 20px;}
+.touming:after{opacity:1;content:"";top:0;left:0;right:0;bottom:0;position:absolute;transition:opacity 200ms ease-in;background-image:linear-gradient(to bottom,rgba(255,255,255,0),white);pointer-events:none}
+.wt-badge{margin-top:5px}
+.wt-badge--small{border-radius:15px;font-size:12px;font-weight:500;min-width:17px;padding-top:3px;padding-bottom:3px;padding-left:6px;padding-right:6px}
+.wt-badge--sale-01{background:#d4e9d7;color:inherit}
+.wt-badge--status-03{background:#fdebd2;color:inherit}
 @media (max-width: 1199.98px) {
     .product-category li{width: calc(50% - 5px);}
     .product-category > li:nth-child(2n),.product-category li:last-child{margin-right:0}

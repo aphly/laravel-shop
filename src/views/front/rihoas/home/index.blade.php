@@ -52,11 +52,9 @@
                     @if(!empty($res['products'][$v]))
                     <li>
                         <div class="product_image">
-                            <a href="/product/{{$v}}">
-                                <img src="{{$res['products'][$v]->image_src}}" alt="" class="img-responsive">
-                            </a>
+                            <a href="/product/{{$v}}"><img src="{{$res['products'][$v]->image_src}}" alt="" class="img-responsive"></a>
                         </div>
-                        <div class="p_name"><a href="/product/{{$v}}">{{$res['products'][$v]->name}}</a></div>
+                        <a href="/product/{{$v}}"><div class="p_name">{{$res['products'][$v]->name}}</div></a>
                         <div class="p_name_x d-flex justify-content-between">
                             <div class="d-flex price">
                                 @if($res['products'][$v]->special)
@@ -73,6 +71,9 @@
                                     @endif
                                 @endif
                             </div>
+                        </div>
+                        <div class="wt-badge">
+                            <span class="wt-badge--small wt-badge--status-03">Bestseller</span>
                         </div>
                     </li>
                     @endif

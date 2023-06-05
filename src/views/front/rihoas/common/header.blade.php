@@ -4,6 +4,8 @@
 <style>
     .viewer-canvas{background: #fff;}
     .viewer-navbar{background-color: rgba(235,235,235,0.5);}
+    body{background: #fff;}
+    img{border-radius: 6px;}
 </style>
 
 

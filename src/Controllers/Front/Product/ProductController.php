@@ -96,6 +96,7 @@ class ProductController extends Controller
         }
         $res['review_image_length'] = $this->review_image_length;
         $res['review_image_size'] = $this->review_image_size;
+
         return $this->makeView('laravel-shop-front::product.detail',['res'=>$res]);
     }
 

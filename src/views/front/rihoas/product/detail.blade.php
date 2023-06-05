@@ -1,8 +1,8 @@
 @include('laravel-shop-front::common.header')
 <link rel="stylesheet" href="{{ URL::asset('static/shop/css/idangerous.swiper.css') }}"/>
 <style>
-    .product_detail_img{width:700px;position:relative}
-    .product_detail_img .big_img{border-right:1px solid #f1f1f1;border-bottom:1px solid #f1f1f1;width:100%;height:600px}
+    .product_detail_img{width:calc(100% - 540px);position:relative}
+    .product_detail_img .big_img{width:100%;height:600px}
     .product_detail_img .big_img img{width:100%;height:100%}
     .product_detail_img .small_img{margin-top: 10px;}
     .product_detail_img .small_img .swiper-container{text-align:center;width:calc(100% - 50px);}
@@ -17,7 +17,7 @@
     .product_detail_img .lr_icon.right > div{background-position:right center}
 
     .product_detail{display: flex;justify-content: space-between;}
-    .product_detail_info{width: calc(100% - 740px);margin-left: 40px;}
+    .product_detail_info{width:500px;margin-left: 40px;}
     .product_detail_info_title{font-size: 40px;}
     .price {font-size: 24px;font-weight: 600;}
     .product_detail_info_title_xia{margin-bottom: 10px;}
@@ -136,7 +136,7 @@
         .info_attr li{width: 31%;margin:5px 1%;}
         .my_box{margin-top: 20px;}
     </style>
-
+    @if($res['info_attr'])
     <div class="my_box">
         <div class="my_tab">
             <div class="my_bt active">Attribute</div>
@@ -149,7 +149,7 @@
             @endforeach
         </ul>
     </div>
-
+    @endif
     <div class="my_box">
         <div class="my_tab">
             <div class="my_bt active">Description</div>
@@ -320,7 +320,22 @@
             $('.add_photo').click(function () {
                 $('.add_photo_file').click();
             })
-
+            let date = new Date();
+            let dateArray1 = date.toDateString().split(' ');
+            let shipping1 = dateArray1[1]+ ' ' + dateArray1[2]
+            $('.shipping1').html(shipping1)
+            let dateArray2 =  new Date(date.setDate(date.getDate()+1)).toDateString().split(' ');
+            let shipping2 = dateArray2[1]+ ' ' + dateArray2[2]
+            $('.shipping2').html(shipping2)
+            let dateArray21 =  new Date(date.setDate(date.getDate()+1)).toDateString().split(' ');
+            let shipping21 = dateArray21[1]+ ' ' + dateArray21[2]
+            $('.shipping21').html(shipping21)
+            let dateArray3 =  new Date(date.setDate(date.getDate()+6)).toDateString().split(' ');
+            let shipping3 = dateArray3[1]+ ' ' + dateArray3[2]
+            $('.shipping3').html(shipping3)
+            let dateArray31 =  new Date(date.setDate(date.getDate()+22)).toDateString().split(' ');
+            let shipping31 = dateArray31[1]+ ' ' + dateArray31[2]
+            $('.shipping31').html(shipping31)
         })
     </script>
 </div>

@@ -1,21 +1,17 @@
 @include('laravel-shop-front::common.header')
 <style>
-    .product-category{display:flex;flex-wrap:wrap}
-    .product-category li{width:calc(25% - 10px);margin:0px 10px 10px 0px;padding:10px;background:#fff;box-shadow:0 2px 12px 2px #eee}
-    .product-category li .image{margin-bottom:10px;position:relative;z-index:10}
-    .product-category li .name{text-transform:capitalize;font-size:14px;color:#000;height:36px;line-height:18px;overflow:hidden;margin-bottom:5px}
-    .product-category li .price{font-size:14px;margin-bottom:5px}
+
     .img-responsive{max-width:100%;height:auto}
     .product-category > li:nth-child(4n),.product-category li:last-child{margin-right:0}
 
     .product_list_l .filters1{font-size: 34px;margin-bottom: 20px;font-weight: 600;}
-    .product_list_l{width: 20%;margin-right: 20px;}
-    .product_list_l1{min-height: 500px;background: #fff;padding: 20px;border-radius: 4px;}
-    .product_list_r{width: calc(80% - 20px);}
+    .product_list_l{width: 20%;margin-right: 40px;}
+    .product_list_l1{min-height: 500px;padding:0;border-radius: 4px;}
+    .product_list_r{width: calc(80% - 40px);}
     .filters11{font-size: 18px;font-weight: 500; margin: 10px 0;display: flex;justify-content: space-between;cursor: pointer}
     .filters12{display: flex;flex-wrap: wrap;}
     .filters12 dd{width: 100%;line-height: 34px;}
-    .filters12 dd a{color:#777;position: relative;}
+    .filters12 dd a{color:#777;position: relative;padding: 0 10px;font-weight: 600}
     .filters12 dd a.active,.filters12 dd a:hover{color:#000;}
     .filters12 .item-link:after{content:"";background:#000;position:absolute;bottom:0px;right:0;width:0;height:1px;-webkit-transition:all .3s ease;transition:all .3s ease}
     .filters12 .item-link.active:not(.disabled):after,.filters12 .item-link:not(.disabled):hover:after{left:0;right:auto;width:100%}
@@ -44,20 +40,21 @@
         })
     })
     function m_filters_btn_hide() {
-        $('.product_list_l').toggle(200);
+        $('.product_list_l').toggle(100);
         $('html').removeClass('no_scroll')
     }
 </script>
 <div class="container shop_main">
+    <div>
+        <ul class="d-flex my_breadcrumb" >
+            <li><a href="/">Home</a></li>
+            <li class="to"> > </li>
+            <li>Product</li>
+        </ul>
+    </div>
     <div class="d-flex">
         <div class="product_list_l">
-            <div>
-                <ul class="d-flex my_breadcrumb" >
-                    <li><a href="/">Home</a></li>
-                    <li class="to"> > </li>
-                    <li>Product</li>
-                </ul>
-            </div>
+
             <div class="product_list_l1">
                 <div class="product_list_l_box">
                     <div class="product_list_l_box1">
@@ -201,8 +198,7 @@
             .product_list_r1 button{border: none;background: transparent;}
             .product_list_r1 .dropdown-menu{border: none;box-shadow:0 10px 30px rgba(0,0,0,0.2);background: #f8f8f8;}
             .product_list_r1 .btn-group button,.product_list_r1 .dropdown-menu a{font-weight: 500}
-            .product_list_r1 .results{color:#777}
-
+            .product_list_r1 .results{color:#777;font-weight: 600;}
         </style>
         <div class="product_list_r">
             <div class="d-flex product_list_r1">
@@ -261,7 +257,7 @@
                                 </dl>
                             @endif
                         </div>
-                        <div class="p_name"><a href="/product/{{$val->id}}">{{$val->name}}</a></div>
+                        <a href="/product/{{$val->id}}"><div class="p_name">{{$val->name}}</div></a>
                         <div class="p_name_x d-flex justify-content-between">
                             <div class="d-flex price">
                                 @if($val->special)
@@ -321,11 +317,12 @@
     .product-category li .image{height: 130px;}
     .m_filters_btn{ color: #000; font-weight: 600;font-size: 12px;display:block;position:fixed;bottom:50%;right:0;background:#fafafa;writing-mode:vertical-rl;padding:20px 10px;z-index:100;border-bottom-right-radius:8px;border-top-right-radius:8px;transform:rotate(180deg)}
     .product_list_r{width:100%;}
-    .product_list_l{background:transparent;display:none;position: fixed;left: 0;width: 100%;padding:0;z-index: 1002;top: 60px;height: calc(100% - 60px);}
+    .product_list_l{background:transparent;display:none;position: fixed;left: 0;width: 100%;padding:0;z-index: 1002;top: 55px;height: calc(100% - 55px);}
     .product_list_l_box1{width: calc(100% - 50px);background: #fff;padding: 20px;height: 100%;overflow-y: auto;}
-    .product_list_l_box2{width: 50px;}
+    .product_list_l_box2{width: 50px;background: rgba(0,0,0,0.1);}
     .product_list_l_box{display: flex;height: 100%;}
     .product_list_r1{margin-bottom: 5px;}
+    .product_list_l1{height: 100%;}
 }
 </style>
 

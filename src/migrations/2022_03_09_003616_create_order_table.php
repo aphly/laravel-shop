@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('shop_order', function (Blueprint $table) {
-            $table->id();
+            $table->unsignedBigInteger('id')->index();
             $table->unsignedBigInteger('uuid')->index();
             $table->string('email',255)->nullable();
             $table->char('payment_id',32)->nullable()->index();

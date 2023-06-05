@@ -4,10 +4,10 @@ namespace Aphly\LaravelShop\Controllers\Front\Checkout;
 
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Libs\Func;
+use Aphly\Laravel\Libs\Snowflake;
 use Aphly\LaravelCommon\Models\Country;
 use Aphly\LaravelCommon\Models\Currency;
 use Aphly\LaravelCommon\Models\User;
-use Aphly\LaravelCommon\Models\Zone;
 use Aphly\LaravelPayment\Models\Payment;
 use Aphly\LaravelPayment\Models\PaymentMethod;
 use Aphly\LaravelShop\Controllers\Front\Controller;
@@ -105,7 +105,7 @@ class CheckoutController extends Controller
             if(!intval($input['payment_method_id'])){
                 throw new ApiException(['code' => 2, 'msg' => 'payment method fail','data'=>['redirect'=>'/checkout/payment']]);
             }
-
+            $input['id'] = Snowflake::orderId();
             $input['uuid'] = $this->user->uuid;
             $input['email'] = $this->user->initId();
 

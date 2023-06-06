@@ -105,7 +105,7 @@ class CheckoutController extends Controller
             if(!intval($input['payment_method_id'])){
                 throw new ApiException(['code' => 2, 'msg' => 'payment method fail','data'=>['redirect'=>'/checkout/payment']]);
             }
-            $input['id'] = Snowflake::orderId();
+            $input['id'] = Snowflake::incrId();
             $input['uuid'] = $this->user->uuid;
             $input['email'] = $this->user->initId();
 

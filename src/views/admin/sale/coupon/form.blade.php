@@ -34,21 +34,16 @@
                 <input type="text" name="total" class="form-control " value="{{$res['coupon']->total??0}}">
                 <div class="invalid-feedback"></div>
             </div>
-
             <div class="form-group">
-                <label for="">分类</label>
-                <div class="search">
-                    <input class="search_input search_input_category" >
-                    <div class="search_res"></div>
-                </div>
-                <div class="search_text">
-                    @foreach($res['coupon_category'] as $val)
-                        <div class="product-category">
-                            <i class="uni app-jian category_jian"></i> {!! $res['category'][$val['category_id']]['name'] !!}
-                            <input type="hidden" name="coupon_category[{{$val['category_id']}}]" value="{{$val['category_id']}}">
-                        </div>
-                    @endforeach
-                </div>
+                <label for="">是否免邮</label>
+                <select name="free_shipping"  class="form-control">
+                    @if(isset($dict['yes_no']))
+                        @foreach($dict['yes_no'] as $key=>$val)
+                            <option value="{{$key}}" @if($res['coupon']->free_shipping==$key || ($key==2 && !$res['coupon']->free_shipping)) selected @endif>{{$val}}</option>
+                        @endforeach
+                    @endif
+                </select>
+                <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
                 <label for="">商品</label>
@@ -61,6 +56,21 @@
                         <div class="product-category">
                             <i class="uni app-jian category_jian"></i> {!! $res['product'][$val['product_id']]['name'] !!}
                             <input type="hidden" name="coupon_product[{{$val['product_id']}}]" value="{{$val['product_id']}}">
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="">分类</label>
+                <div class="search">
+                    <input class="search_input search_input_category" >
+                    <div class="search_res"></div>
+                </div>
+                <div class="search_text">
+                    @foreach($res['coupon_category'] as $val)
+                        <div class="product-category">
+                            <i class="uni app-jian category_jian"></i> {!! $res['category'][$val['category_id']]['name'] !!}
+                            <input type="hidden" name="coupon_category[{{$val['category_id']}}]" value="{{$val['category_id']}}">
                         </div>
                     @endforeach
                 </div>

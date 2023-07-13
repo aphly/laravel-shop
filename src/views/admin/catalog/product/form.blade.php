@@ -51,11 +51,11 @@
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">需要配送</label>
-                <select name="shipping"  class="form-control">
+                <label for="">是否需要配送</label>
+                <select name="is_shipping"  class="form-control">
                     @if(isset($dict['yes_no']))
                         @foreach($dict['yes_no'] as $key=>$val)
-                            <option value="{{$key}}" @if($res['product']->shipping==$key) selected @endif>{{$val}}</option>
+                            <option value="{{$key}}" @if($res['product']->is_shipping==$key) selected @endif>{{$val}}</option>
                         @endforeach
                     @endif
                 </select>

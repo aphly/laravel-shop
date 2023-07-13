@@ -41,9 +41,7 @@ class Shipping extends Model
                 $addrInfo = UserAddress::where('id',$shop_address)->where('uuid',User::uuid())->first();
                 if(!empty($addrInfo)) {
                     $subTotal = $cart->getSubTotal();
-
                     $shipping = (new Shipping())->findAll();
-
                     foreach ($shipping as $val) {
                         if($val['free_cost']>0?($subTotal>=$val['free_cost']):false){
                             $val['free']=1;
@@ -79,29 +77,40 @@ class Shipping extends Model
     }
 
     public function getTotal($total_data) {
-        $shop_shipping_id = Cookie::get('shop_shipping_id');
-        $shipping = $this->getList();
-        if(!empty($shipping[$shop_shipping_id])){
-            if($shipping[$shop_shipping_id]['free']){
-                $total_data['totals']['shipping'] = [
-                    'title'      => 'Shipping',
-                    'value'      => 0,
-                    'value_format'      => 'Free',
-                    'sort' => 3,
-                    'ext'=>$shop_shipping_id
-                ];
-            }else{
-                $price = $shipping[$shop_shipping_id]['cost'];
-                list($value,$value_format) = Currency::format($price,2);
-                $total_data['totals']['shipping'] = [
-                    'title'      => 'Shipping',
-                    'value'      => $value,
-                    'value_format'      => $value?$value_format:'Free',
-                    'sort' => 3,
-                    'ext'=>$shop_shipping_id
-                ];
-                $total_data['total'] += $value;
+        if(Cart::$free_shipping){
+            $total_data['totals']['shipping'] = [
+                'title'      => 'Shipping',
+                'value'      => 0,
+                'value_format'      => 'Free',
+                'sort' => 3,
+                'ext'=>''
+            ];
+        }else{
+            $shop_shipping_id = Cookie::get('shop_shipping_id');
+            $shipping = $this->getList();
+            if(!empty($shipping[$shop_shipping_id])){
+                if($shipping[$shop_shipping_id]['free']){
+                    $total_data['totals']['shipping'] = [
+                        'title'      => 'Shipping',
+                        'value'      => 0,
+                        'value_format'      => 'Free',
+                        'sort' => 3,
+                        'ext'=>$shop_shipping_id
+                    ];
+                }else{
+                    $price = $shipping[$shop_shipping_id]['cost'];
+                    list($value,$value_format) = Currency::format($price,2);
+                    $total_data['totals']['shipping'] = [
+                        'title'      => 'Shipping',
+                        'value'      => $value,
+                        'value_format'      => $value?$value_format:'Free',
+                        'sort' => 3,
+                        'ext'=>$shop_shipping_id
+                    ];
+                    $total_data['total'] += $value;
+                }
             }
         }
+
     }
 }

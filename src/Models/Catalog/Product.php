@@ -17,7 +17,7 @@ class Product extends Model
 
     protected $fillable = [
         'sku','name','quantity','image','price','uuid','spu',
-        'shipping','stock_status_id','weight','weight_class_id',
+        'is_shipping','stock_status_id','weight','weight_class_id',
         'length','width','height','length_class_id','subtract',
         'status','viewed','sale','sort','date_available','url'
     ];
@@ -350,7 +350,7 @@ class Product extends Model
 
     function _optionValue($productOption){
         $product_option_ids = array_column($productOption,'id');
-        $productOptionValue = ProductOptionValue::whereIn('product_option_id',$product_option_ids)->with('option_value')->with('productImage')->get()->keyBy('id')->toArray();
+        $productOptionValue = ProductOptionValue::whereIn('product_option_id',$product_option_ids)->with('option_value')->with('productImage')->orderBy('sort','desc')->get()->keyBy('id')->toArray();
         $productOptionValueGroup = [] ;
         foreach ($productOptionValue as $key=>$val){
             list($val['price'],$val['price_format']) = Currency::format($val['price'],2);

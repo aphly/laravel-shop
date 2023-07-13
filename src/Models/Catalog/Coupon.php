@@ -16,11 +16,9 @@ class Coupon extends Model
     //public $timestamps = false;
 
     protected $fillable = [
-        'name','code','type','discount','is_login','total','date_start','date_end','uses_total',
+        'name','code','type','discount','free_shipping','total','date_start','date_end','uses_total',
         'uses_customer','status'
     ];
-
-    static public $cart_ext = false;
 
     public function getCoupon($code) {
         $status = true;
@@ -49,37 +47,26 @@ class Coupon extends Model
             }
 
             // Products
-            $coupon_product_data = [];
             $coupon_product = CouponProduct::where('coupon_id',$info['id'])->get()->toArray();
-            foreach ($coupon_product as $product) {
-                $coupon_product_data[] = $product['product_id'];
-            }
+            $coupon_product_data = array_column($coupon_product,'product_id');
 
-            $coupon_category_data = [];
-            $coupon_category_query = CouponCategory::leftJoin('common_category_path','shop_coupon_category.category_id','=','common_category_path.path_id')->where('shop_coupon_category.coupon_id',$info['id'])->get()->toArray();
-            foreach ($coupon_category_query as $category) {
-                $coupon_category_data[] = $category['category_id'];
+            $productCategoryAll = [];
+            $coupon_category_query = CouponCategory::leftJoin('shop_category_path','shop_coupon_category.category_id','=','shop_category_path.path_id')
+                                    ->where('shop_coupon_category.coupon_id',$info['id'])->get()->toArray();
+            $coupon_category_data = array_column($coupon_category_query,'category_id');
+            if($coupon_category_data){
+                $productCategoryAll = ProductCategory::whereIn('category_id',$coupon_category_data)->get()->toArray();
+                $productCategoryAll = array_column($productCategoryAll,'product_id');
             }
-
-            if ($coupon_product_data || $coupon_category_data) {
+            $productAll = array_unique(array_merge($coupon_product_data,$productCategoryAll));
+            if ($productAll) {
                 foreach ($cart->getList() as $product) {
-                    if (in_array($product['product_id'], $coupon_product_data)) {
+                    if (in_array($product['product_id'], $productAll)) {
                         $product_data[$product['product_id']] = $product['product_id'];
-                        continue;
-                    }
-                    $productCategory = ProductCategory::where('product_id',$product['product_id'])->get()->toArray();
-                    $productCategory = array_column($productCategory,'category_id');
-                    if($productCategory){
-                        foreach ($coupon_category_data as $category_id) {
-                            if (in_array($category_id,$productCategory)) {
-                                $product_data[$product['product_id']] = $product['product_id'];
-                                continue;
-                            }
-                        }
                     }
                 }
-                if (!$product_data) {
-                    $status = false;
+                if(!$product_data){
+                    $status=false;
                 }
             }
         }else{
@@ -101,6 +88,9 @@ class Coupon extends Model
             $info = $this->getCoupon($coupon);
             if($info) {
 				$cart = new Cart;
+				if($info['free_shipping']){
+                    $cart->free_shipping = true;
+                }
                 $discount_total = 0;
                 if (!$info['product']) {
                     $sub_total = $cart->getSubTotal();
@@ -117,20 +107,12 @@ class Coupon extends Model
                     $info['discount'] = Currency::format($info['discount'],1);
                 }
 
-
                 foreach ($cart->getList() as $key=>$product) {
                     $discount = 0;
-                    if (!$info['product']) {
-                        $status = true;
-                    } else {
-                        $status = in_array($product['product_id'], $info['product']);
-                    }
-                    if ($status) {
-                        if ($info['type'] == 2) {
-                            $discount = $info['discount'] * ($product['total'] / $sub_total);
-                        } elseif ($info['type'] == 1) {
-                            $discount = $product['total'] / 100 * $info['discount'];
-                        }
+                    if ($info['type'] == 2) {
+                        $discount = $info['discount'] * ($product['total'] / $sub_total);
+                    } elseif ($info['type'] == 1) {
+                        $discount = $product['total'] / 100 * $info['discount'];
                     }
                     $discount = Currency::numberFormat($discount);
                     $discount_total += $discount;
@@ -140,7 +122,6 @@ class Coupon extends Model
                     $cart_ext[$key]['real_total'] = $real_total;
                     $cart_ext[$key]['real_total_format'] = Currency::_format($real_total);
                 }
-
 
                 if ($discount_total > $total_data['total']) {
                     $discount_total = $total_data['total'];
@@ -172,7 +153,8 @@ class Coupon extends Model
     }
 
     public function getCouponHistoriesByUuId($coupon,$uuid) {
-        return CouponHistory::leftJoin('shop_coupon','shop_coupon.id','=','shop_coupon_history.coupon_id')->where('shop_coupon.code',$coupon)->where('shop_coupon_history.uuid',$uuid)->count();
+        return CouponHistory::leftJoin('shop_coupon','shop_coupon.id','=','shop_coupon_history.coupon_id')->where('shop_coupon.code',$coupon)
+            ->where('shop_coupon_history.uuid',$uuid)->count();
     }
 
 

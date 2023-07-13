@@ -28,24 +28,28 @@ class CheckoutController extends Controller
     {
         $res['title'] = 'Checkout Address';
         $cart = new Cart;
-        list($res['count'],$res['list'],$res['total_data']) = $cart->totalData();
-        if(!$res['count']){
-            throw new ApiException(['code'=>11,'msg'=>'no cart','data'=>['redirect'=>'/cart']]);
+        if($cart->hasShipping()) {
+            list($res['count'], $res['list'], $res['total_data']) = $cart->totalData();
+            if (!$res['count']) {
+                throw new ApiException(['code' => 11, 'msg' => 'no cart', 'data' => ['redirect' => '/cart']]);
+            }
+            if ($request->isMethod('post')) {
+                $input = $request->all();
+                $input['uuid'] = User::uuid();
+                $userAddress = UserAddress::updateOrCreate(['id' => $request->input('address_id', 0)], $input);
+                Cookie::queue('shop_address_id', $userAddress->id);
+                $shipping_method = (new Shipping)->getList($userAddress->id);
+                throw new ApiException(['code' => 0, 'msg' => 'shipping address success', 'data' => ['redirect' => '/checkout/shipping', 'list' => $shipping_method]]);
+            } else {
+                Cookie::queue('shop_shipping_id', null, -1);
+                $res['curr_address_id'] = Cookie::get('shop_address_id', 0);
+                $res['my_address'] = (new UserAddress)->getAddresses();
+                $res['country'] = (new Country)->findAll();
+                return $this->makeView('laravel-shop-front::checkout.address', ['res' => $res]);
+            }
+        }else{
+            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>'/checkout/payment']]);
         }
-    	if($request->isMethod('post')){
-            $input = $request->all();
-            $input['uuid'] = User::uuid();
-            $userAddress = UserAddress::updateOrCreate(['id'=>$request->input('address_id',0)],$input);
-            Cookie::queue('shop_address_id',$userAddress->id);
-            $shipping_method = (new Shipping)->getList($userAddress->id);
-            throw new ApiException(['code'=>0,'msg'=>'shipping address success','data'=>['redirect'=>'/checkout/shipping','list'=>$shipping_method]]);
-		}else{
-            Cookie::queue('shop_shipping_id', null, -1);
-            $res['curr_address_id'] = Cookie::get('shop_address_id',0);
-            $res['my_address'] = (new UserAddress)->getAddresses();
-            $res['country'] = (new Country)->findAll();
-            return $this->makeView('laravel-shop-front::checkout.address', ['res' => $res]);
-		}
     }
 
     public function shipping(Request $request)
@@ -86,20 +90,23 @@ class CheckoutController extends Controller
     {
         $res['title'] = 'Checkout Pay';
         $cart = new Cart;
-        list($res['count'],$res['list'],$res['total_data']) = $cart->totalData();
-        if(!$res['count']){
-            throw new ApiException(['code'=>11,'msg'=>'no cart','data'=>['redirect'=>'/cart']]);
+        if($cart->hasShipping()){
+            list($res['count'],$res['list'],$res['total_data']) = $cart->totalData();
+            if(!$res['count']){
+                throw new ApiException(['code'=>11,'msg'=>'no cart','data'=>['redirect'=>'/cart']]);
+            }
+            $address_id = Cookie::get('shop_address_id');
+            $res['address'] = (new UserAddress)->getAddress($address_id);
+            if(!$res['address']){
+                throw new ApiException(['code'=>12,'msg'=>'no address','data'=>['redirect'=>'/checkout/address']]);
+            }
+            $shipping_id = Cookie::get('shop_shipping_id');
+            $res['shipping'] = (new Shipping)->getList($address_id,$shipping_id);
+            if(!$res['shipping']){
+                throw new ApiException(['code'=>13,'msg'=>'no shipping','data'=>['redirect'=>'/checkout/shipping']]);
+            }
         }
-        $address_id = Cookie::get('shop_address_id');
-        $res['address'] = (new UserAddress)->getAddress($address_id);
-        if(!$res['address']){
-            throw new ApiException(['code'=>12,'msg'=>'no address','data'=>['redirect'=>'/checkout/address']]);
-        }
-        $shipping_id = Cookie::get('shop_shipping_id');
-        $res['shipping'] = (new Shipping)->getList($address_id,$shipping_id);
-        if(!$res['shipping']){
-            throw new ApiException(['code'=>13,'msg'=>'no shipping','data'=>['redirect'=>'/checkout/shipping']]);
-        }
+
 		if($request->isMethod('post')) {
             $input['payment_method_id'] = $request->input('payment_method_id');
             if(!intval($input['payment_method_id'])){

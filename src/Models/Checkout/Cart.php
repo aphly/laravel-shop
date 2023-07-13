@@ -8,7 +8,6 @@ use Aphly\LaravelCommon\Models\User;
 use Aphly\LaravelShop\Models\Catalog\Coupon;
 use Aphly\LaravelShop\Models\Catalog\Product;
 use Aphly\LaravelShop\Models\Catalog\ProductDiscount;
-use Aphly\LaravelShop\Models\Catalog\ProductReward;
 use Aphly\LaravelShop\Models\Catalog\ProductSpecial;
 use Aphly\LaravelShop\Models\Catalog\Shipping;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -80,7 +79,6 @@ class Cart extends Model
                 $stock = true;
                 if ($cart['product']['status'] == 1 && $cart['product']['date_available'] < time() && $cart['quantity'] > 0) {
                     $option_price = 0;
-                    $option_weight = 0;
                     $option_value_arr = [];
                     $cart['option'] = json_decode($cart['option'], true);
                     if ($cart['option']) {
@@ -91,16 +89,13 @@ class Cart extends Model
                                     $option_value_arr[] = $option_value[$k]['product_option_value'][$v]['option_value']['name'];
                                     if (!empty($option_value[$k]['product_option_value'][$v])) {
                                         $option_price += $option_value[$k]['product_option_value'][$v]['price'];
-                                        $option_weight += $option_value[$k]['product_option_value'][$v]['weight'];
                                         if ($option_value[$k]['product_option_value'][$v]['subtract'] == 1 && (!$option_value[$k]['product_option_value'][$v]['quantity'] || ($option_value[$k]['product_option_value'][$v]['quantity'] < $cart['quantity']))) {
                                             $stock = false;
                                         }
                                         $option_value[$k]['product_option_value'] = $option_value[$k]['product_option_value'][$v];
-
                                     }
                                 } else if ($option_value[$k]['option']['type'] == 'text' || $option_value[$k]['option']['type'] == 'textarea' || $option_value[$k]['option']['type'] == 'file'
                                     || $option_value[$k]['option']['type'] == 'date' || $option_value[$k]['option']['type'] == 'datetime' || $option_value[$k]['option']['type'] == 'time') {
-                                    //$option_value_arr[] = $v;
                                     $option_value[$k]['product_option_value'] = $v;
                                 } else if ($option_value[$k]['option']['type'] == 'checkbox' && is_array($v)) {
                                     $arr = [];
@@ -108,7 +103,6 @@ class Cart extends Model
                                         if (!empty($option_value[$k]['product_option_value'][$v1])) {
                                             $option_value_arr[] = $option_value[$k]['product_option_value'][$v1]['option_value']['name'];
                                             $option_price += $option_value[$k]['product_option_value'][$v1]['price'];
-                                            $option_weight += $option_value[$k]['product_option_value'][$v1]['weight'];
                                             $arr[$v1] = $option_value[$k]['product_option_value'][$v1];
                                             if ($option_value[$k]['product_option_value'][$v1]['subtract'] == 1 && (!$option_value[$k]['product_option_value'][$v1]['quantity'] || ($option_value[$k]['product_option_value'][$v1]['quantity'] < $cart['quantity']))) {
                                                 $stock = false;
@@ -126,7 +120,6 @@ class Cart extends Model
 
                     $price = $cart['product']['price'];
 
-                    $group_id = User::groupId();
                     $time = time();
                     $discount_quantity = 0;
                     foreach ($cart_data as $cart2) {
@@ -150,12 +143,7 @@ class Cart extends Model
                     if (!empty($product_special)) {
                         $price = $product_special['price'];
                     }
-                    $product_reward = ProductReward::where('product_id', $cart['product_id'])->where('group_id', $group_id)->first();
-                    if (!empty($product_reward)) {
-                        $reward = $product_reward['points'];
-                    } else {
-                        $reward = 0;
-                    }
+
                     if ($cart['product']['subtract'] == 1 && ($cart['product']['quantity'] < 1 || $cart['product']['quantity'] < $cart['quantity'])) {
                         $stock = false;
                     }
@@ -175,9 +163,9 @@ class Cart extends Model
                     $list[$cart['id']]['discount_format'] = Currency::_format(0);
                     $list[$cart['id']]['real_total'] = $total;
                     $list[$cart['id']]['real_total_format'] = Currency::_format($total);
-                    $list[$cart['id']]['shipping'] = $cart['product']['shipping'];
-                    $list[$cart['id']]['reward'] = $reward * $cart['quantity'];
-                    $list[$cart['id']]['weight'] = ($cart['product']['weight'] + $option_weight) * $cart['quantity'];
+                    $list[$cart['id']]['is_shipping'] = $cart['product']['is_shipping'];
+                    $list[$cart['id']]['reward'] = 0;
+                    $list[$cart['id']]['weight'] = $cart['product']['weight'] * $cart['quantity'];
                 } else {
                     $this->remove($cart['id']);
                 }
@@ -186,6 +174,16 @@ class Cart extends Model
         }else{
             return self::$list;
         }
+    }
+
+    public function hasShipping() {
+        $list = $this->getList();
+        foreach ($list as $cart) {
+            if ($cart['is_shipping']) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public function getSubTotal() {
@@ -197,16 +195,6 @@ class Cart extends Model
         return $total;
     }
 
-    public function hasShipping() {
-        $list = $this->getList();
-        foreach ($list as $cart) {
-            if ($cart['shipping']) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public function countList($refresh=false) {
         $count = 0;
         $list = $this->getList($refresh);
@@ -214,6 +202,16 @@ class Cart extends Model
             $count += $cart['quantity'];
         }
         return [$count,$list];
+    }
+
+    public function countListSubTotal($refresh=false) {
+        $count = $sub_total = 0;
+        $list = $this->getList($refresh);
+        foreach ($list as $cart) {
+            $count += $cart['quantity'];
+            $sub_total += $cart['total'];
+        }
+        return [$count,$list,$sub_total];
     }
 
     public function quantityInCart($product_id) {
@@ -246,29 +244,27 @@ class Cart extends Model
         'shipping','coupon','sub_total','total'
     ];
 
+    public static $free_shipping = false;
+
     public function totalData($refresh=false) {
-        list($count,$list) = $this->countList($refresh);
+        list($count,$list,$sub_total) = $this->countListSubTotal($refresh);
         $totals = [];
         $total = 0;
         $total_data = [
             'totals' => &$totals,
             'total'  => &$total
         ];
-        $value = $this->getSubTotal();
-        $value_format = Currency::_format($value);
+        $value_format = Currency::_format($sub_total);
         $total_data['totals']['sub_total'] = [
             'title'      => 'SubTotal',
-            'value'      => $value,
+            'value'      => $sub_total,
             'value_format'      => $value_format,
             'sort' => 1,
             'ext'=>$count
         ];
-        $total_data['total'] += $value;
-
-		$cart_ext = (new Coupon)->getTotal($total_data);
-
+        $total_data['total'] += $sub_total;
+        $cart_ext = (new Coupon)->getTotal($total_data);
 		(new Shipping)->getTotal($total_data);
-
         $total_data['total_format'] = Currency::_format($total_data['total']);
         $total_data['totals']['total'] = [
             'title'      => 'Total',

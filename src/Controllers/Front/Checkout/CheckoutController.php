@@ -90,8 +90,9 @@ class CheckoutController extends Controller
     {
         $res['title'] = 'Checkout Pay';
         $cart = new Cart;
-        if($cart->hasShipping()){
-            list($res['count'],$res['list'],$res['total_data']) = $cart->totalData();
+        list($res['count'],$res['list'],$res['total_data']) = $cart->totalData();
+        $res['hasShipping'] = $cart->hasShipping();
+        if($res['hasShipping']){
             if(!$res['count']){
                 throw new ApiException(['code'=>11,'msg'=>'no cart','data'=>['redirect'=>'/cart']]);
             }
@@ -115,27 +116,27 @@ class CheckoutController extends Controller
             $input['id'] = Snowflake::incrId();
             $input['uuid'] = $this->user->uuid;
             $input['email'] = $this->user->initId();
+            if($cart->hasShipping()) {
+                $input['address_id'] = $res['address']['id'];
+                $input['address_firstname'] = $res['address']['firstname'];
+                $input['address_lastname'] = $res['address']['lastname'];
+                $input['address_address_1'] = $res['address']['address_1'];
+                $input['address_address_2'] = $res['address']['address_2'];
+                $input['address_city'] = $res['address']['city'];
+                $input['address_postcode'] = $res['address']['postcode'];
+                $input['address_country'] = $res['address']['country_name'];
+                $input['address_country_id'] = $res['address']['country_id'];
+                $input['address_zone'] = $res['address']['zone_name'];
+                $input['address_zone_id'] = $res['address']['zone_id'];
+                $input['address_telephone'] = $res['address']['telephone'];
 
-            $input['address_id'] = $res['address']['id'];
-            $input['address_firstname'] = $res['address']['firstname'];
-            $input['address_lastname'] = $res['address']['lastname'];
-            $input['address_address_1'] = $res['address']['address_1'];
-            $input['address_address_2'] = $res['address']['address_2'];
-            $input['address_city'] = $res['address']['city'];
-            $input['address_postcode'] = $res['address']['postcode'];
-            $input['address_country'] = $res['address']['country_name'];
-            $input['address_country_id'] = $res['address']['country_id'];
-            $input['address_zone'] = $res['address']['zone_name'];
-            $input['address_zone_id'] = $res['address']['zone_id'];
-            $input['address_telephone'] = $res['address']['telephone'];
-
-            $input['shipping_id'] = $res['shipping']['id'];
-            $input['shipping_name'] = $res['shipping']['name'];
-            $input['shipping_desc'] = $res['shipping']['desc'];
-            $input['shipping_cost'] = $res['shipping']['cost'];
-            $input['shipping_free_cost'] = $res['shipping']['free_cost'];
-            $input['shipping_geo_group_id'] = $res['shipping']['geo_group_id'];
-
+                $input['shipping_id'] = $res['shipping']['id'];
+                $input['shipping_name'] = $res['shipping']['name'];
+                $input['shipping_desc'] = $res['shipping']['desc'];
+                $input['shipping_cost'] = $res['shipping']['cost'];
+                $input['shipping_free_cost'] = $res['shipping']['free_cost'];
+                $input['shipping_geo_group_id'] = $res['shipping']['geo_group_id'];
+            }
             $input['items'] = $res['count'];
             $input['total'] = $res['total_data']['total'];
             $input['total_format'] = $res['total_data']['total_format'];

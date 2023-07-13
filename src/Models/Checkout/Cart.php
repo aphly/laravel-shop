@@ -179,7 +179,7 @@ class Cart extends Model
     public function hasShipping() {
         $list = $this->getList();
         foreach ($list as $cart) {
-            if ($cart['is_shipping']) {
+            if ($cart['is_shipping']==1) {
                 return true;
             }
         }

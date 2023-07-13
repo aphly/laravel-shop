@@ -87,6 +87,7 @@ class Coupon extends Model
         if($coupon){
             $info = $this->getCoupon($coupon);
             if($info) {
+
 				$cart = new Cart;
 				if($info['free_shipping']){
                     $cart->free_shipping = true;
@@ -109,10 +110,17 @@ class Coupon extends Model
 
                 foreach ($cart->getList() as $key=>$product) {
                     $discount = 0;
-                    if ($info['type'] == 2) {
-                        $discount = $info['discount'] * ($product['total'] / $sub_total);
-                    } elseif ($info['type'] == 1) {
-                        $discount = $product['total'] / 100 * $info['discount'];
+                    if (!$info['product']) {
+                        $status = true;
+                    } else {
+                        $status = in_array($product['product_id'], $info['product']);
+                    }
+                    if ($status) {
+                        if ($info['type'] == 2) {
+                            $discount = $info['discount'] * ($product['total'] / $sub_total);
+                        } elseif ($info['type'] == 1) {
+                            $discount = $product['total'] / 100 * $info['discount'];
+                        }
                     }
                     $discount = Currency::numberFormat($discount);
                     $discount_total += $discount;

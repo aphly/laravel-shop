@@ -15,6 +15,7 @@
                         <span>{{$id}}</span>
                         <span></span>
                     </li>
+                    @if($res['hasShipping'])
                     <li>
                         <span>Ship to</span>
                         <span>{{$res['address']['address_1']}}, {{$res['address']['city']}}, {{$res['address']['zone_name']}}, {{$res['address']['country_name']}}</span>
@@ -25,6 +26,7 @@
                         <span>{{$res['shipping']['name']}}</span>
                         <span><a href="/checkout/shipping">Change</a></span>
                     </li>
+                    @endif
                 </ul>
             </div>
             <form action="/checkout/payment" method="post" class="form_request" data-fn="checkout_pay" id="checkout_pay">
@@ -44,7 +46,7 @@
                 </div>
 
                 <div class="checkout_btn">
-                    <div class="checkout_btn_l"><a href="/checkout/shipping"><i class="common-iconfont icon-xiangl"></i>Return to shipping</a></div>
+                    <div class="checkout_btn_l"><a href="javascript:window.history.go(-1);"><i class="common-iconfont icon-xiangl"></i>Return to shipping</a></div>
                     <button type="submit">Pay now</button>
                 </div>
             </form>

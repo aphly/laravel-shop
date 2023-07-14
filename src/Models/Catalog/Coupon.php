@@ -54,21 +54,25 @@ class Coupon extends Model
             $coupon_category_query = CouponCategory::leftJoin('shop_category_path','shop_coupon_category.category_id','=','shop_category_path.path_id')
                                     ->where('shop_coupon_category.coupon_id',$info['id'])->get()->toArray();
             $coupon_category_data = array_column($coupon_category_query,'category_id');
-            if($coupon_category_data){
-                $productCategoryAll = ProductCategory::whereIn('category_id',$coupon_category_data)->get()->toArray();
-                $productCategoryAll = array_column($productCategoryAll,'product_id');
-            }
-            $productAll = array_unique(array_merge($coupon_product_data,$productCategoryAll));
-            if ($productAll) {
-                foreach ($cart->getList() as $product) {
-                    if (in_array($product['product_id'], $productAll)) {
-                        $product_data[$product['product_id']] = $product['product_id'];
+
+            if($coupon_product_data || $coupon_category_data){
+                if($coupon_category_data){
+                    $productCategoryAll = ProductCategory::whereIn('category_id',$coupon_category_data)->get()->toArray();
+                    $productCategoryAll = array_column($productCategoryAll,'product_id');
+                }
+                $productAll = array_unique(array_merge($coupon_product_data,$productCategoryAll));
+                if ($productAll) {
+                    foreach ($cart->getList() as $product) {
+                        if (in_array($product['product_id'], $productAll)) {
+                            $product_data[$product['product_id']] = $product['product_id'];
+                        }
                     }
                 }
                 if(!$product_data){
                     $status=false;
                 }
             }
+
         }else{
             $status=false;
         }
@@ -87,10 +91,9 @@ class Coupon extends Model
         if($coupon){
             $info = $this->getCoupon($coupon);
             if($info) {
-
 				$cart = new Cart;
-				if($info['free_shipping']){
-                    $cart->free_shipping = true;
+				if($info['free_shipping']==1){
+                    Cart::$free_shipping = true;
                 }
                 $discount_total = 0;
                 if (!$info['product']) {

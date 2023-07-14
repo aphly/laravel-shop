@@ -76,7 +76,7 @@
                         </div>
                         <div class="form-group checkout_address_group">
                             <label class="">Address 2</label>
-                            <input type="text" name="address_2" required placeholder="Address 2" class="form-control ">
+                            <input type="text" name="address_2"  placeholder="Address 2" class="form-control ">
                         </div>
                         <div class="checkout_address_group_p">
                             <div class="form-group checkout_address_group">

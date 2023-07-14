@@ -79,9 +79,11 @@ class CheckoutController extends Controller
 			Cookie::queue('shop_shipping_id', null, -1);
 			throw new ApiException(['code' => 1, 'msg' => 'shipping method fail']);
 		}else{
-            $res['curr_shipping_id'] = Cookie::get('shop_shipping_id',0);
+            Cookie::queue('shop_shipping_id', null, -1);
+            //$res['curr_shipping_id'] = Cookie::get('shop_shipping_id',0);
 			$res['shipping'] = (new Shipping)->getList();
             $res['shipping_default_id'] = Func::defaultId($res['shipping']);
+            $res['free_shipping'] = Cart::$free_shipping;
 			return $this->makeView('laravel-shop-front::checkout.shipping',['res'=>$res]);
 		}
     }

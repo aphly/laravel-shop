@@ -1,36 +1,7 @@
 @include('laravel-shop-front::common.header')
 <link rel="stylesheet" href="{{ URL::asset('static/shop/css/idangerous.swiper.css') }}"/>
 <style>
-    .product_detail_img{width:calc(100% - 540px);position:relative}
-    .product_detail_img .big_img{width:100%;height:600px}
-    .product_detail_img .big_img img{width:100%;height:100%}
-    .product_detail_img .small_img{margin-top: 10px;}
-    .product_detail_img .small_img .swiper-container{text-align:center;width:calc(100% - 50px);}
-    .product_detail_img .small_img .swiper-slide{height:90px;width: 90px;}
-    .product_detail_img .small_img .swiper-slide img{height:80px;width:80px;margin: 5px;border-radius: 4px;}
-    .product_detail_img .small_img .swiper-wrapper .swiper-slide.active img{border:1px solid #000}
-    .product_detail_img .lr_icon.left{left:0px;top:0px;width:25px}
-    .product_detail_img .lr_icon{position:absolute;width:25px;height:90px}
-    .product_detail_img .lr_icon.left > div{background-position:left center}
-    .product_detail_img .lr_icon > div{background:url({{URL::asset('static/shop/img/leftright.png')}}) no-repeat;width:100%;height:100%;margin:0 auto;cursor:pointer}
-    .product_detail_img .lr_icon.right{right:0px;top:0px;width:25px}
-    .product_detail_img .lr_icon.right > div{background-position:right center}
 
-    .product_detail{display: flex;justify-content: space-between;}
-    .product_detail_info{width:500px;margin-left: 40px;}
-    .product_detail_info_title{font-size: 40px;}
-    .price {font-size: 24px;font-weight: 600;}
-    .product_detail_info_title_xia{margin-bottom: 10px;}
-    .wishlist_one{}
-    .quantity-label{font-size: 16px;font-weight: 500;margin-bottom: 5px;}
-
-    @media (max-width: 1199.98px) {
-        .product_detail_img .big_img{height:320px}
-        .product_detail{flex-wrap: wrap;}
-        .product_detail_img{width:100%;}
-        .product_detail_info{width: 100%;margin-left: 0;}
-        .product_detail_info_title{font-size: 30px;font-weight: 600; margin-top: 10px;}
-    }
 </style>
 <div class="container shop_main">
     <div>
@@ -127,14 +98,7 @@
         </div>
     </div>
     <style>
-        .my_tab{border-bottom: 1px solid #d1d1d1;display: flex}
-        .my_tab .my_bt{line-height: 50px;padding: 0 20px;cursor: pointer;color: #888; font-weight: 600;font-size: 16px;}
-        .my_tab .my_bt.active{color: #333;border-bottom: 4px solid #333;}
-        .description{padding: 15px;}
-        .wishlist_one i{font-size: 20px;}
-        .info_attr{padding: 15px;display: flex;flex-wrap: wrap;}
-        .info_attr li{width: 31%;margin:5px 1%;}
-        .my_box{margin-top: 20px;}
+
     </style>
     @if($res['info_attr'])
     <div class="my_box">
@@ -272,37 +236,7 @@
     @endif
 
     <style>
-        .review{margin-bottom: 20px;}
-        .review1{display: flex;justify-content: space-between;margin: 20px 0 10px;align-items: center;}
-        .write_a_review_pre{display: flex;font-weight: 600;}
-        .write_a_review_pre .grade-star-bg{margin:0 10px;}
-        .write_a_review{padding: 0 26px;font-size: 16px;text-align: center; margin-top: 8px;background: #ddd;border-radius: 4px; height: 48px;line-height: 48px;margin-bottom: 10px;cursor: pointer}
-        .review_list{display: flex;flex-wrap: wrap;}
-        .review_list li{display: flex;justify-content: space-between;width: 100%;margin-bottom: 10px;padding-bottom: 10px;border-bottom: 1px dashed #ddd;}
-        .review_left{width: 200px;}
-        .review_right{width: calc(100% - 220px);margin-left: 20px;}
-        .created_at{color:#888;}
-        .review_list_img{display: flex;flex-wrap: wrap;}
-        .review_list_img img{width: 50px;height: 50px;margin-right: 10px;border-radius: 4px;}
-        .review_content{margin-bottom: 10px;}
 
-        .review_form textarea{width: 100%;height: 100px;}
-        .add_photo{height: 40px;line-height: 40px;text-align: center;border:1px dashed #ddd;margin: 10px 0;cursor: pointer;}
-        .add_photo i{margin-right: 5px;font-size: 20px;position: relative;top: 2px;}
-        .review_form button{width: 100%;text-align: center;border: none;background: #000;height: 40px;line-height: 40px;color: #fff;}
-        .input_star{margin: 10px 0;}
-        .input_star li.on i{color:#e17a10;}
-        .input_star li i{color: #ddd;}
-        .input_star li{margin-right: 5px;cursor: pointer}
-        .input_star{display: flex;}
-
-        @media (max-width: 1199.98px) {
-            .review1{justify-content: left;flex-wrap: wrap;flex-direction: column-reverse;margin-top: 10px;}
-            .write_a_review_pre{width: 100%}
-            .write_a_review{width: 100%}
-            .review_left{width: 100px;}
-            .review_right{width: calc(100% - 110px);margin-left: 10px;}
-        }
     </style>
     <script>
         function review_res(res) {
@@ -340,15 +274,7 @@
     </script>
 </div>
 <style>
-    .info_option input[type="radio"]{display: none;}
-    .info_option label{padding: 10px 20px; border: 1px solid #f1f1f1;margin-right: 10px; border-radius: 2px;cursor: pointer}
-    .info_option label img{width:30px;height:30px;margin-right: 10px;}
-    .info_option label:hover,.quantity-wrapper div:hover{border: 1px solid #ddd;}
-    .info_option label.active{border: 1px solid #333;}
 
-    .add_cart_btn{height: 48px;background: #fff;border: 1px solid #212b36;width: 100%;border-radius: 2px;}
-    .add_cart_btn:hover{background: #212b36;color: #fff;}
-    .flag_checkbox input{display: none;}
 </style>
 <script>
     function detail_res(res) {
@@ -476,7 +402,6 @@
             $(this).nextAll().removeClass('on')
             $('.rating_js').val($(this).data('val'))
         })
-
 
     })
 

@@ -46,7 +46,7 @@
                 </div>
 
                 <div class="checkout_btn">
-                    <div class="checkout_btn_l"><a href="javascript:window.history.go(-1);"><i class="common-iconfont icon-xiangl"></i>Return to shipping</a></div>
+                    <div class="checkout_btn_l"><a href="javascript:;" onclick="self.location=document.referrer;"><i class="common-iconfont icon-xiangl"></i>Return to shipping</a></div>
                     <button type="submit">Pay now</button>
                 </div>
             </form>

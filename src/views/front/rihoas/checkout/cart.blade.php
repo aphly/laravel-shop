@@ -2,7 +2,7 @@
 
 <style>
     .cart-content{display: flex;flex-wrap: wrap;}
-    .myChart{width: 60%;margin-right: 20px;background: #fff;padding: 50px 20px;margin-bottom: 20px;}
+    .myChart{width: 60%;margin-right: 20px;background: #fff;padding:20px 0;margin-bottom: 20px;}
     .cart-pay{width: calc(40% - 20px);}
     .cart-shopping{background:#fff;box-shadow:0 0 15px 0 #e3e3e3;margin-top:0;margin-bottom:10px;padding:50px 30px 30px;position:relative;border-radius: 4px;}
     .close-btn{cursor:pointer;position:absolute;right:10px;top:10px;width:18px}
@@ -191,7 +191,7 @@
                                 @if(isset($res['total_data']['totals']))
                                     @foreach($res['total_data']['totals'] as $key=>$val)
                                         @if($key=='coupon' || $key=='shipping')
-                                        <dd><span>{{$val['title']}}:</span><span class=" cart-order-total-items">{{$val['value_format']}}</span> </dd>
+                                        <dd class="{{$key}}_js"><span>{{$val['title']}}:</span><span class="cart-order-total-items">{{$val['value_format']}}</span> </dd>
                                         @endif
                                     @endforeach
                                 @endif
@@ -304,6 +304,12 @@
                         $('.cart_num').text(res.data.count)
                         $('.cart_count_js').text(res.data.count)
                         $('.cart_sub_total_js').text(res.data.total_data.totals.sub_total.value_format)
+                        if(res.data.total_data.totals.coupon){
+                            $('.coupon_js .cart-order-total-items').text(res.data.total_data.totals.coupon.value_format)
+                        }
+                        if(res.data.total_data.totals.shipping){
+                            $('.shipping_js .cart-order-total-items').text(res.data.total_data.totals.shipping.value_format)
+                        }
                         $('.cart_total_js').text(res.data.total_data.totals.total.value_format)
                     }
                 }

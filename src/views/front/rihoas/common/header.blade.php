@@ -2,10 +2,7 @@
 <script src="{{ URL::asset('static/shop/js/shop.js') }}" type="text/javascript"></script>
 <link rel="stylesheet" href="{{ URL::asset('static/shop/css/shop.css') }}">
 <style>
-    .viewer-canvas{background: #fff;}
-    .viewer-navbar{background-color: rgba(235,235,235,0.5);}
-    body{background: #fff;}
-    img{border-radius: 6px;}
+
 </style>
 
 

@@ -1,5 +1,6 @@
 @include('laravel-shop-front::common.header')
 <style>
+    .checkout_ul .desc{color:#36970e}
 </style>
 <div class="container shop_main">
     <div class="checkout">
@@ -34,11 +35,16 @@
                                 <div class="">
                                     {{$val['name']}}
                                 </div>
-                                <div>
+                                <div class="desc">
                                     {{$val['desc']}}
                                 </div>
                                 <div>
-                                    {{$val['cost_format']}}
+                                    @if($res['free_shipping'] || $val['free'])
+                                        <span class="old_price">{{$val['cost_format']}}</span>
+                                        <span>Free</span>
+                                    @else
+                                        {{$val['cost_format']}}
+                                    @endif
                                 </div>
                             </li>
                         @endforeach
@@ -62,8 +68,6 @@
     .checkout_ul li{display: flex;justify-content: space-between;}
     .checkout_ul li div:first-child{margin-right: 10px;}
     .checkout_ul li div:nth-child(2){margin-right: auto;}
-
-
 </style>
 <script>
 function checkout_shipping(res) {

@@ -254,6 +254,7 @@ class Cart extends Model
             'totals' => &$totals,
             'total'  => &$total
         ];
+
         $value_format = Currency::_format($sub_total);
         $total_data['totals']['sub_total'] = [
             'title'      => 'SubTotal',
@@ -264,8 +265,9 @@ class Cart extends Model
         ];
         $total_data['total'] += $sub_total;
         $cart_ext = (new Coupon)->getTotal($total_data);
+
 		(new Shipping)->getTotal($total_data);
-        $total_data['total_format'] = Currency::_format($total_data['total']);
+        list($total_data['total'],$total_data['total_format']) = Currency::format($total_data['total'],2);
         $total_data['totals']['total'] = [
             'title'      => 'Total',
             'value'      => $total_data['total'],

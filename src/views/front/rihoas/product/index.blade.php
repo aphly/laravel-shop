@@ -1,21 +1,6 @@
 @include('laravel-shop-front::common.header')
 <style>
 
-    .img-responsive{max-width:100%;height:auto}
-    .product-category > li:nth-child(4n),.product-category li:last-child{margin-right:0}
-
-    .product_list_l .filters1{font-size: 34px;margin-bottom: 20px;font-weight: 600;}
-    .product_list_l{width: 20%;margin-right: 40px;}
-    .product_list_l1{min-height: 500px;padding:0;border-radius: 4px;}
-    .product_list_r{width: calc(80% - 40px);}
-    .filters11{font-size: 18px;font-weight: 500; margin: 10px 0;display: flex;justify-content: space-between;cursor: pointer}
-    .filters12{display: flex;flex-wrap: wrap;}
-    .filters12 dd{width: 100%;line-height: 34px;}
-    .filters12 dd a{color:#777;position: relative;padding: 0 10px;font-weight: 600}
-    .filters12 dd a.active,.filters12 dd a:hover{color:#000;}
-    .filters12 .item-link:after{content:"";background:#000;position:absolute;bottom:0px;right:0;width:0;height:1px;-webkit-transition:all .3s ease;transition:all .3s ease}
-    .filters12 .item-link.active:not(.disabled):after,.filters12 .item-link:not(.disabled):hover:after{left:0;right:auto;width:100%}
-    .clear_all{background: transparent !important;}
 </style>
 <script>
     $(function () {
@@ -54,7 +39,6 @@
     </div>
     <div class="d-flex">
         <div class="product_list_l">
-
             <div class="product_list_l1">
                 <div class="product_list_l_box">
                     <div class="product_list_l_box1">
@@ -233,14 +217,14 @@
                                 <dl class="product_image">
                                     @foreach($res['product_image'][$val->id] as $k=>$v)
                                         @if($k)
-                                            <dd data-image_id="{{$v['id']}}"><img  src="{{$v['image_src']}}" /></dd>
+                                            <dd data-image_id="{{$v['id']}}"><img src="{{ URL::asset('static/base/img/none.png') }}" data-original="{{$v['image_src']}}" class="lazy" /></dd>
                                         @else
-                                            <dd class="active" data-image_id="{{$v['id']}}"><img  src="{{$v['image_src']}}" /></dd>
+                                            <dd class="active" data-image_id="{{$v['id']}}"><img src="{{ URL::asset('static/base/img/none.png') }}" data-original="{{$v['image_src']}}" class="lazy" /></dd>
                                         @endif
                                     @endforeach
                                 </dl>
                             @else
-                               <img src="{{ $val->image_src }}" class="img-responsive" >
+                               <img src="{{ URL::asset('static/base/img/none.png') }}" data-original="{{ $val->image_src }}"  class="img-responsive lazy" >
                             @endif
                             </a>
                         </div>
@@ -249,9 +233,10 @@
                                 <dl>
                                     @foreach($res['product_option'][$val->id]['product_option_value'] as $v)
                                         @if($v['product_image'] && $v['product_image']['image_src'])
-                                            <dd data-image_id="{{$v['product_image']['id']}}"><img src="{{$v['product_image']['image_src']}}" alt=""></dd>
+                                            <dd data-image_id="{{$v['product_image']['id']}}">
+                                                <img src="{{ URL::asset('static/base/img/none.png') }}" data-original="{{$v['product_image']['image_src']}}" class="lazy" alt=""></dd>
                                         @elseif($v['option_value'] && $v['option_value']['image_src'])
-                                            <dd><img src="{{$v['option_value']['image_src']}}" alt=""></dd>
+                                            <dd><img src="{{ URL::asset('static/base/img/none.png') }}" data-original="{{$v['option_value']['image_src']}}" class="lazy" alt=""></dd>
                                         @endif
                                     @endforeach
                                 </dl>

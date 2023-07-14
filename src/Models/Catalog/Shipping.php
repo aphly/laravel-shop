@@ -44,9 +44,9 @@ class Shipping extends Model
                     $shipping = (new Shipping())->findAll();
                     foreach ($shipping as $val) {
                         if($val['free_cost']>0?($subTotal>=$val['free_cost']):false){
-                            $val['free']=1;
+                            $val['free']=true;
                         }else{
-                            $val['free']=0;
+                            $val['free']=false;
                         }
                         list($val['cost'],$val['cost_format']) = Currency::format($val['cost'],2);
                         list($val['free_cost'],$val['free_cost_format']) = Currency::format($val['free_cost'],2);
@@ -81,7 +81,7 @@ class Shipping extends Model
             $total_data['totals']['shipping'] = [
                 'title'      => 'Shipping',
                 'value'      => 0,
-                'value_format'      => 'Free',
+                'value_format'      => 'Free (Coupon)',
                 'sort' => 3,
                 'ext'=>''
             ];

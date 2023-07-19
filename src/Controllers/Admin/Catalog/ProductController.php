@@ -30,17 +30,18 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
-        $res['search']['name'] = $request->query('name',false);
-        $res['search']['status'] = $request->query('status',false);
+        $res['search']['name'] = $request->query('name','');
+        $res['search']['status'] = $request->query('status','');
         $res['search']['string'] = http_build_query($request->query());
-        $res['list'] = Product::when($res['search']['name'],
-            function($query,$name) {
-                return $query->where('name', 'like', '%'.$name.'%');
+        $res['list'] = Product::when($res['search'],
+            function($query,$search) {
+                if($search['name']!==''){
+                    $query->where('name', 'like', '%'.$search['name'].'%');
+                }
+                if($search['status']!==''){
+                    $query->where('status', $search['status']);
+                }
             })
-            ->when($res['search']['status'],
-                function($query,$status) {
-                    return $query->where('status', $status);
-                })
             ->Paginate(config('admin.perPage'))->withQueryString();
         $res['breadcrumb'] = Breadcrumb::render([
             ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url]

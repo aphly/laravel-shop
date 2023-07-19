@@ -23,15 +23,17 @@ class ServiceController extends Controller
 
     public function index(Request $request)
     {
-        $res['search']['id'] = $request->query('id',false);
-        $res['search']['order_id'] = $request->query('order_id',false);
+        $res['search']['id'] = $request->query('id','');
+        $res['search']['order_id'] = $request->query('order_id','');
         $res['search']['string'] = http_build_query($request->query());
         $res['list'] = Service::when($res['search']['id'],
-                function($query,$id) {
-                    return $query->where('id', $id);
-                })->when($res['search']['order_id'],
-                function($query,$order_id) {
-                    return $query->where('order_id', $order_id);
+                function($query,$search) {
+                    if($search['id']!==''){
+                        $query->where('id', $search['id']);
+                    }
+                    if($search['order_id']!==''){
+                        $query->where('order_id', $search['order_id']);
+                    }
                 })
             ->where('delete_at',0)
             ->orderBy('created_at','desc')->Paginate(config('admin.perPage'))->withQueryString();

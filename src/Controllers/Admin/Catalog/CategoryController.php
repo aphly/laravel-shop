@@ -17,13 +17,15 @@ class CategoryController extends Controller
 
     public function index(Request $request)
     {
-        $res['search']['name'] = $request->query('name',false);
+        $res['search']['name'] = $request->query('name','');
         $res['search']['string'] = http_build_query($request->query());
         $res['list'] = CategoryPath::leftJoin('shop_category as c1','c1.id','=','shop_category_path.category_id')
             ->leftJoin('shop_category as c2','c2.id','=','shop_category_path.path_id')
-            ->when($res['search']['name'],
-                function($query,$name) {
-                    return $query->where('c1.name', 'like', '%'.$name.'%');
+            ->when($res['search'],
+                function($query,$search) {
+                    if($search['name']!==''){
+                        $query->where('c1.name', 'like', '%'.$search['name'].'%');
+                    }
                 })
             ->groupBy('category_id')
             ->selectRaw('any_value(c1.`id`) AS id,any_value(shop_category_path.`category_id`) AS category_id,

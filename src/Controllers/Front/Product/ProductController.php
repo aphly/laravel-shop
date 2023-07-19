@@ -59,7 +59,6 @@ class ProductController extends Controller
         $res['filte_filter'] = $filter_data['filter']?explode(',',$filter_data['filter']):[];
         $res['filte_option_value'] = $filter_data['option_value']?explode(',',$filter_data['option_value']):[];
 
-
         $res = $this->listData($filter_data,$res);
         if($filter_data['name'] && $res['list']->count()==1){
             return redirect('/product/'.$res['list'][0]->id);

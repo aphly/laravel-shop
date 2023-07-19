@@ -22,19 +22,21 @@ class OrderController extends Controller
 
     public function index(Request $request)
     {
-        $res['search']['id'] = $request->query('id',false);
-        $res['search']['email'] = $request->query('email',false);
-        $res['search']['status'] = $request->query('status',false);
+        $res['search']['id'] = $request->query('id','');
+        $res['search']['email'] = $request->query('email','');
+        $res['search']['status'] = $request->query('status','');
         $res['search']['string'] = http_build_query($request->query());
-        $res['list'] = Order::when($res['search']['id'],
-                function($query,$id) {
-                    return $query->where('id', $id);
-                })->when($res['search']['email'],
-                function($query,$email) {
-                    return $query->where('email', $email);
-                })->when($res['search']['status'],
-                function($query,$status) {
-                    return $query->where('order_status_id', $status);
+        $res['list'] = Order::when($res['search'],
+                function($query,$search) {
+                    if($search['id']!==''){
+                        $query->where('id', $search['id']);
+                    }
+                    if($search['email']!==''){
+                        $query->where('id', $search['email']);
+                    }
+                    if($search['status']!==''){
+                        $query->where('order_status_id', $search['status']);
+                    }
                 })
             ->with('orderStatus')->orderBy('created_at','desc')->Paginate(config('admin.perPage'))->withQueryString();
         $res['orderStatus'] = OrderStatus::get();
@@ -97,20 +99,22 @@ class OrderController extends Controller
 
     public function download(Request $request)
     {
-        $res['search']['id'] = $id = $request->query('id',false);
-        $res['search']['email'] = $email = $request->query('email',false);
-        $res['search']['status'] = $status = $request->query('status',false);
-
-        $res['list'] = Order::when($id,
-            function($query,$id) {
-                return $query->where('id', $id);
-            })->when($email,
-            function($query,$email) {
-                return $query->where('email', $email);
-            })->when($status,
-            function($query,$status) {
-                return $query->where('order_status_id', $status);
-            })->with('orderHistory')->with('orderShipping')->get();
+        $res['search']['id'] = $request->query('id','');
+        $res['search']['email'] = $request->query('email','');
+        $res['search']['status'] = $request->query('status','');
+        $res['list'] = Order::when($res['search'],
+            function($query,$search) {
+                if($search['id']!==''){
+                    $query->where('id', $search['id']);
+                }
+                if($search['email']!==''){
+                    $query->where('id', $search['email']);
+                }
+                if($search['status']!==''){
+                    $query->where('order_status_id', $search['status']);
+                }
+            })
+            ->with('orderHistory')->with('orderShipping')->get();
         $res['orderStatus'] = OrderStatus::get()->keyBy('id')->toArray();
         $header = ["ID", "email", "total_format", "items", "status","paid time",'shipping_id','快递号'];
         $listData = [];

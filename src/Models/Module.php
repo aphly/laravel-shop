@@ -85,7 +85,7 @@ class Module extends Module_base
         if($dict->id){
             $data=[];
             $data[] =['dict_id' => $dict->id,'name'=>'上架','value'=>'1'];
-            $data[] =['dict_id' => $dict->id,'name'=>'下架','value'=>'2'];
+            $data[] =['dict_id' => $dict->id,'name'=>'下架','value'=>'0'];
             DB::table('admin_dict_value')->insert($data);
         }
 
@@ -93,7 +93,7 @@ class Module extends Module_base
         if($dict->id){
             $data=[];
             $data[] =['dict_id' => $dict->id,'name'=>'Yes','value'=>'1'];
-            $data[] =['dict_id' => $dict->id,'name'=>'No','value'=>'2'];
+            $data[] =['dict_id' => $dict->id,'name'=>'No','value'=>'0'];
             DB::table('admin_dict_value')->insert($data);
         }
 
@@ -101,7 +101,7 @@ class Module extends Module_base
         if($dict->id){
             $data=[];
             $data[] =['dict_id' => $dict->id,'name'=>'Success','value'=>'1'];
-            $data[] =['dict_id' => $dict->id,'name'=>'Fail','value'=>'2'];
+            $data[] =['dict_id' => $dict->id,'name'=>'Fail','value'=>'0'];
             DB::table('admin_dict_value')->insert($data);
         }
 

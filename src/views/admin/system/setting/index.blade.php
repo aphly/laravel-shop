@@ -36,7 +36,7 @@
                         <select name="setting[review]" class="form-control" >
                             @if(isset($dict['yes_no']))
                                 @foreach($dict['yes_no'] as $key=>$val)
-                                    <option value="{{$key}}" @if(($res['setting']['review']['value']??2)==$key) selected @endif>{{$val}}</option>
+                                    <option value="{{$key}}" @if(($res['setting']['review']['value']??0)==$key) selected @endif>{{$val}}</option>
                                 @endforeach
                             @endif
                         </select>
@@ -99,7 +99,7 @@
                             <select name="setting[order_paid_notify]" class="form-control" >
                             @if(isset($dict['yes_no']))
                                 @foreach($dict['yes_no'] as $key=>$val)
-                                    <option value="{{$key}}" @if(($res['setting']['order_paid_notify']['value']??2)==$key) selected @endif>{{$val}}</option>
+                                    <option value="{{$key}}" @if(($res['setting']['order_paid_notify']['value']??0)==$key) selected @endif>{{$val}}</option>
                                 @endforeach
                             @endif
                             </select>
@@ -110,7 +110,7 @@
                             <select name="setting[order_shipped_notify]" class="form-control" >
                             @if(isset($dict['yes_no']))
                                 @foreach($dict['yes_no'] as $key=>$val)
-                                    <option value="{{$key}}" @if(($res['setting']['order_shipped_notify']['value']??2)==$key) selected @endif>{{$val}}</option>
+                                    <option value="{{$key}}" @if(($res['setting']['order_shipped_notify']['value']??0)==$key) selected @endif>{{$val}}</option>
                                 @endforeach
                             @endif
                             </select>
@@ -121,7 +121,7 @@
                             <select name="setting[order_canceled_notify]" class="form-control" >
                             @if(isset($dict['yes_no']))
                                 @foreach($dict['yes_no'] as $key=>$val)
-                                    <option value="{{$key}}" @if(($res['setting']['order_canceled_notify']['value']??2)==$key) selected @endif>{{$val}}</option>
+                                    <option value="{{$key}}" @if(($res['setting']['order_canceled_notify']['value']??0)==$key) selected @endif>{{$val}}</option>
                                 @endforeach
                             @endif
                             </select>
@@ -133,7 +133,7 @@
                             <select name="setting[order_refunded_notify]" class="form-control" >
                                 @if(isset($dict['yes_no']))
                                     @foreach($dict['yes_no'] as $key=>$val)
-                                        <option value="{{$key}}" @if(($res['setting']['order_refunded_notify']['value']??2)==$key) selected @endif>{{$val}}</option>
+                                        <option value="{{$key}}" @if(($res['setting']['order_refunded_notify']['value']??0)==$key) selected @endif>{{$val}}</option>
                                     @endforeach
                                 @endif
                             </select>
@@ -154,7 +154,7 @@
                         <select name="setting[exchange]" class="form-control" >
                             @if(isset($dict['yes_no']))
                                 @foreach($dict['yes_no'] as $key=>$val)
-                                    <option value="{{$key}}" @if(($res['setting']['exchange']['value']??2)==$key) selected @endif>{{$val}}</option>
+                                    <option value="{{$key}}" @if(($res['setting']['exchange']['value']??0)==$key) selected @endif>{{$val}}</option>
                                 @endforeach
                             @endif
                         </select>
@@ -198,7 +198,7 @@
                             <select name="setting[service_request_notify]" class="form-control" >
                                 @if(isset($dict['yes_no']))
                                     @foreach($dict['yes_no'] as $key=>$val)
-                                        <option value="{{$key}}" @if(($res['setting']['service_request_notify']['value']??2)==$key) selected @endif>{{$val}}</option>
+                                        <option value="{{$key}}" @if(($res['setting']['service_request_notify']['value']??0)==$key) selected @endif>{{$val}}</option>
                                     @endforeach
                                 @endif
                             </select>
@@ -209,7 +209,7 @@
                             <select name="setting[service_agree_notify]" class="form-control" >
                                 @if(isset($dict['yes_no']))
                                     @foreach($dict['yes_no'] as $key=>$val)
-                                        <option value="{{$key}}" @if(($res['setting']['service_agree_notify']['value']??2)==$key) selected @endif>{{$val}}</option>
+                                        <option value="{{$key}}" @if(($res['setting']['service_agree_notify']['value']??0)==$key) selected @endif>{{$val}}</option>
                                     @endforeach
                                 @endif
                             </select>
@@ -220,7 +220,7 @@
                             <select name="setting[service_refusal_notify]" class="form-control" >
                                 @if(isset($dict['yes_no']))
                                     @foreach($dict['yes_no'] as $key=>$val)
-                                        <option value="{{$key}}" @if(($res['setting']['service_refusal_notify']['value']??2)==$key) selected @endif>{{$val}}</option>
+                                        <option value="{{$key}}" @if(($res['setting']['service_refusal_notify']['value']??0)==$key) selected @endif>{{$val}}</option>
                                     @endforeach
                                 @endif
                             </select>
@@ -231,7 +231,7 @@
                             <select name="setting[service_awaiting_notify]" class="form-control" >
                                 @if(isset($dict['yes_no']))
                                     @foreach($dict['yes_no'] as $key=>$val)
-                                        <option value="{{$key}}" @if(($res['setting']['service_awaiting_notify']['value']??2)==$key) selected @endif>{{$val}}</option>
+                                        <option value="{{$key}}" @if(($res['setting']['service_awaiting_notify']['value']??0)==$key) selected @endif>{{$val}}</option>
                                     @endforeach
                                 @endif
                             </select>
@@ -242,7 +242,7 @@
                             <select name="setting[service_shipped_notify]" class="form-control" >
                                 @if(isset($dict['yes_no']))
                                     @foreach($dict['yes_no'] as $key=>$val)
-                                        <option value="{{$key}}" @if(($res['setting']['service_shipped_notify']['value']??2)==$key) selected @endif>{{$val}}</option>
+                                        <option value="{{$key}}" @if(($res['setting']['service_shipped_notify']['value']??0)==$key) selected @endif>{{$val}}</option>
                                     @endforeach
                                 @endif
                             </select>
@@ -253,7 +253,7 @@
                             <select name="setting[service_refund_notify]" class="form-control" >
                                 @if(isset($dict['yes_no']))
                                     @foreach($dict['yes_no'] as $key=>$val)
-                                        <option value="{{$key}}" @if(($res['setting']['service_refund_notify']['value']??2)==$key) selected @endif>{{$val}}</option>
+                                        <option value="{{$key}}" @if(($res['setting']['service_refund_notify']['value']??0)==$key) selected @endif>{{$val}}</option>
                                     @endforeach
                                 @endif
                             </select>

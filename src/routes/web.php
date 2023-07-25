@@ -61,7 +61,9 @@ Route::middleware(['web'])->group(function () {
     });
 
     Route::middleware(['guest'])->group(function () {
-        Route::get('index', 'Aphly\LaravelShop\Controllers\Front\HomeController@index');
+        Route::get('index', 'Aphly\LaravelShop\Controllers\Front\Common\HomeController@index');
+        Route::match(['post'],'contact_us', 'Aphly\LaravelShop\Controllers\Front\Common\ContactUsController@index');
+        Route::match(['get'],'information/{id}', 'Aphly\LaravelShop\Controllers\Front\Common\InformationController@detail');
 
         //common
         Route::get('coupon/{code}', 'Aphly\LaravelShop\Controllers\Front\Common\CouponController@ajax');
@@ -90,7 +92,8 @@ Route::middleware(['web'])->group(function () {
 
             $route_arr = [
                 ['attribute','\Catalog\AttributeController'],['option','\Catalog\OptionController'],['review','\Catalog\ReviewController'],['filter','\Catalog\FilterController'],
-                ['shipping','\Catalog\ShippingController'],['coupon','\Sale\CouponController'],['order','\Sale\OrderController'],['service','\Sale\ServiceController']
+                ['shipping','\Catalog\ShippingController'],['coupon','\Sale\CouponController'],['order','\Sale\OrderController'],['service','\Sale\ServiceController'],
+                ['information','\Common\InformationController'],['contact_us','\Common\ContactUsController']
             ];
 
             foreach ($route_arr as $val){
@@ -99,6 +102,8 @@ Route::middleware(['web'])->group(function () {
                 Route::post($val[0].'/save', 'Aphly\LaravelShop\Controllers\Admin'.$val[1].'@save');
                 Route::post($val[0].'/del', 'Aphly\LaravelShop\Controllers\Admin'.$val[1].'@del');
             }
+
+            Route::match(['post'],'information/img', 'Aphly\LaravelShop\Controllers\Admin\Common\InformationController@uploadImg');
 
             $route_arr = [
                 ['category','\Catalog\CategoryController']

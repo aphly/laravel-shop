@@ -27,6 +27,7 @@ class Module extends Module_base
                 $data[] =['name' => '选项管理','route' =>'shop_admin/option/index','pid'=>$menu21->id,'uuid'=>$manager->uuid,'type'=>2,'module_id'=>$module_id,'sort'=>0];
                 $data[] =['name' => '评论管理','route' =>'shop_admin/review/index','pid'=>$menu21->id,'uuid'=>$manager->uuid,'type'=>2,'module_id'=>$module_id,'sort'=>0];
                 $data[] =['name' => '物流管理','route' =>'shop_admin/shipping/index','pid'=>$menu21->id,'uuid'=>$manager->uuid,'type'=>2,'module_id'=>$module_id,'sort'=>0];
+                $data[] =['name' => '文章管理','route' =>'shop_admin/information/index','pid'=>$menu21->id,'uuid'=>$manager->uuid,'type'=>2,'module_id'=>$module_id,'sort'=>0];
                 DB::table('admin_menu')->insert($data);
             }
             $menu22 = Menu::create(['name' => '销售','route' =>'','pid'=>$menu->id,'uuid'=>$manager->uuid,'type'=>1,'module_id'=>$module_id,'sort'=>9]);
@@ -35,6 +36,7 @@ class Module extends Module_base
                 $data[] =['name' => '订单','route' =>'shop_admin/order/index','pid'=>$menu22->id,'uuid'=>$manager->uuid,'type'=>2,'module_id'=>$module_id,'sort'=>0];
                 $data[] =['name' => '售后','route' =>'shop_admin/service/index','pid'=>$menu22->id,'uuid'=>$manager->uuid,'type'=>2,'module_id'=>$module_id,'sort'=>0];
                 $data[] =['name' => '优惠券','route' =>'shop_admin/coupon/index','pid'=>$menu22->id,'uuid'=>$manager->uuid,'type'=>2,'module_id'=>$module_id,'sort'=>0];
+                $data[] =['name' => '联系我们','route' =>'shop_admin/contact_us/index','pid'=>$menu22->id,'uuid'=>$manager->uuid,'type'=>2,'module_id'=>$module_id,'sort'=>0];
                 DB::table('admin_menu')->insert($data);
             }
             $menu23 = Menu::create(['name' => '配置','route' =>'','pid'=>$menu->id,'uuid'=>$manager->uuid,'type'=>1,'module_id'=>$module_id,'sort'=>8]);

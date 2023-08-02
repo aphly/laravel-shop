@@ -1,9 +1,6 @@
 @include('laravel-shop-front::common.header')
-
 <style>
-
 </style>
-
 <div class="container shop_main">
     <div class="checkout">
         <div class="checkout_l">
@@ -107,8 +104,6 @@
 
 </div>
 <style>
-
-
     .checkout_address_group_p{display: flex;justify-content: space-between;}
     .checkout_address_group_p>div{width: 48%;}
 
@@ -119,8 +114,6 @@
     .checkout_address_group.form-group_show label{z-index: 1;padding: 0 10px;font-size: 12px;color: #999;line-height: 26px;}
     .checkout_address_group.form-group_show input{padding-top: 20px;}
     .checkout_address_group input:focus{border-color:#0178ff;box-shadow:none;outline: none;border-width: 2px;}
-
-
 </style>
 <script>
     let country_zone = {};

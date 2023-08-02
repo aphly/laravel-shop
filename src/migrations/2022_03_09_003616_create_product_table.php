@@ -23,7 +23,7 @@ return new class extends Migration
             $table->integer('quantity')->nullable();
             $table->string('image',255)->nullable();
             $table->decimal('price',15,2)->nullable();
-            $table->tinyInteger('shipping')->nullable()->default(1);
+            $table->tinyInteger('is_shipping')->nullable()->default(1);
             $table->unsignedInteger('tax_class_id')->nullable()->default(1);
             $table->tinyInteger('stock_status_id');
             $table->float('weight')->nullable();

@@ -6,6 +6,7 @@ use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Mail\MailSend;
 use Aphly\Laravel\Models\Model;
 use Aphly\LaravelCommon\Models\Currency;
+use Aphly\LaravelCommon\Models\RemoteEmail;
 use Aphly\LaravelPayment\Models\Payment;
 use Aphly\LaravelShop\Mail\Order\Cancel;
 use Aphly\LaravelShop\Mail\Order\Paid;
@@ -82,20 +83,44 @@ class Order extends Model
             $this->handle($info);
             if($shop_setting['order_paid_notify']==1 || $notify){
                 //send email
-                (new MailSend())->do($info->email, new Paid($info));
+                //(new MailSend())->do($info->email, new Paid($info));
+                (new RemoteEmail())->send([
+                    'email'=>$info->email,
+                    'title'=>'Order Paid',
+                    'content'=>(new Paid($info))->render(),
+                    'type'=>config('common.email_type'),
+                    'queue_priority'=>0,
+                    'is_cc'=>1
+                ]);
             }
         }else if($order_status_id==3){
             //Shipped
             if($shop_setting['order_shipped_notify']==1 || $notify){
                 //send email
-                (new MailSend())->do($info->email, new Shipped($info));
+                //(new MailSend())->do($info->email, new Shipped($info));
+                (new RemoteEmail())->send([
+                    'email'=>$info->email,
+                    'title'=>'Order Shipped',
+                    'content'=>(new Shipped($info))->render(),
+                    'type'=>config('common.email_type'),
+                    'queue_priority'=>0,
+                    'is_cc'=>0
+                ]);
             }
         }else if($order_status_id==6){
             //Canceled
             $this->rollback($info);
             if($shop_setting['order_canceled_notify']==1 || $notify){
                 //send email
-                (new MailSend())->do($info->email, new Cancel($info));
+                //(new MailSend())->do($info->email, new Cancel($info));
+                (new RemoteEmail())->send([
+                    'email'=>$info->email,
+                    'title'=>'Order cancel',
+                    'content'=>(new Cancel($info))->render(),
+                    'type'=>config('common.email_type'),
+                    'queue_priority'=>0,
+                    'is_cc'=>1
+                ]);
             }
         }else if($order_status_id==7){
             //Refunded
@@ -110,7 +135,15 @@ class Order extends Model
                 }
                 if ($shop_setting['order_refunded_notify'] == 1 || $notify) {
                     //send email
-                    (new MailSend())->do($info->email, new Refunded($info));
+                    //(new MailSend())->do($info->email, new Refunded($info));
+                    (new RemoteEmail())->send([
+                        'email'=>$info->email,
+                        'title'=>'Order Refunded',
+                        'content'=>(new Refunded($info))->render(),
+                        'type'=>config('common.email_type'),
+                        'queue_priority'=>0,
+                        'is_cc'=>0
+                    ]);
                 }
             }
         }

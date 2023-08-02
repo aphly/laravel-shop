@@ -31,7 +31,7 @@ class Refunded extends Mailable
      */
     public function build()
     {
-        return $this->subject('Order cancel')
+        return $this->subject('Order Refunded')
             ->view('laravel-shop::mail.order.refunded');
     }
 }

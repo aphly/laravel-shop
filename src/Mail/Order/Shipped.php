@@ -31,7 +31,7 @@ class Shipped extends Mailable
      */
     public function build()
     {
-        return $this->subject('Order cancel')
+        return $this->subject('Order Shipped')
             ->view('laravel-shop::mail.order.shipped');
     }
 }

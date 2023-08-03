@@ -74,8 +74,6 @@
                     </div>
                 </div>
 
-
-
                 <form id="product" class="form_request" method="post" action="/cart/add" data-fn="detail_res">
                     @csrf
                     <input type="hidden" name="product_id" value="{{$res['info']->id}}">
@@ -90,7 +88,7 @@
                             <div class="quantity-up">+</div>
                         </div>
                     </div>
-                    <button id="save-address" class="add_cart_btn " type="submit">Add To Cart</button>
+                    <button class="add_cart_btn " type="submit">Add To Cart</button>
                 </form>
 
             </div>

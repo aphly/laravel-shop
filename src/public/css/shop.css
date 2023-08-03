@@ -93,7 +93,7 @@ img{border-radius: 6px;}
 
 /*product detail*/
 .product_detail_img{width:calc(100% - 540px);position:relative}
-.product_detail_img .big_img{width:100%;height:600px}
+.product_detail_img .big_img{width:100%;}
 .product_detail_img .big_img img{width:100%;height:100%}
 .product_detail_img .small_img{margin-top: 10px;}
 .product_detail_img .small_img .swiper-container{text-align:center;width:calc(100% - 50px);}
@@ -170,10 +170,9 @@ img{border-radius: 6px;}
 .info_option label:hover,.quantity-wrapper div:hover{border: 1px solid #ddd;}
 .info_option label.active{border: 1px solid #333;}
 
-.add_cart_btn{height: 48px;background: #fff;border: 1px solid #212b36;width: 100%;border-radius: 2px;}
-.add_cart_btn:hover{background: #212b36;color: #fff;}
+.add_cart_btn{height: 48px;background: var(--btn_bg);width: 100%;border-radius: 2px;color:var(--btn_color);border: none;font-weight: 600;}
+.add_cart_btn:hover{background:var(--btn_bg_hover);color:var(--btn_color_hover);}
 .flag_checkbox input{display: none;}
-
 /*product detail*/
 
 /*checkout*/
@@ -188,14 +187,14 @@ img{border-radius: 6px;}
 .checkout_info li span:nth-child(2){margin-right: auto;}
 .checkout_info li span:first-child{width: 70px;flex-shrink: 0;}
 .checkout_info li:last-child{margin-bottom: 0px;padding-bottom: 0px;border-bottom: none;flex-shrink: 0;}
-.checkout_info li span:last-child a{color: var(--default-color);}
+.checkout_info li span:last-child a{color: var(--btn_bg_hover);}
 
 .checkout_ul li{ padding: 10px;border-radius: 4px;cursor: pointer;border: 1px solid #ced4da;margin-bottom: 10px;}
 .checkout_ul li.active{border:1px solid #333;}
 
 .checkout_btn{display: flex;justify-content: space-between;align-items: center;}
-.checkout_btn button{background-color: var(--default-bg);padding: 14px 20px;color: #fff;border: none;border-radius: 4px;}
-.checkout_btn_l a{color: var(--default-color);}
+.checkout_btn button{background-color: var(--btn_bg);padding: 14px 20px;color: #fff;border: none;border-radius: 4px;}
+.checkout_btn_l a{color: var(--btn_bg_hover);}
 
 .items-info-list-all{padding: 20px;}
 .items-info-list{}

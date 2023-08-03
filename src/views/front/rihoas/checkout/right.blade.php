@@ -6,7 +6,7 @@
         @foreach($res['list'] as $val)
             <div class="items-info ">
                 <div class="items-img">
-                    <img src="{{$val['product']['image_src']}}" >
+                    <a href="/product/{{$val['product']['id']}}"><img src="{{$val['product']['image_src']}}" ></a>
                 </div>
                 <div class="items-lists">
                     <ul>

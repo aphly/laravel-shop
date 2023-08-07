@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('shop_order_option', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('order_id')->index();
-            $table->unsignedInteger('order_product_id')->index();
-            $table->unsignedInteger('product_option_id')->index();
-            $table->unsignedInteger('product_option_value_id')->index();
+            $table->unsignedBigInteger('order_id')->index();
+            $table->unsignedBigInteger('order_product_id')->index();
+            $table->unsignedBigInteger('product_option_id')->index();
+            $table->unsignedBigInteger('product_option_value_id')->index();
             $table->string('name',255);
             $table->text('value');
             $table->string('type',32);

@@ -213,6 +213,8 @@ class CheckoutController extends Controller
                         //throw new ApiException(['code' => 1, 'msg' => 'payment hhh']);
                         $payment->pay(false);
                     }
+                }else{
+                    throw new ApiException(['code' => 2, 'msg' => 'payment fail']);
                 }
             }
 			throw new ApiException(['code' => 1, 'msg' => 'payment method fail']);

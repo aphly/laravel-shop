@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('shop_order_product', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('order_id')->index();
-            $table->unsignedInteger('product_id')->index();
+            $table->unsignedBigInteger('order_id')->index();
+            $table->unsignedBigInteger('product_id')->index();
             $table->string('name',255);
             $table->string('image',255);
             $table->string('sku',64);

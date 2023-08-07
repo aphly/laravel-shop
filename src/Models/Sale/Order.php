@@ -23,6 +23,7 @@ class Order extends Model
 {
     use HasFactory;
     protected $table = 'shop_order';
+    public $incrementing = false;
     //public $timestamps = false;
 
     protected $fillable = [

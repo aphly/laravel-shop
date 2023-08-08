@@ -39,7 +39,7 @@
                 <select name="free_shipping"  class="form-control">
                     @if(isset($dict['yes_no']))
                         @foreach($dict['yes_no'] as $key=>$val)
-                            <option value="{{$key}}" @if($res['coupon']->free_shipping==$key || (!$key && !$res['coupon']->free_shipping)) selected @endif>{{$val}}</option>
+                            <option value="{{$key}}" @if($res['coupon']->free_shipping===$key || ($res['coupon']->free_shipping===null && $key)) selected @endif>{{$val}}</option>
                         @endforeach
                     @endif
                 </select>

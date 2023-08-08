@@ -77,7 +77,7 @@ class Order extends Model
     }
 
     public function addOrderHistory($info, $order_status_id, $input = []){
-        $shop_setting = Setting::findAll();
+        $shop_setting = Setting::findAll(false);
         $notify = $input['notify']??0;
         if($order_status_id==2){
             //Paid

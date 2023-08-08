@@ -195,9 +195,11 @@
 <script>
 $(function () {
     $('#order_status_id').change(function () {
-        if($(this).val()==3) {
+        if($(this).val()==='3') {
+            $('#fee').addClass('d-none')
             $('#shipping_no').removeClass('d-none')
-        }else if($(this).val()==8){
+        }else if($(this).val()==='7'){
+            $('#shipping_no').addClass('d-none')
             $('#fee').removeClass('d-none')
         }else{
             $('#shipping_no').addClass('d-none')

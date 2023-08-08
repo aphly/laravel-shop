@@ -16,9 +16,13 @@ class OrderStatus extends Model
         'name'
     ];
 
-	public function findAll() {
-		return Cache::rememberForever('shop_order_status', function () {
-			return self::get()->keyBy('id')->toArray();
-		});
+	public function findAll($cache=true) {
+	    if($cache){
+            return Cache::rememberForever('shop_order_status', function () {
+                return self::get()->keyBy('id')->toArray();
+            });
+        }else{
+            return self::get()->keyBy('id')->toArray();
+        }
 	}
 }

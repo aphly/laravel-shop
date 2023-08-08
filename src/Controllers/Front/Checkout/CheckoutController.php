@@ -93,6 +93,9 @@ class CheckoutController extends Controller
         $res['title'] = 'Checkout Pay';
         $cart = new Cart;
         list($res['count'],$res['list'],$res['total_data']) = $cart->totalData();
+        if(!$res['count']){
+            throw new ApiException(['code'=>20,'msg'=>'no cart','data'=>['redirect'=>'/cart']]);
+        }
         $res['hasShipping'] = $cart->hasShipping();
         if($res['hasShipping']){
             if(!$res['count']){

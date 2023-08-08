@@ -22,10 +22,14 @@ class Shipping extends Model
         'name','desc','cost','free_cost','geo_group_id','sort','status','default'
     ];
 
-    static public function findAll() {
-        return Cache::rememberForever('shop_shipping', function () {
+    static public function findAll($cache=true) {
+        if($cache){
+            return Cache::rememberForever('shop_shipping', function () {
+                return self::where('status',1)->get()->keyBy('id')->toArray();
+            });
+        }else{
             return self::where('status',1)->get()->keyBy('id')->toArray();
-        });
+        }
     }
 
     public function geoGroup(){

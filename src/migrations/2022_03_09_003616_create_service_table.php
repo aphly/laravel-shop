@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('uuid')->index();
             $table->unsignedBigInteger('order_id')->index();
             $table->tinyInteger('is_received')->nullable()->default(1);
-            $table->tinyInteger('is_opened')->nullable()->default(2);
+            $table->tinyInteger('is_opened')->nullable()->default(0);
             $table->tinyInteger('service_action_id')->index();
             $table->tinyInteger('service_status_id')->nullable()->default(1);
             $table->text('reason')->nullable();

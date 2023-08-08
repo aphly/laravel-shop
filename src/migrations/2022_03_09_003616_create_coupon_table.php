@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name',64);
             $table->string('code',16)->index();
             $table->char('type',1);
-            $table->tinyInteger('free_shipping')->nullable()->default(2);
+            $table->tinyInteger('free_shipping')->nullable()->default(0);
             $table->decimal('discount',15,2);
             $table->decimal('total',15,2)->nullable();
             $table->unsignedInteger('date_start')->nullable();

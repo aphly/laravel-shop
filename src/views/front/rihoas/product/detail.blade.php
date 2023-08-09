@@ -233,9 +233,6 @@
     </div>
     @endif
 
-    <style>
-
-    </style>
     <script>
         function review_res(res) {
             if(res.code===0){
@@ -271,12 +268,11 @@
         })
     </script>
 </div>
-<style>
 
-</style>
 <script>
     function detail_res(res) {
         $('.cart_num').text(res.data.count);
+        alert_msg(res)
     }
 </script>
 

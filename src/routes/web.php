@@ -104,6 +104,7 @@ Route::middleware(['web'])->group(function () {
             }
 
             Route::match(['post'],'information/img', 'Aphly\LaravelShop\Controllers\Admin\Common\InformationController@uploadImg');
+            Route::match(['post'],'contact_us/reply', 'Aphly\LaravelShop\Controllers\Admin\Common\ContactUsController@reply');
 
             $route_arr = [
                 ['category','\Catalog\CategoryController']

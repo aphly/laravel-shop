@@ -5,6 +5,7 @@ namespace Aphly\LaravelShop\Controllers\Admin\Common;
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Libs\Editor;
 use Aphly\Laravel\Models\Breadcrumb;
+use Aphly\LaravelCommon\Models\RemoteEmail;
 use Aphly\LaravelShop\Controllers\Admin\Controller;
 use Aphly\LaravelShop\Models\Common\ContactUs;
 use Illuminate\Http\Request;
@@ -43,7 +44,7 @@ class ContactUsController extends Controller
             ['name'=>$res['info']->id?'编辑':'新增','href'=>'/shop_admin/'.$this->currArr['key'].($res['info']->id?'/form?id='.$res['info']->id:'/form')]
         ]);
         $res['imgSize'] = $this->imgSize;
-        return $this->makeView('laravel-shop::admin.common.information.form',['res'=>$res]);
+        return $this->makeView('laravel-shop::admin.common.contact_us.detail',['res'=>$res]);
     }
 
     public function save(Request $request){
@@ -72,6 +73,21 @@ class ContactUsController extends Controller
         }
     }
 
-
+    public function reply(Request $request)
+    {
+        $input = $request->all();
+        $input['email'] = trim($input['email']);
+        if($input['email'] && $input['content']){
+            (new RemoteEmail())->send([
+                'email'=>$input['email'],
+                'title'=>$input['title'],
+                'content'=>$input['content'],
+                'type'=>config('common.email_type'),
+                'queue_priority'=>0,
+                'is_cc'=>0
+            ]);
+        }
+        throw new ApiException(['code'=>0,'msg'=>'send ok','data'=>[]]);
+    }
 
 }

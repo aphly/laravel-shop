@@ -21,7 +21,8 @@
                 <ul class="table_header">
                     <li >ID</li>
                     <li >Email</li>
-                    <li >内容</li>
+                    <li >是否查看</li>
+                    <li >是否回复</li>
                     <li >操作</li>
                 </ul>
                 @if($res['list']->total())
@@ -29,7 +30,17 @@
                     <ul class="table_tbody">
                         <li><input type="checkbox" class="delete_box" name="delete[]" value="{{$v['id']}}">{{$v['id']}}</li>
                         <li class="wenzi">{{$v['email']}}</li>
-                        <li class="wenzi">
+                        <li >
+                            @if($dict['yes_no'])
+                                {{$dict['yes_no'][$v->is_view]}}
+                            @endif
+                        </li>
+                        <li >
+                            @if($dict['yes_no'])
+                                {{$dict['yes_no'][$v->is_reply]}}
+                            @endif
+                        </li>
+                        <li >
                             {{$v['content']}}
                         </li>
                         <li>

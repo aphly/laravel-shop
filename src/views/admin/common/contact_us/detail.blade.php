@@ -35,6 +35,7 @@
         <form method="post" action="/shop_admin/contact_us/reply" class="save_form" data-confirm="true">
             @csrf
             <input type="hidden" name="email" class="form-control " value="{{$res['info']->email}}">
+            <input type="hidden" name="id" class="form-control " value="{{$res['info']->id}}">
             <div class="form-group">
                 <label for="">标题</label>
                 <input type="text" name="title"  class="form-control " value="">

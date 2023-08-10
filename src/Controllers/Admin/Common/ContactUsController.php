@@ -3,7 +3,6 @@
 namespace Aphly\LaravelShop\Controllers\Admin\Common;
 
 use Aphly\Laravel\Exceptions\ApiException;
-use Aphly\Laravel\Libs\Editor;
 use Aphly\Laravel\Models\Breadcrumb;
 use Aphly\LaravelCommon\Models\RemoteEmail;
 use Aphly\LaravelShop\Controllers\Admin\Controller;
@@ -15,8 +14,6 @@ class ContactUsController extends Controller
     public $index_url = '/shop_admin/contact_us/index';
 
     private $currArr = ['name'=>'联系我们','key'=>'contact_us'];
-
-    public $imgSize = 1;
 
     public function index(Request $request)
     {
@@ -43,7 +40,9 @@ class ContactUsController extends Controller
             ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
             ['name'=>$res['info']->id?'编辑':'新增','href'=>'/shop_admin/'.$this->currArr['key'].($res['info']->id?'/form?id='.$res['info']->id:'/form')]
         ]);
-        $res['imgSize'] = $this->imgSize;
+        ContactUs::where('id',$res['info']->id)->update([
+            'is_view'=>1
+        ]);
         return $this->makeView('laravel-shop::admin.common.contact_us.detail',['res'=>$res]);
     }
 
@@ -51,10 +50,6 @@ class ContactUsController extends Controller
         $id = $request->query('id',0);
         $input = $request->all();
         $info = ContactUs::where('id',$id)->first();
-        if(!empty($info)){
-            $input['content'] = (new Editor)->edit($info->content,$request->input('content'));
-            $info->update($input);
-        }
         throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
     }
 
@@ -64,10 +59,6 @@ class ContactUsController extends Controller
         $redirect = $query?$this->index_url.'?'.http_build_query($query):$this->index_url;
         $post = $request->input('delete');
         if(!empty($post)){
-            $data = ContactUs::whereIn('id',$post)->get();
-            foreach($data as $val){
-                (new Editor)->del($val->content);
-            }
             ContactUs::whereIn('id',$post)->delete();
             throw new ApiException(['code'=>0,'msg'=>'操作成功','data'=>['redirect'=>$redirect]]);
         }
@@ -87,6 +78,9 @@ class ContactUsController extends Controller
                 'is_cc'=>0
             ]);
         }
+        ContactUs::where('id',$input['id'])->update([
+            'is_reply'=>1
+        ]);
         throw new ApiException(['code'=>0,'msg'=>'send ok','data'=>[]]);
     }
 

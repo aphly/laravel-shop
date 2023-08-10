@@ -12,7 +12,7 @@ class ContactUs extends Model
     //public $timestamps = false;
 
     protected $fillable = [
-        'uuid','email','viewed','content'
+        'uuid','email','is_view','content','is_reply'
     ];
 
 

@@ -5,11 +5,7 @@
 </style>
 <div class="container shop_main">
     <div>
-        <ul class="d-flex my_breadcrumb" >
-            <li><a href="/">Home</a></li>
-            <li class="to"> > </li>
-            <li>{{$res['info']->name}}</li>
-        </ul>
+        {!! $res['breadcrumb'] !!}
     </div>
     <div>
         <div class="product_detail">

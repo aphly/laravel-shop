@@ -3,6 +3,7 @@
 namespace Aphly\LaravelShop\Controllers\Front\Checkout;
 
 use Aphly\Laravel\Exceptions\ApiException;
+use Aphly\Laravel\Models\Breadcrumb;
 use Aphly\LaravelCommon\Models\User;
 use Aphly\LaravelShop\Controllers\Front\Controller;
 use Aphly\LaravelShop\Models\Account\Wishlist;
@@ -16,7 +17,11 @@ class CartController extends Controller
 {
     public function index()
     {
-        $res['title'] = '';
+        $res['title'] = 'Cart';
+        $res['breadcrumb'] = Breadcrumb::render([
+            ['name'=>'Home','href'=>'/'],
+            ['name'=>'Cart','href'=>'']
+        ],false);
         $cart = new Cart;
         $cart->initCart();
         list($res['count'],$res['list'],$res['total_data']) = $cart->totalData();

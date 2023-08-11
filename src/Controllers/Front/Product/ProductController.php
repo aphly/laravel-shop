@@ -3,6 +3,7 @@
 namespace Aphly\LaravelShop\Controllers\Front\Product;
 
 use Aphly\Laravel\Exceptions\ApiException;
+use Aphly\Laravel\Models\Breadcrumb;
 use Aphly\Laravel\Models\UploadFile;
 use Aphly\LaravelCommon\Models\Currency;
 use Aphly\LaravelCommon\Models\User;
@@ -48,6 +49,9 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $res['title'] = 'Index';
+        $res['breadcrumb'] = Breadcrumb::render([
+            ['name'=>'Home','href'=>'/']
+        ],false);
         $res['filter_data'] = $filter_data = [
             'name'      => $request->query('name',false),
             'category_id' => $request->query('category_id',false),
@@ -71,7 +75,11 @@ class ProductController extends Controller
     public function detail(Request $request)
     {
         $res['title'] = 'Detail';
-        $res['info'] = Product::where('id',$request->id)->with('desc')->firstOr404();
+        $res['info'] = Product::where('id',$request->id)->where('status',1)->where('date_available','<',time())->with('desc')->firstOr404();
+        $res['breadcrumb'] = Breadcrumb::render([
+            ['name'=>'Home','href'=>'/'],
+            ['name'=>$res['info']->name,'href'=>'']
+        ],false);
         $res['quantityInCart'] = (new Cart)->quantityInCart($request->id);
         list($res['info']->price,$res['info']->price_format) = Currency::format($res['info']->price,2);
         $res['info_img'] = $res['info']->imgById($res['info']->id);

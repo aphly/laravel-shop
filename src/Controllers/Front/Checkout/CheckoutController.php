@@ -5,6 +5,7 @@ namespace Aphly\LaravelShop\Controllers\Front\Checkout;
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Libs\Func;
 use Aphly\Laravel\Libs\Snowflake;
+use Aphly\Laravel\Models\Breadcrumb;
 use Aphly\LaravelCommon\Models\Country;
 use Aphly\LaravelCommon\Models\Currency;
 use Aphly\LaravelCommon\Models\User;
@@ -27,6 +28,11 @@ class CheckoutController extends Controller
     public function address(Request $request)
     {
         $res['title'] = 'Checkout Address';
+        $res['breadcrumb'] = Breadcrumb::render([
+            ['name'=>'Home','href'=>'/'],
+            ['name'=>'Cart','href'=>'/cart'],
+            ['name'=>'Address','href'=>'']
+        ],false);
         $cart = new Cart;
         if($cart->hasShipping()) {
             list($res['count'], $res['list'], $res['total_data']) = $cart->totalData();
@@ -55,6 +61,12 @@ class CheckoutController extends Controller
     public function shipping(Request $request)
     {
         $res['title'] = 'Checkout Shipping';
+        $res['breadcrumb'] = Breadcrumb::render([
+            ['name'=>'Home','href'=>'/'],
+            ['name'=>'Cart','href'=>'/cart'],
+            ['name'=>'Address','href'=>'/checkout/address'],
+            ['name'=>'Shipping','href'=>'']
+        ],false);
         $cart = new Cart;
         list($res['count'],$res['list'],$res['total_data']) = $cart->totalData();
         if(!$res['count']){
@@ -91,6 +103,13 @@ class CheckoutController extends Controller
     public function payment(Request $request)
     {
         $res['title'] = 'Checkout Pay';
+        $res['breadcrumb'] = Breadcrumb::render([
+            ['name'=>'Home','href'=>'/'],
+            ['name'=>'Cart','href'=>'/cart'],
+            ['name'=>'Address','href'=>'/checkout/address'],
+            ['name'=>'Shipping','href'=>'/checkout/shipping'],
+            ['name'=>'Payment','href'=>''],
+        ],false);
         $cart = new Cart;
         list($res['count'],$res['list'],$res['total_data']) = $cart->totalData();
         if(!$res['count']){

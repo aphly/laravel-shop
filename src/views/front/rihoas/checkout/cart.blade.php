@@ -2,7 +2,7 @@
 
 <style>
     .cart-content{display: flex;flex-wrap: wrap;}
-    .myChart{width: 60%;margin-right: 20px;background: #fff;padding:20px 0;margin-bottom: 20px;}
+    .myChart{width: 60%;margin-right: 20px;background: #fff;padding: 0;margin-bottom: 20px;}
     .cart-pay{width: calc(40% - 20px);}
     .cart-shopping{background:#fff;box-shadow:0 0 15px 0 #e3e3e3;margin-top:0;margin-bottom:10px;padding:50px 30px 30px;position:relative;border-radius: 4px;}
     .close-btn{cursor:pointer;position:absolute;right:10px;top:10px;width:18px}
@@ -67,9 +67,7 @@
 <div class="container shop_main">
     <div class="cart">
         <div class="cart-title">
-            <h2 class="">
-                My Cart
-            </h2>
+            {!! $res['breadcrumb'] !!}
         </div>
         <div class="cart-content">
             <div class="myChart">

@@ -1,10 +1,14 @@
 @include('laravel-shop-front::common.header')
 <style>
-
+.checkout_ul_payment li{display: flex;justify-content: space-between;align-items: center;}
+.checkout_ul_payment img{height:40px; }
 </style>
 <div class="container shop_main">
     <div class="checkout">
         <div class="checkout_l">
+            <div class="">
+                {!! $res['breadcrumb'] !!}
+            </div>
             <div class="checkout_box">
                 <div class="checkout_title">
                     Contact information
@@ -36,10 +40,11 @@
                     <div class="checkout_title">
                         Payment
                     </div>
-                    <ul class="checkout_ul">
+                    <ul class="checkout_ul checkout_ul_payment">
                         @foreach($res['paymentMethod'] as $val)
                             <li class="@if($res['paymentMethod_default_id']==$val['id']) active @endif" data-id="{{$val['id']}}">
-                                {{$val['name']}}
+                                <div>{{$val['name']}}</div>
+                                <img src="/static/payment/img/{{$val['name']}}.png">
                             </li>
                         @endforeach
                     </ul>

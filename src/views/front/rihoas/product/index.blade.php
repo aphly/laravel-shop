@@ -31,11 +31,7 @@
 </script>
 <div class="container shop_main">
     <div>
-        <ul class="d-flex my_breadcrumb" >
-            <li><a href="/">Home</a></li>
-            <li class="to"> > </li>
-            <li>Product</li>
-        </ul>
+        {!! $res['breadcrumb'] !!}
     </div>
     <div class="d-flex">
         <div class="product_list_l">

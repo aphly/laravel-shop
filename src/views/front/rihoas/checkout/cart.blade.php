@@ -4,10 +4,9 @@
     .cart-content{display: flex;flex-wrap: wrap;}
     .myChart{width: 60%;margin-right: 20px;background: #fff;padding: 0;margin-bottom: 20px;}
     .cart-pay{width: calc(40% - 20px);}
-    .cart-shopping{background:#fff;box-shadow:0 0 15px 0 #e3e3e3;margin-top:0;margin-bottom:10px;padding:50px 30px 30px;position:relative;border-radius: 4px;}
+    .cart-shopping{background:#fff;box-shadow:0 0 15px 0 #f1f1f1;margin-top:0;margin-bottom:10px;padding:50px 30px 30px;position:relative;border-radius: 4px;}
     .close-btn{cursor:pointer;position:absolute;right:10px;top:10px;width:18px}
-    .cart-img{width: calc(40% - 20px);margin-right: 20px;}
-    .cart-img_r{width: 60%;}
+
     .cart-product-name{font-size: 18px;font-weight: 700;}
     .shopping-info .cart-product-info{display: flex;justify-content: space-between;padding: 5px 0;}
     .cart-product-info-x{color: #999;}
@@ -16,17 +15,15 @@
 
     .cart-code{margin-top: 10px;}
     .cart-order-summary{padding:0 10px 30px}
-    .btn-apply-code,.cart-code-input{border-radius:5px;height:45px;outline:none}
-    .cart-code-input{border:1px solid #ccc;padding-left:10px;width:calc(100% - 120px)}
-    .btn-apply-code{background:#f16c00;border:none;color:#fff;font-size:14px;line-height:43px;padding:0;width: 110px;margin-left: 5px;position: relative;top: -1px;}
-    .btn-apply-code:hover{color:#fff;}
 
-    .summarytip{border-bottom:1px solid #dadada;padding:10px 0 13px;position:relative}
-    .cart-total-summary{padding-top:25px}
+    .cart-img{width: 200px;margin-right: 20px;}
+    .cart-img_r{width:calc(100% - 220px);}
+
+    .cart-total-summary{padding-top:15px}
     .cart-total-summary dl{display:flex;justify-content:space-between;flex-wrap: wrap;}
     .cart-total-summary dl dd{width: 100%;display: flex;justify-content: space-between;margin-bottom: 5px;}
     .total-summary{margin-bottom:10px;font-weight:600}
-    .cart-total-detail{border-top:1px solid #dadada;margin-top:23px;padding-top:25px;font-size:16px;font-weight:700}
+    .cart-total-detail{border-top:1px solid #f1f1f1;margin-top:15px;padding-top:20px;font-size:16px;font-weight:700}
     .btn-checkout{background:var(--btn_bg);border-radius:4px;color:var(--btn_color);font-size:16px;height:45px;width:100%; line-height: 38px;font-weight: 600;}
     .btn-checkout:hover{background:var(--btn_bg_hover);color:var(--btn_color_hover)}
     .btn-checkout:disabled{background: #b6b6b6!important;}
@@ -48,19 +45,23 @@
         -webkit-appearance: none !important;
     }
     .img-product img{width: 100%;}
-    .coupon-remove {color: #0da9c4;cursor: pointer}
+
     .empty-text{margin-top:70px}
     .emptyTitle{font-size:30px;font-weight:700;margin-bottom:15px}
     .btn-empty{margin-top:45px}
     .btn-empty .color-link-white{background:#0da9c4;border:none;border-radius:4px;color:#fff;display:inline-block;font-size:18px;height:50px;line-height:50px;width:40%;}
     .cart-empty img{max-width: 100%;}
     .cart-empty{text-align: center;}
+    .discount_code{font-weight: 600;}
     @media (max-width: 1200px) {
         .myChart{width: 100%;margin-right: 0;}
         .cart-pay{width: 100%;}
         .img-product img{height:100px; }
         .cart-shopping{padding:40px 20px 20px;}
         .btn-empty .color-link-white{font-size: 12px;}
+
+        .cart-img{width: calc(40% - 20px);margin-right: 20px;}
+        .cart-img_r{width: 60%;}
     }
 </style>
 
@@ -154,14 +155,14 @@
             <div class="cart-pay">
                 <div class="cart-sidebar " >
                     <div class="cart-order-summary" >
-                        <p class="font-weight-bold ">
-                            Discount Code:
+                        <p class="discount_code">
+                            Discount Code
                         </p>
                         <div class="cart-code">
                             <form class="code-apply form_request" action="/cart/coupon" method="post" data-fn="coupon_res">
                                 @csrf
-                                <div class="form-group">
-                                    <input class="cart-code-input" type="text" placeholder="Promo code" name="coupon_code" value="" autocomplete="off">
+                                <div class="" style="margin-bottom: 5px;">
+                                    <input class="cart-code-input" type="text" placeholder="Discount code" name="coupon_code" value="" autocomplete="off">
                                     <button class="btn btn-apply-code">Apply</button>
                                 </div>
                             </form>
@@ -203,7 +204,7 @@
                             </dd>
                         </dl>
 
-                        <div class="cart-proceed-checkout">
+                        <div class="cart-proceed-checkout" style="padding: 10px 0;">
                             <button type="button" class="btn btn-checkout proceed-to-checkout" @if(!$res['count']) disabled @endif>
                                 Proceed to Checkout
                             </button>

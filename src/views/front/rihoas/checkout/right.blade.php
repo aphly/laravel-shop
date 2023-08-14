@@ -2,7 +2,33 @@
 .items-img{position: relative}
 .items-lists .title{font-weight: 500;line-height: 25px;height: 25px;}
 .items-qty{position:absolute;right:-5px;width:20px;height:20px;background:#999;color:#fff;border-radius:50%;text-align:center;top:-5px;font-size:12px;line-height:20px}
+.checkout_cart{display: none;}
+.checkout-coupon {
+    padding: 0 0 20px;
+}
+.checkout-totals{padding: 0 5px;}
+.checkout_coupon_form{display: flex;justify-content: space-between;}
+@media (max-width: 1199.99px) {
+    .checkout{flex-direction:column-reverse}
+    .items-info-list-all{display: none;}
+    .checkout_cart{display: flex;justify-content: space-between;align-items: center;}
+    .front_breadcrumb{margin-bottom: 0;}
+    .checkout_r{margin: 10px 0;background: #f9f9f9;padding:10px;border-radius: 4px;}
+    .items-total-price{font-size: 16px;}
+    .checkout_cart span{margin: 0 5px;}
+    .checkout_cart i.uni{font-size: 12px;}
+}
 </style>
+<div class="checkout_cart">
+    <div>
+        <i class="common-iconfont icon-31gouwuche"></i>
+        <span>Show order summary</span>
+        <i class="uni app-xiangxiajiantou"></i>
+    </div>
+    <div>
+        {{$res['total_data']['total_format']}}
+    </div>
+</div>
 <div class="items-info-list-all">
     <div class="items-info-list">
         @foreach($res['list'] as $val)
@@ -30,12 +56,32 @@
                 </div>
                 <div class="items-subtotal">
                     <span>{{$val['total_format']}}</span>
-                    @if($val['discount'])
+                    @if($val['discount'] && 0)
                     <span class="discount">-{{$val['discount_format']}}</span>
                     @endif
                 </div>
             </div>
         @endforeach
+    </div>
+    <div class="checkout-coupon">
+        <form action="/cart/coupon" class="form_request checkout_coupon_form" method="post" data-fn="checkout_coupon_res" style="width: 100%;">
+            @csrf
+            <input class="cart-code-input" type="text" placeholder="Discount code" name="coupon_code" value="" autocomplete="off">
+            <button class="btn btn-apply-code">Apply</button>
+        </form>
+        @if(isset($res['total_data']['totals']['coupon']))
+        <div class="summarytip" style="border-bottom: none;padding-bottom: 0;">
+            <div class="coupon-used text-left  hide-item">
+                <div class="d-flex justify-content-between">
+                    <div style="padding: 0 5px;color: #666;">
+                        Applied Coupon:
+                        <strong class="coupon-code cart-list-coupon-code">ccc</strong>
+                    </div>
+                    <div class="coupon-remove" onclick="couponRemove()">Remove</div>
+                </div>
+            </div>
+        </div>
+        @endif
     </div>
     <div class="checkout-totals">
         <div class="items-price">
@@ -58,3 +104,26 @@
         </div>
     </div>
 </div>
+<script>
+    $(function () {
+        $('.checkout_cart').click(function () {
+            $('.items-info-list-all').toggle();
+            if($('.checkout_cart i.uni').hasClass('app-xiangxiajiantou')){
+                $('.checkout_cart i.uni').removeClass('app-xiangxiajiantou').addClass('app-xiangshangjiantou')
+            }else{
+                $('.checkout_cart i.uni').addClass('app-xiangxiajiantou').removeClass('app-xiangshangjiantou')
+            }
+        })
+    })
+    function checkout_coupon_res(res) {
+        location.reload()
+    }
+    function couponRemove() {
+        $.ajax({
+            url:'/cart/coupon_remove',
+            success:function () {
+                location.reload()
+            }
+        })
+    }
+</script>

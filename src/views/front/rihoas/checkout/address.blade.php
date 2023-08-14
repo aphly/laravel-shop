@@ -2,11 +2,11 @@
 <style>
 </style>
 <div class="container shop_main">
+    <div class="">
+        {!! $res['breadcrumb'] !!}
+    </div>
     <div class="checkout">
         <div class="checkout_l">
-            <div class="">
-                {!! $res['breadcrumb'] !!}
-            </div>
             <div class="checkout_box">
                 <div class="checkout_title">
                     Contact information

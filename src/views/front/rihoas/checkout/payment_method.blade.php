@@ -1,14 +1,15 @@
 @include('laravel-shop-front::common.header')
 <style>
 .checkout_ul_payment li{display: flex;justify-content: space-between;align-items: center;}
-.checkout_ul_payment img{height:40px; }
+.checkout_ul_payment img{height:30px; }
 </style>
 <div class="container shop_main">
+    <div class="">
+        {!! $res['breadcrumb'] !!}
+    </div>
     <div class="checkout">
         <div class="checkout_l">
-            <div class="">
-                {!! $res['breadcrumb'] !!}
-            </div>
+
             <div class="checkout_box">
                 <div class="checkout_title">
                     Contact information

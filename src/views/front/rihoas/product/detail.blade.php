@@ -1,7 +1,10 @@
 @include('laravel-shop-front::common.header')
 <link rel="stylesheet" href="{{ URL::asset('static/shop/css/idangerous.swiper.css') }}"/>
 <style>
-
+    .info_img_big{height: 100%;}
+.info_img_big li{display: none;height: 100%;}
+.info_img_big li.on{display: block;}
+.info_img_big img{width: 100%;}
 </style>
 <div class="container shop_main">
     <div>
@@ -11,7 +14,15 @@
         <div class="product_detail">
             <div class="product_detail_img">
                 <div class="big_img aphly_viewer_js">
-                    <img src="{{ $res['info_img'][0]['image_src']??URL::asset('static/base/img/none.png') }}" class="aphly_viewer">
+                    @if($res['info_img'])
+                        <ul class="info_img_big">
+                            @foreach($res['info_img'] as $k=>$v)
+                            <li data-image_id="{{$v['id']}}" @if(!$k) class="on" @endif><img src="{{ $v['image_src'] }}" class="aphly_viewer"></li>
+                            @endforeach
+                        </ul>
+                    @else
+                        <img src="{{ URL::asset('static/base/img/none.png') }}" class="aphly_viewer">
+                    @endif
                 </div>
                 @if($res['info_img'])
                     <div class="small_img  position-relative ">
@@ -283,6 +294,9 @@
     function changepic(_this) {
         $('.swiper-container .swiper-slide').removeClass('active')
         $(_this).addClass('active')
+        let image_id = $(_this).data('image_id')
+        $('.info_img_big li').removeClass('on')
+        $('.info_img_big li[data-image_id="'+image_id+'"]').addClass('on')
         $('.big_img img').attr('src', $(_this).data('src')).attr('data-original',$(_this).data('src'));
     }
 

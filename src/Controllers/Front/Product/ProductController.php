@@ -50,7 +50,8 @@ class ProductController extends Controller
     {
         $res['title'] = 'Index';
         $res['breadcrumb'] = Breadcrumb::render([
-            ['name'=>'Home','href'=>'/']
+            ['name'=>'Home','href'=>'/'],
+            ['name'=>'All','href'=>''],
         ],false);
         $res['filter_data'] = $filter_data = [
             'name'      => $request->query('name',false),

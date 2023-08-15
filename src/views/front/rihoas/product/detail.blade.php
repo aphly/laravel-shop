@@ -1,10 +1,7 @@
 @include('laravel-shop-front::common.header')
-<link rel="stylesheet" href="{{ URL::asset('static/shop/css/idangerous.swiper.css') }}"/>
+<link rel="stylesheet" href="{{ URL::asset('static/shop/css/swiper-bundle.min.css') }}"/>
 <style>
-    .info_img_big{height: 100%;}
-.info_img_big li{display: none;height: 100%;}
-.info_img_big li.on{display: block;}
-.info_img_big img{width: 100%;}
+
 </style>
 <div class="container shop_main">
     <div>
@@ -25,8 +22,11 @@
                     @endif
                 </div>
                 @if($res['info_img'])
-                    <div class="small_img  position-relative ">
-                        <div class="swiper-container swiper-container_pc">
+                    <div class="small_img   ">
+                        <div class="lr_icon lr_icon_left">
+                            <i class="uni app-fanhui1"></i>
+                        </div>
+                        <div class="swiper-container swiper-container_pc" style="overflow: hidden;">
                             <div class="swiper-wrapper">
                                 @foreach($res['info_img'] as $v)
                                     <div class="swiper-slide " data-image_id="{{$v['id']}}"
@@ -37,11 +37,8 @@
                                 @endforeach
                             </div>
                         </div>
-                        <div class="lr_icon left">
-                            <div></div>
-                        </div>
-                        <div class="lr_icon right">
-                            <div></div>
+                        <div class="lr_icon lr_icon_right">
+                            <i class="uni app-fanhui1"></i>
                         </div>
                     </div>
                 @endif
@@ -283,12 +280,23 @@
     }
 </script>
 
-<script src="{{ URL::asset('static/shop/js/idangerous.swiper.min.js') }}" type="text/javascript"></script>
+<script src="{{ URL::asset('static/shop/js/swiper-bundle.min.js') }}" type="text/javascript"></script>
 
 <script>
     var detailSwiper = new Swiper('.swiper-container_pc', {
+        direction: "horizontal",
+        slidesPerView: 3,
         paginationClickable: true,
-        slidesPerView: "auto"
+        navigation: {
+            prevEl: '.lr_icon_left',
+            nextEl: '.lr_icon_right',
+        },
+        breakpoints: {
+            1200: {
+                direction: "vertical",
+                slidesPerView: 5,
+            },
+        }
     })
 
     function changepic(_this) {
@@ -297,18 +305,9 @@
         let image_id = $(_this).data('image_id')
         $('.info_img_big li').removeClass('on')
         $('.info_img_big li[data-image_id="'+image_id+'"]').addClass('on')
-        $('.big_img img').attr('src', $(_this).data('src')).attr('data-original',$(_this).data('src'));
     }
 
     $(function () {
-
-        $('.lr_icon.left').on('click', function (e) {
-            detailSwiper.swipePrev()
-        })
-
-        $('.lr_icon.right').on('click', function (e) {
-            detailSwiper.swipeNext()
-        })
 
         $('.info_option').on('click','input',function () {
             let flag_radio = $(this).closest('.flag_radio')

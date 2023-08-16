@@ -92,7 +92,7 @@
                             <div class="quantity-up">+</div>
                         </div>
                     </div>
-                    <button class="add_cart_btn " type="submit">Add To Cart</button>
+                    <button class="add_cart_btn " id="add_cart_btn" type="submit">Add To Cart</button>
                 </form>
 
             </div>
@@ -253,30 +253,32 @@
             $('.add_photo').click(function () {
                 $('.add_photo_file').click();
             })
-            let date = new Date();
-            let dateArray1 = date.toDateString().split(' ');
-            let shipping1 = dateArray1[1]+ ' ' + dateArray1[2]
-            $('.shipping1').html(shipping1)
-            let dateArray2 =  new Date(date.setDate(date.getDate()+1)).toDateString().split(' ');
-            let shipping2 = dateArray2[1]+ ' ' + dateArray2[2]
-            $('.shipping2').html(shipping2)
-            let dateArray21 =  new Date(date.setDate(date.getDate()+1)).toDateString().split(' ');
-            let shipping21 = dateArray21[1]+ ' ' + dateArray21[2]
-            $('.shipping21').html(shipping21)
-            let dateArray3 =  new Date(date.setDate(date.getDate()+6)).toDateString().split(' ');
-            let shipping3 = dateArray3[1]+ ' ' + dateArray3[2]
-            $('.shipping3').html(shipping3)
-            let dateArray31 =  new Date(date.setDate(date.getDate()+22)).toDateString().split(' ');
-            let shipping31 = dateArray31[1]+ ' ' + dateArray31[2]
-            $('.shipping31').html(shipping31)
+            //shipping time
+            // let date = new Date();
+            // let dateArray1 = date.toDateString().split(' ');
+            // let shipping1 = dateArray1[1]+ ' ' + dateArray1[2]
+            // $('.shipping1').html(shipping1)
+            // let dateArray2 =  new Date(date.setDate(date.getDate()+1)).toDateString().split(' ');
+            // let shipping2 = dateArray2[1]+ ' ' + dateArray2[2]
+            // $('.shipping2').html(shipping2)
+            // let dateArray21 =  new Date(date.setDate(date.getDate()+1)).toDateString().split(' ');
+            // let shipping21 = dateArray21[1]+ ' ' + dateArray21[2]
+            // $('.shipping21').html(shipping21)
+            // let dateArray3 =  new Date(date.setDate(date.getDate()+6)).toDateString().split(' ');
+            // let shipping3 = dateArray3[1]+ ' ' + dateArray3[2]
+            // $('.shipping3').html(shipping3)
+            // let dateArray31 =  new Date(date.setDate(date.getDate()+22)).toDateString().split(' ');
+            // let shipping31 = dateArray31[1]+ ' ' + dateArray31[2]
+            // $('.shipping31').html(shipping31)
         })
     </script>
 </div>
 
 <script>
     function detail_res(res) {
-        $('.cart_num').text(res.data.count);
-        alert_msg(res)
+        div_fly($('#add_cart_btn'),$('#cart_num'),function () {
+            $('.cart_num').text(res.data.count);
+        })
     }
 </script>
 

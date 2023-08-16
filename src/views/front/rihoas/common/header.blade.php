@@ -7,7 +7,7 @@
 </style>
 
 <script>
-    
+
     $(function () {
         let header_cart = $('.cart_num').offset();
 

@@ -16,7 +16,7 @@
                 <select name="status" class="form-control">
                     @if(isset($dict['status']))
                         @foreach($dict['status'] as $key=>$val)
-                            <option value="{{$key}}" @if($res['filterGroup']->status==$key) selected @endif>{{$val}}</option>
+                            <option value="{{$key}}" @if($res['filterGroup']->status===$key) selected @endif>{{$val}}</option>
                         @endforeach
                     @endif
                 </select>

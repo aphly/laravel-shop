@@ -374,7 +374,7 @@ class Product extends Model
             if($val['option']['type']=='select'){
                 $html .= '<div class="form-group flag_select'.($val['required']==1?'required':'').'">
                               <div class="control-label">'.$val['option']['name'].'</div>
-                              <select name="option['.$val['id'].']" class="form-control">';
+                              <select name="option['.$val['id'].']" class="form-control" '.($val['required']==1?'required':'').'>';
                 foreach ($val['product_option_value'] as $v){
                     $html .= '<option data-price="'.$v['price'].'" value="'.$v['id'].'">'.$v['option_value']['name'].'</option>';
                 }
@@ -395,8 +395,8 @@ class Product extends Model
                     }else{
                         $img = $v['option_value']['image']?'<img src="'.$v['option_value']['image_src'].'" />':'';
                     }
-                    $html .= '<input data-image_id="'.$v['product_image_id'].'" '.$data_image_src.' data-price="'.$v['price'].'" type="radio" name="option['.$val['id'].']" id="option_'.$val['id'].'_'.$v['id'].'" value="'.$v['id'].'" />
-                            <label for="option_'.$val['id'].'_'.$v['id'].'" >'.$img.$v['option_value']['name'].'</label>';
+                    $html .= '<div class="position-relative"><input '.($val['required']==1?'required':'').' data-image_id="'.$v['product_image_id'].'" '.$data_image_src.' data-price="'.$v['price'].'" type="radio" name="option['.$val['id'].']" id="option_'.$val['id'].'_'.$v['id'].'" value="'.$v['id'].'" />
+                            <label for="option_'.$val['id'].'_'.$v['id'].'" >'.$img.$v['option_value']['name'].'</label></div>';
                 }
                 $html .= '</div></div>';
             }else if($val['option']['type']=='checkbox'){
@@ -405,24 +405,24 @@ class Product extends Model
                               <div class="div_ul">';
                 foreach ($val['product_option_value'] as $v){
                     $img = $v['option_value']['image']?'<img src="'.$v['option_value']['image_src'].'" />':'';
-                    $html .= '<input data-price="'.$v['price'].'" type="checkbox" name="option['.$val['id'].'][]" id="option_'.$val['id'].'_'.$v['id'].'" value="'.$v['id'].'" /><label for="option_'.$val['id'].'_'.$v['id'].'">'
-                        .$img.$v['option_value']['name'].'</label>';
+                    $html .= '<div class="position-relative"><input '.($val['required']==1?'required':'').' data-price="'.$v['price'].'" type="checkbox" name="option['.$val['id'].'][]" id="option_'.$val['id'].'_'.$v['id'].'" value="'.$v['id'].'" /><label for="option_'.$val['id'].'_'.$v['id'].'">'
+                        .$img.$v['option_value']['name'].'</label></div>';
                 }
                 $html .= '</div></div>';
             }else if($val['option']['type']=='text'){
                 $html .= '<div class="form-group '.($val['required']==1?'required':'').'">
                               <div class="control-label">'.$val['option']['name'].'</div>
-                              <input type="text" name="option['.$val['id'].']" value="'.$val['value'].'" placeholder="'.$val['option']['name'].'" class="form-control" />
+                              <input type="text" '.($val['required']==1?'required':'').' name="option['.$val['id'].']" value="'.$val['value'].'" placeholder="'.$val['option']['name'].'" class="form-control" />
                             </div>';
             }else if($val['option']['type']=='textarea'){
                 $html .= '<div class="form-group '.($val['required']==1?'required':'').'">
                               <div class="control-label">'.$val['option']['name'].'</div>
-                              <textarea name="option['.$val['id'].']" placeholder="'.$val['value'].'" class="form-control" >'.$val['value'].'</textarea>
+                              <textarea '.($val['required']==1?'required':'').' name="option['.$val['id'].']" placeholder="'.$val['value'].'" class="form-control" >'.$val['value'].'</textarea>
                             </div>';
             }else if($val['option']['type']=='date' || $val['option']['type']=='datetime-local' || $val['option']['type']=='date'){
                 $html .= '<div class="form-group '.($val['required']==1?'required':'').'">
                               <div class="control-label">'.$val['option']['name'].'</div>
-                              <input type="'.$val['option']['type'].'" name="option['.$val['id'].']" value="'.$val['value'].'" placeholder="'.$val['value'].'" class="form-control" />
+                              <input '.($val['required']==1?'required':'').' type="'.$val['option']['type'].'" name="option['.$val['id'].']" value="'.$val['value'].'" placeholder="'.$val['value'].'" class="form-control" />
                             </div>';
             }
 

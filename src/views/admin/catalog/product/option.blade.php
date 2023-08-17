@@ -225,7 +225,7 @@
                                 <div class="">
                                     <select name="product_option[${id}][${option_id}][required]" class="form-control">
                                         @foreach($dict['yes_no'] as $key=>$val)
-                                            <option value="{{$key}}" @if($key==2) selected @endif>{{$val}}</option>
+                                            <option value="{{$key}}" @if($key) selected @endif>{{$val}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -303,7 +303,7 @@
                     <span>
                         <select name="product_option[${id}][${option_id}][option_value][${vid}][subtract]" class="form-control">
                             @foreach($dict['yes_no'] as $key=>$val)
-                                <option value="{{$key}}" @if($key==2) selected @endif>{{$val}}</option>
+                                <option value="{{$key}}" @if(!$key) selected @endif>{{$val}}</option>
                             @endforeach
                         </select>
                     </span>

@@ -94,6 +94,7 @@
                     </div>
                     <button class="add_cart_btn " id="add_cart_btn" type="submit">Add To Cart</button>
                 </form>
+                <button class="buy_btn " id="buy_btn" type="button" onclick="buyNow(this)" style="margin-top: 10px;">Buy Now</button>
 
             </div>
 
@@ -236,7 +237,6 @@
         @endif
     </div>
     @endif
-
     <script>
         function review_res(res) {
             if(res.code===0){
@@ -275,10 +275,23 @@
 </div>
 
 <script>
+    let buy_now = false;
     function detail_res(res) {
-        div_fly($('#add_cart_btn'),$('#cart_num'),function () {
-            $('.cart_num').text(res.data.count);
-        })
+        if(!res.code){
+            if(buy_now){
+                location.href = '/checkout/address'
+            }else{
+                div_fly($('#add_cart_btn'),$('#cart_num'),function () {
+                    $('.cart_num').text(res.data.count);
+                })
+            }
+        }
+        $('#buy_btn').removeAttr('disabled')
+    }
+    function buyNow(_this) {
+        buy_now = true;
+        $('#add_cart_btn').click()
+        $(_this).attr('disabled',true).html('<i class="btn_loading app-jiazai uni"></i>');
     }
 </script>
 
@@ -287,7 +300,7 @@
 <script>
     var detailSwiper = new Swiper('.swiper-container_pc', {
         direction: "horizontal",
-        slidesPerView: 3,
+        slidesPerView: 4,
         paginationClickable: true,
         navigation: {
             prevEl: '.lr_icon_left',
@@ -296,7 +309,7 @@
         breakpoints: {
             1200: {
                 direction: "vertical",
-                slidesPerView: 5,
+                slidesPerView: 7,
             },
         }
     })

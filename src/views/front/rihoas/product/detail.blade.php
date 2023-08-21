@@ -323,27 +323,20 @@
     }
 
     $(function () {
-
-        $('.info_option').on('click','input',function () {
-            let flag_radio = $(this).closest('.flag_radio')
-            if(flag_radio.length>0){
-                $(this).closest('div').find('label').removeClass('active')
-                $(this).next('label').addClass('active')
-                if($(this).data('image_src')){
-                    $('.product_detail_img .swiper-slide[data-image_id="'+$(this).data('image_id')+'"]').click()
-                }
-            }
-            let flag_checkbox = $(this).closest('.flag_checkbox')
-            if(flag_checkbox.length>0){
-                let label = $(this).next('label')
-                if(label.hasClass('active')){
-                    label.removeClass('active')
-                }else{
-                    label.addClass('active')
-                }
+        $('.flag_radio').on('click','label',function () {
+            $(this).closest('.flag_radio').find('label').removeClass('active')
+            $(this).addClass('active')
+            let input = $(this).siblings('input')
+            if(input.data('image_src')){
+                $('.product_detail_img .swiper-slide[data-image_id="'+input.data('image_id')+'"]').click()
             }
             price()
         })
+        $('.flag_checkbox').on('click','label',function () {
+            $(this).toggleClass('active')
+            price()
+        })
+
         $('.info_option').on('change','select',function () {
             price()
         })
@@ -369,12 +362,12 @@
             }
             let radio_price = 0
             $('.flag_radio').each(function () {
-                radio_price += $(this).find('input[type="radio"]:checked').data('price')
+                radio_price += Number($(this).find('input[type="radio"]:checked').data('price'))
             })
             let checkbox_price = 0;
             $('.flag_checkbox').each(function () {
                 $(this).find('input[type="checkbox"]:checked').each(function () {
-                    checkbox_price+=$(this).data('price')
+                    checkbox_price += Number($(this).data('price'))
                 })
             })
             let select_price = 0;
@@ -387,9 +380,9 @@
             $('.price_js').html(currency._format(price,'{{$currency[2]['symbol_left']}}','{{$currency[2]['symbol_right']}}'))
         }
 
-        $('.info_option .flag_radio').each(function () {
-            $(this).find('input:first').click();
-        })
+        // $('.info_option .flag_radio').each(function () {
+        //     $(this).find('.div_ul>div:first label').click();
+        // })
 
         $('.quantity-wrapper').on('click','.quantity-down', function (e) {
             let input = $(this).parent().find('input')

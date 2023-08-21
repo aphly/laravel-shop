@@ -40,13 +40,12 @@
                     @foreach($res['list'] as $v)
                     <ul class="table_tbody">
                         <li><input type="checkbox" class="delete_box" name="delete[]" value="{{$v['id']}}">{{$v['id']}}</li>
-
                         <li>
                             @if($v['image'])
                                 <img style="width: 30px;height: 30px;" src="{{Storage::url($v['image'])}}" />
                             @endif
                         </li>
-                        <li>{{$v['name']}}</li>
+                        <li><a href="/product/{{$v['id']}}">{{$v['name']}}</a></li>
                         <li>{{$v['price']}}</li>
                         <li>
                             @if($dict['product_status'])

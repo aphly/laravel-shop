@@ -6,6 +6,7 @@ use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Libs\Func;
 use Aphly\Laravel\Libs\Snowflake;
 use Aphly\Laravel\Models\Breadcrumb;
+use Aphly\Laravel\Requests\FormRequest;
 use Aphly\LaravelCommon\Models\Country;
 use Aphly\LaravelCommon\Models\Currency;
 use Aphly\LaravelCommon\Models\User;
@@ -25,7 +26,7 @@ use Illuminate\Support\Facades\Cookie;
 class CheckoutController extends Controller
 {
 
-    public function address(Request $request)
+    public function address(FormRequest $request)
     {
         $res['title'] = 'Checkout Address';
         $res['breadcrumb'] = Breadcrumb::render([
@@ -41,6 +42,16 @@ class CheckoutController extends Controller
             }
             if ($request->isMethod('post')) {
                 $input = $request->all();
+                $request->validate($input,[
+                    'firstname' => 'required|between:2,32',
+                    'lastname' => 'required|between:2,32',
+                    'address_1' => 'required|between:2,255',
+                    'city' => 'required|between:2,128',
+                    'postcode' => 'required|numeric',
+                    'telephone' => 'required|numeric',
+                    'country_id' => 'required|numeric',
+                    'zone_id' => 'required|numeric',
+                ]);
                 $input['uuid'] = User::uuid();
                 $userAddress = UserAddress::updateOrCreate(['id' => $request->input('address_id', 0)], $input);
                 Cookie::queue('shop_address_id', $userAddress->id);

@@ -62,6 +62,8 @@
 
         .cart-img{width: calc(40% - 20px);margin-right: 20px;}
         .cart-img_r{width: 60%;}
+        .cart-product-name{font-size: 16px;font-weight: 500;}
+        .subtotalInfo{margin-top: 15px;}
     }
 </style>
 
@@ -84,7 +86,7 @@
                                     </div>
                                     <div class="cart-img_r cart_product_js" data-cart_id="{{$val['id']}}">
                                         <ul class="cart_product">
-                                            <li class="cart-product-info">
+                                            <li class="cart-product-info wenzi">
                                                 <a href="/product/{{$val['product_id']}}" class="img-product">
                                                     <span class="cart-product-name">{{$val['product']['name']}}</span>
                                                 </a>

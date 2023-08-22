@@ -53,26 +53,31 @@
                                 <option class="country_option" value="{{$val['id']}}">{{$val['name']}}</option>
                             @endforeach
                             </select>
+                            <div class="invalid-feedback"></div>
                         </div>
                         <div class="form-group checkout_address_group">
                             <label class="">State / Province</label>
-                            <select name="zone_id" required id="input-zone" class="form-control">
+                            <select name="zone_id" id="input-zone" class="form-control">
                                 <option value="" class="zone_option"> --- None --- </option>
                             </select>
+                            <div class="invalid-feedback"></div>
                         </div>
                         <div class="checkout_address_group_p">
                             <div class="form-group checkout_address_group">
                                 <label class="">First name</label>
                                 <input type="text" name="firstname" placeholder="First name" required class="form-control ">
+                                <div class="invalid-feedback"></div>
                             </div>
                             <div class="form-group checkout_address_group">
                                 <label class="">Last name</label>
                                 <input type="text" name="lastname" required placeholder="Last name" class="form-control ">
+                                <div class="invalid-feedback"></div>
                             </div>
                         </div>
                         <div class="form-group checkout_address_group">
                             <label class="">Address 1</label>
                             <input type="text" name="address_1" required placeholder="Address 1" class="form-control ">
+                            <div class="invalid-feedback"></div>
                         </div>
                         <div class="form-group checkout_address_group">
                             <label class="">Address 2</label>
@@ -82,15 +87,18 @@
                             <div class="form-group checkout_address_group">
                                 <label class="">City</label>
                                 <input type="text" name="city" required placeholder="City" class="form-control ">
+                                <div class="invalid-feedback"></div>
                             </div>
                             <div class="form-group checkout_address_group">
                                 <label class="">Postcode</label>
                                 <input type="text" name="postcode" required placeholder="Postcode" class="form-control " >
+                                <div class="invalid-feedback"></div>
                             </div>
                         </div>
                         <div class="form-group checkout_address_group">
                             <label class="">Telephone</label>
                             <input type="text" name="telephone"  placeholder="Telephone" class="form-control ">
+                            <div class="invalid-feedback"></div>
                         </div>
                     </div>
                 </div>
@@ -205,9 +213,11 @@
         }
         $('#input-zone').html(html)
     }
-    function checkout_address(res) {
+    function checkout_address(res,_this) {
         if(!res.code){
             location.href = res.data.redirect
+        }else if(res.code===11000){
+            form_err_11000(res,_this);
         }
     }
 </script>

@@ -85,7 +85,9 @@
                                     <div class="cart-img_r cart_product_js" data-cart_id="{{$val['id']}}">
                                         <ul class="cart_product">
                                             <li class="cart-product-info">
-                                                <span class="cart-product-name">{{$val['product']['name']}}</span>
+                                                <a href="/product/{{$val['product_id']}}" class="img-product">
+                                                    <span class="cart-product-name">{{$val['product']['name']}}</span>
+                                                </a>
                                             </li>
                                             @if($val['option_value_str'])
                                                 <li class="cart-product-info-x">

@@ -224,20 +224,20 @@
                             @endif
                             </a>
                         </div>
+                        @if(isset($res['product_option'][$val->id]['product_option_value']))
                         <div class="product_option">
-                            @if(isset($res['product_option'][$val->id]['product_option_value']))
-                                <dl>
-                                    @foreach($res['product_option'][$val->id]['product_option_value'] as $v)
-                                        @if($v['product_image'] && $v['product_image']['image_src'])
-                                            <dd data-image_id="{{$v['product_image']['id']}}">
-                                                <img src="{{ URL::asset('static/base/img/none.png') }}" data-original="{{$v['product_image']['image_src']}}" class="lazy" alt=""></dd>
-                                        @elseif($v['option_value'] && $v['option_value']['image_src'])
-                                            <dd><img src="{{ URL::asset('static/base/img/none.png') }}" data-original="{{$v['option_value']['image_src']}}" class="lazy" alt=""></dd>
-                                        @endif
-                                    @endforeach
-                                </dl>
-                            @endif
+                            <dl>
+                                @foreach($res['product_option'][$val->id]['product_option_value'] as $v)
+                                    @if($v['product_image'] && $v['product_image']['image_src'])
+                                        <dd data-image_id="{{$v['product_image']['id']}}">
+                                            <img src="{{ URL::asset('static/base/img/none.png') }}" data-original="{{$v['product_image']['image_src']}}" class="lazy" alt=""></dd>
+                                    @elseif($v['option_value'] && $v['option_value']['image_src'])
+                                        <dd><img src="{{ URL::asset('static/base/img/none.png') }}" data-original="{{$v['option_value']['image_src']}}" class="lazy" alt=""></dd>
+                                    @endif
+                                @endforeach
+                            </dl>
                         </div>
+                        @endif
                         <a href="/product/{{$val->id}}"><div class="p_name">{{$val->name}}</div></a>
                         <div class="p_name_x d-flex justify-content-between">
                             <div class="d-flex price">
@@ -274,37 +274,8 @@
 </div>
 
 <style>
-.special_price{opacity: 0.5;text-decoration: line-through;}
-.price_sale{color: #e36254;}
-.price span{margin-right: 10px;}
 
-.product_option dl{display: flex;}
-.product_option dl dd{border: 1px solid #ffffff;padding: 4px;}
-.product_option dl dd.active{border: 1px solid saddlebrown}
-.product_option img{width: 28px;height: 28px;}
 
-.product_image img{width: 100%;}
-.product_image dd{display: none}
-.product_image dd.active{display: block}
-.wishlist_one{}
-.wishlist_one i{width: 20px;height: 20px;display: block;cursor: pointer;text-align: center;}
-.p_name{font-weight: 600;}
-.m_filters_btn{display: none;}
-.product-category li .image{height: 170px;}
-.product-category li .image img{height: 100%;width: 100%;}
-@media (max-width: 1199.98px) {
-    .product-category li{width: calc(50% - 5px);}
-    .product-category > li:nth-child(2n),.product-category li:last-child{margin-right:0}
-    .product-category li .image{height: 130px;}
-    .m_filters_btn{ color: #000; font-weight: 600;font-size: 12px;display:block;position:fixed;bottom:50%;right:0;background:#fafafa;writing-mode:vertical-rl;padding:20px 10px;z-index:100;border-bottom-right-radius:8px;border-top-right-radius:8px;transform:rotate(180deg)}
-    .product_list_r{width:100%;}
-    .product_list_l{background:transparent;display:none;position: fixed;left: 0;width: 100%;padding:0;z-index: 1002;top: 55px;height: calc(100% - 55px);}
-    .product_list_l_box1{width: calc(100% - 50px);background: #fff;padding: 20px;height: 100%;overflow-y: auto;}
-    .product_list_l_box2{width: 50px;background: rgba(0,0,0,0.1);}
-    .product_list_l_box{display: flex;height: 100%;}
-    .product_list_r1{margin-bottom: 5px;}
-    .product_list_l1{height: 100%;}
-}
 </style>
 
 <script>

@@ -13,7 +13,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $res['title'] = 'Home index';
+        $res['title'] = 'Home';
         $res['data_products'] = [
             ['title'=>'Top','product_ids'=>[
                 1,2,3

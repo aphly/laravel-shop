@@ -8,14 +8,14 @@
             </ol>
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img src="{{ URL::asset('static/shop/image/banner1.png') }}" class="d-block w-100">
+                    <img src="{{ URL::asset('image/banner1.png') }}" class="d-block w-100">
                     <div class="carousel-caption d-none d-md-block">
                         <h5>First slide label</h5>
                         <p>Some representative placeholder content for the first slide.</p>
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <img src="{{ URL::asset('static/shop/image/banner1.png') }}" class="d-block w-100">
+                    <img src="{{ URL::asset('image/banner2.png') }}" class="d-block w-100">
                     <div class="carousel-caption d-none d-md-block">
                         <h5>Second slide label</h5>
                         <p>Some representative placeholder content for the second slide.</p>

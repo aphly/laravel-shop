@@ -12,7 +12,7 @@ class ReviewImage extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'review_id','image'
+        'review_id','image','remote'
     ];
 
 

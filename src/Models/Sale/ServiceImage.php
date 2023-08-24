@@ -12,7 +12,7 @@ class ServiceImage extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'service_id','image'
+        'service_id','image','remote'
     ];
 
 

@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('shop_service_image', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('service_id')->index();
+            $table->tinyInteger('remote')->default(0);
             $table->string('image',255);
         });
     }

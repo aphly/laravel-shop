@@ -15,9 +15,7 @@ class ProductImage extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'product_id',
-        'image',
-        'sort'
+        'product_id','image','sort','remote'
     ];
 
 

@@ -75,6 +75,7 @@ class Cart extends Model
             $cart_data = self::when($uuid, function ($query, $uuid) {
                 return $query->where('uuid', $uuid);
             })->where(['guest' => Cookie::get('guest')])->with('product')->get()->toArray();
+
             foreach ($cart_data as $cart) {
                 $stock = true;
                 if ($cart['product']['status'] == 1 && $cart['product']['date_available'] < time() && $cart['quantity'] > 0) {
@@ -150,7 +151,8 @@ class Cart extends Model
 
                     list($price,$price_format) = Currency::format($price + $option_price,2);
                     $total = $price * $cart['quantity'];
-                    $cart['product']['image_src'] = UploadFile::getPath($cart['product']['image'],true);
+
+                    $cart['product']['image_src'] = UploadFile::getPath($cart['product']['image'],$cart['product']['remote']);
                     $list[$cart['id']] = $cart;
                     $list[$cart['id']]['option'] = $option_value;
                     $list[$cart['id']]['option_value_str'] = implode(' / ',$option_value_arr);

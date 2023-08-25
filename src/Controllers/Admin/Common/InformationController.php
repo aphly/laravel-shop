@@ -10,6 +10,7 @@ use Aphly\LaravelCommon\Models\NewsCategory;
 use Aphly\LaravelShop\Controllers\Admin\Controller;
 use Aphly\LaravelShop\Models\Common\Information;
 use Illuminate\Http\Request;
+use function Symfony\Component\Translation\t;
 
 class InformationController extends Controller
 {
@@ -83,12 +84,12 @@ class InformationController extends Controller
         if($file){
             $UploadFile = (new UploadFile($this->imgSize));
             try{
-                $image = $UploadFile->upload($file,'public/editor_temp/information');
+                $image = $UploadFile->upload($file,'public/editor_temp/information','local');
             }catch(ApiException $e){
                 $err = ["errno"=>$e->code,"message"=>$e->msg];
                 return $err;
             }
-            $res = ["errno"=>0,"data"=>["url"=>$UploadFile->getPath($image)]];
+            $res = ["errno"=>0,"data"=>["url"=>$UploadFile->getPath($image,'local')]];
         }else{
             $res = ["errno"=>1,"data"=>[]];
         }

@@ -39,14 +39,14 @@
                                 @if($val->img->count())
                                     <ul>
                                     @foreach($val->img as $v)
-                                        <li><img src="{{\Aphly\Laravel\Models\UploadFile::getPath($v->image)}}" alt=""></li>
+                                        <li><img src="{{$v->image_src}}" alt=""></li>
                                     @endforeach
                                     </ul>
                                 @endif
                                 </div>
                                 <a href="/product/{{$val->product->id}}">
                                     <div class="my_review1">
-                                        <div class="my_review11"><img src="{{\Aphly\Laravel\Models\UploadFile::getPath($val->product->image)}}" alt=""></div>
+                                        <div class="my_review11"><img src="{{$val->product->image_src}}" alt=""></div>
                                         <div class="my_review12 wenzi">{{$val->product->name}}</div>
                                     </div>
                                 </a>

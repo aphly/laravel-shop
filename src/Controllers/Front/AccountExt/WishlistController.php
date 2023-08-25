@@ -23,7 +23,7 @@ class WishlistController extends Controller
         }
         $res['productData'] = (new Product)->getByids($product_ids);
         foreach ($res['productData'] as $val){
-            $val->image_src= UploadFile::getPath($val->image,true);
+            $val->image_src= UploadFile::getPath($val->image,$val->remote);
             $val->price= Currency::format($val->price);
             $val->special= $val->special?Currency::format($val->special):0;
             $val->discount= $val->discount?Currency::format($val->discount):0;

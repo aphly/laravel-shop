@@ -65,12 +65,14 @@ class OptionController extends Controller
                 }
                 OptionValue::whereIn('id',$delete_arr)->delete();
                 $files = $request->file('value');
+                $UploadFile = new UploadFile;
                 foreach ($val_arr as $key=>$val){
                     foreach ($val as $k=>$v){
                         $update_arr[$key][$k]=$v;
                     }
                     $update_arr[$key]['id'] = intval($key);
                     $update_arr[$key]['option_id'] = $option->id;
+                    $update_arr[$key]['remote'] = $UploadFile->isRemote();
                     if($key_i = intval($key)){
                         if(isset($val['image'])) {
                             if($val['image'] == 'undefined'){
@@ -78,13 +80,13 @@ class OptionController extends Controller
                                 $update_arr[$key]['image'] = '';
                             }
                         }else{
-                            $update_arr[$key]['image'] = isset($files[$key]['image'])?(new UploadFile)->upload($files[$key]['image'], 'public/shop/option'):'';
+                            $update_arr[$key]['image'] = isset($files[$key]['image'])?$UploadFile->upload($files[$key]['image'], 'public/shop/option'):'';
                             if($update_arr[$key]['image']){
                                 Storage::delete($optionValue[$key_i]['image']);
                             }
                         }
                     }else{
-                        $update_arr[$key]['image'] = isset($files[$key]['image'])?(new UploadFile)->upload($files[$key]['image'], 'public/shop/option'):'';
+                        $update_arr[$key]['image'] = isset($files[$key]['image'])?$UploadFile->upload($files[$key]['image'], 'public/shop/option'):'';
                     }
                 }
                 OptionValue::upsert($update_arr,['id'],['option_id','name','image','sort']);

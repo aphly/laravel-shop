@@ -29,7 +29,7 @@ class Review extends Model
         $review = self::where('product_id',$product_id)->with('img')->orderBy('created_at','desc')->get();
         foreach ($review as $val){
             foreach ($val->img as $v){
-                $v->image_src = UploadFile::getPath($v->image,true);
+                $v->image_src = UploadFile::getPath($v->image,$v->remote);
             }
         }
         return $review;

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('url',255)->nullable();
             $table->integer('quantity')->nullable();
             $table->string('image',255)->nullable();
+            $table->tinyInteger('remote')->default(0);
             $table->decimal('price',15,2)->nullable();
             $table->tinyInteger('is_shipping')->nullable()->default(1);
             $table->unsignedInteger('tax_class_id')->nullable()->default(1);

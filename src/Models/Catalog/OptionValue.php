@@ -12,7 +12,7 @@ class OptionValue extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'name','sort','image','option_id'
+        'name','sort','image','option_id','remote'
     ];
 
 

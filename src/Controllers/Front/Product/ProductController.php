@@ -9,7 +9,6 @@ use Aphly\LaravelCommon\Models\Currency;
 use Aphly\LaravelCommon\Models\User;
 use Aphly\LaravelShop\Controllers\Front\Controller;
 use Aphly\LaravelShop\Models\Account\Wishlist;
-use Aphly\LaravelShop\Models\Catalog\Category;
 use Aphly\LaravelShop\Models\Catalog\FilterGroup;
 use Aphly\LaravelShop\Models\Catalog\Option;
 use Aphly\LaravelShop\Models\Catalog\Product;
@@ -32,7 +31,7 @@ class ProductController extends Controller
         $product_ids = [];
         foreach ($res['list'] as $key=>$val){
             $product_ids[] = $val->id;
-            $val->image_src= UploadFile::getPath($val->image,true);
+            $val->image_src= UploadFile::getPath($val->image,$val->remote);
             $val->price= Currency::format($val->price);
             $val->special= $val->special?Currency::format($val->special):0;
             $val->discount= $val->discount?Currency::format($val->discount):0;
@@ -99,7 +98,7 @@ class ProductController extends Controller
         $res['reviewRatingAvg_100'] = $res['reviewRatingAvg']/5*100;
         foreach ($res['review'] as $val){
             foreach ($val->img as $v){
-                $v->image_src = UploadFile::getPath($v->image,true);
+                $v->image_src = UploadFile::getPath($v->image,$v->remote);
             }
         }
         $res['review_image_length'] = $this->review_image_length;
@@ -124,10 +123,11 @@ class ProductController extends Controller
 //        }
 
         $insertData = $img_src = $file_paths =  [];
+        $UploadFile = new UploadFile($this->review_image_size);
+        $remote = $UploadFile->isRemote();
         if($request->hasFile("files")){
-            $file_paths= (new UploadFile($this->review_image_size))->uploads($this->review_image_length,$request->file("files"), 'public/shop/product/review');
+            $file_paths= $UploadFile->uploads($this->review_image_length,$request->file("files"), 'public/shop/product/review');
         }
-
         $input['author'] = $this->user->nickname;
         $input['uuid'] = $this->user->uuid;
         $input['product_id'] = $request->id;
@@ -135,7 +135,7 @@ class ProductController extends Controller
         if($review->id){
             foreach ($file_paths as $v){
                 $img_src[] = Storage::url($v);
-                $insertData[] = ['review_id'=>$review->id,'image'=>$v];
+                $insertData[] = ['review_id'=>$review->id,'image'=>$v,'remote'=>$remote];
             }
             if ($insertData) {
                 ReviewImage::insert($insertData);

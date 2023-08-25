@@ -30,7 +30,7 @@ class ReviewController extends Controller
         }
         $reviewImage = ReviewImage::whereIn('review_id',$review_ids)->get();
         foreach ($reviewImage as $val){
-            $res['reviewImage'][$val->review_id][] = UploadFile::getPath($val->image);
+            $res['reviewImage'][$val->review_id][] = UploadFile::getPath($val->image,$val->remote);
         }
         $res['breadcrumb'] = Breadcrumb::render([
             ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url]
@@ -45,7 +45,7 @@ class ReviewController extends Controller
             $res['product'] = Product::where('id',$res['review']->product_id)->select('name','id')->first();
             $res['reviewImage'] = ReviewImage::where('review_id',$res['review']->id)->get();
             foreach ($res['reviewImage'] as $val){
-                $val->image_src = UploadFile::getPath($val->image);
+                $val->image_src = UploadFile::getPath($val->image,$val->remote);
             }
         }else{
             $res['product'] = $res['reviewImage'] = [];

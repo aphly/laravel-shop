@@ -3,14 +3,11 @@
 namespace Aphly\LaravelShop\Controllers\Front\AccountExt;
 
 use Aphly\Laravel\Exceptions\ApiException;
-use Aphly\Laravel\Mail\MailSend;
-use Aphly\Laravel\Models\UploadFile;
 use Aphly\LaravelCommon\Models\Currency;
 use Aphly\LaravelCommon\Models\User;
 use Aphly\LaravelPayment\Models\Payment;
 use Aphly\LaravelPayment\Models\PaymentRefund;
 use Aphly\LaravelShop\Controllers\Front\Controller;
-use Aphly\LaravelShop\Mail\Order\Cancel;
 use Aphly\LaravelShop\Models\Sale\Order;
 use Aphly\LaravelShop\Models\Sale\OrderHistory;
 use Aphly\LaravelShop\Models\Sale\OrderProduct;

@@ -154,11 +154,13 @@ class ProductController extends Controller
         $res['info_img'] = ProductImage::where('product_id',$res['product']->id)->orderBy('sort','desc')->get()->toArray();
         if($request->isMethod('post')) {
             if($request->hasFile('file')) {
-                $file_path = (new UploadFile(1))->uploads(10,$request->file('file'), 'public/shop/product/image');
+                $UploadFile = new UploadFile(1);
+                $remote = $UploadFile->isRemote();
+                $file_path = $UploadFile->uploads(10,$request->file('file'), 'public/shop/product/image');
                 $img_src = $insertData = [];
                 foreach ($file_path as $key=>$val) {
                     $img_src[] = Storage::url($val);
-                    $insertData[] = ['product_id'=>$res['product']->id,'image'=>$val,'sort'=>$key];
+                    $insertData[] = ['product_id'=>$res['product']->id,'image'=>$val,'sort'=>$key,'remote'=>$remote];
                 }
                 if ($insertData) {
                     ProductImage::insert($insertData);
@@ -207,9 +209,9 @@ class ProductController extends Controller
     public function updateImg($product_id){
         $productImg = ProductImage::where('product_id',$product_id)->orderBy('sort','desc')->first();
         if(!empty($productImg)){
-            Product::find($productImg->product_id)->update(['image'=>$productImg->image]);
+            Product::find($productImg->product_id)->update(['image'=>$productImg->image,'remote'=>(new UploadFile)->isRemote()]);
         }else{
-            Product::where(['id'=>$product_id])->update(['image'=>'']);
+            Product::where(['id'=>$product_id])->update(['image'=>'','remote'=>(new UploadFile)->isRemote()]);
         }
     }
 

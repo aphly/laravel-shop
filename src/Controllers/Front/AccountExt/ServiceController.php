@@ -36,7 +36,7 @@ class ServiceController extends Controller
         }])->get();
         $res['orderRefund'] = PaymentRefund::where(['payment_id'=>$res['info']->order->payment_id,'status'=>2])->get();
         foreach ($res['info']->img as $val){
-            $val->image_src = UploadFile::getPath($val->image,true);
+            $val->image_src = UploadFile::getPath($val->image,$val->remote);
         }
         return $this->makeView('laravel-shop-front::account_ext.service.detail',['res'=>$res]);
     }
@@ -67,8 +67,9 @@ class ServiceController extends Controller
                     throw new ApiException(['code'=>2,'msg'=>'After-sales time has expired'.$orderHistory->created_at,'data'=>['redirect'=>'/account_ext/service']]);
                 }
                 $insertData = $file_paths =  [];
+                $UploadFile = new UploadFile(1);
                 if($request->hasFile("files")){
-                    $file_paths = (new UploadFile(1))->uploads(4,$request->file("files"), 'public/shop/service');
+                    $file_paths = $UploadFile->uploads(4,$request->file("files"), 'public/shop/service');
                 }
                 $input = $request->all();
                 $input['uuid'] = User::uuid();
@@ -121,7 +122,7 @@ class ServiceController extends Controller
                 }
                 foreach ($file_paths as $v){
                     $img_src[] = Storage::url($v);
-                    $insertData[] = ['service_id'=>$info->id,'image'=>$v];
+                    $insertData[] = ['service_id'=>$info->id,'image'=>$v,'remote'=>$UploadFile->isRemote()];
                 }
                 if ($insertData) {
                     ServiceImage::insert($insertData);

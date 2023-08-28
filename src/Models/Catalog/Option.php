@@ -12,7 +12,8 @@ class Option extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'name','sort','status','type','status','is_filter'
+        'name','sort','status','type','status','is_filter',
+        'is_color'
     ];
 
     function value(){

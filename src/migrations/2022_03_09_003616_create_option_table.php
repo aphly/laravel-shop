@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('name',64);
             $table->unsignedInteger('sort');
             $table->tinyInteger('is_filter')->default(1);
+            $table->tinyInteger('is_color')->default(0);
             $table->tinyInteger('status')->default(1);
         });
     }

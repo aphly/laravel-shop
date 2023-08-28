@@ -5,8 +5,8 @@
     </div>
 </div>
 <style>
-    .product_img .item{margin: 0 10px;}
-    .product_img .item .img{width: 160px;height:160px;display: flex; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.2);position: relative}
+    .product_img .item{margin: 0 10px;width: 160px;}
+    .product_img .item .img{width: 100%;height:160px;display: flex; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.2);position: relative}
     .product_img .item img{width: 100%;}
     .product_img .item input{width: 100%;    text-align: center;}
     .product_img .item .delImg{text-align: center; background: #df6767; color: #fff; border-radius: 50%; margin-top: 5px; position: absolute; right: 5px; top: 5px;height: 24px; width: 24px; cursor: pointer;}
@@ -30,17 +30,28 @@
                 <ul class="d-flex flex-wrap product_img">
                     @foreach($res['info_img'] as $v)
                         <li class="item">
-                            <div class="img">
+                            <div class="img" style="margin-bottom: 5px;">
                                 <img src="{{$v['image_src']}}" >
                                 <div class="delImg" onclick="removeImg({{$v['id']}},this)"><i class="uni app-lajitong"></i></div>
                                 <div class="img_pre img_move" style="display: flex;align-items: center;justify-content: center;"><i class="uni app-fanhui1" style="display: block;"></i></div>
                                 <div class="img_next img_move" style="display: flex;align-items: center;justify-content: center;"><i class="uni app-fanhui1" style="transform: rotate(180deg);display: block;"></i></div>
                             </div>
-                            <input type="hidden" name="sort[{{$v['id']}}]" value="{{$v['sort']}}">
+                            <input type="text" style="margin-bottom: 5px;" class="form-control" name="imgs[sort][{{$v['id']}}]" value="{{$v['sort']}}">
+                            @if(!empty($res['info_option_value']))
+                            <select name="imgs[option_value_id][{{$v['id']}}]" class="form-control">
+                                @foreach($res['info_option_value']->value as $v1)
+                                    @if($v1->id===$v['option_value_id'])
+                                        <option value="{{$v1->id}}" selected>{{$v1->name}}</option>
+                                    @else
+                                        <option value="{{$v1->id}}">{{$v1->name}}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                            @endif
                         </li>
                     @endforeach
                 </ul>
-                <button class="btn btn-info" type="submit" style="margin-top: 20px;">更新排序</button>
+                <button class="btn btn-info" type="submit" style="margin-top: 20px;">更新</button>
             @endif
         </form>
     </div>

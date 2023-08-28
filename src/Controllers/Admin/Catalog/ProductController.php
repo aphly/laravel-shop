@@ -196,6 +196,7 @@ class ProductController extends Controller
                 $item->image_src = UploadFile::getPath($item->image,$item->remote);
                 return $item;
             });
+            $res['info_option_value'] = Option::where('is_color',1)->with('value')->first();
             return $this->makeView('laravel-shop::admin.catalog.product.img',['res'=>$res]);
         }
     }
@@ -203,11 +204,14 @@ class ProductController extends Controller
     public function imgSave(Request $request)
     {
         $res['product'] = $this->getProductId($request);
-        $post = $request->input('sort');
-        //$max = max($post);
-        foreach ($post as $k=>$v){
-            $productImage = ProductImage::find($k);
-            $productImage->update(['sort'=>$v]);
+        $post = $request->input('imgs');
+        foreach ($post['sort'] as $k=>$v){
+            ProductImage::find($k)->update(['sort'=>$v]);
+        }
+        if(isset($post['option_value_id'])){
+            foreach ($post['option_value_id'] as $k=>$v){
+                ProductImage::find($k)->update(['option_value_id'=>$v]);
+            }
         }
         $this->updateImg($res['product']->id);
         throw new ApiException(['code' => 0, 'msg' => '更新成功', 'data' => ['redirect' => $this->index_url]]);

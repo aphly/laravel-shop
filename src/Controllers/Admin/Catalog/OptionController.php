@@ -9,7 +9,6 @@ use Aphly\LaravelShop\Controllers\Admin\Controller;
 use Aphly\LaravelShop\Models\Catalog\Option;
 use Aphly\LaravelShop\Models\Catalog\OptionValue;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class OptionController extends Controller
 {
@@ -40,7 +39,10 @@ class OptionController extends Controller
         $res['optionValue'] = [];
         $res['option'] = Option::where('id',$request->query('id',0))->firstOrNew();
         if($res['option']->id){
-            $res['optionValue'] = OptionValue::where('option_id',$res['option']->id)->orderBy('sort','desc')->get();
+            $res['optionValue'] = OptionValue::where('option_id',$res['option']->id)->orderBy('sort','desc')->get()->transform(function ($item){
+                $item->image_src = UploadFile::getPath($item->image,$item->remote);
+                return $item;
+            });
         }
         $res['breadcrumb'] = Breadcrumb::render([
             ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
@@ -60,7 +62,7 @@ class OptionController extends Controller
                 foreach ($optionValue as $val){
                     if(!in_array($val['id'],$val_arr_keys)){
                         $delete_arr[] = $val['id'];
-                        Storage::delete($val['image']);
+                        UploadFile::del($val['image'],$val['remote']);
                     }
                 }
                 OptionValue::whereIn('id',$delete_arr)->delete();
@@ -76,13 +78,13 @@ class OptionController extends Controller
                     if($key_i = intval($key)){
                         if(isset($val['image'])) {
                             if($val['image'] == 'undefined'){
-                                Storage::delete($optionValue[$key_i]['image']);
+                                UploadFile::del($optionValue[$key_i]['image'],$optionValue[$key_i]['remote']);
                                 $update_arr[$key]['image'] = '';
                             }
                         }else{
                             $update_arr[$key]['image'] = isset($files[$key]['image'])?$UploadFile->upload($files[$key]['image'], 'public/shop/option'):'';
                             if($update_arr[$key]['image']){
-                                Storage::delete($optionValue[$key_i]['image']);
+                                UploadFile::del($optionValue[$key_i]['image'],$optionValue[$key_i]['remote']);
                             }
                         }
                     }else{
@@ -104,7 +106,12 @@ class OptionController extends Controller
         $post = $request->input('delete');
         if(!empty($post)){
             Option::whereIn('id',$post)->delete();
-            OptionValue::whereIn('option_id',$post)->delete();
+            $data = OptionValue::whereIn('option_id',$post)->get();
+            foreach ($data as $v){
+                if($v->delete()){
+                    UploadFile::del($v->image,$v->remote);
+                }
+            }
             throw new ApiException(['code'=>0,'msg'=>'操作成功','data'=>['redirect'=>$redirect]]);
         }
     }
@@ -113,8 +120,7 @@ class OptionController extends Controller
         $name = $request->query('name',false);
         $list = Option::where('status',1)->when($name,function($query,$name) {
             return $query->where('name', 'like', '%'.$name.'%');
-        })
-            ->with('value')->get()->keyBy('id')->toArray();
+        })->with('value')->get()->keyBy('id')->toArray();
         $option_group = [];
         foreach ($list as $val){
             $option_group[$val['type']][] = $val;

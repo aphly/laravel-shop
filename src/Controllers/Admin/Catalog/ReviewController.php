@@ -10,7 +10,6 @@ use Aphly\LaravelShop\Models\Catalog\Product;
 use Aphly\LaravelShop\Models\Catalog\Review;
 use Aphly\LaravelShop\Models\Catalog\ReviewImage;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class ReviewController extends Controller
 {
@@ -43,10 +42,10 @@ class ReviewController extends Controller
         $res['review'] = Review::where('id',$request->query('id',0))->firstOrNew();
         if($res['review']->id){
             $res['product'] = Product::where('id',$res['review']->product_id)->select('name','id')->first();
-            $res['reviewImage'] = ReviewImage::where('review_id',$res['review']->id)->get();
-            foreach ($res['reviewImage'] as $val){
-                $val->image_src = UploadFile::getPath($val->image,$val->remote);
-            }
+            $res['reviewImage'] = ReviewImage::where('review_id',$res['review']->id)->get()->transform(function ($item){
+                $item->image_src = UploadFile::getPath($item->image,$item->remote);
+                return $item;
+            });
         }else{
             $res['product'] = $res['reviewImage'] = [];
         }
@@ -73,7 +72,7 @@ class ReviewController extends Controller
             $reviewImageObj = ReviewImage::whereIn('review_id',$post);
             $reviewImage = $reviewImageObj->get();
             foreach ($reviewImage as $val){
-                Storage::delete($val->image);
+                UploadFile::del($val->image,$val->remote);
             }
             $reviewImageObj->delete();
             throw new ApiException(['code'=>0,'msg'=>'操作成功','data'=>['redirect'=>$redirect]]);

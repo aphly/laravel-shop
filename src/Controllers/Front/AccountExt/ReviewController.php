@@ -13,7 +13,6 @@ class ReviewController extends Controller
 {
     public function index()
     {
-        $UploadFile = new UploadFile;
         $res['list'] = Review::where(['uuid'=>User::uuid()])->with('product')->with('img')->orderBy('created_at','desc')
             ->Paginate(config('admin.perPage'))->withQueryString();
         $res['list']->transform(function ($item) {
@@ -21,10 +20,7 @@ class ReviewController extends Controller
                 $i->image_src = UploadFile::getPath($i->image,$i->remote);
                 return $i;
             });
-            $item->product->transform(function ($i) {
-                $i->image_src = UploadFile::getPath($i->image,$i->remote);
-                return $i;
-            });
+            $item->product->image_src = UploadFile::getPath($item->product->image,$item->product->remote);
             return $item;
         });
         return $this->makeView('laravel-shop-front::account_ext.review.index',['res'=>$res]);

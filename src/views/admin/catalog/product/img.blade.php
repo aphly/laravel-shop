@@ -26,12 +26,12 @@
         </label>
         <form method="post" action="/shop_admin/product/img_save?product_id={{$res['product']->id}}" class="save_form" >
             @csrf
-            @if($res['info_img'])
+            @if($res['info_img']->count())
                 <ul class="d-flex flex-wrap product_img">
                     @foreach($res['info_img'] as $v)
                         <li class="item">
                             <div class="img">
-                                <img src="{{Storage::url($v['image'])}}" >
+                                <img src="{{$v['image_src']}}" >
                                 <div class="delImg" onclick="removeImg({{$v['id']}},this)"><i class="uni app-lajitong"></i></div>
                                 <div class="img_pre img_move" style="display: flex;align-items: center;justify-content: center;"><i class="uni app-fanhui1" style="display: block;"></i></div>
                                 <div class="img_next img_move" style="display: flex;align-items: center;justify-content: center;"><i class="uni app-fanhui1" style="transform: rotate(180deg);display: block;"></i></div>

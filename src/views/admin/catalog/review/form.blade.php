@@ -28,21 +28,13 @@
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">评级</label>
-                <div class="form-check form-check-inline" >
-                @if(isset($dict['rating']))
-                    @foreach($dict['rating'] as $key=>$val)
-                        <label class="form-check-label" style="margin-right: 10px;">
-                            <input class="form-check-input" type="radio" name="rating" @if($res['review']->rating==$key) checked @endif value="{{$key}}"> {{$val}}
-                        </label>
-                    @endforeach
-                @endif
-                </div>
+                <label for="">评级 (1-5)</label>
+                <input type="text" name="rating" class="form-control " value="{{$res['review']->rating}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
                 <label for="">添加日期</label>
-                <input type="datetime-local" class="form-control " name="date_add" value="{{$res['review']->date_add?date('Y-m-d',$res['review']->date_add)."T".date('H:i',$res['review']->date_add):0}}">
+                <input type="datetime-local" class="form-control " readonly value="{{$res['review']->created_at}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">

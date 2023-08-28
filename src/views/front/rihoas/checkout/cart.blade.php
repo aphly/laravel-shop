@@ -304,7 +304,7 @@
                             cart_product_js.find('.item-total').text(res.data.list[i].total_format)
                             cart_product_js.find('.item_price_js').text(res.data.list[i].price_format)
                         }
-                        $('.cart_num').text(res.data.count)
+                        $('#cart_num').text(res.data.count)
                         $('.cart_count_js').text(res.data.count)
                         $('.cart_sub_total_js').text(res.data.total_data.totals.sub_total.value_format)
                         if(res.data.total_data.totals.coupon){

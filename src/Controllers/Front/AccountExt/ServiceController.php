@@ -121,7 +121,6 @@ class ServiceController extends Controller
                     ServiceProduct::insert($service_product_arr);
                 }
                 foreach ($file_paths as $v){
-                    $img_src[] = Storage::url($v);
                     $insertData[] = ['service_id'=>$info->id,'image'=>$v,'remote'=>$UploadFile->isRemote()];
                 }
                 if ($insertData) {

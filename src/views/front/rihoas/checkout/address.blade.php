@@ -58,7 +58,7 @@
                         <div class="form-group checkout_address_group">
                             <label class="">State / Province</label>
                             <select name="zone_id" id="input-zone" class="form-control">
-                                <option value="" class="zone_option"> --- None --- </option>
+                                <option value="0" class="zone_option"> --- None --- </option>
                             </select>
                             <div class="invalid-feedback"></div>
                         </div>
@@ -138,7 +138,7 @@
             $('input[name="address_id"]').val(address_id)
             if($(this).data('id')===0){
                 $('.country_option').attr("selected", false)
-                $('#input-zone').html('<option value=""> --- None --- </option>')
+                $('#input-zone').html('<option value="0"> --- None --- </option>')
                 document.getElementById("checkout_address").reset();
                 $('.checkout_address_group').removeClass('form-group_show')
             }else{
@@ -175,7 +175,10 @@
     })
 
     function setZone(res,country_id,zone_id) {
-        country_zone[country_id] = res.data;
+        country_zone[country_id] = [];
+        for(let i in res.data){
+            country_zone[country_id].push(res.data[i])
+        }
         makeZone(country_zone[country_id])
         $('#input-zone .zone_option[value="'+zone_id+'"]').attr("selected", true)
     }
@@ -195,21 +198,30 @@
                         if(fn){
                             fn(res,country_id,zone_id)
                         }else{
-                            country_zone[country_id] = res.data;
+                            country_zone[country_id] = [];
+                            for(let i in res.data){
+                                country_zone[country_id].push(res.data[i])
+                            }
                             makeZone(country_zone[country_id])
                         }
                     }
                 })
             }else{
-                let html = '<option value=""> --- None --- </option>';
+                let html = '<option value="0"> --- None --- </option>';
                 $('#input-zone').html(html)
             }
         }
     }
     function makeZone(data){
-        let html = '<option value="" class="zone_option"> --- Please Select --- </option>';
-        for(let i in data){
-            html += '<option class="zone_option" value="'+data[i].id+'">'+data[i].name+'</option>';
+        console.log(data)
+        let html = '';
+        if(data.length){
+            html = '<option value="" class="zone_option"> --- Please Select --- </option>';
+            for(let i in data){
+                html += '<option class="zone_option" value="'+data[i].id+'">'+data[i].name+'</option>';
+            }
+        }else{
+            html = '<option value="0" class="zone_option"> --- None --- </option>';
         }
         $('#input-zone').html(html)
     }

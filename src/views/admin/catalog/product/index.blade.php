@@ -41,8 +41,8 @@
                     <ul class="table_tbody">
                         <li><input type="checkbox" class="delete_box" name="delete[]" value="{{$v['id']}}">{{$v['id']}}</li>
                         <li>
-                            @if($v['image'])
-                                <img style="width: 30px;height: 30px;" src="{{Storage::url($v['image'])}}" />
+                            @if($v['image_src'])
+                                <img style="width: 30px;height: 30px;" src="{{$v['image_src']}}" />
                             @endif
                         </li>
                         <li><a href="/product/{{$v['id']}}">{{$v['name']}}</a></li>

@@ -43,6 +43,10 @@ class ProductController extends Controller
                 }
             })
             ->Paginate(config('admin.perPage'))->withQueryString();
+        $res['list']->transform(function ($item){
+            $item->image_src = UploadFile::getPath($item->image,$item->remote);
+            return $item;
+        });
         $res['breadcrumb'] = Breadcrumb::render([
             ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url]
         ]);
@@ -123,6 +127,19 @@ class ProductController extends Controller
         if(!empty($post)){
             Product::destroy($post);
             ProductDesc::destroy($post);
+            ProductAttribute::whereIn('product_id',$post)->delete();
+            ProductCategory::whereIn('product_id',$post)->delete();
+            ProductDiscount::whereIn('product_id',$post)->delete();
+            ProductFilter::whereIn('product_id',$post)->delete();
+            $imgs = ProductImage::whereIn('product_id',$post)->get();
+            foreach ($imgs as $img){
+                if($img->delete()){
+                    UploadFile::del($img->image,$img->remote);
+                }
+            }
+            ProductOption::whereIn('product_id',$post)->delete();
+            ProductOptionValue::whereIn('product_id',$post)->delete();
+            ProductSpecial::whereIn('product_id',$post)->delete();
             throw new ApiException(['code'=>0,'msg'=>'操作成功','data'=>['redirect'=>$redirect]]);
         }
     }
@@ -151,7 +168,7 @@ class ProductController extends Controller
     public function img(Request $request)
     {
         $res['product'] = $this->getProductId($request);
-        $res['info_img'] = ProductImage::where('product_id',$res['product']->id)->orderBy('sort','desc')->get()->toArray();
+        $res['info_img'] = ProductImage::where('product_id',$res['product']->id)->orderBy('sort','desc')->get();
         if($request->isMethod('post')) {
             if($request->hasFile('file')) {
                 $UploadFile = new UploadFile(1);
@@ -159,7 +176,7 @@ class ProductController extends Controller
                 $file_path = $UploadFile->uploads(10,$request->file('file'), 'public/shop/product/image');
                 $img_src = $insertData = [];
                 foreach ($file_path as $key=>$val) {
-                    $img_src[] = Storage::url($val);
+                    $img_src[] = UploadFile::getPath($val,$remote);
                     $insertData[] = ['product_id'=>$res['product']->id,'image'=>$val,'sort'=>$key,'remote'=>$remote];
                 }
                 if ($insertData) {
@@ -175,6 +192,10 @@ class ProductController extends Controller
                 ['name'=>$res['product']->name],
                 ['name'=>'图片','href'=>'/shop_admin/'.$this->currArr['key'].'/img?product_id='.$res['product']->id]
             ]);
+            $res['info_img']->transform(function ($item){
+                $item->image_src = UploadFile::getPath($item->image,$item->remote);
+                return $item;
+            });
             return $this->makeView('laravel-shop::admin.catalog.product.img',['res'=>$res]);
         }
     }
@@ -182,16 +203,13 @@ class ProductController extends Controller
     public function imgSave(Request $request)
     {
         $res['product'] = $this->getProductId($request);
-        $product_id = $res['product']->id;
         $post = $request->input('sort');
-        $max = max($post);
+        //$max = max($post);
         foreach ($post as $k=>$v){
             $productImage = ProductImage::find($k);
             $productImage->update(['sort'=>$v]);
-            if($v==$max){
-                Product::find($productImage->product_id)->update(['image'=>$productImage->image]);
-            }
         }
+        $this->updateImg($res['product']->id);
         throw new ApiException(['code' => 0, 'msg' => '更新成功', 'data' => ['redirect' => $this->index_url]]);
     }
 
@@ -200,7 +218,7 @@ class ProductController extends Controller
         $info_obj = ProductImage::where('id',$request->id);
         $info = $info_obj->first();
         if($info_obj->delete()){
-            Storage::delete($info->image);
+            UploadFile::del($info->image,$info->remote);
         }
         $this->updateImg($info->product_id);
         throw new ApiException(['code'=>0,'msg'=>'操作成功']);
@@ -209,9 +227,9 @@ class ProductController extends Controller
     public function updateImg($product_id){
         $productImg = ProductImage::where('product_id',$product_id)->orderBy('sort','desc')->first();
         if(!empty($productImg)){
-            Product::find($productImg->product_id)->update(['image'=>$productImg->image,'remote'=>(new UploadFile)->isRemote()]);
+            Product::find($productImg->product_id)->update(['image'=>$productImg->image,'remote'=>$productImg->remote]);
         }else{
-            Product::where(['id'=>$product_id])->update(['image'=>'','remote'=>(new UploadFile)->isRemote()]);
+            Product::where(['id'=>$product_id])->update(['image'=>'','remote'=>0]);
         }
     }
 
@@ -283,7 +301,12 @@ class ProductController extends Controller
         }else{
             $res['product_option'] = ProductOption::where('product_id',$product_id)->with('value_arr')->orderBy('id','desc')->get()->toArray();
             $res['option'] = Option::with('value')->get()->keyBy('id')->toArray();
-            $res['product_image'] = ProductImage::where('product_id',$product_id)->get()->keyBy('id')->toArray();
+            $res['product_image'] = ProductImage::where('product_id',$product_id)->get()->keyBy('id');
+            $res['product_image']->transform(function ($item){
+                $item->image_src = UploadFile::getPath($item->image,$item->remote);
+                return $item;
+            });
+            $res['product_image'] = $res['product_image']->toArray();
             $res['breadcrumb'] = Breadcrumb::render([
                 ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
                 ['name'=>$res['product']->name],

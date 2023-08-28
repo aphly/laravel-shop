@@ -19,7 +19,7 @@ class Product extends Model
         'sku','name','quantity','image','price','uuid','spu',
         'is_shipping','stock_status_id','weight','weight_class_id',
         'length','width','height','length_class_id','subtract',
-        'status','viewed','sale','sort','date_available','url'
+        'status','viewed','sale','sort','date_available','url','remote'
     ];
 
     function desc(){
@@ -179,8 +179,7 @@ class Product extends Model
         }
 
         $sql->groupBy('p.id')
-            ->select('p.id','p.sale','p.viewed','p.date_available','p.price','p.name','p.quantity','p.image','p.spu');
-
+            ->select('p.id','p.sale','p.viewed','p.date_available','p.price','p.name','p.quantity','p.image','p.spu','p.remote');
         $sql->addSelect([
             'reviews'=>Review::whereColumn('product_id','p.id')->where('status',1)
                 ->groupBy('product_id')
@@ -270,7 +269,7 @@ class Product extends Model
     function getByids($product_ids){
         $time = time();
         $sql = DB::table('shop_product as p')->where('p.status',1)->where('p.date_available','<=',$time)->whereIn('p.id',$product_ids);
-        $sql->select('p.id','p.sale','p.image','p.viewed','p.date_available','p.price','p.name','p.quantity','p.image','p.spu');
+        $sql->select('p.id','p.sale','p.image','p.viewed','p.date_available','p.price','p.name','p.quantity','p.remote','p.spu');
         $sql->addSelect([
             'reviews'=>Review::whereColumn('product_id','p.id')->where('status',1)
                 ->groupBy('product_id')
@@ -383,7 +382,6 @@ class Product extends Model
                 $html .= '<div class="form-group flag_radio '.($val['required']==1?'required':'').'">
                               <div class="control-label">'.$val['option']['name'].'</div>
                               <div class="div_ul">';
-                $i=0;
                 foreach ($val['product_option_value'] as $v){
                     $data_image_src = '';
                     if($v['product_image_id']){
@@ -396,22 +394,19 @@ class Product extends Model
                     }else{
                         $img = $v['option_value']['image']?'<img src="'.$v['option_value']['image_src'].'" />':'';
                     }
-                    $html .= '<div class="position-relative"><input '.($val['required']==1?'required':'').' '.(!$i?'checked="checked"':'').' data-image_id="'.$v['product_image_id'].'" '.$data_image_src.' data-price="'.$v['price'].'" type="radio" name="option['.$val['id'].']" id="option_'.$val['id'].'_'.$v['id'].'" value="'.$v['id'].'" />
-                            <label '.(!$i?'class="active"':'').' for="option_'.$val['id'].'_'.$v['id'].'" >'.$img.$v['option_value']['name'].'</label></div>';
-                    $i++;
+                    $html .= '<div class="position-relative"><input '.($val['required']==1?'required':'').' data-image_id="'.$v['product_image_id'].'" '.$data_image_src.' data-price="'.$v['price'].'" type="radio" name="option['.$val['id'].']" id="option_'.$val['id'].'_'.$v['id'].'" value="'.$v['id'].'" />
+                            <label  for="option_'.$val['id'].'_'.$v['id'].'" >'.$img.$v['option_value']['name'].'</label></div>';
                 }
                 $html .= '</div></div>';
             }else if($val['option']['type']=='checkbox'){
                 $html .= '<div class="form-group flag_checkbox '.($val['required']==1?'required':'').'">
                               <div class="control-label">'.$val['option']['name'].'</div>
                               <div class="div_ul">';
-                $i = 0;
                 foreach ($val['product_option_value'] as $v){
                     $img = $v['option_value']['image']?'<img src="'.$v['option_value']['image_src'].'" />':'';
-                    $html .= '<div class="position-relative"><input '.($val['required']==1?'required':'').' '.(!$i?'checked="checked"':'').' data-price="'.$v['price'].'" type="checkbox" name="option['.$val['id'].'][]" id="option_'.$val['id'].'_'.$v['id'].'" value="'.$v['id'].'" />
-                            <label '.(!$i?'class="active"':'').' for="option_'.$val['id'].'_'.$v['id'].'">'
+                    $html .= '<div class="position-relative"><input '.($val['required']==1?'required':'').'  data-price="'.$v['price'].'" type="checkbox" name="option['.$val['id'].'][]" id="option_'.$val['id'].'_'.$v['id'].'" value="'.$v['id'].'" />
+                            <label  for="option_'.$val['id'].'_'.$v['id'].'">'
                         .$img.$v['option_value']['name'].'</label></div>';
-                    $i++;
                 }
                 $html .= '</div></div>';
             }else if($val['option']['type']=='text'){

@@ -24,7 +24,7 @@ function wishlist_one(product_id,_this) {
                     }else{
                         $(_this).removeClass('icon-aixin').addClass('icon-aixin_shixin')
                     }
-                    $('.wishlist_num').text(res.data.count)
+                    $('#wishlist_num').text(res.data.count)
                 }
             }
         })

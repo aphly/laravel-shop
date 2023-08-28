@@ -282,7 +282,7 @@
                 location.href = '/checkout/address'
             }else{
                 div_fly($('#add_cart_btn'),$('#cart_num'),function () {
-                    $('.cart_num').text(res.data.count);
+                    $('#cart_num').text(res.data.count);
                 })
             }
         }
@@ -330,12 +330,18 @@
             if(input.data('image_src')){
                 $('.product_detail_img .swiper-slide[data-image_id="'+input.data('image_id')+'"]').click()
             }
+        })
+        $('.flag_radio').on('click','input',function () {
             price()
         })
         $('.flag_checkbox').on('click','label',function () {
             $(this).toggleClass('active')
+        })
+        $('.flag_checkbox').on('click','input',function () {
             price()
         })
+
+
 
         $('.info_option').on('change','select',function () {
             price()
@@ -380,10 +386,6 @@
             $('.price_js').html(currency._format(price,'{{$currency[2]['symbol_left']}}','{{$currency[2]['symbol_right']}}'))
         }
 
-        // $('.info_option .flag_radio').each(function () {
-        //     $(this).find('.div_ul>div:first label').click();
-        // })
-
         $('.quantity-wrapper').on('click','.quantity-down', function (e) {
             let input = $(this).parent().find('input')
             let q_curr = parseInt(input.val());
@@ -414,6 +416,8 @@
             $('.rating_js').val($(this).data('val'))
         })
 
+        $('.flag_radio .div_ul>.position-relative:first-child label').click();
+        price();
     })
 
 </script>

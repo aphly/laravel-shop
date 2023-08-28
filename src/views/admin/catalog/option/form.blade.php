@@ -85,7 +85,7 @@
                                         <label class="" data-id="{{$val->id}}">
                                             @if($val->image)
                                                 <input type="text" class="fileUpload_text" value="{{$val->image}}" name="value[{{$val->id}}][image]" >
-                                                <div class="imglist"><img src="{{Storage::url($val->image)}}"></div>
+                                                <div class="imglist"><img src="{{$val->image_src}}"></div>
                                             @else
                                                 <input type="file" class="fileUpload" accept="image/gif,image/jpeg,image/jpg,image/png"  name="value[{{$val->id}}][image]" >
                                                 <div class="imglist">+</div>

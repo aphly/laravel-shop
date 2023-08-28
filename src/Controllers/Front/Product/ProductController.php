@@ -29,13 +29,14 @@ class ProductController extends Controller
         $product = new Product;
         $res['list'] = $product->getList($filter_data,$bySpu);
         $product_ids = [];
-        foreach ($res['list'] as $key=>$val){
-            $product_ids[] = $val->id;
-            $val->image_src= UploadFile::getPath($val->image,$val->remote);
-            $val->price= Currency::format($val->price);
-            $val->special= $val->special?Currency::format($val->special):0;
-            $val->discount= $val->discount?Currency::format($val->discount):0;
-        }
+        $res['list']->transform(function ($item) use ($product_ids){
+            $product_ids[] = $item->id;
+            $item->image_src= UploadFile::getPath($item->image,$item->remote);
+            $item->price= Currency::format($item->price);
+            $item->special= $item->special?Currency::format($item->special):0;
+            $item->discount= $item->discount?Currency::format($item->discount):0;
+            return $item;
+        });
         $res['product_option'] = $product->optionValueByName($product_ids);
         $res['product_image'] = $product->imgByIds($product_ids);
         $res['wishlist_product_ids'] = Wishlist::$product_ids;
@@ -134,7 +135,7 @@ class ProductController extends Controller
         $review = Review::create($input);
         if($review->id){
             foreach ($file_paths as $v){
-                $img_src[] = Storage::url($v);
+                $img_src[] = UploadFile::getPath($v,$remote);
                 $insertData[] = ['review_id'=>$review->id,'image'=>$v,'remote'=>$remote];
             }
             if ($insertData) {

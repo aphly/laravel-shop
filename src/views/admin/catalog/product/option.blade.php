@@ -61,8 +61,8 @@
                                                     <input type="hidden" name="product_option[{{$val['id']}}][{{$val['option_id']}}][option_value][{{$v['id']}}][product_image_id]" value="{{$v['product_image_id']}}">
                                                     @if($v['product_image_id'] && $res['product_image'][$v['product_image_id']])
                                                         <div class="imglist" data-id="product_option[{{$val['id']}}][{{$val['option_id']}}][option_value][{{$v['id']}}][product_image_id]"
-                                                             data-image_id="{{$v['product_image_id']}}" data-image_src="{{Storage::url($res['product_image'][$v['product_image_id']]['image'])}}">
-                                                            <img src="{{Storage::url($res['product_image'][$v['product_image_id']]['image'])}}" alt="">
+                                                             data-image_id="{{$v['product_image_id']}}" data-image_src="{{$res['product_image'][$v['product_image_id']]['image_src']}}">
+                                                            <img src="{{$res['product_image'][$v['product_image_id']]['image_src']}}" alt="">
                                                         </div>
                                                     @else
                                                         <div class="imglist" data-image_id="0" data-id="product_option[{{$val['id']}}][{{$val['option_id']}}][option_value][{{$v['id']}}][product_image_id]">
@@ -141,9 +141,9 @@
                             </div>
                         </li>
                         @foreach($res['product_image'] as $v)
-                            <li class="item" data-id="{{$v['id']}}" data-image="{{Storage::url($v['image'])}}">
+                            <li class="item" data-id="{{$v['id']}}" data-image="{{$v['image_src']}}">
                                 <div class="img">
-                                    <img src="{{Storage::url($v['image'])}}" >
+                                    <img src="{{$v['image_src']}}" >
                                     <i class="uni app-duigouxiao"></i>
                                 </div>
                             </li>

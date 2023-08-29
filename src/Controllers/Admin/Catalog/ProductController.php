@@ -196,7 +196,7 @@ class ProductController extends Controller
                 $item->image_src = UploadFile::getPath($item->image,$item->remote);
                 return $item;
             });
-            $res['info_option_value'] = Option::where('is_color',1)->with('value')->first();
+            $res['info_option_value'] = Option::where('is_color',1)->where('status',1)->with('value')->first();
             return $this->makeView('laravel-shop::admin.catalog.product.img',['res'=>$res]);
         }
     }

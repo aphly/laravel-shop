@@ -38,10 +38,9 @@ class ProductController extends Controller
             return $item;
         });
         $res['product_option'] = $product->optionValueByName($product_ids);
-        $res['product_image'] = $product->imgByIds($product_ids);
+        $res['product_image'] = $product->imgByIds($product_ids,$product->isColorGroup());
         $res['wishlist_product_ids'] = Wishlist::$product_ids;
         $res['sort'] = $product->sortArr();
-
         $res['price'] = $product->priceArr($this->currency[2]['symbol_left']);
         return $res;
     }
@@ -83,13 +82,16 @@ class ProductController extends Controller
         ],false);
         $res['quantityInCart'] = (new Cart)->quantityInCart($request->id);
         list($res['info']->price,$res['info']->price_format) = Currency::format($res['info']->price,2);
-        $res['info_img'] = $res['info']->imgById($res['info']->id);
-        $group_id = User::groupId();
+
+        //$group_id = User::groupId();
         $res['info_attr'] = $res['info']->findAttribute($res['info']->id);
         $res['info_option'] = $res['info']->findOption($res['info']->id,true);
         list($res['special_price'],$res['special_price_format']) = $res['info']->findSpecial($res['info']->id);
         $res['info_discount'] = $res['info']->findDiscount($res['info']->id);
-        $res['info_reward'] = $res['info']->findReward($res['info']->id,$group_id);
+        $res['is_color'] = $res['info']->isColorGroup()?1:0;
+        $res['info_img'] = $res['info']->imgById($res['info']->id,$res['is_color']);
+
+        //$res['info_reward'] = $res['info']->findReward($res['info']->id,$group_id);
         //$res['shipping'] = Shipping::where('cost',0)->firstToArray();
         $res['wishlist_product_ids'] = Wishlist::$product_ids;
         $res['review'] = Review::where('product_id',$res['info']->id)->with('img')->orderBy('created_at','desc')

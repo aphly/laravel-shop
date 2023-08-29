@@ -125,18 +125,6 @@ img{border-radius: 6px;}
 .info_img_big li.on{display: block;}
 .info_img_big img{width: 100%;}
 
-.product_detail_img{width:calc(60% - 40px);position:relative;display: flex;flex-direction: row-reverse;}
-.product_detail_img .big_img{width:calc(100% - 90px);}
-.product_detail_img .big_img img{width:100%;height:100%}
-.product_detail_img .small_img{margin-right: 10px;width: 80px;display: flex;flex-wrap: wrap;align-content: flex-start;}
-.product_detail_img .small_img .swiper-container{text-align:center;width:100%; height: 600px;}
-.product_detail_img .small_img .swiper-slide img{width:80px;height:80px;margin:0 0 5px 0;border-radius: 4px;}
-.product_detail_img .small_img .swiper-wrapper .swiper-slide.active img{border:1px solid #000}
-.product_detail_img .lr_icon{width: 100%;height: 25px;cursor: pointer;text-align: center;background: #f1f1f1;border-radius: 4px;}
-.lr_icon_left{margin-bottom: 5px}
-.lr_icon_right{margin-top: 5px}
-.lr_icon_left i{display: block;transform: rotate(90deg);}
-.lr_icon_right i{display: block;transform: rotate(270deg);}
 
 .product_detail{display: flex;justify-content: space-between;}
 .product_detail_info{width:40%;margin-left: 40px;}
@@ -147,6 +135,26 @@ img{border-radius: 6px;}
 .quantity-label{font-size: 16px;font-weight: 500;margin-bottom: 5px;}
 .div_ul{display: flex;flex-wrap: wrap;}
 .info_option .control-label{margin-bottom: 5px;}
+
+.product_detail_img{width:calc(60% - 40px);position:relative;display: flex;flex-direction: row-reverse;}
+.product_detail_img .big_img{width:calc(100% - 90px);}
+.product_detail_img .big_img img{width:100%;height:100%}
+.product_detail_img .small_img{margin-right: 10px;width: 80px;display: flex;flex-wrap: wrap;align-content: flex-start;}
+.product_detail_img .small_img .swiper{text-align:center;width:100%; height: 600px;}
+.product_detail_img .small_img .swiper-slide img{width:80px;height:80px;margin:0 0 5px 0;border-radius: 4px;}
+.product_detail_img .small_img .swiper-wrapper .swiper-slide.active img{border:1px solid #000}
+.product_detail_img .lr_icon{width: 100%;height: 25px;cursor: pointer;text-align: center;background: #f1f1f1;border-radius: 4px;}
+
+.info_img_big_group .info_img_big{display: none}
+.info_img_big_group .info_img_big.active{display: block}
+.small_img_group .small_img{display: none}
+.small_img_group .small_img.active{display: flex}
+
+.swiper-button-prev{top: 14px !important;transform: rotate(90deg);left: 26px !important;}
+.swiper-button-prev:after{font-size: 22px !important;color: #fff;}
+.swiper-button-next{bottom: 0 !important;left: 26px !important;transform: rotate(90deg);top: auto !important;}
+.swiper-button-next:after{font-size: 22px !important;color: #fff;}
+
 @media (max-width: 1199.98px) {
     .product_detail_img{display: block;}
     .info_img_big,.info_img_big li{height: 100%;}
@@ -156,14 +164,14 @@ img{border-radius: 6px;}
     .product_detail_img{width:100%;}
     .product_detail_info{width: 100%;margin-left: 0;}
     .product_detail_info_title{font-size: 18px;font-weight: 600; margin-top: 10px;margin-bottom: 10px;}
-    .product_detail_img .small_img{margin-right:0;width: 100%;display: flex;align-content: inherit;flex-wrap: nowrap;margin-top: 5px;}
-    .product_detail_img .small_img .swiper-container{text-align:center; height:70px;width: calc(100% - 60px);}
+    .product_detail_img .small_img{margin-right:0;width: 100%;display: none;align-content: inherit;flex-wrap: nowrap;margin-top: 5px;}
+    .product_detail_img .small_img.active{display: flex}
+    .product_detail_img .small_img .swiper{text-align:center; height:70px;}
     .product_detail_img .lr_icon{width:25px;height: 70px;line-height: 70px;}
-    .lr_icon_left{margin-right: 5px;margin-bottom: 0}
-    .lr_icon_right{margin-top: 0;margin-left: 5px;}
     .product_detail_img .small_img .swiper-slide img{width:70px;height:70px;margin:0 5px 0 0;border-radius: 4px;}
-    .lr_icon_left i{transform: rotate(0deg);}
-    .lr_icon_right i{transform: rotate(180deg);}
+
+    .swiper-button-prev{top: 50% !important;transform: rotate(0deg);left: 0 !important;}
+    .swiper-button-next{left: auto !important;right:0 !important;transform: rotate(0deg);top: 50% !important;}
 }
 
 .my_tab{border-bottom: 1px solid #d1d1d1;display: flex}

@@ -5,7 +5,7 @@
     </div>
 </div>
 <style>
-    .product_img .item{margin: 0 10px;width: 160px;}
+    .product_img .item{margin: 0 10px 10px;width: 160px;}
     .product_img .item .img{width: 100%;height:160px;display: flex; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.2);position: relative}
     .product_img .item img{width: 100%;}
     .product_img .item input{width: 100%;    text-align: center;}
@@ -37,8 +37,12 @@
                                 <div class="img_next img_move" style="display: flex;align-items: center;justify-content: center;"><i class="uni app-fanhui1" style="transform: rotate(180deg);display: block;"></i></div>
                             </div>
                             <input type="text" style="margin-bottom: 5px;" class="form-control" name="imgs[sort][{{$v['id']}}]" value="{{$v['sort']}}">
+                            <select name="imgs[is_content][{{$v['id']}}]" class="form-control" style="margin-bottom: 5px;">
+                                <option value="0" @if($v['is_content']===0) selected @endif>橱窗</option>
+                                <option value="1" @if($v['is_content']===1) selected @endif>描述</option>
+                            </select>
                             @if(!empty($res['info_option_value']))
-                            <select name="imgs[option_value_id][{{$v['id']}}]" class="form-control">
+                            <select name="imgs[option_value_id][{{$v['id']}}]" class="form-control" >
                                 @foreach($res['info_option_value']->value as $v1)
                                     @if($v1->id===$v['option_value_id'])
                                         <option value="{{$v1->id}}" selected>{{$v1->name}}</option>

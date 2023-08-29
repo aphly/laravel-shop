@@ -208,13 +208,16 @@ class ProductController extends Controller
         foreach ($post['sort'] as $k=>$v){
             ProductImage::find($k)->update(['sort'=>$v]);
         }
+        foreach ($post['is_content'] as $k=>$v){
+            ProductImage::find($k)->update(['is_content'=>$v]);
+        }
         if(isset($post['option_value_id'])){
             foreach ($post['option_value_id'] as $k=>$v){
                 ProductImage::find($k)->update(['option_value_id'=>$v]);
             }
         }
         $this->updateImg($res['product']->id);
-        throw new ApiException(['code' => 0, 'msg' => '更新成功', 'data' => ['redirect' => $this->index_url]]);
+        throw new ApiException(['code' => 0, 'msg' => '更新成功', 'data' => ['redirect' =>  '/shop_admin/product/img?product_id='.$res['product']->id]]);
     }
 
     public function imgDel(Request $request)

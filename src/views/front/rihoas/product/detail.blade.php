@@ -1,6 +1,12 @@
 @include('laravel-shop-front::common.header')
 <link rel="stylesheet" href="{{ URL::asset('static/shop/css/swiper-bundle.min.css') }}"/>
 <style>
+    .add_cart_btn{background: #e7a1a2;border: none;color: #fff}
+    .add_cart_btn:hover{background: #e59798;}
+    .buy_btn{background: #de8080;color: #fff}
+    .buy_btn:hover{background: #d46d6d;}
+    .product_detail_img .small_img .swiper-wrapper .swiper-slide.active img{border: 1px solid #d19595;}
+
 
 </style>
 <div class="container shop_main">
@@ -10,37 +16,72 @@
     <div>
         <div class="product_detail">
             <div class="product_detail_img">
-                <div class="big_img aphly_viewer_js">
-                    @if($res['info_img'])
-                        <ul class="info_img_big">
-                            @foreach($res['info_img'] as $k=>$v)
-                            <li data-image_id="{{$v['id']}}" @if(!$k) class="on" @endif><img src="{{ $v['image_src'] }}" class="aphly_viewer"></li>
-                            @endforeach
-                        </ul>
-                    @else
-                        <img src="{{ URL::asset('static/base/img/none.png') }}" class="aphly_viewer">
-                    @endif
-                </div>
-                @if($res['info_img'])
-                    <div class="small_img   ">
-                        <div class="lr_icon lr_icon_left">
-                            <i class="uni app-fanhui1"></i>
-                        </div>
-                        <div class="swiper-container swiper-container_pc" style="overflow: hidden;">
-                            <div class="swiper-wrapper">
-                                @foreach($res['info_img'] as $v)
-                                    <div class="swiper-slide " data-image_id="{{$v['id']}}"
-                                         data-src="{{$v['image_src']}}"
-                                         onclick="changepic(this)">
-                                        <img src="{{$v['image_src']}}">
-                                    </div>
+                @if($res['is_color'])
+                    <div class="big_img aphly_viewer_js">
+                        @if($res['info_img'][0])
+                            <div class="info_img_big_group">
+                                @foreach($res['info_img'][0] as $k0=>$v0)
+                                <ul class="info_img_big big_color_group{{$k0}} @if($v0==reset($res['info_img'][0])) active @endif">
+                                    @foreach($v0 as $k=>$v)
+                                        <li data-image_id="{{$v['id']}}" @if(!$k) class="on" @endif><img src="{{ $v['image_src'] }}" class="aphly_viewer"></li>
+                                    @endforeach
+                                </ul>
                                 @endforeach
                             </div>
-                        </div>
-                        <div class="lr_icon lr_icon_right">
-                            <i class="uni app-fanhui1"></i>
-                        </div>
+                        @else
+                            <img src="{{ URL::asset('static/base/img/none.png') }}" class="aphly_viewer">
+                        @endif
                     </div>
+                    @if($res['info_img'][0])
+                        <div class="small_img_group">
+                            @foreach($res['info_img'][0] as $k0=>$v0)
+                            <div data-k0="{{$k0}}" class="small_img small_color_group{{$k0}} @if($v0==reset($res['info_img'][0])) active @endif">
+                                <div class="swiper" style="overflow: hidden;">
+                                    <div class="swiper-button-prev" ></div>
+                                    <div class="swiper-wrapper">
+                                        @foreach($v0 as $v)
+                                            <div class="swiper-slide " data-image_id="{{$v['id']}}"
+                                                 data-src="{{$v['image_src']}}"
+                                                 onclick="changepic(this)">
+                                                <img src="{{$v['image_src']}}">
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                    <div class="swiper-button-next" ></div>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                    @endif
+                @else
+                    <div class="big_img aphly_viewer_js">
+                        @if($res['info_img'][0])
+                            <ul class="info_img_big">
+                                @foreach($res['info_img'][0] as $k=>$v)
+                                <li data-image_id="{{$v['id']}}" @if(!$k) class="on" @endif><img src="{{ $v['image_src'] }}" class="aphly_viewer"></li>
+                                @endforeach
+                            </ul>
+                        @else
+                            <img src="{{ URL::asset('static/base/img/none.png') }}" class="aphly_viewer">
+                        @endif
+                    </div>
+                    @if($res['info_img'][0])
+                        <div class="small_img">
+                            <div class="swiper" style="overflow: hidden;">
+                                <div class="swiper-button-prev" ></div>
+                                <div class="swiper-wrapper">
+                                    @foreach($res['info_img'][0] as $v)
+                                        <div class="swiper-slide " data-image_id="{{$v['id']}}"
+                                             data-src="{{$v['image_src']}}"
+                                             onclick="changepic(this)">
+                                            <img src="{{$v['image_src']}}">
+                                        </div>
+                                    @endforeach
+                                </div>
+                                <div class="swiper-button-next" ></div>
+                            </div>
+                        </div>
+                    @endif
                 @endif
             </div>
             <div class="product_detail_info">
@@ -101,7 +142,7 @@
         </div>
     </div>
     <style>
-
+    .description_img li{text-align: center;}
     </style>
     @if($res['info_attr'])
     <div class="my_box">
@@ -123,6 +164,30 @@
         </div>
         <div class="description">
             <div>{!! $res['info']->desc->description??'' !!}</div>
+        </div>
+
+        <div class="description_img">
+            @if($res['is_color'])
+                @if($res['info_img'][1])
+                    <div class="">
+                    @foreach($res['info_img'][1] as $k0=>$v0)
+                        <ul class="description_img_ul description_img_ul{{$k0}}" data-k0="{{$k0}}">
+                            @foreach($v0 as $v)
+                                <li><img src="{{ $v['image_src'] }}" alt=""></li>
+                            @endforeach
+                        </ul>
+                    @endforeach
+                    </div>
+                @endif
+            @else
+                @if($res['info_img'][1])
+                <ul>
+                    @foreach($res['info_img'][1] as $v)
+                    <li><img src="{{$v['image_src']}}" alt=""></li>
+                    @endforeach
+                </ul>
+                @endif
+            @endif
         </div>
     </div>
 
@@ -298,13 +363,13 @@
 <script src="{{ URL::asset('static/shop/js/swiper-bundle.min.js') }}" type="text/javascript"></script>
 
 <script>
-    var detailSwiper = new Swiper('.swiper-container_pc', {
+    var detailSwiper = new Swiper('.swiper', {
         direction: "horizontal",
         slidesPerView: 4,
-        paginationClickable: true,
+
         navigation: {
-            prevEl: '.lr_icon_left',
-            nextEl: '.lr_icon_right',
+            prevEl: '.swiper-button-prev',
+            nextEl: '.swiper-button-next',
         },
         breakpoints: {
             1200: {
@@ -315,11 +380,17 @@
     })
 
     function changepic(_this) {
-        $('.swiper-container .swiper-slide').removeClass('active')
+        $('.swiper .swiper-slide').removeClass('active')
         $(_this).addClass('active')
         let image_id = $(_this).data('image_id')
-        $('.info_img_big li').removeClass('on')
-        $('.info_img_big li[data-image_id="'+image_id+'"]').addClass('on')
+        if({{$res['is_color']}}){
+            let p = $('.info_img_big_group li[data-image_id="'+image_id+'"]').closest('ul')
+            p.find('li').removeClass('on')
+            p.find('li[data-image_id="'+image_id+'"]').addClass('on')
+        }else{
+            $('.info_img_big li').removeClass('on')
+            $('.info_img_big li[data-image_id="'+image_id+'"]').addClass('on')
+        }
     }
 
     $(function () {
@@ -329,6 +400,20 @@
             let input = $(this).siblings('input')
             if(input.data('image_src')){
                 $('.product_detail_img .swiper-slide[data-image_id="'+input.data('image_id')+'"]').click()
+            }
+            if({{$res['is_color']}}){
+                let option_value_id = $(this).data('option_value_id')
+                if(option_value_id){
+                    $('.info_img_big').removeClass('active')
+                    $('.big_color_group'+option_value_id).addClass('active')
+                    $('.info_img_big li').removeClass('on')
+                    $('.info_img_big li:first-child').addClass('on')
+
+                    $('.small_img').removeClass('active')
+                    $('.small_color_group'+option_value_id).addClass('active')
+                    $('.small_img .swiper-slide').removeClass('active')
+                    $('.small_img .swiper-slide:first-child').addClass('active')
+                }
             }
         })
         $('.flag_radio').on('click','input',function () {
@@ -340,8 +425,6 @@
         $('.flag_checkbox').on('click','input',function () {
             price()
         })
-
-
 
         $('.info_option').on('change','select',function () {
             price()

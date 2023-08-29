@@ -30,22 +30,32 @@ class Product extends Model
         return $this->hasMany(ProductImage::class,'product_id');
     }
 
-    function imgById($product_id){
+    function imgById($product_id,$group=false){
         $productImage = ProductImage::where('product_id',$product_id)->orderBy('sort','desc')->get()->toArray();
         $res = [];
         foreach($productImage as $val){
             $val['image_src'] = UploadFile::getPath($val['image'],$val['remote']);
-            $res[] = $val;
+            if($group){
+                $res[$val['is_content']][$val['option_value_id']][] = $val;
+            }else{
+                $res[$val['is_content']][] = $val;
+            }
         }
         return $res;
     }
 
-    function imgByIds($product_ids){
+    function imgByIds($product_ids,$group=false){
         $productImage = ProductImage::whereIN('product_id',$product_ids)->orderBy('sort','desc')->get()->toArray();
         $res = [];
         foreach($productImage as $val){
             $val['image_src'] = UploadFile::getPath($val['image'],$val['remote']);
-            $res[$val['product_id']][] = $val;
+            if(!$val['is_content']){
+                if($group){
+                    $res[$val['product_id']][$val['option_value_id']][] = $val;
+                }else{
+                    $res[$val['product_id']][] = $val;
+                }
+            }
         }
         return $res;
     }
@@ -320,6 +330,11 @@ class Product extends Model
         return $arr;
     }
 
+    function isColorGroup(){
+        $info = Option::where('is_color',1)->where('status',1)->first();
+        return !empty($info);
+    }
+
     function findOption($id,$render=false){
         $res = $this->optionValue($id);
         if($render){
@@ -395,7 +410,7 @@ class Product extends Model
                         $img = $v['option_value']['image']?'<img src="'.$v['option_value']['image_src'].'" />':'';
                     }
                     $html .= '<div class="position-relative"><input '.($val['required']==1?'required':'').' data-image_id="'.$v['product_image_id'].'" '.$data_image_src.' data-price="'.$v['price'].'" type="radio" name="option['.$val['id'].']" id="option_'.$val['id'].'_'.$v['id'].'" value="'.$v['id'].'" />
-                            <label  for="option_'.$val['id'].'_'.$v['id'].'" >'.$img.$v['option_value']['name'].'</label></div>';
+                            <label data-option_value_id="'.$v['option_value_id'].'" for="option_'.$val['id'].'_'.$v['id'].'" >'.$img.$v['option_value']['name'].'</label></div>';
                 }
                 $html .= '</div></div>';
             }else if($val['option']['type']=='checkbox'){

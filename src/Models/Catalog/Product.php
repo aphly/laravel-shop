@@ -36,9 +36,9 @@ class Product extends Model
         foreach($productImage as $val){
             $val['image_src'] = UploadFile::getPath($val['image'],$val['remote']);
             if($group){
-                $res[$val['is_content']][$val['option_value_id']][] = $val;
+                $res[$val['type']][$val['option_value_id']][] = $val;
             }else{
-                $res[$val['is_content']][] = $val;
+                $res[$val['type']][] = $val;
             }
         }
         return $res;
@@ -49,12 +49,10 @@ class Product extends Model
         $res = [];
         foreach($productImage as $val){
             $val['image_src'] = UploadFile::getPath($val['image'],$val['remote']);
-            if(!$val['is_content']){
-                if($group){
-                    $res[$val['product_id']][$val['option_value_id']][] = $val;
-                }else{
-                    $res[$val['product_id']][] = $val;
-                }
+            if($group){
+                $res[$val['product_id']][$val['type']][$val['option_value_id']][] = $val;
+            }else{
+                $res[$val['product_id']][$val['type']][] = $val;
             }
         }
         return $res;
@@ -335,10 +333,10 @@ class Product extends Model
         return !empty($info);
     }
 
-    function findOption($id,$render=false){
+    function findOption($id,$render=false,$is_color=false){
         $res = $this->optionValue($id);
         if($render){
-            return $this->optionRender($res);
+            return $this->optionRender($res,$is_color);
         }else{
             return $res;
         }
@@ -353,8 +351,8 @@ class Product extends Model
         return $this->_optionValue($productOption);
     }
 
-    function optionValueByName($ids,$name='color'){
-        $option = Option::where('name',$name)->firstToArray();
+    function optionValueColor($ids){
+        $option = Option::where('is_color',1)->where('status',1)->firstToArray();
         if($option){
             $productOption = ProductOption::whereIn('product_id',$ids)->where('option_id',$option['id'])->with('option')->get()->keyBy('product_id')->toArray();
             return $this->_optionValue($productOption);
@@ -382,7 +380,7 @@ class Product extends Model
         return $res;
     }
 
-    function optionRender($options){
+    function optionRender($options,$is_color=false){
         $html = '';
         foreach ($options as $val){
             if($val['option']['type']=='select'){
@@ -410,7 +408,7 @@ class Product extends Model
                         $img = $v['option_value']['image']?'<img src="'.$v['option_value']['image_src'].'" />':'';
                     }
                     $html .= '<div class="position-relative"><input '.($val['required']==1?'required':'').' data-image_id="'.$v['product_image_id'].'" '.$data_image_src.' data-price="'.$v['price'].'" type="radio" name="option['.$val['id'].']" id="option_'.$val['id'].'_'.$v['id'].'" value="'.$v['id'].'" />
-                            <label data-option_value_id="'.$v['option_value_id'].'" for="option_'.$val['id'].'_'.$v['id'].'" >'.$img.$v['option_value']['name'].'</label></div>';
+                            <label data-option_value_id="'.$v['option_value_id'].'" for="option_'.$val['id'].'_'.$v['id'].'" >'.$img.'<span>'.$v['option_value']['name'].'</span></label></div>';
                 }
                 $html .= '</div></div>';
             }else if($val['option']['type']=='checkbox'){

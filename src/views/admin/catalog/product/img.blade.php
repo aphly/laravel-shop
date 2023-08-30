@@ -37,9 +37,10 @@
                                 <div class="img_next img_move" style="display: flex;align-items: center;justify-content: center;"><i class="uni app-fanhui1" style="transform: rotate(180deg);display: block;"></i></div>
                             </div>
                             <input type="text" style="margin-bottom: 5px;" class="form-control" name="imgs[sort][{{$v['id']}}]" value="{{$v['sort']}}">
-                            <select name="imgs[is_content][{{$v['id']}}]" class="form-control" style="margin-bottom: 5px;">
-                                <option value="0" @if($v['is_content']===0) selected @endif>橱窗</option>
-                                <option value="1" @if($v['is_content']===1) selected @endif>描述</option>
+                            <select name="imgs[type][{{$v['id']}}]" class="form-control" style="margin-bottom: 5px;">
+                                <option value="0" @if($v['type']===0) selected @endif>橱窗</option>
+                                <option value="1" @if($v['type']===1) selected @endif>描述</option>
+                                <option value="2" @if($v['type']===2) selected @endif>选项</option>
                             </select>
                             @if(!empty($res['info_option_value']))
                             <select name="imgs[option_value_id][{{$v['id']}}]" class="form-control" >

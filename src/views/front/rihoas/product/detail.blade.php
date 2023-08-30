@@ -6,8 +6,17 @@
     .buy_btn{background: #de8080;color: #fff}
     .buy_btn:hover{background: #d46d6d;}
     .product_detail_img .small_img .swiper-wrapper .swiper-slide.active img{border: 1px solid #d19595;}
+    .price_sale_detail{color: #E36254;font-weight: 600;margin-bottom: 10px;}
+    .product_detail_info .price .normal{color: #E36254;}
 
-
+    @if($res['is_color'])
+    .info_option .flag_radio label{padding:0;border: none !important;margin-right: 10px;}
+    .info_option .flag_radio label span{display: none;}
+    .info_option .flag_radio label img{border-radius: 50%;margin-right: 0;padding: 3px;}
+    .info_option .flag_radio label:hover{border: none !important;}
+    .info_option .flag_radio label.active img{border:2px solid #e59798 !important;padding: 1px;}
+    .info_option label img{width: 40px;height:40px;}
+    @endif
 </style>
 <div class="container shop_main">
     <div>
@@ -18,7 +27,7 @@
             <div class="product_detail_img">
                 @if($res['is_color'])
                     <div class="big_img aphly_viewer_js">
-                        @if($res['info_img'][0])
+                        @if(!empty($res['info_img'][0]))
                             <div class="info_img_big_group">
                                 @foreach($res['info_img'][0] as $k0=>$v0)
                                 <ul class="info_img_big big_color_group{{$k0}} @if($v0==reset($res['info_img'][0])) active @endif">
@@ -32,7 +41,7 @@
                             <img src="{{ URL::asset('static/base/img/none.png') }}" class="aphly_viewer">
                         @endif
                     </div>
-                    @if($res['info_img'][0])
+                    @if(!empty($res['info_img'][0]))
                         <div class="small_img_group">
                             @foreach($res['info_img'][0] as $k0=>$v0)
                             <div data-k0="{{$k0}}" class="small_img small_color_group{{$k0}} @if($v0==reset($res['info_img'][0])) active @endif">
@@ -55,7 +64,7 @@
                     @endif
                 @else
                     <div class="big_img aphly_viewer_js">
-                        @if($res['info_img'][0])
+                        @if(!empty($res['info_img'][0]))
                             <ul class="info_img_big">
                                 @foreach($res['info_img'][0] as $k=>$v)
                                 <li data-image_id="{{$v['id']}}" @if(!$k) class="on" @endif><img src="{{ $v['image_src'] }}" class="aphly_viewer"></li>
@@ -65,7 +74,7 @@
                             <img src="{{ URL::asset('static/base/img/none.png') }}" class="aphly_viewer">
                         @endif
                     </div>
-                    @if($res['info_img'][0])
+                    @if(!empty($res['info_img'][0]))
                         <div class="small_img">
                             <div class="swiper" style="overflow: hidden;">
                                 <div class="swiper-button-prev" ></div>
@@ -94,7 +103,6 @@
                         @if($res['special_price'])
                             <span class="normal price_js" data-price="{{$res['special_price']}}">{{$res['special_price_format']}}</span>
                             <span class="special_price">{{$res['info']->price_format}}</span>
-                            <span class="price_sale">Sale</span>
                         @else
                             @if($res['info_discount'])
                                 <span class="normal price_js" data-price="{{$res['info']->price}}">{{$res['info']->price_format}}</span>
@@ -118,6 +126,11 @@
                         @endif
                     </div>
                 </div>
+                @if($res['special_price'])
+                <div class="price_sale_detail">
+                    Final Sale
+                </div>
+                @endif
 
                 <form id="product" class="form_request" method="post" action="/cart/add" data-fn="detail_res">
                     @csrf
@@ -136,9 +149,7 @@
                     <button class="add_cart_btn " id="add_cart_btn" type="submit">Add To Cart</button>
                 </form>
                 <button class="buy_btn " id="buy_btn" type="button" onclick="buyNow(this)" style="margin-top: 10px;">Buy Now</button>
-
             </div>
-
         </div>
     </div>
     <style>
@@ -168,7 +179,7 @@
 
         <div class="description_img">
             @if($res['is_color'])
-                @if($res['info_img'][1])
+                @if(!empty($res['info_img'][1]))
                     <div class="">
                     @foreach($res['info_img'][1] as $k0=>$v0)
                         <ul class="description_img_ul description_img_ul{{$k0}}" data-k0="{{$k0}}">
@@ -466,6 +477,7 @@
                 })
             })
             let price = new Decimal(price_js).plus(radio_price).plus(checkbox_price).plus(select_price).toNumber();
+
             $('.price_js').html(currency._format(price,'{{$currency[2]['symbol_left']}}','{{$currency[2]['symbol_right']}}'))
         }
 

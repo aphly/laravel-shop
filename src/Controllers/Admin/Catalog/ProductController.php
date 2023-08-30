@@ -177,7 +177,7 @@ class ProductController extends Controller
                 $img_src = $insertData = [];
                 foreach ($file_path as $key=>$val) {
                     $img_src[] = UploadFile::getPath($val,$remote);
-                    $insertData[] = ['product_id'=>$res['product']->id,'image'=>$val,'sort'=>$key,'remote'=>$remote];
+                    $insertData[] = ['product_id'=>$res['product']->id,'image'=>$val,'sort'=>-1,'remote'=>$remote];
                 }
                 if ($insertData) {
                     ProductImage::insert($insertData);
@@ -208,8 +208,8 @@ class ProductController extends Controller
         foreach ($post['sort'] as $k=>$v){
             ProductImage::find($k)->update(['sort'=>$v]);
         }
-        foreach ($post['is_content'] as $k=>$v){
-            ProductImage::find($k)->update(['is_content'=>$v]);
+        foreach ($post['type'] as $k=>$v){
+            ProductImage::find($k)->update(['type'=>$v]);
         }
         if(isset($post['option_value_id'])){
             foreach ($post['option_value_id'] as $k=>$v){

@@ -15,10 +15,10 @@ class HomeController extends Controller
     {
         $res['title'] = 'Home';
         $res['data_products'] = [
-            ['title'=>'Top','product_ids'=>[
+            ['title'=>'Best Sellers','product_ids'=>[
                 1,2,3
             ]],
-            ['title'=>'New','product_ids'=>[
+            ['title'=>'New Arrivals','product_ids'=>[
                 1,2,3
             ]],
         ];
@@ -38,6 +38,9 @@ class HomeController extends Controller
             $res['products'][$key]->special = $val->special?Currency::format($val->special):0;
             $res['products'][$key]->discount =  $val->discount?Currency::format($val->discount):0;
         }
+        $res['product_option'] = $product->optionValueColor($product_ids);
+        $res['is_color'] = $product->isColorGroup()?1:0;
+        $res['product_image'] = $product->imgByIds($product_ids,$res['is_color']);
         return $this->makeView('laravel-shop-front::common.home.index',['res'=>$res]);
     }
 

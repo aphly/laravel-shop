@@ -12,7 +12,7 @@ class ProductImage extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'product_id','image','sort','remote','option_value_id','is_content'
+        'product_id','image','sort','remote','option_value_id','type'
     ];
 
 

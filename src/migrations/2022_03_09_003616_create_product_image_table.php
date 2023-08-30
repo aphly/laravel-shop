@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('image',255);
             $table->tinyInteger('remote')->default(0);
             $table->unsignedBigInteger('option_value_id')->nullable();
-            $table->tinyInteger('is_content')->default(0);
-            $table->unsignedInteger('sort')->nullable();
+            $table->tinyInteger('type')->nullable()->default(0);
+            $table->integer('sort')->nullable()->default(0);
         });
     }
 

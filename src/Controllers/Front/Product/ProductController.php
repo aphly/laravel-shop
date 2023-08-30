@@ -29,7 +29,7 @@ class ProductController extends Controller
         $product = new Product;
         $res['list'] = $product->getList($filter_data,$bySpu);
         $product_ids = [];
-        $res['list']->transform(function ($item) use ($product_ids){
+        $res['list']->transform(function ($item) use (&$product_ids){
             $product_ids[] = $item->id;
             $item->image_src= UploadFile::getPath($item->image,$item->remote);
             $item->price= Currency::format($item->price);
@@ -37,8 +37,9 @@ class ProductController extends Controller
             $item->discount= $item->discount?Currency::format($item->discount):0;
             return $item;
         });
-        $res['product_option'] = $product->optionValueByName($product_ids);
-        $res['product_image'] = $product->imgByIds($product_ids,$product->isColorGroup());
+        $res['product_option'] = $product->optionValueColor($product_ids);
+        $res['is_color'] = $product->isColorGroup()?1:0;
+        $res['product_image'] = $product->imgByIds($product_ids,$res['is_color']);
         $res['wishlist_product_ids'] = Wishlist::$product_ids;
         $res['sort'] = $product->sortArr();
         $res['price'] = $product->priceArr($this->currency[2]['symbol_left']);

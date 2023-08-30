@@ -203,40 +203,34 @@
             <div class="filter_res">
                 <ul class="filter_res_pre"></ul>
             </div>
-
             <ul class=" product-category">
                 @foreach($res['list'] as $key=>$val)
                     <li class="">
-                        <div class="image">
-                            <a href="/product/{{$val->id}}">
-                            @if(isset($res['product_option'][$val->id]['product_option_value']) && isset($res['product_image'][$val->id]))
-                                <dl class="product_image">
-                                    @foreach($res['product_image'][$val->id] as $k=>$v)
-                                        @if($k)
-                                            <dd data-image_id="{{$v['id']}}"><img src="{{ URL::asset('static/base/img/none.png') }}" data-original="{{$v['image_src']}}" class="lazy" /></dd>
-                                        @else
-                                            <dd class="active" data-image_id="{{$v['id']}}"><img src="{{ URL::asset('static/base/img/none.png') }}" data-original="{{$v['image_src']}}" class="lazy" /></dd>
-                                        @endif
-                                    @endforeach
-                                </dl>
-                            @else
-                               <img src="{{ URL::asset('static/base/img/none.png') }}" data-original="{{ $val->image_src }}"  class="img-responsive lazy" >
-                            @endif
-                            </a>
-                        </div>
-                        @if(isset($res['product_option'][$val->id]['product_option_value']))
-                        <div class="product_option">
-                            <dl>
-                                @foreach($res['product_option'][$val->id]['product_option_value'] as $v)
-                                    @if($v['product_image'] && $v['product_image']['image_src'])
-                                        <dd data-image_id="{{$v['product_image']['id']}}">
-                                            <img src="{{ URL::asset('static/base/img/none.png') }}" data-original="{{$v['product_image']['image_src']}}" class="lazy" alt=""></dd>
-                                    @elseif($v['option_value'] && $v['option_value']['image_src'])
-                                        <dd><img src="{{ URL::asset('static/base/img/none.png') }}" data-original="{{$v['option_value']['image_src']}}" class="lazy" alt=""></dd>
-                                    @endif
-                                @endforeach
-                            </dl>
-                        </div>
+                        @if($res['is_color'] && !empty($res['product_image'][$val->id]))
+                            <div class="image">
+                                <a href="/product/{{$val->id}}">
+                                @if($res['product_image'])
+                                    <dl class="product_image">
+                                        @foreach($res['product_image'][$val->id][0] as $k=>$v)
+                                            @if(reset($res['product_image'][$val->id][0])==$v)
+                                                <dd class="active" data-image_id="{{$v[0]['id']}}" data-option_value_id="{{$k}}"><img src="{{ URL::asset('static/base/img/none.png') }}" data-original="{{$v[0]['image_src']}}" class="lazy" /></dd>
+                                            @else
+                                                <dd data-image_id="{{$v[0]['id']}}" data-option_value_id="{{$k}}"><img src="{{ URL::asset('static/base/img/none.png') }}" data-original="{{$v[0]['image_src']}}" class="lazy" /></dd>
+                                            @endif
+                                        @endforeach
+                                    </dl>
+                                @else
+                                   <img src="{{ URL::asset('static/base/img/none.png') }}" data-original="{{ $val->image_src }}"  class="img-responsive lazy" >
+                                @endif
+                                </a>
+                            </div>
+
+                        @else
+                            <div class="image">
+                                <a href="/product/{{$val->id}}">
+                                    <img src="{{ URL::asset('static/base/img/none.png') }}" data-original="{{ $val->image_src }}"  class="img-responsive lazy" >
+                                </a>
+                            </div>
                         @endif
                         <a href="/product/{{$val->id}}"><div class="p_name">{{$val->name}}</div></a>
                         <div class="p_name_x d-flex justify-content-between">
@@ -263,6 +257,20 @@
                                 @endif
                             </div>
                         </div>
+                        @if($res['is_color'] && !empty($res['product_image'][$val->id]) && isset($res['product_option'][$val->id]['product_option_value']))
+                            <div class="product_option">
+                                <dl>
+                                    @foreach($res['product_option'][$val->id]['product_option_value'] as $v)
+                                        @if($v['product_image'] && $v['product_image']['image_src'])
+                                            <dd data-image_id="{{$v['product_image']['id']}}" data-option_value_id="{{$v['option_value_id']}}">
+                                                <img src="{{ URL::asset('static/base/img/none.png') }}" data-original="{{$v['product_image']['image_src']}}" class="lazy" alt=""></dd>
+                                        @elseif($v['option_value'] && $v['option_value']['image_src'])
+                                            <dd><img src="{{ URL::asset('static/base/img/none.png') }}" data-original="{{$v['option_value']['image_src']}}" class="lazy" alt=""></dd>
+                                        @endif
+                                    @endforeach
+                                </dl>
+                            </div>
+                        @endif
                     </li>
                 @endforeach
             </ul>
@@ -273,9 +281,11 @@
     </div>
 </div>
 
+@if($res['is_color'])
 <style>
-
-
+    .product_option dl dd.active{border:none;}
+    .product_option dl dd img{border-radius: 50%;padding: 3px;cursor: pointer;}
+    .product_option dl dd.active img{padding: 1px;border: 2px solid #e59798;}
 </style>
 
 <script>
@@ -283,16 +293,17 @@
         $('.product_option ').on('click','dd',function () {
             $(this).closest('.product_option').find('dd').removeClass('active')
             $(this).addClass('active')
-            let image_id = $(this).data('image_id');
-            if(image_id){
+            let option_value_id = $(this).data('option_value_id');
+            if(option_value_id){
                 let product_image = $(this).closest('li').find('.product_image');
                 product_image.find('dd').removeClass('active')
-                product_image.find('dd[data-image_id="'+image_id+'"]').addClass('active')
+                let img = product_image.find('dd[data-option_value_id="'+option_value_id+'"]').addClass('active').find('img')
+                img.attr('src',img.data('original'))
             }
         })
+        $('.product_option dd:first-child').click();
     })
-
-
 </script>
+@endif
 
 @include('laravel-shop-front::common.footer')

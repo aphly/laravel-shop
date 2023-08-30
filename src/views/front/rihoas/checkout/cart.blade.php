@@ -143,7 +143,7 @@
                                 You can continue shopping or sign in to view a previously saved cart.
                             </p>
                         </div>
-                        <div class="btn-empty">
+                        <div class="btn-empty d-none">
                             <a class="color-link-white" href="/">
                                 Continue Shopping
                             </a>
@@ -219,7 +219,7 @@
                         </div>
 
                     </div>
-                    <div class="pc-cart-coupon">
+                    <div class="pc-cart-coupon d-none">
                         <div class="cart-coupon-conent">
                             <a href="javascript:;" data-toggle="modal" data-target="#sale-after">
                                 <img class="Guarantee" src="{{ URL::asset('static/shop/img/cart/return-icon.svg') }}">

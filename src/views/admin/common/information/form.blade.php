@@ -30,7 +30,7 @@
                 <label for="">状态</label>
                 <select name="status" class="form-control">
                     @foreach($dict['status'] as $key=>$val)
-                        <option value="{{$key}}" @if($key==$res['info']->status) selected @endif>{{$val}}</option>
+                        <option value="{{$key}}" @if($key===$res['info']->status) selected @endif>{{$val}}</option>
                     @endforeach
                 </select>
                 <div class="invalid-feedback"></div>

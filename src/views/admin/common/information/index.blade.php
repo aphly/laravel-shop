@@ -32,7 +32,7 @@
                     @foreach($res['list'] as $v)
                     <ul class="table_tbody">
                         <li><input type="checkbox" class="delete_box" name="delete[]" value="{{$v['id']}}">{{$v['id']}}</li>
-                        <li class="wenzi">{{$v['title']}}</li>
+                        <li class="wenzi"><a href="/information/{{$v['id']}}">{{$v['title']}}</a></li>
                         <li>
                             @if($dict['status'])
                                 @if($v['status'])

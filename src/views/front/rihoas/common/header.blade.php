@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="{{ URL::asset('static/shop/css/shop.css') }}">
 
 <style>
-
+    .cart_num, .wishlist_num{background: #de8080;}
 </style>
 
 

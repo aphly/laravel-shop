@@ -191,7 +191,7 @@
                     </div>
                 @endif
             @else
-                @if($res['info_img'][1])
+                @if(!empty($res['info_img'][1]))
                 <ul>
                     @foreach($res['info_img'][1] as $v)
                     <li><img src="{{$v['image_src']}}" alt=""></li>

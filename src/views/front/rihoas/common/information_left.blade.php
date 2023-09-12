@@ -17,6 +17,12 @@
     <li @if($res['info']->id===6) class="active" @endif>
         <a href="/information/6">Shipping</a>
     </li>
+    <li @if($res['info']->id===7) class="active" @endif>
+        <a href="/information/7">Payment</a>
+    </li>
+    <li @if($res['info']->id===8) class="active" @endif>
+        <a href="/information/8">FAQ</a>
+    </li>
 </ul>
 
 <style>

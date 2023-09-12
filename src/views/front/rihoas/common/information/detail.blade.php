@@ -1,4 +1,4 @@
-@include('laravel-common-front::common.header')
+@include('laravel-shop-front::common.header')
 
 <section class="information">
     <div class=" container">
@@ -49,4 +49,4 @@
         alert_msg(res,false,3000)
     }
 </script>
-@include('laravel-common-front::common.footer')
+@include('laravel-shop-front::common.footer')

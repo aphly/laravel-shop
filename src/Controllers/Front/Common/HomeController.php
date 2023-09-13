@@ -39,8 +39,7 @@ class HomeController extends Controller
             $res['products'][$key]->discount =  $val->discount?Currency::format($val->discount):0;
         }
         $res['product_option'] = $product->optionValueColor($product_ids);
-        $res['is_color'] = $product->isColorGroup()?1:0;
-        $res['product_image'] = $product->imgByIds($product_ids,$res['is_color']);
+        $res['product_image'] = $product->imgByIds($product_ids);
         return $this->makeView('laravel-shop-front::common.home.index',['res'=>$res]);
     }
 

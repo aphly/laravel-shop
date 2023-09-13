@@ -9,14 +9,12 @@
     .price_sale_detail{color: #E36254;font-weight: 600;margin-bottom: 10px;}
     .product_detail_info .price .normal{color: #E36254;}
 
-    @if($res['is_color'])
-    .info_option .flag_radio label{padding:0;border: none !important;margin-right: 10px;}
-    .info_option .flag_radio label span{display: none;}
-    .info_option .flag_radio label img{border-radius: 50%;margin-right: 0;padding: 3px;}
-    .info_option .flag_radio label:hover{border: none !important;}
-    .info_option .flag_radio label.active img{border:2px solid #e59798 !important;padding: 1px;}
+    .info_option .flag_radio .my_radio[data-image_src="true"] label{padding:0;border: none !important;margin-right: 10px;}
+    .info_option .flag_radio .my_radio[data-image_src="true"] label span{display: none;}
+    .info_option .flag_radio .my_radio[data-image_src="true"] label img{border-radius: 50%;margin-right: 0;padding: 3px;}
+    .info_option .flag_radio .my_radio[data-image_src="true"] label:hover{border: none !important;}
+    .info_option .flag_radio .my_radio[data-image_src="true"] label.active img{border:2px solid #e59798 !important;padding: 1px;}
     .info_option label img{width: 40px;height:40px;}
-    @endif
 </style>
 <div class="container shop_main">
     <div>
@@ -66,8 +64,10 @@
                     <div class="big_img aphly_viewer_js">
                         @if(!empty($res['info_img'][0]))
                             <ul class="info_img_big">
-                                @foreach($res['info_img'][0] as $k=>$v)
-                                <li data-image_id="{{$v['id']}}" @if(!$k) class="on" @endif><img src="{{ $v['image_src'] }}" class="aphly_viewer"></li>
+                                @foreach($res['info_img'][0] as $k0=>$v0)
+                                    @foreach($v0 as $k=>$v)
+                                    <li data-image_id="{{$v['id']}}" @if(!$k) class="on" @endif><img src="{{ $v['image_src'] }}" class="aphly_viewer"></li>
+                                    @endforeach
                                 @endforeach
                             </ul>
                         @else
@@ -79,12 +79,14 @@
                             <div class="swiper" style="overflow: hidden;">
                                 <div class="swiper-button-prev" ></div>
                                 <div class="swiper-wrapper">
-                                    @foreach($res['info_img'][0] as $v)
-                                        <div class="swiper-slide " data-image_id="{{$v['id']}}"
-                                             data-src="{{$v['image_src']}}"
-                                             onclick="changepic(this)">
-                                            <img src="{{$v['image_src']}}">
-                                        </div>
+                                    @foreach($res['info_img'][0] as $v0)
+                                        @foreach($v0 as $k=>$v)
+                                            <div class="swiper-slide " data-image_id="{{$v['id']}}"
+                                                 data-src="{{$v['image_src']}}"
+                                                 onclick="changepic(this)">
+                                                <img src="{{$v['image_src']}}">
+                                            </div>
+                                        @endforeach
                                     @endforeach
                                 </div>
                                 <div class="swiper-button-next" ></div>
@@ -178,26 +180,16 @@
         </div>
 
         <div class="description_img">
-            @if($res['is_color'])
-                @if(!empty($res['info_img'][1]))
-                    <div class="">
-                    @foreach($res['info_img'][1] as $k0=>$v0)
-                        <ul class="description_img_ul description_img_ul{{$k0}}" data-k0="{{$k0}}">
-                            @foreach($v0 as $v)
-                                <li><img src="{{ $v['image_src'] }}" alt=""></li>
-                            @endforeach
-                        </ul>
-                    @endforeach
-                    </div>
-                @endif
-            @else
-                @if(!empty($res['info_img'][1]))
-                <ul>
-                    @foreach($res['info_img'][1] as $v)
-                    <li><img src="{{$v['image_src']}}" alt=""></li>
-                    @endforeach
-                </ul>
-                @endif
+            @if(!empty($res['info_img'][1]))
+                <div class="">
+                @foreach($res['info_img'][1] as $k0=>$v0)
+                    <ul class="description_img_ul description_img_ul{{$k0}}" data-k0="{{$k0}}">
+                        @foreach($v0 as $v)
+                            <li><img src="{{ $v['image_src'] }}" alt=""></li>
+                        @endforeach
+                    </ul>
+                @endforeach
+                </div>
             @endif
         </div>
     </div>
@@ -412,7 +404,7 @@
             if(input.data('image_src')){
                 $('.product_detail_img .swiper-slide[data-image_id="'+input.data('image_id')+'"]').click()
             }
-            if({{$res['is_color']}}){
+            if($(this).closest('.my_radio').data('image_src')){
                 let option_value_id = $(this).data('option_value_id')
                 if(option_value_id){
                     $('.info_img_big').removeClass('active')

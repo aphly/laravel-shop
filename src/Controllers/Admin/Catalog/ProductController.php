@@ -171,9 +171,9 @@ class ProductController extends Controller
         $res['info_img'] = ProductImage::where('product_id',$res['product']->id)->orderBy('sort','desc')->get();
         if($request->isMethod('post')) {
             if($request->hasFile('file')) {
-                $UploadFile = new UploadFile(1);
+                $UploadFile = new UploadFile(5);
                 $remote = $UploadFile->isRemote();
-                $file_path = $UploadFile->uploads(10,$request->file('file'), 'public/shop/product/image');
+                $file_path = $UploadFile->uploads(20,$request->file('file'), 'public/shop/product/image');
                 $img_src = $insertData = [];
                 foreach ($file_path as $key=>$val) {
                     $img_src[] = UploadFile::getPath($val,$remote);

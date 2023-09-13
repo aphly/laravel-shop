@@ -7,7 +7,7 @@
 <style>
     .product_img .item{margin: 0 10px 10px;width: 160px;}
     .product_img .item .img{width: 100%;height:160px;display: flex; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.2);position: relative}
-    .product_img .item img{width: 100%;}
+    .product_img .item img{width: 100%;max-height: 100%;}
     .product_img .item input{width: 100%;    text-align: center;}
     .product_img .item .delImg{text-align: center; background: #df6767; color: #fff; border-radius: 50%; margin-top: 5px; position: absolute; right: 5px; top: 5px;height: 24px; width: 24px; cursor: pointer;}
     .product_img .item .delImg:hover{background:#a30606;}
@@ -18,6 +18,7 @@
 </style>
 <div class="imain">
     <div style="margin-bottom: 50px;">
+        <div style="margin-bottom: 10px;color: #999;">图片设置成‘选项’时，代表图片进行颜色分组了，（橱窗和描述的颜色将有效），请将商品的选项也添加该图片</div>
         <label>
             <div class="btn btn-primary">
                 选择图片

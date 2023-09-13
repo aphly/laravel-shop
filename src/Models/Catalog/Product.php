@@ -30,30 +30,27 @@ class Product extends Model
         return $this->hasMany(ProductImage::class,'product_id');
     }
 
-    function imgById($product_id,$group=false){
+    function imgById($product_id){
         $productImage = ProductImage::where('product_id',$product_id)->orderBy('sort','desc')->get()->toArray();
         $res = [];
+        $group=0;
         foreach($productImage as $val){
-            $val['image_src'] = UploadFile::getPath($val['image'],$val['remote']);
-            if($group){
-                $res[$val['type']][$val['option_value_id']][] = $val;
-            }else{
-                $res[$val['type']][] = $val;
+            if($val['type']===2){
+                $group=1;
             }
+            $val['image_src'] = UploadFile::getPath($val['image'],$val['remote']);
+            $res[$val['type']][$val['option_value_id']][] = $val;
         }
-        return $res;
+
+        return [$group,$res];
     }
 
-    function imgByIds($product_ids,$group=false){
+    function imgByIds($product_ids){
         $productImage = ProductImage::whereIN('product_id',$product_ids)->orderBy('sort','desc')->get()->toArray();
         $res = [];
         foreach($productImage as $val){
             $val['image_src'] = UploadFile::getPath($val['image'],$val['remote']);
-            if($group){
-                $res[$val['product_id']][$val['type']][$val['option_value_id']][] = $val;
-            }else{
-                $res[$val['product_id']][$val['type']][] = $val;
-            }
+            $res[$val['product_id']][$val['type']][$val['option_value_id']][] = $val;
         }
         return $res;
     }
@@ -407,7 +404,7 @@ class Product extends Model
                     }else{
                         $img = $v['option_value']['image']?'<img src="'.$v['option_value']['image_src'].'" />':'';
                     }
-                    $html .= '<div class="position-relative"><input '.($val['required']==1?'required':'').' data-image_id="'.$v['product_image_id'].'" '.$data_image_src.' data-price="'.$v['price'].'" type="radio" name="option['.$val['id'].']" id="option_'.$val['id'].'_'.$v['id'].'" value="'.$v['id'].'" />
+                    $html .= '<div class="position-relative my_radio" '.$data_image_src.'><input '.($val['required']==1?'required':'').' data-image_id="'.$v['product_image_id'].'" '.$data_image_src.' data-price="'.$v['price'].'" type="radio" name="option['.$val['id'].']" id="option_'.$val['id'].'_'.$v['id'].'" value="'.$v['id'].'" />
                             <label data-option_value_id="'.$v['option_value_id'].'" for="option_'.$val['id'].'_'.$v['id'].'" >'.$img.'<span>'.$v['option_value']['name'].'</span></label></div>';
                 }
                 $html .= '</div></div>';

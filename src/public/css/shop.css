@@ -139,7 +139,7 @@ img{border-radius: 6px;}
 .wishlist_one{}
 .quantity-label{font-size: 16px;font-weight: 500;margin-bottom: 5px;}
 .div_ul{display: flex;flex-wrap: wrap;}
-.info_option .control-label{margin-bottom: 5px;}
+.info_option .control-label{margin-bottom: 10px;font-weight: 500;}
 
 .product_detail_img{width:calc(60% - 40px);position:relative;display: flex;flex-direction: row-reverse;}
 .product_detail_img .big_img{width:calc(100% - 90px);}

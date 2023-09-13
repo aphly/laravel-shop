@@ -49,10 +49,10 @@
                 @foreach($val['product_ids'] as $product_id)
                     @if(!empty($res['products'][$product_id]))
                     <li>
-                        @if($res['is_color'] && !empty($res['product_image'][$product_id]))
+                        @if(!empty($res['product_image'][$product_id]))
                             <div class="image">
                                 <a href="/product/{{$product_id}}">
-                                    @if($res['product_image'])
+                                    @if(!empty($res['product_image'][$product_id][2]))
                                         <dl class="product_image">
                                             @foreach($res['product_image'][$product_id][0] as $k=>$v)
                                                 @if(reset($res['product_image'][$product_id][0])==$v)
@@ -63,7 +63,7 @@
                                             @endforeach
                                         </dl>
                                     @else
-                                        <img src="{{ URL::asset('static/base/img/none.png') }}" data-original="{{ $val->image_src }}"  class="img-responsive lazy" >
+                                        <img src="{{ URL::asset('static/base/img/none.png') }}" data-original="{{ $res['products'][$product_id]->image_src }}"  class="img-responsive lazy" >
                                     @endif
                                 </a>
                             </div>
@@ -94,7 +94,7 @@
                                 @endif
                             </div>
                         </div>
-                        @if($res['is_color'] && !empty($res['product_image'][$product_id]) && isset($res['product_option'][$product_id]['product_option_value']))
+                        @if(!empty($res['product_image'][$product_id]) && !empty($res['product_image'][$product_id][2]) && isset($res['product_option'][$product_id]['product_option_value']))
                             <div class="product_option">
                                 <dl>
                                     @foreach($res['product_option'][$product_id]['product_option_value'] as $v)
@@ -119,29 +119,28 @@
         @endforeach
     </div>
 </div>
-@if($res['is_color'])
-    <style>
-        .product_option dl dd.active{border:none;}
-        .product_option dl dd img{border-radius: 50%;padding: 3px;cursor: pointer;}
-        .product_option dl dd.active img{padding: 1px;border: 2px solid #e59798;}
-        .product-category .p_name{margin-top: 0;}
-    </style>
 
-    <script>
-        $(function () {
-            $('.product_option ').on('click','dd',function () {
-                $(this).closest('.product_option').find('dd').removeClass('active')
-                $(this).addClass('active')
-                let option_value_id = $(this).data('option_value_id');
-                if(option_value_id){
-                    let product_image = $(this).closest('li').find('.product_image');
-                    product_image.find('dd').removeClass('active')
-                    let img = product_image.find('dd[data-option_value_id="'+option_value_id+'"]').addClass('active').find('img')
-                    img.attr('src',img.data('original'))
-                }
-            })
-            $('.product_option dd:first-child').click();
+<style>
+    .product_option dl dd.active{border:none;}
+    .product_option dl dd img{border-radius: 50%;padding: 3px;cursor: pointer;}
+    .product_option dl dd.active img{padding: 1px;border: 2px solid #e59798;}
+    .product-category .p_name{margin-top: 0;}
+</style>
+
+<script>
+    $(function () {
+        $('.product_option ').on('click','dd',function () {
+            $(this).closest('.product_option').find('dd').removeClass('active')
+            $(this).addClass('active')
+            let option_value_id = $(this).data('option_value_id');
+            if(option_value_id){
+                let product_image = $(this).closest('li').find('.product_image');
+                product_image.find('dd').removeClass('active')
+                let img = product_image.find('dd[data-option_value_id="'+option_value_id+'"]').addClass('active').find('img')
+                img.attr('src',img.data('original'))
+            }
         })
-    </script>
-@endif
+        $('.product_option dd:first-child').click();
+    })
+</script>
 @include('laravel-shop-front::common.footer')

@@ -206,10 +206,10 @@
             <ul class=" product-category">
                 @foreach($res['list'] as $key=>$val)
                     <li class="">
-                        @if($res['is_color'] && !empty($res['product_image'][$val->id]))
+                        @if(!empty($res['product_image'][$val->id]))
                             <div class="image">
                                 <a href="/product/{{$val->id}}">
-                                @if($res['product_image'])
+                                @if(!empty($res['product_image'][$val->id][2]))
                                     <dl class="product_image">
                                         @foreach($res['product_image'][$val->id][0] as $k=>$v)
                                             @if(reset($res['product_image'][$val->id][0])==$v)
@@ -257,7 +257,7 @@
                                 @endif
                             </div>
                         </div>
-                        @if($res['is_color'] && !empty($res['product_image'][$val->id]) && isset($res['product_option'][$val->id]['product_option_value']))
+                        @if(!empty($res['product_image'][$val->id]) && !empty($res['product_image'][$val->id][2]) && isset($res['product_option'][$val->id]['product_option_value']))
                             <div class="product_option">
                                 <dl>
                                     @foreach($res['product_option'][$val->id]['product_option_value'] as $v)
@@ -281,7 +281,6 @@
     </div>
 </div>
 
-@if($res['is_color'])
 <style>
     .product_option dl dd.active{border:none;}
     .product_option dl dd img{border-radius: 50%;padding: 3px;cursor: pointer;}
@@ -304,6 +303,5 @@
         $('.product_option dd:first-child').click();
     })
 </script>
-@endif
 
 @include('laravel-shop-front::common.footer')

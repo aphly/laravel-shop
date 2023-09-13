@@ -400,10 +400,6 @@
         $('.flag_radio').on('click','label',function () {
             $(this).closest('.flag_radio').find('label').removeClass('active')
             $(this).addClass('active')
-            let input = $(this).siblings('input')
-            if(input.data('image_src')){
-                $('.product_detail_img .swiper-slide[data-image_id="'+input.data('image_id')+'"]').click()
-            }
             if($(this).closest('.my_radio').data('image_src')){
                 let option_value_id = $(this).data('option_value_id')
                 if(option_value_id){
@@ -417,6 +413,10 @@
                     $('.small_img .swiper-slide').removeClass('active')
                     $('.small_img .swiper-slide:first-child').addClass('active')
                 }
+            }
+            let input = $(this).siblings('input')
+            if(input.data('image_src')){
+                $('.product_detail_img .swiper-slide[data-image_id="'+input.data('image_id')+'"]').click()
             }
         })
         $('.flag_radio').on('click','input',function () {

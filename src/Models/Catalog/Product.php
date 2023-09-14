@@ -330,10 +330,10 @@ class Product extends Model
         return !empty($info);
     }
 
-    function findOption($id,$render=false,$is_color=false){
+    function findOption($id,$render=false){
         $res = $this->optionValue($id);
         if($render){
-            return $this->optionRender($res,$is_color);
+            return $this->optionRender($res);
         }else{
             return $res;
         }
@@ -344,8 +344,16 @@ class Product extends Model
                             $productOption_ids,function ($query,$productOption_ids){
                                 return $query->whereIn('id',$productOption_ids);
                             }
-                        )->with('option')->orderBy('id','desc')->get()->keyBy('id')->toArray();
-        return $this->_optionValue($productOption);
+                        )->with('option')->get()->keyBy('id')->toArray();
+        $arr = $res = [];
+        foreach($productOption as $k=>$v){
+            $arr[$v["option"]['sort']]=$k;
+        }
+        krsort($arr);
+        foreach($arr as $v){
+            $res[$v] = $productOption[$v];
+        }
+        return $this->_optionValue($res);
     }
 
     function optionValueColor($ids){
@@ -377,7 +385,7 @@ class Product extends Model
         return $res;
     }
 
-    function optionRender($options,$is_color=false){
+    function optionRender($options){
         $html = '';
         foreach ($options as $val){
             if($val['option']['type']=='select'){

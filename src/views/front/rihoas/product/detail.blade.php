@@ -347,7 +347,7 @@
     function detail_res(res) {
         if(!res.code){
             if(buy_now){
-                location.href = '/checkout/address'
+                location.href = '/checkout/address?redirect={{urlencode(url('/checkout/address'))}}'
             }else{
                 div_fly($('#add_cart_btn'),$('#cart_num'),function () {
                     $('#cart_num').text(res.data.count);

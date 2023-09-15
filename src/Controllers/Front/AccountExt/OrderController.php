@@ -17,6 +17,7 @@ class OrderController extends Controller
 {
     public function index()
     {
+        $res['title'] = 'My Orders';
         $res['list'] = Order::where(['uuid'=>User::uuid()])->where('delete_at',0)->with('orderStatus')->with('orderProduct')
             ->orderBy('created_at','desc')->Paginate(config('admin.perPage'))->withQueryString();
         $res['cancel_fee_24'] = $this->shop_setting['order_cancel_fee_24'];
@@ -31,7 +32,8 @@ class OrderController extends Controller
         $res['info'] = Order::where(['uuid'=>User::uuid(),'id'=>$request->query('id',0)])->where('delete_at',0)->with('orderStatus')
             ->with(['orderTotal'=>function ($query) {
                     $query->orderBy('sort', 'asc');
-                }])->firstOrError();
+                }])->firstOr404();
+        $res['title'] = 'OrderId#'.$res['info']->id;
         $res['orderProduct'] = OrderProduct::where('order_id',$res['info']->id)->with('orderOption')->get();
         $res['orderHistory'] = OrderHistory::where('order_id',$res['info']->id)->with('orderStatus')->orderBy('created_at','asc')->get();
         $res['orderRefund'] = PaymentRefund::where('payment_id',$res['info']->payment_id)->get();

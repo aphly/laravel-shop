@@ -15,7 +15,7 @@
         .order_total li{display: flex;justify-content: space-between;margin-bottom: 5px;}
         .order_product dd{margin-bottom: 5px;}
 
-        .orderHistory{padding: 15px 0;}
+        .orderHistory{padding: 5px 0;}
         .orderHistory li{margin-bottom: 5px;}
 
         .order_info{border-top: 1px solid #f1f1f1;padding: 15px 0;}
@@ -25,7 +25,7 @@
         .orderHistory1{display: flex;line-height: 30px;color: #999;align-items: center;}
         .orderHistory11{background: #999;border-radius: 50%;width: 10px;height: 10px;margin: 5px;}
         .orderHistory22{padding-left: 10px; margin-left: 10px;border-left: 1px solid #999;margin-bottom: 10px;}
-        .orderRefund{width: 100%;}
+        .order_detail_title{font-weight: 500;border-top: 1px solid #f1f1f1; padding-top: 15px;}
     </style>
     <div class="account_info">
         @include('laravel-common-front::account_ext.left_menu')
@@ -76,6 +76,26 @@
                 </div>
 
                 <div class="detail">
+                    <ul class="order_info">
+                        <li><div class="info_left">Order ID:</div><div>{{$res['info']->id}}</div></li>
+                        <li><div class="info_left">Date Added:</div><div>{{$res['info']->created_at}}</div></li>
+                        <li><div class="info_left">Payment Method:</div><div>{{$res['info']->payment_method_name}}</div></li>
+                        <li>
+                            <div class="info_left">Shipping Address:</div><div>{{$res['info']->address_firstname}} {{$res['info']->address_lastname}},
+                                {{$res['info']->address_address_1}} {{$res['info']->address_address_2}},
+                                {{$res['info']->address_city}}, {{$res['info']->address_zone}}, {{$res['info']->address_country}},
+                                {{$res['info']->address_postcode}}, {{$res['info']->address_telephone}}
+                            </div>
+                        </li>
+                        <li><div class="info_left">Shipping Method:</div><div>{{$res['info']->shipping_name}}</div></li>
+                        <li><div class="info_left">Shipping Tracking:</div><div>{{$res['info']->shipping_no??'-'}}</div></li>
+                    </ul>
+                </div>
+
+                <div class="detail">
+                    <div class="order_detail_title">
+                        Order History
+                    </div>
                     <ul class="orderHistory">
                         @if($res['orderHistory'])
                             @foreach($res['orderHistory'] as $val)
@@ -93,36 +113,7 @@
                                 </li>
                             @endforeach
                         @endif
-                    </ul>
-                </div>
-                <div class="detail">
-                    <ul class="order_info">
-                        <li><div class="info_left">Order ID:</div><div>{{$res['info']->id}}</div></li>
-                        <li><div class="info_left">Date Added:</div><div>{{$res['info']->created_at}}</div></li>
-                        <li><div class="info_left">Payment Method:</div><div>{{$res['info']->payment_method_name}}</div></li>
-                        <li>
-                            <div class="info_left">Shipping Address:</div><div>{{$res['info']->address_firstname}} {{$res['info']->address_lastname}},
-                                {{$res['info']->address_address_1}} {{$res['info']->address_address_2}},
-                                {{$res['info']->address_city}}, {{$res['info']->address_zone}}, {{$res['info']->address_country}},
-                                {{$res['info']->address_postcode}}, {{$res['info']->address_telephone}}
-                            </div>
-                        </li>
-                        <li><div class="info_left">Shipping Method:</div><div>{{$res['info']->shipping_name}}</div></li>
-                        <li><div class="info_left">Shipping Tracking:</div><div>{{$res['info']->shipping_no??'-'}}</div></li>
-                    </ul>
-                </div>
-                <div class="order_btns">
-                    @if($res['info']->order_status_id==1)
-                        @if($res['info']->payment_id)
-                            <a href="/account_ext/order/pay?id={{$res['info']->id}}" class="account_btn">Pay</a>
-                        @endif
-                        <a href="/account_ext/order/close?id={{$res['info']->id}}" data-fn="close_res" class="a_request account_btn" data-_token="{{csrf_token()}}">Close</a>
-                    @elseif($res['info']->order_status_id==2)
-                        <a href="javascript:void(0)" onclick="cancel('{{$res['cancelAmountFormat']}}',{{$res['info']->id}})" class="account_btn">Cancel</a>
-                    @elseif($res['info']->order_status_id==3 || $res['info']->order_status_id==7)
-                        <a href="/account_ext/service/form?order_id={{$val->order_id}}" class="account_btn">Service</a>
-                    @elseif($res['info']->order_status_id==6)
-                        <ul class="orderRefund">
+                        @if($res['info']->order_status_id==6)
                             @if($res['orderRefund'])
                                 @foreach($res['orderRefund'] as $val)
                                     <li class="">
@@ -150,7 +141,21 @@
                                     </li>
                                 @endforeach
                             @endif
-                        </ul>
+                        @endif
+                    </ul>
+
+                </div>
+
+                <div class="order_btns">
+                    @if($res['info']->order_status_id==1)
+                        @if($res['info']->payment_id)
+                            <a href="/account_ext/order/pay?id={{$res['info']->id}}" class="account_btn">Pay</a>
+                        @endif
+                        <a href="/account_ext/order/close?id={{$res['info']->id}}" data-fn="close_res" class="a_request account_btn" data-_token="{{csrf_token()}}">Close</a>
+                    @elseif($res['info']->order_status_id==2)
+                        <a href="javascript:void(0)" onclick="cancel('{{$res['cancelAmountFormat']}}',{{$res['info']->id}})" class="account_btn">Cancel</a>
+                    @elseif($res['info']->order_status_id==3 || $res['info']->order_status_id==7)
+                        <a href="/account_ext/service/form?order_id={{$val->order_id}}" class="account_btn">Service</a>
                     @endif
                 </div>
             </div>

@@ -30,7 +30,7 @@
                 <input type="hidden" name="shipping_id" value="{{$res['shipping_default_id']}}">
                 <div class="my_address checkout_box">
                     <div class="checkout_title">
-                        Shipping method
+                        Shipping Method
                     </div>
                     <ul class="checkout_ul">
                         @foreach($res['shipping'] as $val)

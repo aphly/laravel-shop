@@ -80,7 +80,7 @@ class OrderController extends Controller
             $res['info']->addOrderHistory($res['info'], 6);
             throw new ApiException(['code'=>0,'msg'=>'order option success','data'=>['redirect'=>'/account_ext/order']]);
         }else{
-            throw new ApiException(['code'=>1,'msg'=>'order status error','data'=>['redirect'=>'/account_ext/order']]);
+            throw new ApiException(['code'=>1,'msg'=>'After shipment, the order cannot be cancelled!','data'=>['redirect'=>'/account_ext/order']]);
         }
     }
 

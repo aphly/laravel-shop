@@ -25,6 +25,7 @@
         .orderHistory1{display: flex;line-height: 30px;color: #999;align-items: center;}
         .orderHistory11{background: #999;border-radius: 50%;width: 10px;height: 10px;margin: 5px;}
         .orderHistory22{padding-left: 10px; margin-left: 10px;border-left: 1px solid #999;margin-bottom: 10px;}
+        .orderRefund{width: 100%;}
     </style>
     <div class="account_info">
         @include('laravel-common-front::account_ext.left_menu')
@@ -124,7 +125,7 @@
                         <ul class="orderRefund">
                             @if($res['orderRefund'])
                                 @foreach($res['orderRefund'] as $val)
-                                    <li class="d-flex">
+                                    <li class="">
                                         <div class="orderHistory1">
                                             <div class="orderHistory11"></div>
                                             <div class="orderHistory12">{{$val->created_at}}</div>
@@ -175,7 +176,7 @@
                 <div class="cancel2">
                     Refund <span class="cancelAmountFormat">0</span>
                 </div>
-                <form action="" method="post" data-fn="cancel_res" class="form_request cancel3">
+                <form action="/account_ext/order/cancel?id={{$res['info']->id}}" method="post" data-fn="cancel_res" class="form_request cancel3">
                     @csrf
                     <div class="d-flex flex-row-reverse">
                         <button type="submit" class="cancel_btn btn" style="">Cancel</button>
@@ -198,7 +199,7 @@
     function cancel(cancelAmountFormat,order_id) {
         let  cancelModal = $('#cancelModal');
         cancelModal.find('.cancelAmountFormat').text(cancelAmountFormat);
-        cancelModal.find('form').attr('action','/account_ext/order/cancel?id='+order_id);
+        //cancelModal.find('form').attr('action','/account_ext/order/cancel?id='+order_id);
         cancelModal.modal('show')
     }
 $(function () {

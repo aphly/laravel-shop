@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id')->index();
             $table->string('name',255);
             $table->string('image',255);
-            $table->string('sku',64);
+            $table->string('sku',64)->nullable();
             $table->unsignedInteger('quantity')->nullable();
             $table->decimal('price',15,2);
             $table->string('price_format',255);

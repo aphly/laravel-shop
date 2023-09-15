@@ -39,7 +39,7 @@
                 <input type="hidden" name="payment_method_id" value="{{$res['paymentMethod_default_id']}}">
                 <div class="checkout_box">
                     <div class="checkout_title">
-                        Payment
+                        Payment Method
                     </div>
                     <ul class="checkout_ul checkout_ul_payment">
                         @foreach($res['paymentMethod'] as $val)

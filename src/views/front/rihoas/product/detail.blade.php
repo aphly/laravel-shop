@@ -187,11 +187,17 @@
             @if(!empty($res['info_img'][1]))
                 <div class="">
                 @foreach($res['info_img'][1] as $k0=>$v0)
-                    <ul class="description_img_ul description_img_ul{{$k0}}" data-k0="{{$k0}}">
-                        @foreach($v0 as $v)
-                            <li><img src="{{ $v['image_src'] }}" alt=""></li>
-                        @endforeach
-                    </ul>
+                    @if($res['info']->is_color_group)
+                        <ul class="description_img_ul description_img_ul{{$k0}}" data-k0="{{$k0}}">
+                            @foreach($v0 as $v)
+                                <li><img src="{{ $v['image_src'] }}" alt=""></li>
+                            @endforeach
+                        </ul>
+                    @else
+                        <ul class="description_img_ul description_img_ul{{$k0}}" data-k0="{{$k0}}">
+                            <li><img src="{{ $v0['image_src'] }}" alt=""></li>
+                        </ul>
+                    @endif
                 @endforeach
                 </div>
             @endif

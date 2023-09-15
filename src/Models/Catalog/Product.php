@@ -19,7 +19,7 @@ class Product extends Model
         'sku','name','quantity','image','price','uuid','spu',
         'is_shipping','stock_status_id','weight','weight_class_id',
         'length','width','height','length_class_id','subtract',
-        'status','viewed','sale','sort','date_available','url','remote'
+        'status','viewed','sale','sort','date_available','url','remote','is_color_group'
     ];
 
     function desc(){
@@ -33,16 +33,11 @@ class Product extends Model
     function imgById($product_id){
         $productImage = ProductImage::where('product_id',$product_id)->orderBy('sort','desc')->get()->toArray();
         $res = [];
-        $group=0;
         foreach($productImage as $val){
-            if($val['type']===2){
-                $group=1;
-            }
             $val['image_src'] = UploadFile::getPath($val['image'],$val['remote']);
             $res[$val['type']][$val['option_value_id']][] = $val;
         }
-
-        return [$group,$res];
+        return $res;
     }
 
     function imgByIds($product_ids){
@@ -184,7 +179,7 @@ class Product extends Model
         }
 
         $sql->groupBy('p.id')
-            ->select('p.id','p.sale','p.viewed','p.date_available','p.price','p.name','p.quantity','p.image','p.spu','p.remote');
+            ->select('p.id','p.sale','p.viewed','p.date_available','p.price','p.name','p.quantity','p.image','p.spu','p.remote','p.is_color_group');
         $sql->addSelect([
             'reviews'=>Review::whereColumn('product_id','p.id')->where('status',1)
                 ->groupBy('product_id')

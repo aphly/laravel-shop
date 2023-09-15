@@ -20,8 +20,8 @@
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">sku <i>*</i></label>
-                <input type="text" name="sku" class="form-control " value="{{$res['product']->sku}}" required>
+                <label for="">sku</label>
+                <input type="text" name="sku" class="form-control " value="{{$res['product']->sku}}" >
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
@@ -56,6 +56,17 @@
                     @if(isset($dict['yes_no']))
                         @foreach($dict['yes_no'] as $key=>$val)
                             <option value="{{$key}}" @if($res['product']->is_shipping===$key || ($res['product']->is_shipping===null && $key)) selected @endif>{{$val}}</option>
+                        @endforeach
+                    @endif
+                </select>
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="form-group">
+                <label for="">图片是否颜色分组</label>
+                <select name="is_color_group" class="form-control">
+                    @if(isset($dict['yes_no']))
+                        @foreach($dict['yes_no'] as $key=>$val)
+                            <option value="{{$key}}" @if($res['product']->is_color_group==$key) selected @endif>{{$val}}</option>
                         @endforeach
                     @endif
                 </select>

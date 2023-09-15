@@ -38,8 +38,16 @@ class ProductController extends Controller
             return $item;
         });
         $res['product_option'] = $product->optionValueColor($product_ids);
-        $res['product_image'] = $product->imgByIds($product_ids);
-
+        //dd($res['product_option']);
+        //$res['product_image'] = $product->imgByIds($product_ids);
+        $res['product_option_value_image'] = [];
+        foreach ($res['product_option'] as $val){
+            foreach ($val['product_option_value'] as $v){
+                if(!empty($v['product_image_id'])){
+                    $res['product_option_value_image'][$val['product_id']][$v['product_image_id']] = $v['product_image']['image_src'];
+                }
+            }
+        }
         $res['wishlist_product_ids'] = Wishlist::$product_ids;
         $res['sort'] = $product->sortArr();
         $res['price'] = $product->priceArr($this->currency[2]['symbol_left']);
@@ -90,7 +98,7 @@ class ProductController extends Controller
         $res['info_option'] = $res['info']->findOption($res['info']->id,true);
         list($res['special_price'],$res['special_price_format']) = $res['info']->findSpecial($res['info']->id);
         $res['info_discount'] = $res['info']->findDiscount($res['info']->id);
-        list($res['is_color'],$res['info_img']) = $res['info']->imgById($res['info']->id);
+        $res['info_img'] = $res['info']->imgById($res['info']->id);
 
         //$res['info_reward'] = $res['info']->findReward($res['info']->id,$group_id);
         //$res['shipping'] = Shipping::where('cost',0)->firstToArray();

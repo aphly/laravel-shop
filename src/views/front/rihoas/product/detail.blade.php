@@ -23,7 +23,7 @@
     <div>
         <div class="product_detail">
             <div class="product_detail_img">
-                @if($res['is_color'])
+                @if($res['info']->is_color_group)
                     <div class="big_img aphly_viewer_js">
                         @if(!empty($res['info_img'][0]))
                             <div class="info_img_big_group">
@@ -386,7 +386,7 @@
         $('.swiper .swiper-slide').removeClass('active')
         $(_this).addClass('active')
         let image_id = $(_this).data('image_id')
-        if({{$res['is_color']}}){
+        if({{$res['info']->is_color_group}}){
             let p = $('.info_img_big_group li[data-image_id="'+image_id+'"]').closest('ul')
             p.find('li').removeClass('on')
             p.find('li[data-image_id="'+image_id+'"]').addClass('on')
@@ -400,7 +400,7 @@
         $('.flag_radio').on('click','label',function () {
             $(this).closest('.flag_radio').find('label').removeClass('active')
             $(this).addClass('active')
-            if($(this).closest('.my_radio').data('image_src')){
+            if({{$res['info']->is_color_group}}){
                 let option_value_id = $(this).data('option_value_id')
                 if(option_value_id){
                     $('.info_img_big').removeClass('active')

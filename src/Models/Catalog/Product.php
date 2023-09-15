@@ -30,12 +30,16 @@ class Product extends Model
         return $this->hasMany(ProductImage::class,'product_id');
     }
 
-    function imgById($product_id){
+    function imgById($product_id,$is_color_group=false){
         $productImage = ProductImage::where('product_id',$product_id)->orderBy('sort','desc')->get()->toArray();
         $res = [];
         foreach($productImage as $val){
             $val['image_src'] = UploadFile::getPath($val['image'],$val['remote']);
-            $res[$val['type']][$val['option_value_id']][] = $val;
+            if($is_color_group){
+                $res[$val['type']][$val['option_value_id']][] = $val;
+            }else{
+                $res[$val['type']][] = $val;
+            }
         }
         return $res;
     }
@@ -342,11 +346,11 @@ class Product extends Model
                         )->with('option')->get()->keyBy('id')->toArray();
         $arr = $res = [];
         foreach($productOption as $k=>$v){
-            $arr[$v["option"]['sort']]=$k;
+            $arr[$k]=$v["option"]['sort'];
         }
-        krsort($arr);
-        foreach($arr as $v){
-            $res[$v] = $productOption[$v];
+        arsort($arr);
+        foreach($arr as $k=>$v){
+            $res[$k] = $productOption[$k];
         }
         return $this->_optionValue($res);
     }

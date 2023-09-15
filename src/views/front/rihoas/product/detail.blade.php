@@ -68,11 +68,11 @@
                     <div class="big_img aphly_viewer_js is_color_group0">
                         @if(!empty($res['info_img'][0]))
                             <ul class="info_img_big">
-                                @foreach($res['info_img'][0] as $k0=>$v0)
-                                    @if(reset($res['info_img'][0])===$v0)
-                                        <li data-image_id="{{$v0[0]['id']}}" class="on"><img src="{{ $v0[0]['image_src'] }}" class="aphly_viewer "></li>
+                                @foreach($res['info_img'][0] as $v)
+                                    @if(reset($res['info_img'][0])===$v)
+                                        <li data-image_id="{{$v['id']}}" class="on"><img src="{{ $v['image_src'] }}" class="aphly_viewer "></li>
                                     @else
-                                        <li data-image_id="{{$v0[0]['id']}}" ><img src="{{ $v0[0]['image_src'] }}" class="aphly_viewer"></li>
+                                        <li data-image_id="{{$v['id']}}" ><img src="{{ $v['image_src'] }}" class="aphly_viewer"></li>
                                     @endif
                                 @endforeach
                             </ul>
@@ -85,14 +85,12 @@
                             <div class="swiper" style="overflow: hidden;">
                                 <div class="swiper-button-prev" ></div>
                                 <div class="swiper-wrapper">
-                                    @foreach($res['info_img'][0] as $v0)
-                                        @foreach($v0 as $k=>$v)
+                                    @foreach($res['info_img'][0] as $v)
                                             <div class="swiper-slide " data-image_id="{{$v['id']}}"
                                                  data-src="{{$v['image_src']}}"
                                                  onclick="changepic(this)">
                                                 <img src="{{$v['image_src']}}">
                                             </div>
-                                        @endforeach
                                     @endforeach
                                 </div>
                                 <div class="swiper-button-next" ></div>

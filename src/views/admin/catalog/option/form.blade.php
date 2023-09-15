@@ -57,7 +57,7 @@
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">是否颜色分组</label>
+                <label for="">是否颜色</label>
                 <select name="is_color" class="form-control">
                     @if(isset($dict['yes_no']))
                         @foreach($dict['yes_no'] as $key=>$val)

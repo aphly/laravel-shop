@@ -23,9 +23,9 @@
             <div class="table">
                 <ul class="table_header">
                     <li >ID</li>
-                    <li >name</li>
-                    <li >sort</li>
-                    <li ></li>
+                    <li >名称</li>
+                    <li >类型</li>
+                    <li >排序</li>
                     <li >状态</li>
                     <li >操作</li>
                 </ul>
@@ -35,10 +35,10 @@
                         <li><input type="checkbox" class="delete_box" name="delete[]" value="{{$v['id']}}">{{$v['id']}}</li>
                         <li>{{ $v['name'] }}</li>
                         <li>
-                            {{$v['sort']}}
+                            {{$v['type']}}
                         </li>
                         <li>
-
+                            {{$v['sort']}}
                         </li>
                         <li>
                             @if($dict['status'])

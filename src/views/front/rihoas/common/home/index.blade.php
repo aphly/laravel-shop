@@ -36,6 +36,9 @@
 <style>
     .home_carousel .carousel-item img{ height: 600px;}
     .product-category li .product_image img{height: 100%;width: 100%;}
+    @media (max-width: 1499.98px) {
+        .home_carousel .carousel-item img{height: 450px; }
+    }
     @media (max-width: 1199.98px) {
         .home_carousel .carousel-item img{height: 300px; }
     }

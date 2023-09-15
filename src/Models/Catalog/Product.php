@@ -392,7 +392,7 @@ class Product extends Model
                 }
                 $html .= '</select></div>';
             }else if($val['option']['type']=='radio'){
-                $html .= '<div class="form-group flag_radio '.($val['required']==1?'required':'').'">
+                $html .= '<div class="form-group flag_radio '.($val['required']==1?'required':'').' " data-is_color="'.($val['option']['is_color']?'true':'false').'">
                               <div class="control-label">'.$val['option']['name'].'</div>
                               <div class="div_ul">';
                 foreach ($val['product_option_value'] as $v){

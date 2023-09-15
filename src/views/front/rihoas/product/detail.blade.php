@@ -24,13 +24,17 @@
         <div class="product_detail">
             <div class="product_detail_img">
                 @if($res['info']->is_color_group)
-                    <div class="big_img aphly_viewer_js">
+                    <div class="big_img aphly_viewer_js is_color_group">
                         @if(!empty($res['info_img'][0]))
                             <div class="info_img_big_group">
                                 @foreach($res['info_img'][0] as $k0=>$v0)
-                                <ul class="info_img_big big_color_group{{$k0}} @if($v0==reset($res['info_img'][0])) active @endif">
+                                <ul class="info_img_big big_color_group{{$k0}} @if($v0===reset($res['info_img'][0])) active @endif">
                                     @foreach($v0 as $k=>$v)
-                                        <li data-image_id="{{$v['id']}}" @if(!$k) class="on" @endif><img src="{{ $v['image_src'] }}" class="aphly_viewer"></li>
+                                        @if(reset($v0)===$v)
+                                            <li data-image_id="{{$v['id']}}" class="on"><img src="{{ $v['image_src'] }}" class="aphly_viewer"></li>
+                                        @else
+                                            <li data-image_id="{{$v['id']}}" ><img src="{{ $v['image_src'] }}" class="aphly_viewer"></li>
+                                        @endif
                                     @endforeach
                                 </ul>
                                 @endforeach
@@ -61,13 +65,15 @@
                         </div>
                     @endif
                 @else
-                    <div class="big_img aphly_viewer_js">
+                    <div class="big_img aphly_viewer_js is_color_group0">
                         @if(!empty($res['info_img'][0]))
                             <ul class="info_img_big">
                                 @foreach($res['info_img'][0] as $k0=>$v0)
-                                    @foreach($v0 as $k=>$v)
-                                    <li data-image_id="{{$v['id']}}" @if(!$k) class="on" @endif><img src="{{ $v['image_src'] }}" class="aphly_viewer"></li>
-                                    @endforeach
+                                    @if(reset($res['info_img'][0])===$v0)
+                                        <li data-image_id="{{$v0[0]['id']}}" class="on"><img src="{{ $v0[0]['image_src'] }}" class="aphly_viewer "></li>
+                                    @else
+                                        <li data-image_id="{{$v0[0]['id']}}" ><img src="{{ $v0[0]['image_src'] }}" class="aphly_viewer"></li>
+                                    @endif
                                 @endforeach
                             </ul>
                         @else
@@ -369,7 +375,6 @@
     var detailSwiper = new Swiper('.swiper', {
         direction: "horizontal",
         slidesPerView: 4,
-
         navigation: {
             prevEl: '.swiper-button-prev',
             nextEl: '.swiper-button-next',
@@ -400,7 +405,7 @@
         $('.flag_radio').on('click','label',function () {
             $(this).closest('.flag_radio').find('label').removeClass('active')
             $(this).addClass('active')
-            if({{$res['info']->is_color_group}}){
+            if({{$res['info']->is_color_group}} && $(this).closest('.flag_radio').data('is_color')){
                 let option_value_id = $(this).data('option_value_id')
                 if(option_value_id){
                     $('.info_img_big').removeClass('active')

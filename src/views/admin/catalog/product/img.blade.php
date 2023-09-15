@@ -18,7 +18,8 @@
 </style>
 <div class="imain">
     <div style="margin-bottom: 50px;">
-        <div style="margin-bottom: 10px;color: #999;">图片设置成‘选项’时，代表图片进行颜色分组了，（橱窗和描述的颜色将有效），请将商品的选项也添加该图片</div>
+        <div style="margin-bottom: 10px;color: #999;">图片设置成‘选项’时，代表图片进行颜色分组了，（橱窗和描述的颜色将有效），请将商品的选项也添加该图片；</div>
+        <div style="margin-bottom: 10px;color: #999;">橱窗图片建议采用800px*800px或者1000px*1000px；选项图片建议采用200px*200px</div>
         <label>
             <div class="btn btn-primary">
                 选择图片

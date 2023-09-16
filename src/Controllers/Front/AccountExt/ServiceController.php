@@ -25,11 +25,13 @@ class ServiceController extends Controller
     {
         $res['list'] = Service::where(['uuid'=>User::uuid()])->where('delete_at',0)->with('product')->with('order')
             ->orderBy('created_at','desc')->Paginate(config('admin.perPage'))->withQueryString();
+        $res['title'] = 'Service';
         return $this->makeView('laravel-shop-front::account_ext.service.index',['res'=>$res]);
     }
 
     public function detail(Request $request){
         $res['info'] = Service::where(['uuid'=>User::uuid(),'id'=>$request->query('id',0)])->where('delete_at',0)->with('order')->with('img')->firstOr404();
+        $res['title'] = 'Service Detail';
         $res['serviceHistory'] = ServiceHistory::where('service_id',$res['info']->id)->orderBy('created_at','asc')->get();
         $res['serviceProduct'] = ServiceProduct::where('service_id',$res['info']->id)->with(['orderProduct'=>function ($query){
             return $query->with(['orderOption']);

@@ -15,6 +15,7 @@ class ReviewController extends Controller
     {
         $res['list'] = Review::where(['uuid'=>User::uuid()])->with('product')->with('img')->orderBy('created_at','desc')
             ->Paginate(config('admin.perPage'))->withQueryString();
+        $res['title'] = 'Review';
         $res['list']->transform(function ($item) {
             $item->img->transform(function ($i) {
                 $i->image_src = UploadFile::getPath($i->image,$i->remote);
@@ -28,6 +29,7 @@ class ReviewController extends Controller
 
     public function detail(Request $request){
         $res['info'] = Review::where(['uuid'=>User::uuid(),'id'=>$request->query('id',0)])->with('product')->firstOrError();
+        $res['title'] = 'Review Detail';
         $res['reviewImage'] = ReviewImage::where('review_id',$res['info']->id)->get();
         foreach ($res['reviewImage'] as $val){
             $val->image_src = UploadFile::getPath($val->image,$val->remote);

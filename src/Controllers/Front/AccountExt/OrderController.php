@@ -62,7 +62,7 @@ class OrderController extends Controller
         $res['info'] = Order::where(['uuid'=>User::uuid(),'id'=>$request->query('id',0)])->where('delete_at',0)->firstOrError();
         if($res['info']->order_status_id==1) {
             $res['info']->addOrderHistory($res['info'], 5);
-            throw new ApiException(['code'=>0,'msg'=>'order option success','data'=>['redirect'=>'/account_ext/order']]);
+            throw new ApiException(['code'=>0,'msg'=>'Close Success','data'=>['redirect'=>'/account_ext/order']]);
         }else{
             throw new ApiException(['code'=>1,'msg'=>'order status error','data'=>['redirect'=>'/account_ext/order']]);
         }
@@ -80,7 +80,7 @@ class OrderController extends Controller
             list($amount) = Currency::codeFormat((100 - $cancel_fee)/100*$res['info']->total,$res['info']->currency_code);
             (new Payment)->refund_api($res['info']->payment_id,$amount,'Customer cancel -'.$cancel_fee.'% fee');
             $res['info']->addOrderHistory($res['info'], 6);
-            throw new ApiException(['code'=>0,'msg'=>'order option success','data'=>['redirect'=>'/account_ext/order']]);
+            throw new ApiException(['code'=>0,'msg'=>'Cancel Success','data'=>['redirect'=>'/account_ext/order']]);
         }else{
             throw new ApiException(['code'=>1,'msg'=>'After shipment, the order cannot be cancelled!','data'=>['redirect'=>'/account_ext/order']]);
         }

@@ -27,7 +27,7 @@
 .grade-star-bg .star-bg{height: 100%;position: absolute;left: 0;top: 0; width: 100%;display: flex;}
 .grade-star-bg .star-bg i{color: #ddd;}
 
-.account_btn{border-radius: 4px;border: 1px solid #333;padding: 0 10px;line-height: 34px;}
+.account_btn{border-radius: 4px;border: 1px solid #333;padding: 0 10px;line-height: 34px;margin-right: 10px;}
 
 .my_product{padding-top: 5px;background: #fff;}
 .my_product dd{margin-bottom: 5px;}

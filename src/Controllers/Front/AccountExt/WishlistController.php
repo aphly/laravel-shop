@@ -17,6 +17,7 @@ class WishlistController extends Controller
     public function index()
     {
         $res['list'] = Wishlist::where(['uuid'=>User::uuid()])->orderBy('created_at','desc')->Paginate(config('admin.perPage'))->withQueryString();
+        $res['title'] = 'Wishlist';
         $product_ids = [];
         foreach ($res['list'] as $val){
             $product_ids[] = $val->product_id;

@@ -30,7 +30,6 @@ class Service extends Model
     }
 
     public function addServiceHistory($info, $service_status_id, $input = []){
-
         if($info->service_action_id==1){
             if($service_status_id==1){
             }else if($service_status_id==2){
@@ -40,6 +39,7 @@ class Service extends Model
             }else if($service_status_id==6){
                 if($info->refund_amount>0 && $info->service_status_id==5){
                     (new Payment)->refund_api($info->order->payment_id,$info->refund_amount,'System Refund');
+                    $info->order->addOrderHistory($info->order, 4);
                 }
             }
         }else if($info->service_action_id==2){
@@ -54,6 +54,7 @@ class Service extends Model
             }else if($service_status_id==6){
                 if($info->refund_amount>0 && $info->service_status_id==5){
                     (new Payment)->refund_api($info->order->payment_id,$info->refund_amount,'System Refund');
+                    $info->order->addOrderHistory($info->order, 4);
                 }
             }
         }else if($info->service_action_id==3){

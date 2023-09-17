@@ -2,6 +2,8 @@
 
 namespace Aphly\LaravelShop\Mail\Order;
 
+use Aphly\LaravelShop\Models\Sale\OrderProduct;
+use Aphly\LaravelShop\Models\Sale\OrderTotal;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -22,6 +24,8 @@ class Refunded extends Mailable
     public function __construct($order)
     {
         $this->order = $order;
+        $this->order->orderTotal = OrderTotal::where('order_id',$order->id)->get();
+        $this->order->orderProduct = OrderProduct::where('order_id',$order->id)->with('orderOption')->get();
     }
 
     /**

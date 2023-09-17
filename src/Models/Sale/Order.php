@@ -129,22 +129,24 @@ class Order extends Model
                 $fee = intval($input['fee']);
                 list($amount) = Currency::codeFormat((100 - $fee) / 100 * $info->total, $info->currency_code);
                 if ($amount > 0) {
+                    $info->email_amount = $amount;
+                    $info->email_fee = $fee;
                     (new Payment)->refund_api($info->payment_id, $amount, 'System refund -' . $fee . '% transaction fee');
+                    if ($shop_setting['order_refunded_notify'] == 1 || $notify) {
+                        //send email
+                        //(new MailSend())->do($info->email, new Refunded($info));
+                        (new RemoteEmail())->send([
+                            'email'=>$info->email,
+                            'title'=>'Order Refunded',
+                            'content'=>(new Refunded($info))->render(),
+                            'type'=>config('common.email_type'),
+                            'queue_priority'=>0,
+                            'is_cc'=>0
+                        ]);
+                    }
                 }
                 if ($info->order_status_id != 6) {
                     $this->rollback($info);
-                }
-                if ($shop_setting['order_refunded_notify'] == 1 || $notify) {
-                    //send email
-                    //(new MailSend())->do($info->email, new Refunded($info));
-                    (new RemoteEmail())->send([
-                        'email'=>$info->email,
-                        'title'=>'Order Refunded',
-                        'content'=>(new Refunded($info))->render(),
-                        'type'=>config('common.email_type'),
-                        'queue_priority'=>0,
-                        'is_cc'=>0
-                    ]);
                 }
             }
         }

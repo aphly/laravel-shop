@@ -40,8 +40,8 @@
                         <li>{{ $dict['service_action'][$v->service_action_id] }}</li>
                         <li>{{$dict[$dict['service_action'][$v->service_action_id].'_status'][$v->service_status_id]}}</li>
                         <li>
-                            @if($dict['yes_no'])
-                                {{$dict['yes_no'][$v['is_received']]}}
+                            @if($dict['shop_yes_no'])
+                                {{$dict['shop_yes_no'][$v['is_received']]}}
                             @endif
                         </li>
                         <li>

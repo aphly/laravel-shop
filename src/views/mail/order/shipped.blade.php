@@ -10,4 +10,10 @@
             the logistics companies are very busy and some orders may takes lightly longer to arrive.</div>
     </div>
 
+Thank you for your order, [customer name]!
+
+This is to confirm that we shipped your order [order number] on [shipping date]. It should arrive between [earliest arrival date] and [latest delivery date]. If you have any questions, please send us an email at [customer service email address] or call us at [customer service telephone number]. Please include your order number in all communication with us.
+
+Thank you again for your order!
+
 @include('laravel-common::mail.footer')

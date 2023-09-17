@@ -63,7 +63,7 @@
                     <ul class="service_action_ul">
                         <li value="1" class="active">Refund only</li>
                         <li value="2" >Return</li>
-                        @if($shop_setting['exchange']==1 || 1)
+                        @if($shop_setting['exchange']==1)
                             <li value="3">Exchange</li>
                         @endif
                     </ul>
@@ -77,7 +77,7 @@
                 <form action="/account_ext/service/save?order_id={{$res['orderInfo']->id}}" method="post" class="form_request received1 service_form " data-fn="refund_res">
                     @csrf
                     <input type="hidden" name="service_action_id" value="1">
-                    <input type="hidden" name="is_received" value="2">
+                    <input type="hidden" name="is_received" value="0">
                     <div id="refund_total">
                         <div class="d-flex justify-content-between refund_total1">
                             <div>Refund Amount :</div>

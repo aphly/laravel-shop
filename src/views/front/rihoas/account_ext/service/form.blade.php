@@ -5,7 +5,7 @@
 
         .received li{width: 48%;line-height: 34px;color: #333;border-radius: 6px;text-align: center;border: 1px solid #f1f1f1;cursor: pointer;}
         .received li.active{color: var(--btn_bg);border: 1px solid var(--btn_bg);}
-        .service_action{align-items: center;margin-bottom: 10px;background: #fff;padding:15px; border-radius: 8px;}
+        .service_action{align-items: center;background: #fff;padding:15px; border-radius: 8px;}
         .service_action label{margin-bottom: 0;line-height: 44px;cursor: pointer;}
         .service_action input{ height: 44px;margin-right: 10px;}
         .service_action>div{margin-right: 20px;}
@@ -26,12 +26,12 @@
         .orderInfo li>div:first-child{width: 100px;color:#666;}
 
         .service_action_ul{display: flex;justify-content: space-between;}
-        .service_action_ul li{width: 31%;line-height: 34px;color: #333;border-radius: 6px;text-align: center;border: 1px solid #f1f1f1;cursor: pointer;}
+        .service_action_ul li{flex:1;line-height: 34px;color: #333;border-radius: 6px;text-align: center;border: 1px solid #f1f1f1;cursor: pointer;margin: 0 10px;}
         .service_action_ul li.active{color: var(--btn_bg);border: 1px solid var(--btn_bg);}
         .quantity-wrapper div, .quantity-wrapper input{height: 30px;line-height: 30px;width: 30px; min-width: 30px;padding: 0;}
         .service_action_ul_res li{display: none;}
         .service_action_ul_res li.active{display: block;color: var(--btn_bg);}
-        .service_action_ul_res{ line-height: 26px;margin-top: 5px;}
+        .service_action_ul_res{ line-height: 26px;margin-top: 5px;padding: 0 10px;}
         .service_form{margin-bottom: 10px;background: #fff;padding:15px; border-radius: 8px;}
         .service_product2{width:calc(100% - 100px);}
 

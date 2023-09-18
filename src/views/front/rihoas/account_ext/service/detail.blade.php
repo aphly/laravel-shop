@@ -73,6 +73,9 @@
                 <div >
                     @if($res['info']->service_action_id==1)
                         @if($res['info']->service_status_id==1)
+                            <div class="detail">
+                                If the merchant has not operated for more than 48 hours, the system will automatically refund
+                            </div>
                         @elseif($res['info']->service_status_id==2)
                             <div class="detail">
                                 <div>Please delete and reapply</div>
@@ -129,9 +132,9 @@
                                 </div>
                                 <div class="my_product122">
                                     <div class="my_product12b wenzi">{{$val->orderProduct->name}}</div>
-                                    <ul class="my_product122_ul">
+                                    <ul class="my_product122_ul d-flex">
                                     @foreach($val->orderProduct->orderOption as $v)
-                                        <li>{{$v['name']}}:{{$v['value']}}</li>
+                                        <li style="margin-right: 10px;">{{$v['name']}} : {{$v['value']}}</li>
                                     @endforeach
                                     </ul>
                                     <div class="my_product12c">Qty: {{$val->quantity}}</div>
@@ -140,19 +143,18 @@
                         @endforeach
                     </dl>
                 </div>
-
+                @if($res['info']->img->count())
                 <div class="detail">
                     <div class="title">Images</div>
                     <ul class="service_upload">
-                        @if($res['info']->img->count())
-                            @foreach($res['info']->img as $val)
-                                <li>
-                                    <img src="{{$val->image_src}}" alt="" style="width: 100px;height: 100px;">
-                                </li>
-                            @endforeach
-                        @endif
+                        @foreach($res['info']->img as $val)
+                            <li>
+                                <img src="{{$val->image_src}}" alt="" style="width: 100px;height: 100px;">
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
+                @endif
                 @if($res['orderRefund']->count())
                 <div class="detail">
                     <div class="title">Refund</div>

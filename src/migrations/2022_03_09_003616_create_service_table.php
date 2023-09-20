@@ -28,6 +28,10 @@ return new class extends Migration
             $table->string('c_shipping_no',255)->nullable();
             $table->unsignedBigInteger('shipping_id')->nullable();
             $table->string('b_shipping_no',255)->nullable();
+            $table->string('service_address',255)->nullable();
+            $table->string('service_name',64)->nullable();
+            $table->string('service_postcode',32)->nullable();
+            $table->string('service_phone',32)->nullable();
             $table->unsignedBigInteger('delete_at')->nullable()->default(0);
             $table->unsignedBigInteger('created_at');
             $table->unsignedBigInteger('updated_at');

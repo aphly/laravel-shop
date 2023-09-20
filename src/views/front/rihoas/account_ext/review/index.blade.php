@@ -2,10 +2,10 @@
 <section class="container">
     <div class="account_info">
         @include('laravel-common-front::account_ext.left_menu')
-        <div class="account-main-section" style="background: transparent;padding: 0;">
+        <div class="account-main-section" style="background: transparent;">
             <div class="">
                 <div class="top-desc d-flex justify-content-between">
-                    <h2>Review</h2>
+                    <h2>My Reviews</h2>
                 </div>
                 <ul class="my_review">
                     @foreach($res['list'] as $val)

@@ -51,7 +51,7 @@ class ServiceController extends Controller
 
     public function form(Request $request){
         $res = $this->service_pre($request);
-        $total_all = $res['orderInfo']->total*(100-$this->shop_setting['service_refund_fee'])/100;
+        $total_all = floatval($res['orderInfo']->total)*(100-$this->shop_setting['service_refund_fee'])/100;
         list($refund_amount,$res['refund_amount_format']) = Currency::codeFormat($total_all,$res['orderInfo']->currency_code);
         $res['info'] = Service::where('id',$request->query('id',0))->with('product')->firstOrNew();
         return $this->makeView('laravel-shop-front::account_ext.service.form',['res'=>$res]);

@@ -131,10 +131,8 @@ class Module extends Module_base
             $data=[];
             $data[] =['dict_id' => $dict->id,'name'=>'Request Refund','value'=>'1'];
             $data[] =['dict_id' => $dict->id,'name'=>'Refusal of refund','value'=>'2'];
-            $data[] =['dict_id' => $dict->id,'name'=>'Agree to refund','value'=>'3'];
-            $data[] =['dict_id' => $dict->id,'name'=>'Awaiting Products','value'=>'4'];
-            $data[] =['dict_id' => $dict->id,'name'=>'Complete','value'=>'5'];
-            $data[] =['dict_id' => $dict->id,'name'=>'Refunded','value'=>'6'];
+            $data[] =['dict_id' => $dict->id,'name'=>'Complete','value'=>'3'];
+            $data[] =['dict_id' => $dict->id,'name'=>'Refunded','value'=>'4'];
             DB::table('admin_dict_value')->insert($data);
         }
 

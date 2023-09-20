@@ -4,14 +4,36 @@
         .service_detail{}
         .service_detail li{display: flex;justify-content: space-between;line-height: 26px;}
         .service_detail li>div:first-child{color: #999;}
-        .detail{background: #fff;border-radius: 8px;padding: 15px;margin-bottom: 10px;}
+        .detail{background: #fff;border-radius: 8px;padding: 15px;}
+        .detail .btn{padding: 0px 10px; border-radius: 4px;border: 1px solid #333; line-height: 34px;}
+        .order_detail_title {font-weight: 500; border-top: 1px solid #f1f1f1;padding-top: 15px;}
     </style>
     <div class="account_info">
         @include('laravel-common-front::account_ext.left_menu')
-        <div class="account-main-section" style="background: transparent;padding: 0;">
+        <div class="account-main-section" style="background: transparent;">
             <div class="service_detail">
                 <div class="top-desc d-flex justify-content-between">
-                    <h2>Service</h2>
+                    <h2>Service Information</h2>
+                </div>
+                <div class="detail">
+                    <dl class="my_product">
+                        @foreach($res['serviceProduct'] as $val)
+                            <dd class="d-flex">
+                                <div class="my_product121">
+                                    <img src="{{$val->orderProduct->image}}" alt="">
+                                </div>
+                                <div class="my_product122">
+                                    <div class="my_product12b wenzi">{{$val->orderProduct->name}}</div>
+                                    <ul class="my_product122_ul d-flex">
+                                        @foreach($val->orderProduct->orderOption as $v)
+                                            <li style="margin-right: 10px;">{{$v['name']}} : {{$v['value']}}</li>
+                                        @endforeach
+                                    </ul>
+                                    <div class="my_product12c">Qty: {{$val->quantity}}</div>
+                                </div>
+                            </dd>
+                        @endforeach
+                    </dl>
                 </div>
                 <div class="detail">
                     <ul class="service_detail">
@@ -48,6 +70,9 @@
                 </div>
                 @if($res['serviceHistory']->count())
                 <div class="detail">
+                    <div class="order_detail_title">
+                        Service History
+                    </div>
                     <dl class="my_step">
                         @foreach($res['serviceHistory'] as $val)
                             <dd class="">
@@ -78,12 +103,8 @@
                             </div>
                         @elseif($res['info']->service_status_id==2)
                             <div class="detail">
-                                <div>Please delete and reapply</div>
                                 <a href="/account_ext/service/del?id={{$res['info']->id}}" class="btn a_request" data-fn="service_del_res" data-_token="{{csrf_token()}}">Del</a>
                             </div>
-                        @elseif($res['info']->service_status_id==3)
-                        @elseif($res['info']->service_status_id==4)
-                        @elseif($res['info']->service_status_id==5)
                         @endif
                     @elseif($res['info']->service_action_id==2 || $res['info']->service_action_id==3)
                         @if($res['info']->service_status_id==1)
@@ -104,7 +125,6 @@
                                     <button type="submit" class="account_btn">Shipped</button>
                                 </form>
                             </div>
-
                         @elseif($res['info']->service_status_id==4)
                             <div class="detail">
                                 <form class="form_request service_detail_form" method="post" action="/account_ext/service/return_exchange4" data-fn="return_exchange4_res">
@@ -123,26 +143,7 @@
                     @endif
                 </div>
 
-                <div class="detail">
-                    <dl class="my_product">
-                        @foreach($res['serviceProduct'] as $val)
-                            <dd class="d-flex">
-                                <div class="my_product121">
-                                    <img src="{{$val->orderProduct->image}}" alt="">
-                                </div>
-                                <div class="my_product122">
-                                    <div class="my_product12b wenzi">{{$val->orderProduct->name}}</div>
-                                    <ul class="my_product122_ul d-flex">
-                                    @foreach($val->orderProduct->orderOption as $v)
-                                        <li style="margin-right: 10px;">{{$v['name']}} : {{$v['value']}}</li>
-                                    @endforeach
-                                    </ul>
-                                    <div class="my_product12c">Qty: {{$val->quantity}}</div>
-                                </div>
-                            </dd>
-                        @endforeach
-                    </dl>
-                </div>
+
                 @if($res['info']->img->count())
                 <div class="detail">
                     <div class="title">Images</div>
@@ -186,7 +187,6 @@
                     </dl>
                 </div>
                 @endif
-
 
             </div>
         </div>

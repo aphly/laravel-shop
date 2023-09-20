@@ -4,7 +4,7 @@ namespace Aphly\LaravelShop\Models\Sale;
 
 use Aphly\Laravel\Models\Model;
 use Aphly\LaravelPayment\Models\Payment;
-use Aphly\LaravelShop\Jobs\Service\Refund;
+//use Aphly\LaravelShop\Jobs\Service\Refund;
 use Aphly\LaravelShop\Models\System\Setting;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -15,7 +15,8 @@ class Service extends Model
     //public $timestamps = false;
 
     protected $fillable = [
-        'order_id','uuid','is_received','is_opened','reason','service_action_id','service_status_id','delete_at'
+        'order_id','uuid','is_received','is_opened','reason','service_action_id','service_status_id','delete_at',
+        'service_address','service_name','service_postcode','service_phone'
     ];
 
     public function product(){
@@ -32,16 +33,14 @@ class Service extends Model
 
     public function addServiceHistory($info, $service_status_id, $input = []){
         $shop_setting = Setting::findAll();
-        $notify = $amount = 0;
+        $notify = 0;
         if($info->service_action_id==1){
             if($service_status_id==1){
                 //Refund::dispatch($info)->delay(now()->addMinutes(48));
             }else if($service_status_id==2){
             }else if($service_status_id==3){
             }else if($service_status_id==4){
-            }else if($service_status_id==5){
-            }else if($service_status_id==6){
-                if($info->refund_amount>0 && $info->service_status_id==5){
+                if($info->refund_amount>0 && $info->service_status_id==3){
                     (new Payment)->refund_api($info->order->payment_id,$info->refund_amount,'System Refund');
                     $info->order->addOrderHistory($info->order, 4);
                 }

@@ -2,10 +2,10 @@
 <section class="container">
     <div class="account_info">
         @include('laravel-common-front::account_ext.left_menu')
-        <div class="account-main-section" style="background: transparent;padding: 0;">
+        <div class="account-main-section" style="background: transparent;">
             <div class="">
                 <div class="top-desc d-flex justify-content-between">
-                    <h2>Service</h2>
+                    <h2>My Service</h2>
                 </div>
                 <ul class="list_index">
                     @foreach($res['list'] as $val)
@@ -48,7 +48,7 @@
 </section>
 <style>
     .list_index{}
-    .list_index li{margin-bottom: 10px;background: #fff;border-radius: 8px;padding: 15px;}
+    .list_index li{margin-bottom: 10px;background: #fff;border-radius: 8px;padding: 15px;border: 1px solid #f1f1f1;}
     .list_index li>div{line-height: 26px;}
     .service_list_btn{margin-top: 10px;display: flex;flex-direction: row-reverse;padding-top: 10px;}
     .service_list_btn a{display:block;padding:0px 10px;border-radius:4px;border:1px solid #333;margin-left:20px;line-height: 34px;}

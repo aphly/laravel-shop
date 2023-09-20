@@ -26,7 +26,7 @@
         .orderInfo li>div:first-child{width: 100px;color:#666;}
 
         .service_action_ul{display: flex;justify-content: space-between;}
-        .service_action_ul li{flex:1;line-height: 34px;color: #333;border-radius: 6px;text-align: center;border: 1px solid #f1f1f1;cursor: pointer;margin: 0 10px;}
+        .service_action_ul li{flex:1;color: #333;border-radius: 6px;text-align: center;border: 1px solid #f1f1f1;cursor: pointer;margin: 0 10px;padding:10px 0;display: flex;justify-content: center;align-items: center;}
         .service_action_ul li.active{color: var(--btn_bg);border: 1px solid var(--btn_bg);}
         .quantity-wrapper div, .quantity-wrapper input{height: 30px;line-height: 30px;width: 30px; min-width: 30px;padding: 0;}
         .service_action_ul_res li{display: none;}
@@ -43,7 +43,7 @@
     </style>
     <div class="account_info">
         @include('laravel-common-front::account_ext.left_menu')
-        <div class="account-main-section" style="background: transparent;padding: 0;">
+        <div class="account-main-section" style="background: transparent;">
             <div class="order">
                 <div class="top-desc d-flex justify-content-between">
                     <h2>Service</h2>
@@ -61,17 +61,28 @@
                 <div class="service_action">
                     <h5 >Please select the after-sales type</h5>
                     <ul class="service_action_ul">
-                        <li value="1" class="active">Refund only</li>
-                        <li value="2" >Return</li>
+                        <li value="1" class="active">
+                            <div>
+                                <div>Refund Only</div>
+                                <div style="font-size: 12px;">(Unreceived goods)</div>
+                            </div>
+                        </li>
+                        <li value="2" >
+                            <div>
+                                <div>Return</div>
+                                <div style="font-size: 12px;">(Received goods)</div>
+                            </div>
+                        </li>
                         @if($shop_setting['exchange']==1)
-                            <li value="3">Exchange</li>
+                            <li value="3">
+                                <div>
+                                    <div>Exchange</div>
+                                    <div style="font-size: 12px;">(Received goods)</div>
+                                </div>
+                            </li>
                         @endif
                     </ul>
-                    <ul class="service_action_ul_res">
-                        <li value="1" class="active">Unreceived goods</li>
-                        <li value="2">Received goods</li>
-                        <li value="3">Received goods</li>
-                    </ul>
+
                 </div>
 
                 <form action="/account_ext/service/save?order_id={{$res['orderInfo']->id}}" method="post" class="form_request received1 service_form " data-fn="refund_res">
@@ -83,7 +94,7 @@
                             <div>Refund Amount :</div>
                             <div class="refund_total_js">{{$res['refund_amount_format']}}</div>
                         </div>
-                        <div class="refund_total2">{{$shop_setting['service_return_fee']}}% service charge will be deducted from the refund amount</div>
+                        <div class="refund_total2">{{$shop_setting['service_refund_fee']}}% service charge will be deducted from the refund amount</div>
                     </div>
                     <div class="form-group" >
                         <p class="title_p">Reason: <b>*</b></p>
@@ -212,8 +223,8 @@ $(function () {
     $('.service_action_ul').on('click','li',function () {
         $('.service_action_ul li').removeClass('active')
         let service_action_id = $(this).val()
-        $('.service_action_ul_res li').removeClass('active')
-        $('.service_action_ul_res li[value="'+service_action_id+'"]').addClass('active')
+        // $('.service_action_ul_res li').removeClass('active')
+        // $('.service_action_ul_res li[value="'+service_action_id+'"]').addClass('active')
         $(this).addClass('active')
         $('#return_service_action_id').val(service_action_id)
         if(service_action_id===1){

@@ -27,6 +27,26 @@
                         </select>
                         <div class="invalid-feedback"></div>
                     </div>
+                    <div class="form-group">
+                        <label for="">退换货姓名(默认)</label>
+                        <input type="text" name="setting[service_name]" class="form-control " value="{{$res['setting']['service_name']['value']??''}}">
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="">退换货地址(默认)</label>
+                        <input type="text" name="setting[service_address]" class="form-control " value="{{$res['setting']['service_address']['value']??''}}">
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="">退换货邮编(默认)</label>
+                        <input type="text" name="setting[service_postcode]" class="form-control " value="{{$res['setting']['service_postcode']['value']??''}}">
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="">退换货电话(默认)</label>
+                        <input type="text" name="setting[service_phone]" class="form-control " value="{{$res['setting']['service_phone']['value']??''}}">
+                        <div class="invalid-feedback"></div>
+                    </div>
                 </div>
                 <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                     <div class="form-group">
@@ -65,8 +85,8 @@
                 </div>
                 <div class="tab-pane fade" id="nav-order" role="tabpanel" aria-labelledby="nav-order-tab">
                     <div class="form-group">
-                        <label for="">cancel over 24h (fee 30%)</label>
-                        <input type="text" name="setting[order_cancel_fee]" class="form-control " value="{{$res['setting']['order_cancel_fee']['value']??30}}">
+                        <label for="">cancel over 24h (fee 20%)</label>
+                        <input type="text" name="setting[order_cancel_fee]" class="form-control " value="{{$res['setting']['order_cancel_fee']['value']??20}}">
                         <div class="invalid-feedback"></div>
                     </div>
                     <div class="form-group">
@@ -129,32 +149,12 @@
                     </div>
                     <div class="form-group">
                         <label for="">未收到货 - 退款手续费(%)</label>
-                        <input type="text" name="setting[service_refund_fee]" class="form-control " value="{{$res['setting']['service_refund_fee']['value']??10}}">
-                        <div class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group">
-                        <label for="">收到货 - 退换货姓名</label>
-                        <input type="text" name="setting[service_name]" class="form-control " value="{{$res['setting']['service_name']['value']??''}}">
-                        <div class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group">
-                        <label for="">收到货 - 退换货地址</label>
-                        <input type="text" name="setting[service_address]" class="form-control " value="{{$res['setting']['service_address']['value']??''}}">
-                        <div class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group">
-                        <label for="">收到货 - 退换货邮编</label>
-                        <input type="text" name="setting[service_postcode]" class="form-control " value="{{$res['setting']['service_postcode']['value']??''}}">
-                        <div class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group">
-                        <label for="">收到货 - 退换货电话</label>
-                        <input type="text" name="setting[service_phone]" class="form-control " value="{{$res['setting']['service_phone']['value']??''}}">
+                        <input type="text" name="setting[service_refund_fee]" class="form-control " value="{{$res['setting']['service_refund_fee']['value']??30}}">
                         <div class="invalid-feedback"></div>
                     </div>
                     <div class="form-group">
                         <label for="">收到货 - 退货手续费(%)</label>
-                        <input type="text" name="setting[service_return_fee]" class="form-control " value="{{$res['setting']['service_return_fee']['value']??10}}">
+                        <input type="text" name="setting[service_return_fee]" class="form-control " value="{{$res['setting']['service_return_fee']['value']??50}}">
                         <div class="invalid-feedback"></div>
                     </div>
                     <div>

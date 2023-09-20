@@ -2,10 +2,10 @@
 <section class="container">
     <div class="account_info">
         @include('laravel-common-front::account_ext.left_menu')
-        <div class="account-main-section" style="background: transparent;padding: 0;">
+        <div class="account-main-section" style="background: transparent;">
             <div class="">
                 <div class="top-desc d-flex justify-content-between">
-                    <h2>Order</h2>
+                    <h2>My Orders</h2>
                 </div>
                 <ul class="order_list">
                     @foreach($res['list'] as $val)
@@ -59,7 +59,7 @@
 <style>
     .order_list11{margin-bottom: 5px;}
     .order_list{}
-    .order_list li{margin-bottom: 10px;background: #fff;padding: 15px;border-radius: 4px;}
+    .order_list li{margin-bottom: 10px;background: #fff;padding: 15px;border-radius: 4px;border-bottom: 1px solid #f1f1f1;}
     .order_status{color:#ffc107}
     .order_list img{width: 70px;height: 70px;margin-right: 20px;border-radius: 4px;}
     .order_list13{font-weight: 500;padding: 5px 0;display: flex;justify-content: space-between;}

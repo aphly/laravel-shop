@@ -32,7 +32,7 @@
         <div class="account-main-section">
             <div class="order">
                 <div class="top-desc d-flex justify-content-between">
-                    <h2>ORDER INFORMATION</h2>
+                    <h2>Order Information</h2>
                 </div>
                 <div class="detail">
                     <div></div>

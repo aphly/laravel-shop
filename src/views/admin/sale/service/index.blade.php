@@ -14,7 +14,7 @@
         </div>
         </form>
         <div class="">
-            <a class="badge badge-primary ajax_get show_all0_btn d-none" data-href="/shop_admin/service/form">添加</a>
+            <a class="badge badge-primary ajax_html show_all0_btn d-none" data-href="/shop_admin/service/form">添加</a>
         </div>
     </div>
 
@@ -45,7 +45,7 @@
                             @endif
                         </li>
                         <li>
-                            <a class="badge badge-info ajax_get" data-href="/shop_admin/service/view?id={{$v['id']}}">查看</a>
+                            <a class="badge badge-info ajax_html" data-href="/shop_admin/service/view?id={{$v['id']}}">查看</a>
                         </li>
                     </ul>
                     @endforeach

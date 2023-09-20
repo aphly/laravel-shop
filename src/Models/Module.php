@@ -39,7 +39,7 @@ class Module extends Module_base
                 $data[] =['name' => '联系我们','route' =>'shop_admin/contact_us/index','pid'=>$menu22->id,'uuid'=>$manager->uuid,'type'=>2,'module_id'=>$module_id,'sort'=>0];
                 DB::table('admin_menu')->insert($data);
             }
-            $menu23 = Menu::create(['name' => '配置','route' =>'','pid'=>$menu->id,'uuid'=>$manager->uuid,'type'=>1,'module_id'=>$module_id,'sort'=>8]);
+            $menu23 = Menu::create(['name' => '本地','route' =>'','pid'=>$menu->id,'uuid'=>$manager->uuid,'type'=>1,'module_id'=>$module_id,'sort'=>8]);
             if($menu23){
                 $data=[];
                 $data[] =['name' => '设置','route' =>'shop_admin/setting/index','pid'=>$menu23->id,'uuid'=>$manager->uuid,'type'=>2,'module_id'=>$module_id,'sort'=>0];

@@ -11,7 +11,7 @@
             <input type="search" name="id" placeholder="id" value="{{$res['search']['id']}}">
             <input type="search" name="email" placeholder="email" value="{{$res['search']['email']}}">
             <select name="status">
-                <option value="0">全部</option>
+                <option value="">全部</option>
                 @foreach($res['orderStatus'] as $val)
                 <option value="{{$val->id}}" @if($res['search']['status']==$val->id) selected @endif>{{$val->cn_name}}</option>
                 @endforeach
@@ -48,7 +48,7 @@
                         <li>{{ $v['created_at'] }}</li>
                         <li>{{ $v->orderStatus->name }}</li>
                         <li>
-                            <a class="badge badge-info ajax_get" data-href="/shop_admin/order/view?id={{$v['id']}}">查看</a>
+                            <a class="badge badge-info ajax_html" data-href="/shop_admin/order/view?id={{$v['id']}}">查看</a>
                         </li>
                     </ul>
                     @endforeach

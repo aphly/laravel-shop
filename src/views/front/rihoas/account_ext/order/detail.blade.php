@@ -3,11 +3,11 @@
     <style>
         .order_product .option{display: flex;align-items: center;flex-wrap: wrap;width: 100%}
         .order_product .option li{width: 100%;margin-bottom: 0}
-        .order_product img{width: 80px;height: 80px;margin-right: 10px;}
+        .order_product img{width: 70px;height: 70px;margin-right: 10px;}
         .product_total p{width: 100%;}
         .cancel_btn{border:none;background: #ffd539;color:#333;border-radius: 4px;font-weight: 600;}
         .cancel2{margin-bottom: 20px;margin-top: 20px;}
-
+        .order_product21{font-size: 16px;}
         .order_product1{width: 80px;}
         .order_product2{width: calc(100% - 155px);margin-left: 10px;margin-right: 5px}
         .order_product3{width: 60px;color:#999;text-align: right;}

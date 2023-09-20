@@ -2,11 +2,24 @@
     <div style="font-size: 28px;line-height: 40px;margin-bottom: 10px;">
         Order Refunded
     </div>
-    <div style="margin-bottom: 10px;">Our Order #{{$order->id}}</div>
-    <div style="margin-bottom: 5px;">
-        Sorry, due to the current shortage of goods, we are unable to ship them. We will cancel the order and issue a refund.
+    <div style="padding: 10px;">
+        <div style="margin-bottom: 10px;">Our Order #{{$order->id}}</div>
+        <div style="margin-bottom: 10px;">
+            We are very sorry, but due to the current shortage of goods, we are unable to ship. We will cancel the order and issue a refund.
+        </div>
+
+        @if($order->refund_fee)
+            <div style="margin-bottom: 5px;">
+                The order has been successfully refunded.
+                This transaction deducts a {{$order->refund_fee}}% transaction tax, and the final refund amount is {{$order->refund_amount}}
+            </div>
+        @endif
+        <div style="margin-bottom: 5px;">
+            Please check if you have received the refund within 48 hours. If not, please contact customer service
+        </div>
     </div>
-    <div>
+
+    <div style="margin-bottom: 10px;font-size: 12px;padding: 10px;background: #f9f9f9;border-radius: 10px;">
         <div class="detail">
             <ul class="order_info" style="padding-left: 0;">
                 <li style=" display: flex;justify-content: space-between;margin-bottom: 5px;">
@@ -31,18 +44,18 @@
         </div>
         <ul class="order_product" style="padding-left: 0;">
             @foreach($order->orderProduct as $val)
-                <li style="display: flex">
+                <li style="display: flex;justify-content: space-around;">
                     <div style="">
-                        <a href="{{url('/product/'.$val->product_id)}}"><img style="width: 80px;height: 80px; margin-right: 10px;" src="{{$val->image}}" alt=""></a>
+                        <a href="{{url('/product/'.$val->product_id)}}"><img style="width: 66px;height: 66px; margin-right: 10px;" src="{{$val->image}}" alt=""></a>
                     </div>
-                    <div style="width: calc(100% - 155px);margin-left: 10px;margin-right: 5px;">
+                    <div style="margin-left: 10px;margin-right:auto;">
                         <a href="{{url('/product/'.$val->product_id)}}">
                             <div class="order_product21 wenzi">{{$val->name}}</div>
                         </a>
                         @if($val->orderOption)
-                            <ul style="display: flex;align-items: center;flex-wrap: wrap; width: 100%; color: #999;">
+                            <ul style="display: flex;align-items: center;flex-wrap: wrap; width: 100%; color: #999;padding:0;">
                                 @foreach($val->orderOption as $v)
-                                    <li style="width: 100%;margin-bottom: 0">{{$v->name}} : {{$v->value}}</li>
+                                    <li style="width: 100%;margin-bottom: 0;list-style: none;">{{$v->name}} : {{$v->value}}</li>
                                 @endforeach
                             </ul>
                         @endif
@@ -66,14 +79,5 @@
                 </ul>
             @endif
         </div>
-    </div>
-    @if($order->email_fee)
-    <div style="margin-bottom: 5px;">
-        The order has been successfully refunded, with a {{$order->email_fee}}% handling fee deducted,
-        resulting in a final refund of {{$order->email_amount}}.
-    </div>
-    @endif
-    <div style="margin-bottom: 5px;">
-        Please check if you have received the refund within 48 hours. If not, please contact customer service
     </div>
 @include('laravel-common::mail.footer')

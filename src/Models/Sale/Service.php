@@ -5,6 +5,7 @@ namespace Aphly\LaravelShop\Models\Sale;
 use Aphly\Laravel\Models\Model;
 use Aphly\LaravelPayment\Models\Payment;
 use Aphly\LaravelShop\Jobs\Service\Refund;
+use Aphly\LaravelShop\Models\System\Setting;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Service extends Model
@@ -30,6 +31,8 @@ class Service extends Model
     }
 
     public function addServiceHistory($info, $service_status_id, $input = []){
+        $shop_setting = Setting::findAll();
+        $notify = $amount = 0;
         if($info->service_action_id==1){
             if($service_status_id==1){
                 //Refund::dispatch($info)->delay(now()->addMinutes(48));
@@ -80,12 +83,15 @@ class Service extends Model
             'service_action_id'=>$info->service_action_id,
             'service_status_id'=>$service_status_id,
             'comment'=>$input['comment']??'',
-            'notify'=>$input['notify']??0
+            'notify'=>$input['notify']??$notify
         ]);
         if($serviceHistory->id){
             $info->service_status_id = $service_status_id;
-            $info->save();
+            if($info->save() && $serviceHistory->notify==1){
+
+            }
         }
+
     }
 
 }

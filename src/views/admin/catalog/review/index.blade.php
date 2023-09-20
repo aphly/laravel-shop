@@ -7,7 +7,7 @@
 <div class="imain">
     <div class="itop ">
         <div class="">
-            <a class="badge badge-primary ajax_get show_all0_btn d-none" data-href="/shop_admin/review/form">添加</a>
+            <a class="badge badge-primary ajax_html show_all0_btn d-none" data-href="/shop_admin/review/form">添加</a>
         </div>
     </div>
 
@@ -44,7 +44,7 @@
                                 @endif
                             </li>
                             <li>
-                                <a class="badge badge-info ajax_get" data-href="/shop_admin/review/form?id={{$v['id']}}">编辑</a>
+                                <a class="badge badge-info ajax_html" data-href="/shop_admin/review/form?id={{$v['id']}}">编辑</a>
                             </li>
                         </ul>
                         @if(isset($res['reviewImage'][$v['id']]))

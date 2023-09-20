@@ -44,7 +44,7 @@
                             {{$v['content']}}
                         </li>
                         <li>
-                            <a class="badge badge-info ajax_get" data-href="/shop_admin/contact_us/form?id={{$v['id']}}">查看</a>
+                            <a class="badge badge-info ajax_html" data-href="/shop_admin/contact_us/form?id={{$v['id']}}">查看</a>
                         </li>
                     </ul>
                     @endforeach

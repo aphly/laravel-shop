@@ -17,21 +17,6 @@
             <div class="tab-content" id="nav-tabContent">
                 <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                     <div class="form-group">
-                        <label for="">email</label>
-                        <input type="text" name="setting[email]" class="form-control " value="{{$res['setting']['email']['value']??''}}">
-                        <div class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group">
-                        <label for="">telephone</label>
-                        <input type="text" name="setting[telephone]" class="form-control " value="{{$res['setting']['telephone']['value']??''}}">
-                        <div class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group">
-                        <label for="">address</label>
-                        <input type="text" name="setting[address]" class="form-control " value="{{$res['setting']['address']['value']??''}}">
-                        <div class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group">
                         <label for="">review (是否打开)</label>
                         <select name="setting[review]" class="form-control" >
                             @if(isset($dict['yes_no']))
@@ -92,10 +77,10 @@
 
                     <div>
                         <div>
-                            订单通知
+                            邮件通知客户
                         </div>
                         <div class="form-group">
-                            <label for="">Paid</label>
+                            <label for="">下单</label>
                             <select name="setting[order_paid_notify]" class="form-control" >
                             @if(isset($dict['yes_no']))
                                 @foreach($dict['yes_no'] as $key=>$val)
@@ -106,18 +91,7 @@
                             <div class="invalid-feedback"></div>
                         </div>
                         <div class="form-group">
-                            <label for="">Shipped</label>
-                            <select name="setting[order_shipped_notify]" class="form-control" >
-                            @if(isset($dict['yes_no']))
-                                @foreach($dict['yes_no'] as $key=>$val)
-                                    <option value="{{$key}}" @if(($res['setting']['order_shipped_notify']['value']??0)==$key) selected @endif>{{$val}}</option>
-                                @endforeach
-                            @endif
-                            </select>
-                            <div class="invalid-feedback"></div>
-                        </div>
-                        <div class="form-group">
-                            <label for="">Canceled</label>
+                            <label for="">取消</label>
                             <select name="setting[order_canceled_notify]" class="form-control" >
                             @if(isset($dict['yes_no']))
                                 @foreach($dict['yes_no'] as $key=>$val)
@@ -129,7 +103,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="">Refunded</label>
+                            <label for="">退款</label>
                             <select name="setting[order_refunded_notify]" class="form-control" >
                                 @if(isset($dict['yes_no']))
                                     @foreach($dict['yes_no'] as $key=>$val)
@@ -139,16 +113,9 @@
                             </select>
                             <div class="invalid-feedback"></div>
                         </div>
-
                     </div>
-
                 </div>
                 <div class="tab-pane fade" id="nav-service" role="tabpanel" aria-labelledby="nav-service-tab">
-                    <div class="form-group">
-                        <label for="">售后通知email （空代表不会收到售后通知）</label>
-                        <input type="text" name="setting[service_email]" class="form-control " value="{{$res['setting']['service_email']['value']??''}}">
-                        <div class="invalid-feedback"></div>
-                    </div>
                     <div class="form-group">
                         <label for="">exchange (换货是否打开)</label>
                         <select name="setting[exchange]" class="form-control" >
@@ -190,9 +157,13 @@
                         <input type="text" name="setting[service_return_fee]" class="form-control " value="{{$res['setting']['service_return_fee']['value']??10}}">
                         <div class="invalid-feedback"></div>
                     </div>
-
                     <div>
-                        <div>售后通知</div>
+                        <div>通知售后负责人</div>
+                        <div class="form-group">
+                            <label for="">售后通知email （空代表不会收到售后通知）</label>
+                            <input type="text" name="setting[service_email]" class="form-control " value="{{$res['setting']['service_email']['value']??''}}">
+                            <div class="invalid-feedback"></div>
+                        </div>
                         <div class="form-group">
                             <label for="">售后申请</label>
                             <select name="setting[service_request_notify]" class="form-control" >
@@ -205,44 +176,11 @@
                             <div class="invalid-feedback"></div>
                         </div>
                         <div class="form-group">
-                            <label for="">售后申请通过</label>
-                            <select name="setting[service_agree_notify]" class="form-control" >
-                                @if(isset($dict['yes_no']))
-                                    @foreach($dict['yes_no'] as $key=>$val)
-                                        <option value="{{$key}}" @if(($res['setting']['service_agree_notify']['value']??0)==$key) selected @endif>{{$val}}</option>
-                                    @endforeach
-                                @endif
-                            </select>
-                            <div class="invalid-feedback"></div>
-                        </div>
-                        <div class="form-group">
-                            <label for="">售后申请拒绝</label>
-                            <select name="setting[service_refusal_notify]" class="form-control" >
-                                @if(isset($dict['yes_no']))
-                                    @foreach($dict['yes_no'] as $key=>$val)
-                                        <option value="{{$key}}" @if(($res['setting']['service_refusal_notify']['value']??0)==$key) selected @endif>{{$val}}</option>
-                                    @endforeach
-                                @endif
-                            </select>
-                            <div class="invalid-feedback"></div>
-                        </div>
-                        <div class="form-group">
                             <label for="">客户发货</label>
                             <select name="setting[service_awaiting_notify]" class="form-control" >
                                 @if(isset($dict['yes_no']))
                                     @foreach($dict['yes_no'] as $key=>$val)
                                         <option value="{{$key}}" @if(($res['setting']['service_awaiting_notify']['value']??0)==$key) selected @endif>{{$val}}</option>
-                                    @endforeach
-                                @endif
-                            </select>
-                            <div class="invalid-feedback"></div>
-                        </div>
-                        <div class="form-group">
-                            <label for="">售后发货</label>
-                            <select name="setting[service_shipped_notify]" class="form-control" >
-                                @if(isset($dict['yes_no']))
-                                    @foreach($dict['yes_no'] as $key=>$val)
-                                        <option value="{{$key}}" @if(($res['setting']['service_shipped_notify']['value']??0)==$key) selected @endif>{{$val}}</option>
                                     @endforeach
                                 @endif
                             </select>

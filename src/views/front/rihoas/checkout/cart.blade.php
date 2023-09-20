@@ -244,7 +244,7 @@
     .close-bac .btn-remove{display: flex;}
     .close-bac button{border:none;border-radius:4px;color:#333;height:30px;line-height:30px;margin:25px 15px 0;text-align:center;width:80px}
     .close-bac .close-title{text-align: center}
-    .btn-close.active{background: #0da9c4;color: #fff;}
+    .btn-close.active{background: var(--btn_bg);color: #fff;}
 </style>
 
 <script>

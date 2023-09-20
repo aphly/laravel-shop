@@ -5,6 +5,7 @@ namespace Aphly\LaravelShop\Controllers\Admin\Sale;
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Models\Breadcrumb;
 use Aphly\Laravel\Models\UploadFile;
+use Aphly\LaravelPayment\Models\Payment;
 use Aphly\LaravelShop\Controllers\Admin\Controller;
 use Aphly\LaravelShop\Models\Sale\Order;
 use Aphly\LaravelShop\Models\Sale\OrderHistory;
@@ -60,6 +61,15 @@ class OrderController extends Controller
             ['name'=>'详情','href'=>'/shop_admin/'.$this->currArr['key'].'/view?id='.$res['info']->id]
         ]);
         return $this->makeView('laravel-shop::admin.sale.order.view',['res'=>$res]);
+    }
+
+    public function sync(Request $request)
+    {
+        $res['info'] = Order::where(['id'=>$request->input('order_id',0)])->firstOrError();
+        if($res['info']->order_status_id==1 && !empty($res['info']->payment_id)){
+            (new Payment)->sync_api($res['info']->payment_id);
+        }
+        throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>'/shop_admin/order/view?id='.$res['info']->id]]);
     }
 
     public function historySave(Request $request)

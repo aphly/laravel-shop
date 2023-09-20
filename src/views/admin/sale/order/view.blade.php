@@ -27,6 +27,10 @@
 </div>
 <div class="imain">
     <div class="order">
+        @if($res['info']->order_status_id==1)
+        <div><a class="badge badge-primary show_all0_btn ajax_request" data-load="/shop_admin/order/view?id={{$res['info']->id}}" data-href="/shop_admin/order/sync?order_id={{$res['info']->id}}">同步支付状态</a></div>
+        @endif
+
         <div class="detail">
             <div class="title">The order details</div>
             <div class="detail_info fw50">

@@ -26,8 +26,8 @@ class Paid extends Mailable
     public function __construct($order)
     {
         $this->order = $order;
-        $this->order->orderTotal = OrderTotal::where('order_id',$order->id)->get();
-        $this->order->orderProduct = OrderProduct::where('order_id',$order->id)->with('orderOption')->get();
+//        $this->order->orderTotal = OrderTotal::where('order_id',$order->id)->get();
+//        $this->order->orderProduct = OrderProduct::where('order_id',$order->id)->with('orderOption')->get();
     }
 
     /**

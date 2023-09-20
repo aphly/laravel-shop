@@ -18,6 +18,7 @@ use Aphly\LaravelShop\Models\Catalog\Shipping;
 use Aphly\LaravelShop\Models\System\Setting;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class Order extends Model
 {
@@ -33,6 +34,26 @@ class Order extends Model
 		'payment_method_name','items','total','total_format','comment','currency_id','currency_code','currency_value','order_status_id',
 		'ip','user_agent','accept_language','tracking'
     ];
+
+    function orderStatus(){
+        return $this->hasOne(OrderStatus::class,'id','order_status_id');
+    }
+
+    function orderProduct(){
+        return $this->hasMany(OrderProduct::class,'order_id','id');
+    }
+
+    function orderTotal(){
+        return $this->hasMany(OrderTotal::class,'order_id','id');
+    }
+
+    function orderHistory(){
+        return $this->hasMany(OrderHistory::class,'order_id','id');
+    }
+
+    function orderShipping(){
+        return $this->hasOne(Shipping::class,'id','shipping_id');
+    }
 
     public function notify($payment)
     {
@@ -77,73 +98,26 @@ class Order extends Model
     }
 
     public function addOrderHistory($info, $order_status_id, $input = []){
-        $shop_setting = Setting::findAll(false);
-        $notify = $input['notify']??0;
+        $shop_setting = Setting::findAll();
+        $notify = $amount = 0;
         if($order_status_id==2){
             //Paid
+            $notify = $shop_setting['order_paid_notify'];
             $this->handle($info);
-            if($shop_setting['order_paid_notify']==1 || $notify){
-                //send email
-                //(new MailSend())->do($info->email, new Paid($info));
-                (new RemoteEmail())->send([
-                    'email'=>$info->email,
-                    'title'=>'Order Paid',
-                    'content'=>(new Paid($info))->render(),
-                    'type'=>config('common.email_type'),
-                    'queue_priority'=>0,
-                    'is_cc'=>1
-                ]);
-            }
         }else if($order_status_id==3){
             //Shipped
-            if($shop_setting['order_shipped_notify']==1 || $notify){
-                //send email
-                //(new MailSend())->do($info->email, new Shipped($info));
-                (new RemoteEmail())->send([
-                    'email'=>$info->email,
-                    'title'=>'Order Shipped',
-                    'content'=>(new Shipped($info))->render(),
-                    'type'=>config('common.email_type'),
-                    'queue_priority'=>0,
-                    'is_cc'=>0
-                ]);
-            }
         }else if($order_status_id==6){
             //Canceled
+            $notify = $shop_setting['order_canceled_notify'];
             $this->rollback($info);
-            if($shop_setting['order_canceled_notify']==1 || $notify){
-                //send email
-                //(new MailSend())->do($info->email, new Cancel($info));
-                (new RemoteEmail())->send([
-                    'email'=>$info->email,
-                    'title'=>'Order cancel',
-                    'content'=>(new Cancel($info))->render(),
-                    'type'=>config('common.email_type'),
-                    'queue_priority'=>0,
-                    'is_cc'=>1
-                ]);
-            }
         }else if($order_status_id==7){
             //Refunded
+            $notify = $shop_setting['order_refunded_notify'];
             if($info->order_status_id>=2) {
                 $fee = intval($input['fee']);
-                list($amount) = Currency::codeFormat((100 - $fee) / 100 * $info->total, $info->currency_code);
+                list($amount,$amount_format) = Currency::codeFormat((100 - $fee) / 100 * $info->total, $info->currency_code);
                 if ($amount > 0) {
-                    $info->email_amount = $amount;
-                    $info->email_fee = $fee;
                     (new Payment)->refund_api($info->payment_id, $amount, 'System refund -' . $fee . '% transaction fee');
-                    if ($shop_setting['order_refunded_notify'] == 1 || $notify) {
-                        //send email
-                        //(new MailSend())->do($info->email, new Refunded($info));
-                        (new RemoteEmail())->send([
-                            'email'=>$info->email,
-                            'title'=>'Order Refunded',
-                            'content'=>(new Refunded($info))->render(),
-                            'type'=>config('common.email_type'),
-                            'queue_priority'=>0,
-                            'is_cc'=>0
-                        ]);
-                    }
                 }
                 if ($info->order_status_id != 6) {
                     $this->rollback($info);
@@ -159,35 +133,62 @@ class Order extends Model
             'order_id'=>$info->id,
             'order_status_id'=>$order_status_id,
             'comment'=>$input['comment']??'',
-            'notify'=>$input['notify']??0
+            'notify'=>$input['notify']??$notify
         ]);
-
         if($orderHistory->id){
             $info->order_status_id = $order_status_id;
             if($order_status_id==3){
                 $info->shipping_no = $input['shipping_no']??'';
             }
-            $info->save();
+            if($info->save() && $orderHistory->notify==1){
+                if($order_status_id==2){
+                    //Paid
+                    (new RemoteEmail())->send([
+                        'email'=>$info->email,
+                        'title'=>'Order Paid',
+                        'content'=>(new Paid($info))->render(),
+                        'type'=>config('common.email_type'),
+                        'queue_priority'=>0,
+                        'is_cc'=>1
+                    ]);
+                }else if($order_status_id==3){
+                    //Shipped
+                    (new RemoteEmail())->send([
+                        'email'=>$info->email,
+                        'title'=>'Order Shipped',
+                        'content'=>(new Shipped($info))->render(),
+                        'type'=>config('common.email_type'),
+                        'queue_priority'=>0,
+                        'is_cc'=>0
+                    ]);
+                }else if($order_status_id==6){
+                    //Canceled
+                    $info->cancel_amount = $input['cancel_amount'];
+                    $info->cancel_fee = $input['cancel_fee'];
+                    (new RemoteEmail())->send([
+                        'email'=>$info->email,
+                        'title'=>'Order cancel',
+                        'content'=>(new Cancel($info))->render(),
+                        'type'=>config('common.email_type'),
+                        'queue_priority'=>0,
+                        'is_cc'=>1
+                    ]);
+                }else if($order_status_id==7 && $amount > 0){
+                    //Refunded
+                    $info->refund_amount = $amount_format;
+                    $info->refund_fee = $fee;
+                    (new RemoteEmail())->send([
+                        'email'=>$info->email,
+                        'title'=>'Order Refunded',
+                        'content'=>(new Refunded($info))->render(),
+                        'type'=>config('common.email_type'),
+                        'queue_priority'=>0,
+                        'is_cc'=>0
+                    ]);
+                }
+            }
         }
     }
 
-    function orderStatus(){
-        return $this->hasOne(OrderStatus::class,'id','order_status_id');
-    }
 
-    function orderProduct(){
-        return $this->hasMany(OrderProduct::class,'order_id','id');
-    }
-
-    function orderTotal(){
-        return $this->hasMany(OrderTotal::class,'order_id','id');
-    }
-
-    function orderHistory(){
-        return $this->hasMany(OrderHistory::class,'order_id','id');
-    }
-
-    function orderShipping(){
-        return $this->hasOne(Shipping::class,'id','shipping_id');
-    }
 }

@@ -77,9 +77,9 @@ class OrderController extends Controller
             if($orderHistory->created_at->timestamp+24*3600>time()){
                 $cancel_fee = $this->shop_setting['order_cancel_fee_24'];
             }
-            list($amount) = Currency::codeFormat((100 - $cancel_fee)/100*$res['info']->total,$res['info']->currency_code);
+            list($amount,$amount_format) = Currency::codeFormat((100 - $cancel_fee)/100*$res['info']->total,$res['info']->currency_code);
             (new Payment)->refund_api($res['info']->payment_id,$amount,'Customer cancel -'.$cancel_fee.'% fee');
-            $res['info']->addOrderHistory($res['info'], 6);
+            $res['info']->addOrderHistory($res['info'], 6,['cancel_amount'=>$amount_format,'cancel_fee'=>$cancel_fee]);
             throw new ApiException(['code'=>0,'msg'=>'Cancel Success','data'=>['redirect'=>'/account_ext/order']]);
         }else{
             throw new ApiException(['code'=>1,'msg'=>'After shipment, the order cannot be cancelled!','data'=>['redirect'=>'/account_ext/order']]);

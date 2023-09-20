@@ -152,7 +152,7 @@
                 @endif
             </div>
             <div class="modal-footer">
-                <a class="btn btn-secondary ajax_get" data-href="/shop_admin/product/img?product_id={{$res['product']->id}}" data-fn="$('#product_image').modal('toggle')">添加图片</a>
+                <a class="btn btn-secondary ajax_html" data-href="/shop_admin/product/img?product_id={{$res['product']->id}}" data-fn="$('#product_image').modal('toggle')">添加图片</a>
                 <button type="button" class="btn btn-primary" data-dismiss="modal">完成</button>
             </div>
         </div>

@@ -61,7 +61,7 @@
     .order_list{}
     .order_list li{margin-bottom: 10px;background: #fff;padding: 15px;border-radius: 4px;}
     .order_status{color:#ffc107}
-    .order_list img{width: 80px;height: 80px;margin-right: 20px;border-radius: 4px;}
+    .order_list img{width: 70px;height: 70px;margin-right: 20px;border-radius: 4px;}
     .order_list13{font-weight: 500;padding: 5px 0;display: flex;justify-content: space-between;}
     .order_list14{flex-direction: row-reverse;margin-top: 10px;}
     .order_list14 a{display:block;padding:0px 10px;border-radius:4px;border:1px solid #333;margin-left:20px;line-height: 34px;}

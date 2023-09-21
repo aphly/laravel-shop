@@ -85,13 +85,13 @@
                 </div>
                 <div class="tab-pane fade" id="nav-order" role="tabpanel" aria-labelledby="nav-order-tab">
                     <div class="form-group">
-                        <label for="">cancel over 24h (fee 20%)</label>
-                        <input type="text" name="setting[order_cancel_fee]" class="form-control " value="{{$res['setting']['order_cancel_fee']['value']??20}}">
+                        <label for="">cancel within 24h (fee 10%)</label>
+                        <input type="text" name="setting[order_cancel_fee_24]" class="form-control " value="{{$res['setting']['order_cancel_fee']['value']??10}}">
                         <div class="invalid-feedback"></div>
                     </div>
                     <div class="form-group">
-                        <label for="">cancel within 24h (fee 10%)</label>
-                        <input type="text" name="setting[order_cancel_fee_24]" class="form-control " value="{{$res['setting']['order_cancel_fee_24']['value']??10}}">
+                        <label for="">cancel over 24h (fee 20%)</label>
+                        <input type="text" name="setting[order_cancel_fee]" class="form-control " value="{{$res['setting']['order_cancel_fee_24']['value']??20}}">
                         <div class="invalid-feedback"></div>
                     </div>
 
@@ -137,24 +137,8 @@
                 </div>
                 <div class="tab-pane fade" id="nav-service" role="tabpanel" aria-labelledby="nav-service-tab">
                     <div class="form-group">
-                        <label for="">exchange (换货是否打开)</label>
-                        <select name="setting[exchange]" class="form-control" >
-                            @if(isset($dict['yes_no']))
-                                @foreach($dict['yes_no'] as $key=>$val)
-                                    <option value="{{$key}}" @if(($res['setting']['exchange']['value']??0)==$key) selected @endif>{{$val}}</option>
-                                @endforeach
-                            @endif
-                        </select>
-                        <div class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group">
                         <label for="">未收到货 - 退款手续费(%)</label>
                         <input type="text" name="setting[service_refund_fee]" class="form-control " value="{{$res['setting']['service_refund_fee']['value']??30}}">
-                        <div class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group">
-                        <label for="">收到货 - 退货手续费(%)</label>
-                        <input type="text" name="setting[service_return_fee]" class="form-control " value="{{$res['setting']['service_return_fee']['value']??50}}">
                         <div class="invalid-feedback"></div>
                     </div>
                     <div>
@@ -165,7 +149,7 @@
                             <div class="invalid-feedback"></div>
                         </div>
                         <div class="form-group">
-                            <label for="">售后申请</label>
+                            <label for="">客户申请</label>
                             <select name="setting[service_request_notify]" class="form-control" >
                                 @if(isset($dict['yes_no']))
                                     @foreach($dict['yes_no'] as $key=>$val)
@@ -186,17 +170,7 @@
                             </select>
                             <div class="invalid-feedback"></div>
                         </div>
-                        <div class="form-group">
-                            <label for="">售后退款</label>
-                            <select name="setting[service_refund_notify]" class="form-control" >
-                                @if(isset($dict['yes_no']))
-                                    @foreach($dict['yes_no'] as $key=>$val)
-                                        <option value="{{$key}}" @if(($res['setting']['service_refund_notify']['value']??0)==$key) selected @endif>{{$val}}</option>
-                                    @endforeach
-                                @endif
-                            </select>
-                            <div class="invalid-feedback"></div>
-                        </div>
+
                     </div>
 
                 </div>

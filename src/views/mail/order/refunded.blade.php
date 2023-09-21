@@ -7,13 +7,10 @@
         <div style="margin-bottom: 10px;">
             We are very sorry, but due to the current shortage of goods, we are unable to ship. We will cancel the order and issue a refund.
         </div>
-
-        @if($order->refund_fee)
-            <div style="margin-bottom: 5px;">
-                The order has been successfully refunded.
-                This transaction deducts a {{$order->refund_fee}}% transaction tax, and the final refund amount is {{$order->refund_amount}}
-            </div>
-        @endif
+        <div style="margin-bottom: 5px;">
+            This transaction deducts a {{$order->email_refund_fee}}% transaction tax, and the final refund amount is {{$order->email_refund_amount}}.
+            The order has been successfully refunded.
+        </div>
         <div style="margin-bottom: 5px;">
             Please check if you have received the refund within 48 hours. If not, please contact customer service
         </div>

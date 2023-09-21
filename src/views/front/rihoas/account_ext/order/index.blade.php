@@ -37,12 +37,14 @@
                             </div>
                             </a>
                             <div class="d-flex order_list14">
-                                <a href="/account_ext/order/detail?id={{$val->id}}">Detail</a>
+                                @if($val->orderStatus->id==1)
+                                    <a href="/account_ext/order/close?id={{$val->id}}" data-fn="close_res" class="a_request del_style" data-_token="{{csrf_token()}}">Close</a>
+                                @endif
+                                    <a href="/account_ext/order/detail?id={{$val->id}}">Detail</a>
                                 @if($val->orderStatus->id==1)
                                     @if($val->payment_id)
                                         <a href="/account_ext/order/pay?id={{$val->id}}">Pay</a>
                                     @endif
-                                    <a href="/account_ext/order/close?id={{$val->id}}" data-fn="close_res" class="a_request" data-_token="{{csrf_token()}}">Close</a>
                                 @endif
                             </div>
                         </li>

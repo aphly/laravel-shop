@@ -73,8 +73,9 @@ class OrderController extends Controller
         $res['info'] = Order::where(['uuid'=>User::uuid(),'id'=>$request->query('id',0)])->where('delete_at',0)->firstOrError();
         $orderHistory = OrderHistory::where(['order_id'=>$res['info']->id,'order_status_id'=>2])->first();
         if($res['info']->order_status_id==2 && !empty($orderHistory)){
-            $cancel_fee = $this->shop_setting['order_cancel_fee'];
-            if($orderHistory->created_at->timestamp+24*3600>time()){
+            if(now()->between($orderHistory->created_at,$orderHistory->created_at->addDay())){
+                $cancel_fee = $this->shop_setting['order_cancel_fee'];
+            }else{
                 $cancel_fee = $this->shop_setting['order_cancel_fee_24'];
             }
             list($amount,$amount_format) = Currency::codeFormat((100 - $cancel_fee)/100*$res['info']->total,$res['info']->currency_code);

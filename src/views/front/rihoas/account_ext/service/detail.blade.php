@@ -20,10 +20,10 @@
                         @foreach($res['serviceProduct'] as $val)
                             <dd class="d-flex">
                                 <div class="my_product121">
-                                    <img src="{{$val->orderProduct->image}}" alt="">
+                                    <a href="/product/{{$val->orderProduct->id}}"><img src="{{$val->orderProduct->image}}" alt=""></a>
                                 </div>
                                 <div class="my_product122">
-                                    <div class="my_product12b wenzi">{{$val->orderProduct->name}}</div>
+                                    <div class="my_product12b wenzi"><a href="/product/{{$val->orderProduct->id}}">{{$val->orderProduct->name}}</a></div>
                                     <ul class="my_product122_ul d-flex">
                                         @foreach($val->orderProduct->orderOption as $v)
                                             <li style="margin-right: 10px;">{{$v['name']}} : {{$v['value']}}</li>
@@ -43,30 +43,33 @@
                         @if($res['info']->service_action_id==1)
                             <li><div>Refund Amount ({{$shop_setting['service_refund_fee']}}% fee):</div><div>{{$res['info']->refund_amount_format}}</div></li>
                         @elseif($res['info']->service_action_id==2)
-                            <li><div>Refund Amount ({{$shop_setting['service_return_fee']}}% fee):</div><div>{{$res['info']->refund_amount_format}}</div></li>
+                            <li><div>Maximum refund amount:</div><div>{{$res['info']->refund_amount_format}}</div></li>
                         @endif
                         @if($res['info']->service_action_id==2 || $res['info']->service_action_id==3)
                             @if($res['info']->service_status_id>=3)
-                                <li><div>name </div><div>{{$shop_setting['service_name']}}</div></li>
-                                <li><div>address </div><div>{{$shop_setting['service_address']}}</div></li>
-                                <li><div>postcode </div><div>{{$shop_setting['service_postcode']}}</div></li>
-                                <li><div>phone </div><div>{{$shop_setting['service_phone']}}</div></li>
+                                <li><div>Name </div><div>{{$res['info']->service_name}}</div></li>
+                                <li><div>Address </div><div>{{$res['info']->service_address}}</div></li>
+                                <li><div>Postcode </div><div>{{$res['info']->service_postcode}}</div></li>
+                                <li><div>Phone </div><div>{{$res['info']->service_phone}}</div></li>
                             @endif
 
                             @if($res['info']->service_status_id>=4)
-                                <li><div>c_shipping </div><div>{{$res['info']->c_shipping}}</div></li>
-                                <li><div>c_shipping_no </div><div>{{$res['info']->c_shipping_no}}</div></li>
+                                <li><div>Shipping </div><div>{{$res['info']->c_shipping}}</div></li>
+                                <li><div>Shipping_no </div><div>{{$res['info']->c_shipping_no}}</div></li>
                             @endif
 
-                            @if($res['info']->service_action_id==3)
-                                @if($res['info']->service_status_id==5)
-                                    <li><div>b_shipping </div><div>{{$res['info']->shipping_id}}</div></li>
-                                    <li><div>b_shipping_no </div><div>{{$res['info']->b_shipping_no}}</div></li>
-                                @endif
-                            @endif
+
                         @endif
-
                     </ul>
+                    @if($res['info']->img->count())
+                        <ul class="service_upload" style="margin-top: 10px;">
+                            @foreach($res['info']->img as $val)
+                                <li>
+                                    <img src="{{$val->image_src}}" alt="" style="width: 100px;height: 100px;">
+                                </li>
+                            @endforeach
+                        </ul>
+                    @endif
                 </div>
                 @if($res['serviceHistory']->count())
                 <div class="detail">
@@ -92,73 +95,7 @@
                             </dd>
                         @endforeach
                     </dl>
-                </div>
-                @endif
-
-                <div >
-                    @if($res['info']->service_action_id==1)
-                        @if($res['info']->service_status_id==1)
-                            <div class="detail">
-                                If the merchant has not operated for more than 48 hours, the system will automatically refund
-                            </div>
-                        @elseif($res['info']->service_status_id==2)
-                            <div class="detail">
-                                <a href="/account_ext/service/del?id={{$res['info']->id}}" class="btn a_request" data-fn="service_del_res" data-_token="{{csrf_token()}}">Del</a>
-                            </div>
-                        @endif
-                    @elseif($res['info']->service_action_id==2 || $res['info']->service_action_id==3)
-                        @if($res['info']->service_status_id==1)
-                        @elseif($res['info']->service_status_id==2)
-                            <div class="detail">
-                                <div>Please delete and reapply</div>
-                                <a href="/account_ext/service/del?id={{$res['info']->id}}" class="btn a_request" data-fn="service_del_res" data-_token="{{csrf_token()}}">Del</a>
-                            </div>
-                        @elseif($res['info']->service_status_id==3)
-                            <div class="detail">
-                                <form class="form_request service_detail_form" method="post" action="/account_ext/service/return_exchange3" data-fn="return_exchange3_res">
-                                    @csrf
-                                    <div>Express delivery information</div>
-                                    <input type="hidden" name="service_id" value="{{$res['info']->id}}">
-                                    <input type="hidden" name="service_action_id" value="{{$res['info']->service_action_id}}">
-                                    <input type="text" name="c_shipping" class="form-control " placeholder="c_shipping">
-                                    <input type="text" name="c_shipping_no" class="form-control " placeholder="c_shipping_no">
-                                    <button type="submit" class="account_btn">Shipped</button>
-                                </form>
-                            </div>
-                        @elseif($res['info']->service_status_id==4)
-                            <div class="detail">
-                                <form class="form_request service_detail_form" method="post" action="/account_ext/service/return_exchange4" data-fn="return_exchange4_res">
-                                    @csrf
-                                    <div>Express delivery information</div>
-                                    <input type="hidden" name="service_id" value="{{$res['info']->id}}">
-                                    <input type="text" name="c_shipping" class="form-control " value="{{$res['info']->c_shipping}}">
-                                    <input type="text" name="c_shipping_no" class="form-control " value="{{$res['info']->c_shipping_no}}">
-                                    <button type="submit" class="account_btn">Shipped</button>
-                                </form>
-                            </div>
-                        @elseif($res['info']->service_status_id==5)
-                        @endif
-                    @endif
-                    @if($res['info']->service_action_id==3)
-                    @endif
-                </div>
-
-
-                @if($res['info']->img->count())
-                <div class="detail">
-                    <div class="title">Images</div>
-                    <ul class="service_upload">
-                        @foreach($res['info']->img as $val)
-                            <li>
-                                <img src="{{$val->image_src}}" alt="" style="width: 100px;height: 100px;">
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
-                @endif
-                @if($res['orderRefund']->count())
-                <div class="detail">
-                    <div class="title">Refund</div>
+                    @if($res['orderRefund']->count())
                     <dl class="my_step">
                         @foreach($res['orderRefund'] as $val)
                             <dd class="">
@@ -185,8 +122,56 @@
                             </dd>
                         @endforeach
                     </dl>
+                    @endif
                 </div>
                 @endif
+
+                <div >
+                    @if($res['info']->service_action_id==1)
+                        @if($res['info']->service_status_id==1)
+                            <div class="">
+                                If the merchant has not operated for more than 48 hours, the system will automatically refund
+                            </div>
+                        @elseif($res['info']->service_status_id==2)
+                            <div class="">
+                                <a href="/account_ext/service/del?id={{$res['info']->id}}" class="btn a_request del_style" data-fn="service_del_res" data-_token="{{csrf_token()}}">Delete</a>
+                            </div>
+                        @endif
+                    @elseif($res['info']->service_action_id==2 )
+                        @if($res['info']->service_status_id==1)
+                        @elseif($res['info']->service_status_id==2)
+                            <div class="">
+                                <a href="/account_ext/service/del?id={{$res['info']->id}}" class="btn a_request del_style" data-fn="service_del_res" data-_token="{{csrf_token()}}">Delete</a>
+                            </div>
+                        @elseif($res['info']->service_status_id==3)
+                            <div class="">
+                                <form class="form_request service_detail_form" method="post" action="/account_ext/service/return_exchange3" data-fn="return_exchange3_res">
+                                    @csrf
+                                    <div>Express delivery information</div>
+                                    <input type="hidden" name="service_id" value="{{$res['info']->id}}">
+                                    <input type="hidden" name="service_action_id" value="{{$res['info']->service_action_id}}">
+                                    <input type="text" name="c_shipping" class="form-control " placeholder="c_shipping">
+                                    <input type="text" name="c_shipping_no" class="form-control " placeholder="c_shipping_no">
+                                    <button type="submit" class="account_btn">Shipped</button>
+                                </form>
+                            </div>
+                        @elseif($res['info']->service_status_id==4)
+                            <div class="">
+                                <form class="form_request service_detail_form" method="post" action="/account_ext/service/return_exchange4" data-fn="return_exchange4_res">
+                                    @csrf
+                                    <div>Express delivery information</div>
+                                    <input type="hidden" name="service_id" value="{{$res['info']->id}}">
+                                    <input type="text" name="c_shipping" class="form-control " value="{{$res['info']->c_shipping}}">
+                                    <input type="text" name="c_shipping_no" class="form-control " value="{{$res['info']->c_shipping_no}}">
+                                    <button type="submit" class="account_btn">Shipped</button>
+                                </form>
+                            </div>
+                        @elseif($res['info']->service_status_id==5)
+                        @endif
+                    @endif
+                    @if($res['info']->service_action_id==3)
+                    @endif
+                </div>
 
             </div>
         </div>
@@ -194,22 +179,18 @@
 </section>
 <style>
     .product img{width: 100px;height: 100px;}
-    .service_detail_form{background: #fff;border-radius: 8px;padding: 15px;}
+    .service_detail_form{background: #fff;border-radius: 8px;}
     .service_detail_form input{margin: 10px 0}
 </style>
 <script>
-
     function service_del_res(res,that) {
         alert_msg(res,true)
     }
-
     function return_exchange3_res(res,that) {
         alert_msg(res,true)
     }
-
     function return_exchange4_res(res,that) {
         alert_msg(res,true)
     }
-
 </script>
 @include('laravel-shop-front::common.footer')

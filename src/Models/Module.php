@@ -111,7 +111,7 @@ class Module extends Module_base
 		$data[] =['id'=>'1','name'=>'Pending payment','cn_name'=>'待支付'];
 		$data[] =['id'=>'2','name'=>'Paid','cn_name'=>'买家已支付'];
 		$data[] =['id'=>'3','name'=>'Shipped','cn_name'=>'已寄送'];
-        $data[] =['id'=>'4','name'=>'Complete','cn_name'=>'完成'];
+        $data[] =['id'=>'4','name'=>'Service','cn_name'=>'售后'];
         $data[] =['id'=>'5','name'=>'Closed','cn_name'=>'已关闭'];
         $data[] =['id'=>'6','name'=>'Canceled','cn_name'=>'已取消'];
         $data[] =['id'=>'7','name'=>'Refunded','cn_name'=>'已退款'];
@@ -122,7 +122,6 @@ class Module extends Module_base
             $data=[];
             $data[] =['dict_id' => $dict->id,'name'=>'refund','value'=>'1'];
             $data[] =['dict_id' => $dict->id,'name'=>'return','value'=>'2'];
-            $data[] =['dict_id' => $dict->id,'name'=>'exchange','value'=>'3'];
             DB::table('admin_dict_value')->insert($data);
         }
 
@@ -142,21 +141,9 @@ class Module extends Module_base
             $data[] =['dict_id' => $dict->id,'name'=>'Request Return','value'=>'1'];
             $data[] =['dict_id' => $dict->id,'name'=>'Refusal of return','value'=>'2'];
             $data[] =['dict_id' => $dict->id,'name'=>'Agree to return','value'=>'3'];
-            $data[] =['dict_id' => $dict->id,'name'=>'Awaiting Products','value'=>'4'];
+            $data[] =['dict_id' => $dict->id,'name'=>'Waiting for receipt','value'=>'4'];
             $data[] =['dict_id' => $dict->id,'name'=>'Complete','value'=>'5'];
             $data[] =['dict_id' => $dict->id,'name'=>'Refunded','value'=>'6'];
-            DB::table('admin_dict_value')->insert($data);
-        }
-
-        $dict = Dict::create(['name' => '换货状态','uuid'=>$manager->uuid,'key'=>'exchange_status','module_id'=>$module_id]);
-        if($dict->id){
-            $data=[];
-            $data[] =['dict_id' => $dict->id,'name'=>'Request exchange','value'=>'1'];
-            $data[] =['dict_id' => $dict->id,'name'=>'Refusal of exchange','value'=>'2'];
-            $data[] =['dict_id' => $dict->id,'name'=>'Agree to exchange','value'=>'3'];
-            $data[] =['dict_id' => $dict->id,'name'=>'Awaiting products','value'=>'4'];
-            $data[] =['dict_id' => $dict->id,'name'=>'Shipped','value'=>'5'];
-            $data[] =['dict_id' => $dict->id,'name'=>'Complete','value'=>'6'];
             DB::table('admin_dict_value')->insert($data);
         }
 

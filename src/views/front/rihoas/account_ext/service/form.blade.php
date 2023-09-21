@@ -73,16 +73,7 @@
                                 <div style="font-size: 12px;">(Received goods)</div>
                             </div>
                         </li>
-                        @if($shop_setting['exchange']==1)
-                            <li value="3">
-                                <div>
-                                    <div>Exchange</div>
-                                    <div style="font-size: 12px;">(Received goods)</div>
-                                </div>
-                            </li>
-                        @endif
                     </ul>
-
                 </div>
 
                 <form action="/account_ext/service/save?order_id={{$res['orderInfo']->id}}" method="post" class="form_request received1 service_form " data-fn="refund_res">
@@ -160,10 +151,12 @@
 
                     <div id="return_total">
                         <div class="d-flex justify-content-between return_total1">
-                            <div>Refund Amount :</div>
+                            <div>Maximum refund amount :</div>
                             <div class="return_total_js"></div>
                         </div>
-                        <div class="return_total2">Refund amount does not include freight, and {{$shop_setting['service_return_fee']}}% service charge is deducted</div>
+                        <div class="return_total2">Refund amount does not include freight.
+                            After agreeing to the return request,
+                            you can send the goods to us. Once we receive the goods, we will evaluate the refund amount</div>
                     </div>
 
                     <div class="form-group">
@@ -207,7 +200,7 @@
                 let that = $(this)
                 return_total = return_total + new Decimal(that.data('total')).mul(that.val()).div(that.data('qty')).toNumber();
             })
-            return_total = new Decimal(return_total).mul((100-{{$shop_setting['service_return_fee']}})/100).toFixed(2);
+            return_total = return_total.toFixed(2);
             $('.return_total_js').html(currency.format(return_total,$('.service_product').data('currency_code')))
         }else{
             $('.return_total_js').html('')

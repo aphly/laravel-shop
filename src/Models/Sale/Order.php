@@ -115,27 +115,38 @@ class Order extends Model
             $notify = $shop_setting['order_refunded_notify'];
             if($info->order_status_id>=2) {
                 $fee = intval($input['fee']);
-                list($amount,$amount_format) = Currency::codeFormat((100 - $fee) / 100 * $info->total, $info->currency_code);
-                if ($amount > 0) {
-                    (new Payment)->refund_api($info->payment_id, $amount, 'System refund -' . $fee . '% transaction fee');
-                }
-                if ($info->order_status_id != 6) {
-                    $this->rollback($info);
+                if($fee>=0 && $fee<=100) {
+                    list($amount, $amount_format) = Currency::codeFormat((100 - $fee) / 100 * $info->total, $info->currency_code);
+                    if ($amount > 0) {
+                        (new Payment)->refund_api($info->payment_id, $amount, 'System refund -' . $fee . '% transaction fee');
+                    }
+                    if ($info->order_status_id != 6) {
+                        $this->rollback($info);
+                    }
+                }else{
+                    throw new ApiException(['code'=>1,'msg'=>'Fee error']);
                 }
             }
         }
 
         if($input['override']??false){
-            OrderHistory::where(['order_id'=>$info->id,'order_status_id'=>$order_status_id])->delete();
+            $orderHistory = OrderHistory::where(['order_id'=>$info->id,'order_status_id'=>$order_status_id])->first();
+            if(!empty($orderHistory)){
+                $orderHistory->update([
+                    'comment'=>$input['comment']??'',
+                    'notify'=>$input['notify']??$notify
+                ]);
+            }
+        }else{
+            $orderHistory = OrderHistory::create([
+                'order_id'=>$info->id,
+                'order_status_id'=>$order_status_id,
+                'comment'=>$input['comment']??'',
+                'notify'=>$input['notify']??$notify
+            ]);
         }
 
-        $orderHistory = OrderHistory::create([
-            'order_id'=>$info->id,
-            'order_status_id'=>$order_status_id,
-            'comment'=>$input['comment']??'',
-            'notify'=>$input['notify']??$notify
-        ]);
-        if($orderHistory->id){
+        if(!empty($orderHistory) && $orderHistory->id){
             $info->order_status_id = $order_status_id;
             if($order_status_id==3){
                 $info->shipping_no = $input['shipping_no']??'';
@@ -175,8 +186,8 @@ class Order extends Model
                     ]);
                 }else if($order_status_id==7 && $amount > 0){
                     //Refunded
-                    $info->refund_amount = $amount_format;
-                    $info->refund_fee = $fee;
+                    $info->email_refund_amount = $amount_format;
+                    $info->email_refund_fee = $fee;
                     (new RemoteEmail())->send([
                         'email'=>$info->email,
                         'title'=>'Order Refunded',

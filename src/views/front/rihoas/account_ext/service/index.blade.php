@@ -10,31 +10,32 @@
                 <ul class="list_index">
                     @foreach($res['list'] as $val)
                         <li class="">
-                            <div class="d-flex justify-content-between">
-                                <span>Service ID</span>
-                                <span>{{$val->id}}</span>
-                            </div>
+                            <a href="/account_ext/service/detail?id={{$val->id}}">
+                                <div class="d-flex justify-content-between">
+                                    <span>Service ID</span>
+                                    <span>{{$val->id}}</span>
+                                </div>
 
-                            <div class="d-flex justify-content-between">
-                                <span>Status</span>
-                                <span>{{$dict[$dict['service_action'][$val->service_action_id].'_status'][$val->service_status_id]}}</span>
-                            </div>
+                                <div class="d-flex justify-content-between">
+                                    <span>Status</span>
+                                    <span>{{$dict[$dict['service_action'][$val->service_action_id].'_status'][$val->service_status_id]}}</span>
+                                </div>
 
-                            <div class="d-flex justify-content-between">
-                                <span>Order ID</span>
-                                <span>{{$val->order_id}}</span>
-                            </div>
+                                <div class="d-flex justify-content-between">
+                                    <span>Order ID</span>
+                                    <span>{{$val->order_id}}</span>
+                                </div>
 
-                            <div class="d-flex justify-content-between">
-                                <span>Date Added</span>
-                                <span>{{$val->created_at}}</span>
-                            </div>
-
+                                <div class="d-flex justify-content-between">
+                                    <span>Date Added</span>
+                                    <span>{{$val->created_at}}</span>
+                                </div>
+                                </a>
                             <div class="service_list_btn">
-                                <a href="/account_ext/service/detail?id={{$val->id}}" class="btn">Detail</a>
                                 @if($val->service_status_id==1)
-                                    <a href="/account_ext/service/del?id={{$val->id}}" class="btn a_request" data-fn="del_res" data-_token="{{csrf_token()}}">Del</a>
+                                    <a href="/account_ext/service/del?id={{$val->id}}" class="btn a_request del_style" data-confirm="true" data-fn="del_res" data-_token="{{csrf_token()}}">Delete</a>
                                 @endif
+                                    <a href="/account_ext/service/detail?id={{$val->id}}" class="btn">Detail</a>
                             </div>
                         </li>
                     @endforeach

@@ -11,7 +11,7 @@
             <input type="search" name="id" placeholder="id" value="{{$res['search']['id']}}">
             <input type="search" name="email" placeholder="email" value="{{$res['search']['email']}}">
             <select name="status">
-                <option value="">全部</option>
+                <option value="">状态</option>
                 @foreach($res['orderStatus'] as $val)
                 <option value="{{$val->id}}" @if($res['search']['status']==$val->id) selected @endif>{{$val->cn_name}}</option>
                 @endforeach

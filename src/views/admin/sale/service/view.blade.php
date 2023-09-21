@@ -20,29 +20,7 @@
     <div class="order">
         <div class="detail">
             <div class="title">The service details</div>
-            <div class="detail_info">
-                <div class="info">
-                    <div class="ititle">Info</div>
-                    <ul>
-                        <li><div>类型:</div><div>{{$dict['service_action'][$res['info']->service_action_id]}}</div></li>
-                        <li><div>id:</div><div>{{$res['info']->id}}</div></li>
-                        <li><div>订单id:</div><div>{{$res['info']->order->id}}</div></li>
-                        <li><div>邮箱:</div><div>{{$res['info']->order->email}}</div></li>
-                        <li><div>用户uuid:</div><div>{{$res['info']->uuid}}</div></li>
-                        <li><div>申请时间:</div><div>{{$res['info']->created_at}}</div></li>
-                        <li><div>是否收到货:</div><div>{{$dict['yes_no'][$res['info']->is_received]}}</div></li>
-                        @if($res['info']->service_action_id==1 || $res['info']->service_action_id==2)
-                            <li><div>退款金额(扣除手续费后):</div><div>{{$res['info']->refund_amount_format}}</div></li>
-                        @endif
-                        <li><div>原因:</div><div>{{$res['info']->reason}}</div></li>
-                    </ul>
-                </div>
-
-            </div>
-        </div>
-        <div class="detail">
-            <div class="title">The order product</div>
-            <ul class="product">
+            <ul class="product" style="padding: 0 10px;margin-bottom: 10px;">
                 <li>
                     <div>商品名称</div>
                     <div>数量</div>
@@ -76,7 +54,36 @@
                     @endforeach
                 @endif
             </ul>
+            <div class="detail_info">
+                <div class="info">
+                    <div class="ititle">详情</div>
+                    <ul>
+                        <li><div>类型:</div><div>{{$dict['service_action'][$res['info']->service_action_id]}}</div></li>
+                        <li><div>id:</div><div>{{$res['info']->id}}</div></li>
+                        <li><div>订单id:</div><div>{{$res['info']->order->id}}</div></li>
+                        <li><div>邮箱:</div><div>{{$res['info']->order->email}}</div></li>
+                        <li><div>用户uuid:</div><div>{{$res['info']->uuid}}</div></li>
+                        <li><div>申请时间:</div><div>{{$res['info']->created_at}}</div></li>
+                        <li><div>是否收到货:</div><div>{{$dict['yes_no'][$res['info']->is_received]}}</div></li>
+                        @if($res['info']->service_action_id==1 || $res['info']->service_action_id==2)
+                            <li><div>退款金额(扣除手续费后):</div><div>{{$res['info']->refund_amount_format}}</div></li>
+                        @endif
+                        <li><div>原因:</div><div>{{$res['info']->reason}}</div></li>
+                    </ul>
+                </div>
+                @if($res['info']->img->count())
+                    <div class="ititle" style="margin-top: 10px;">Images</div>
+                    <ul class="service_upload">
+                        @foreach($res['info']->img as $val)
+                            <li>
+                                <img src="{{$val->image_src}}" alt="" style="width: 100px;height: 100px;">
+                            </li>
+                        @endforeach
+                    </ul>
+                @endif
+            </div>
         </div>
+
         @if($res['serviceProduct']->count())
         <div class="detail">
             <div class="title">The return product</div>
@@ -179,31 +186,45 @@
                             <div class="invalid-feedback"></div>
                         </div>
                         <div class="form-group">
+                            <label for="">邮件通知</label>
+                            <input type="checkbox" name="notify" value="1">
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group">
                             <label for="">备注</label>
                             <textarea class="form-control" name="comment"></textarea>
                             <div class="invalid-feedback"></div>
                         </div>
-                        @if($res['info']->service_action_id==3)
-                            <div id="shipping" style="display: none;">
+                        @if($res['info']->service_action_id==2)
+                            <div id="shipping_info" style="display: none;">
                                 <div class="form-group">
-                                    <label for="">快递</label>
-                                    <select name="shipping_id" class="form-control">
-                                        @foreach($res['shipping_method'] as $key=>$val)
-                                            <option value="{{$val->id}}">{{$val->name}}</option>
-                                        @endforeach
-                                    </select>
+                                    <label for="">退货人姓名</label>
+                                    <input type="text" name="service_name" class="form-control" value="{{$res['info']->service_name??$res['shop_setting']['service_name']}}">
                                     <div class="invalid-feedback"></div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="">运单号</label>
-                                    <input type="text" name="b_shipping_no" class="form-control" value="">
+                                    <label for="">退货人地址</label>
+                                    <input type="text" name="service_address" class="form-control" value="{{$res['info']->service_address??$res['shop_setting']['service_address']}}">
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="">退货人邮编</label>
+                                    <input type="text" name="service_postcode" class="form-control" value="{{$res['info']->service_postcode??$res['shop_setting']['service_postcode']}}">
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="">退货人电话</label>
+                                    <input type="text" name="service_phone" class="form-control" value="{{$res['info']->service_phone??$res['shop_setting']['service_phone']}}">
                                     <div class="invalid-feedback"></div>
                                 </div>
                             </div>
+                            <div class="form-group" id="fee" style="display: none;">
+                                <label for="">退货的手续费（%）；当手续费设置为100，代表不退款</label>
+                                <input type="number" name="fee" class="form-control" value="5">
+                                <div class="invalid-feedback"></div>
+                            </div>
                         @endif
-                        @if($res['info']->service_action_id<3 )
                         <div>状态必须为complete 才能进行退款操作</div>
-                        @endif
                         <button class="btn btn-primary" type="submit">保存</button>
                     </div>
                 </form>
@@ -219,12 +240,17 @@
 </style>
 <script>
     $(function () {
-        @if($res['info']->service_action_id==3)
-        $('#service_status_id3').change(function () {
-            let shipping = $('#shipping');
+        @if($res['info']->service_action_id==2)
+        $('#service_status_id2').change(function () {
+            let shipping = $('#shipping_info');
             shipping.hide();
-            if($(this).val()==5){
+            if($(this).val()==3){
                 shipping.show();
+            }
+            let fee = $('#fee');
+            fee.hide();
+            if($(this).val()==6){
+                fee.show();
             }
         })
         @endif

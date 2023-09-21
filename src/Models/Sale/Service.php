@@ -83,8 +83,9 @@ class Service extends Model
                 }
             }
         }
-        if($input['override']??false){
-            $serviceHistory = ServiceHistory::where(['service_id'=>$info->id,'service_status_id'=>$service_status_id])->first();
+        $override = $input['override']??false;
+        if($override){
+            $serviceHistory = ServiceHistory::where(['service_id'=>$info->id,'service_status_id'=>$service_status_id])->orderBy('created_at','desc')->first();
             if(!empty($serviceHistory)){
                 $serviceHistory->update([
                     'comment'=>$input['comment']??'',
@@ -99,9 +100,9 @@ class Service extends Model
                 'comment'=>$input['comment']??'',
                 'notify'=>$input['notify']??$notify
             ]);
-        }
-        if(!empty($serviceHistory) && $serviceHistory->id){
             $info->service_status_id = $service_status_id;
+        }
+        if(!empty($serviceHistory)){
             if($info->save() && $serviceHistory->notify==1){
                 if($info->service_action_id==1){
                     if($service_status_id==1){

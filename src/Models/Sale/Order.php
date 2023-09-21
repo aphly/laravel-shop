@@ -106,6 +106,7 @@ class Order extends Model
             $this->handle($info);
         }else if($order_status_id==3){
             //Shipped
+            $info->shipping_no = $input['shipping_no']??'';
         }else if($order_status_id==6){
             //Canceled
             $notify = $shop_setting['order_canceled_notify'];
@@ -130,7 +131,7 @@ class Order extends Model
         }
 
         if($input['override']??false){
-            $orderHistory = OrderHistory::where(['order_id'=>$info->id,'order_status_id'=>$order_status_id])->first();
+            $orderHistory = OrderHistory::where(['order_id'=>$info->id,'order_status_id'=>$order_status_id])->orderBy('created_at','desc')->first();
             if(!empty($orderHistory)){
                 $orderHistory->update([
                     'comment'=>$input['comment']??'',
@@ -144,13 +145,10 @@ class Order extends Model
                 'comment'=>$input['comment']??'',
                 'notify'=>$input['notify']??$notify
             ]);
+            $info->order_status_id = $order_status_id;
         }
 
         if(!empty($orderHistory) && $orderHistory->id){
-            $info->order_status_id = $order_status_id;
-            if($order_status_id==3){
-                $info->shipping_no = $input['shipping_no']??'';
-            }
             if($info->save() && $orderHistory->notify==1){
                 if($order_status_id==2){
                     //Paid

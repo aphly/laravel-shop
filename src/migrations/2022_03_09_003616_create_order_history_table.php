@@ -21,6 +21,7 @@ return new class extends Migration
             $table->text('comment')->nullable();
             $table->unsignedBigInteger('created_at');
             $table->unsignedBigInteger('updated_at');
+            $table->engine = 'InnoDB';
         });
     }
 

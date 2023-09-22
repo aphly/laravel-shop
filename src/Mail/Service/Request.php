@@ -17,11 +17,11 @@ class Request extends Mailable
      * @return void
      */
 
-    public $order;
+    public $service;
 
-    public function __construct($order)
+    public function __construct($service)
     {
-        $this->order = $order;
+        $this->service = $service;
     }
 
     /**
@@ -31,7 +31,7 @@ class Request extends Mailable
      */
     public function build()
     {
-        return $this->subject('Order cancel')
+        return $this->subject('Service Request')
             ->view('laravel-shop::mail.service.request');
     }
 }

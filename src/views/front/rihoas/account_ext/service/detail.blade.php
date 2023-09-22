@@ -41,9 +41,13 @@
                         <li><div>Date Added:</div><div>{{$res['info']->created_at}}</div></li>
                         <li><div>Reason:</div><div>{{$res['info']->reason}}</div></li>
                         @if($res['info']->service_action_id==1)
-                            <li><div>Refund Amount ({{$shop_setting['service_refund_fee']}}% fee):</div><div>{{$res['info']->refund_amount_format}}</div></li>
+                            <li><div>Refund Amount ({{$res['info']->refund_fee}}% fee):</div><div>{{$res['info']->refund_amount_format}}</div></li>
                         @elseif($res['info']->service_action_id==2)
-                            <li><div>Maximum refund amount:</div><div>{{$res['info']->refund_amount_format}}</div></li>
+                            @if($res['info']->refund_amount)
+                                <li><div>Actual refund:</div><div>{{$res['info']->refund_amount_format}}</div></li>
+                            @else
+                                <li><div>Maximum refund amount:</div><div>{{$res['info']->amount_format}}</div></li>
+                            @endif
                         @endif
                         @if($res['info']->service_action_id==2)
                             @if($res['info']->service_status_id>=3)
@@ -53,8 +57,8 @@
                                 <li><div>Phone </div><div>{{$res['info']->service_phone}}</div></li>
                             @endif
                             @if($res['info']->service_status_id>=4)
-                                <li><div>Shipping </div><div>{{$res['info']->c_shipping}}</div></li>
-                                <li><div>Shipping_no </div><div>{{$res['info']->c_shipping_no}}</div></li>
+                                <li><div>Express delivery name </div><div>{{$res['info']->c_shipping}}</div></li>
+                                <li><div>Tracking number </div><div>{{$res['info']->c_shipping_no}}</div></li>
                             @endif
                         @endif
                     </ul>

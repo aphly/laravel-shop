@@ -156,7 +156,7 @@
                         </div>
                         <div class="return_total2">Refund amount does not include freight.
                             After agreeing to the return request,
-                            you can send the goods to us. Once we receive the goods, we will evaluate the refund amount</div>
+                            you can send the goods to us. Once we receive the goods, we will evaluate the returned goods and issue a refund.</div>
                     </div>
 
                     <div class="form-group">

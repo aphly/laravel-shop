@@ -20,10 +20,12 @@ class Refunded extends Mailable
      */
 
     public $order;
+    public $orderHistory;
 
-    public function __construct($order)
+    public function __construct($order,$orderHistory)
     {
         $this->order = $order;
+        $this->orderHistory = $orderHistory;
 //        $this->order->orderTotal = OrderTotal::where('order_id',$order->id)->get();
 //        $this->order->orderProduct = OrderProduct::where('order_id',$order->id)->with('orderOption')->get();
     }

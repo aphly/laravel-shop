@@ -65,9 +65,9 @@
                         <li><div>用户uuid:</div><div>{{$res['info']->uuid}}</div></li>
                         <li><div>申请时间:</div><div>{{$res['info']->created_at}}</div></li>
                         <li><div>是否收到货:</div><div>{{$dict['yes_no'][$res['info']->is_received]}}</div></li>
-                        @if($res['info']->service_action_id==1 || $res['info']->service_action_id==2)
-                            <li><div>退款金额(扣除手续费后):</div><div>{{$res['info']->refund_amount_format}}</div></li>
-                        @endif
+                        <li><div>是否打开:</div><div>{{$dict['yes_no'][$res['info']->is_opened]}}</div></li>
+                        <li><div>退款总额:</div><div>{{$res['info']->amount_format}}</div></li>
+                        <li><div>退款金额(扣除{{$res['info']->refund_fee}}%手续费后):</div><div>{{$res['info']->refund_amount_format}}</div></li>
                         <li><div>原因:</div><div>{{$res['info']->reason}}</div></li>
                     </ul>
                 </div>

@@ -141,7 +141,7 @@ class Module extends Module_base
             $data[] =['dict_id' => $dict->id,'name'=>'Request Return','value'=>'1'];
             $data[] =['dict_id' => $dict->id,'name'=>'Refusal of return','value'=>'2'];
             $data[] =['dict_id' => $dict->id,'name'=>'Agree to return','value'=>'3'];
-            $data[] =['dict_id' => $dict->id,'name'=>'Waiting for receipt','value'=>'4'];
+            $data[] =['dict_id' => $dict->id,'name'=>'Waiting for delivery','value'=>'4'];
             $data[] =['dict_id' => $dict->id,'name'=>'Complete','value'=>'5'];
             $data[] =['dict_id' => $dict->id,'name'=>'Refunded','value'=>'6'];
             DB::table('admin_dict_value')->insert($data);

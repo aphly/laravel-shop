@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('name',255);
             $table->text('value');
             $table->string('type',32);
+            $table->engine = 'InnoDB';
         });
     }
 

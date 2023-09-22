@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('discount_format',255);
             $table->decimal('real_total',15,2);
             $table->string('real_total_format',255);
+            $table->engine = 'InnoDB';
         });
     }
 

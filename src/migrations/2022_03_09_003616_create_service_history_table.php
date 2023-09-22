@@ -22,6 +22,7 @@ return new class extends Migration
             $table->text('comment');
             $table->unsignedBigInteger('created_at');
             $table->unsignedBigInteger('updated_at');
+            $table->engine = 'InnoDB';
         });
     }
 

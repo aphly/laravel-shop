@@ -5,7 +5,7 @@
     <div style="padding: 10px;">
         <div style="margin-bottom: 10px;">Our Order #{{$order->id}}</div>
         <div style="margin-bottom: 10px;">
-            We are very sorry, but due to the current shortage of goods, we are unable to ship. We will cancel the order and issue a refund.
+            {{$orderHistory->comment??'We are very sorry, but due to the current shortage of goods, we are unable to ship. We will cancel the order and issue a refund.'}}
         </div>
         <div style="margin-bottom: 5px;">
             This transaction deducts a {{$order->email_refund_fee}}% transaction tax, and the final refund amount is {{$order->email_refund_amount}}.

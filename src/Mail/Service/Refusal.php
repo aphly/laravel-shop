@@ -17,11 +17,14 @@ class Refusal extends Mailable
      * @return void
      */
 
-    public $order;
+    public $service;
 
-    public function __construct($order)
+    public $serviceHistory;
+
+    public function __construct($service,$serviceHistory)
     {
-        $this->order = $order;
+        $this->service = $service;
+        $this->serviceHistory = $serviceHistory;
     }
 
     /**
@@ -31,7 +34,7 @@ class Refusal extends Mailable
      */
     public function build()
     {
-        return $this->subject('Order cancel')
+        return $this->subject('Service Refusal')
             ->view('laravel-shop::mail.service.refusal');
     }
 }

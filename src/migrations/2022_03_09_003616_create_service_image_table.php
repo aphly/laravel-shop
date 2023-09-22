@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('service_id')->index();
             $table->tinyInteger('remote')->default(0);
             $table->string('image',255);
+            $table->engine = 'InnoDB';
         });
     }
 

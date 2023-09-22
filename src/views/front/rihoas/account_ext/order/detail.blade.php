@@ -113,34 +113,32 @@
                                 </li>
                             @endforeach
                         @endif
-                        @if($res['info']->order_status_id==6)
-                            @if($res['orderRefund'])
-                                @foreach($res['orderRefund'] as $val)
-                                    <li class="">
-                                        <div class="orderHistory1">
-                                            <div class="orderHistory11"></div>
-                                            <div class="orderHistory12">{{$val->created_at}}</div>
-                                        </div>
-                                        <div class="orderHistory2">
-                                            <div class="orderHistory22">
-                                                <div class="orderHistory221 d-flex justify-content-between">
-                                                    <div class="orderRefund1a">
-                                                        {{$val->amount_format}}
-                                                    </div>
-                                                    <div class="orderRefund1b">
-                                                        @if($val->cred_status)
-                                                            {{$val->cred_status}}
-                                                        @else
-                                                            Pending
-                                                        @endif
-                                                    </div>
+                        @if($res['orderRefund'])
+                            @foreach($res['orderRefund'] as $val)
+                                <li class="">
+                                    <div class="orderHistory1">
+                                        <div class="orderHistory11"></div>
+                                        <div class="orderHistory12">{{$val->created_at}}</div>
+                                    </div>
+                                    <div class="orderHistory2">
+                                        <div class="orderHistory22">
+                                            <div class="orderHistory221 d-flex justify-content-between">
+                                                <div class="orderRefund1a">
+                                                    {{$val->amount_format}}
                                                 </div>
-                                                <div class="orderHistory222">{{$val->reason}}</div>
+                                                <div class="orderRefund1b">
+                                                    @if($val->cred_status)
+                                                        {{$val->cred_status}}
+                                                    @else
+                                                        Pending
+                                                    @endif
+                                                </div>
                                             </div>
+                                            <div class="orderHistory222">{{$val->reason}}</div>
                                         </div>
-                                    </li>
-                                @endforeach
-                            @endif
+                                    </div>
+                                </li>
+                            @endforeach
                         @endif
                     </ul>
 
@@ -154,7 +152,7 @@
                         <a href="/account_ext/order/close?id={{$res['info']->id}}" data-fn="close_res" class="a_request account_btn" data-_token="{{csrf_token()}}">Close</a>
                     @elseif($res['info']->order_status_id==2)
                         <a href="javascript:void(0)" onclick="cancel('{{$res['cancelAmountFormat']}}',{{$res['info']->id}})" class="account_btn">Cancel</a>
-                    @elseif($res['info']->order_status_id==3 || $res['info']->order_status_id==7)
+                    @elseif($res['info']->order_status_id==3)
                         <a href="/account_ext/service/form?order_id={{$val->order_id}}" class="account_btn">Service</a>
                     @endif
                 </div>

@@ -81,7 +81,7 @@ class ServiceController extends Controller
             $input = $request->all();
             $input['uuid'] = User::uuid();
             $info = Service::create($input);
-            $info->addServiceHistory($info,1);
+
             $service_product_arr = [];
             $total_all = 0;
             if(!empty($input['order_product'])){
@@ -137,6 +137,7 @@ class ServiceController extends Controller
 
             if($info->save()){
                 ServiceProduct::insert($service_product_arr);
+                $info->addServiceHistory($info,1);
             }
             foreach ($file_paths as $v){
                 $insertData[] = ['service_id'=>$info->id,'image'=>$v,'remote'=>$UploadFile->isRemote()];

@@ -60,7 +60,7 @@ class Order extends Model
         DB::beginTransaction();
         try {
             $info = self::where(['payment_id'=>$payment->id])->lockForUpdate()->first();
-            if(!empty($info)){
+            if(!empty($info) && $info->order_status_id==1){
                 $info->order_status_id=2;
                 if($info->save()){
                     $this->addOrderHistory($info,$info->order_status_id);
@@ -189,7 +189,7 @@ class Order extends Model
                     (new RemoteEmail())->send([
                         'email'=>$info->email,
                         'title'=>'Order Refunded',
-                        'content'=>(new Refunded($info))->render(),
+                        'content'=>(new Refunded($info,$orderHistory))->render(),
                         'type'=>config('common.email_type'),
                         'queue_priority'=>0,
                         'is_cc'=>0

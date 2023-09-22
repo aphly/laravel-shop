@@ -74,7 +74,7 @@ class Service extends Model
                     if($fee>=0 && $fee<=100){
                         list($refund_amount,$refund_amount_format) = Currency::codeFormat((100 - $fee) / 100 * $info->amount, $info->currency_code);
                         if ($refund_amount > 0) {
-                            (new Payment)->refund_api($info->order->payment_id,$refund_amount,'System refund -' . $fee . '% transaction fee');
+                            (new Payment)->refund_api($info->order->payment_id,$refund_amount,'System refund -' . $fee . '% handling fee');
                             $info->refund_fee = $fee;
                             $info->refund_amount = $refund_amount;
                             $info->refund_amount_format = $refund_amount_format;
@@ -123,7 +123,7 @@ class Service extends Model
                         (new RemoteEmail())->send([
                             'email'=>$info->order->email,
                             'title'=>'Service Refusal',
-                            'content'=>(new Refusal($info))->render(),
+                            'content'=>(new Refusal($info,$serviceHistory))->render(),
                             'type'=>config('common.email_type'),
                             'queue_priority'=>0,
                             'is_cc'=>0
@@ -155,7 +155,7 @@ class Service extends Model
                         (new RemoteEmail())->send([
                             'email'=>$info->order->email,
                             'title'=>'Service Refusal',
-                            'content'=>(new Refusal($info))->render(),
+                            'content'=>(new Refusal($info,$serviceHistory))->render(),
                             'type'=>config('common.email_type'),
                             'queue_priority'=>0,
                             'is_cc'=>0
@@ -164,7 +164,7 @@ class Service extends Model
                         (new RemoteEmail())->send([
                             'email'=>$info->order->email,
                             'title'=>'Service Agree',
-                            'content'=>(new Agree($info))->render(),
+                            'content'=>(new Agree($info,$serviceHistory))->render(),
                             'type'=>config('common.email_type'),
                             'queue_priority'=>0,
                             'is_cc'=>0

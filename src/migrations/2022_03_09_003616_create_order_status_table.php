@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name',64);
             $table->string('cn_name',64)->nullable();
+            $table->engine = 'InnoDB';
         });
     }
 

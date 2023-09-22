@@ -38,6 +38,7 @@ return new class extends Migration
             $table->unsignedBigInteger('delete_at')->nullable()->default(0);
             $table->unsignedBigInteger('created_at');
             $table->unsignedBigInteger('updated_at');
+            $table->engine = 'InnoDB';
         });
     }
 

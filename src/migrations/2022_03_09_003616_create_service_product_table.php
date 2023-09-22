@@ -20,6 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('quantity')->nullable();
             $table->decimal('total',15,2);
             $table->string('total_format',255);
+            $table->engine = 'InnoDB';
         });
     }
 

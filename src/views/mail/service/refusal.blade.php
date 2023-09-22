@@ -1,11 +1,11 @@
 @include('laravel-common::mail.header')
     <div style="font-size: 28px;line-height: 40px;margin-bottom: 10px;">
-        Order Cancel
+        Service Refusal
     </div>
-    <div style="margin-bottom: 10px;">Hello {{$order->email}}</div>
+    <div style="margin-bottom: 10px;">Our service #{{$service->id}}</div>
 
     <div>
-        You have canceled the order. Welcome to purchase next time.
+        {{$serviceHistory->comment??'Your request has been rejected'}}
     </div>
 
 @include('laravel-common::mail.footer')

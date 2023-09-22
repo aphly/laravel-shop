@@ -28,6 +28,17 @@
                         <div class="invalid-feedback"></div>
                     </div>
                     <div class="form-group">
+                        <label for="">review限制</label>
+                        <select name="setting[review_limit]" class="form-control" >
+                            @if(isset($dict['yes_no']))
+                                @foreach($dict['yes_no'] as $key=>$val)
+                                    <option value="{{$key}}" @if(($res['setting']['review_limit']['value']??0)==$key) selected @endif>{{$val}}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group">
                         <label for="">退换货姓名(默认)</label>
                         <input type="text" name="setting[service_name]" class="form-control " value="{{$res['setting']['service_name']['value']??''}}">
                         <div class="invalid-feedback"></div>

@@ -6,7 +6,6 @@ use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Models\Breadcrumb;
 use Aphly\Laravel\Models\UploadFile;
 use Aphly\LaravelCommon\Models\Currency;
-use Aphly\LaravelCommon\Models\User;
 use Aphly\LaravelShop\Controllers\Front\Controller;
 use Aphly\LaravelShop\Models\Account\Wishlist;
 use Aphly\LaravelShop\Models\Catalog\FilterGroup;
@@ -15,8 +14,8 @@ use Aphly\LaravelShop\Models\Catalog\Product;
 use Aphly\LaravelShop\Models\Catalog\Review;
 use Aphly\LaravelShop\Models\Catalog\ReviewImage;
 use Aphly\LaravelShop\Models\Checkout\Cart;
+use Aphly\LaravelShop\Models\Sale\OrderProduct;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -125,14 +124,17 @@ class ProductController extends Controller
         if(empty($input['text'])){
             throw new ApiException(['code'=>1,'msg'=>'Content cannot be empty']);
         }
-//        $count = Review::where(['uuid'=>$this->user->uuid,'product_id'=>$request->id])->count();
-//        if($count>0){
-//            throw new ApiException(['code'=>1,'msg'=>'A product can only be evaluated once']);
-//        }
-//        $orderProductCount = OrderProduct::leftJoin('shop_order','shop_order.id','=','shop_order_product.order_id')->where(['shop_order.uuid'=>$this->user->uuid,'shop_order_product.product_id'=>$request->id])->count();
-//        if(!$orderProductCount){
-//            throw new ApiException(['code'=>2,'msg'=>'Only after purchasing the product can you evaluate it']);
-//        }
+
+        if($this->shop_setting['review_limit']){
+            $count = Review::where(['uuid'=>$this->user->uuid,'product_id'=>$request->id])->count();
+            if($count>0){
+                throw new ApiException(['code'=>1,'msg'=>'The product can only be reviewed once']);
+            }
+            $orderProductCount = OrderProduct::leftJoin('shop_order','shop_order.id','=','shop_order_product.order_id')->where(['shop_order.uuid'=>$this->user->uuid,'shop_order_product.product_id'=>$request->id])->count();
+            if(!$orderProductCount){
+                throw new ApiException(['code'=>2,'msg'=>'Only after purchasing the product can you comment on it']);
+            }
+        }
 
         $insertData = $img_src = $file_paths =  [];
         $UploadFile = new UploadFile($this->review_image_size);

@@ -96,22 +96,20 @@
                     </li>
                     @foreach($res['serviceProduct'] as $val)
                         <li>
-                            <div>
-                                <a style="display: flex;" >
-                                    <img src="{{$val->orderProduct->image}}">
-                                    <div style="display: flex;align-items: center;">
-                                        <div>
-                                            <div class="product_title wenzi">{{$val->orderProduct->name}}</div>
-                                            @if($val->orderOption)
-                                                <ul class="option">
-                                                    @foreach($val->orderOption as $v)
-                                                        <li>{{$v->name}} : {{$v->value}}</li>
-                                                    @endforeach
-                                                </ul>
-                                            @endif
-                                        </div>
+                            <div style="display: flex;">
+                                <img src="{{$val->orderProduct->image}}">
+                                <div style="display: flex;align-items: center;">
+                                    <div>
+                                        <div class="product_title wenzi">{{$val->orderProduct->name}}</div>
+                                        @if($val->orderOption)
+                                            <ul class="option">
+                                                @foreach($val->orderOption as $v)
+                                                    <li>{{$v->name}} : {{$v->value}}</li>
+                                                @endforeach
+                                            </ul>
+                                        @endif
                                     </div>
-                                </a>
+                                </div>
                             </div>
                             <div>{{$val->quantity}}</div>
                             <div>{{$val->total_format}}</div>

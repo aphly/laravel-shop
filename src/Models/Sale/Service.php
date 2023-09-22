@@ -24,7 +24,7 @@ class Service extends Model
 
     protected $fillable = [
         'order_id','uuid','is_received','is_opened','reason','service_action_id','service_status_id','delete_at',
-        'service_address','service_name','service_postcode','service_phone'
+        'service_address','service_name','service_postcode','service_phone','refund_fee'
     ];
 
     public function product(){
@@ -41,7 +41,7 @@ class Service extends Model
 
     public function addServiceHistory($info, $service_status_id, $input = []){
         $shop_setting = Setting::findAll();
-        $notify = $amount = 0;
+        $notify = $refund_amount = 0;
         if($info->service_action_id==1){
             if($service_status_id==1){
                 //Refund::dispatch($info)->delay(now()->addMinutes(48));
@@ -72,9 +72,12 @@ class Service extends Model
                 if($info->refund_amount>0 && $info->service_status_id==5){
                     $fee = intval($input['fee']);
                     if($fee>=0 && $fee<=100){
-                        list($amount,$amount_format) = Currency::codeFormat((100 - $fee) / 100 * $info->refund_amount, $info->currency_code);
-                        if ($amount > 0) {
-                            (new Payment)->refund_api($info->order->payment_id,$amount,'System refund -' . $fee . '% transaction fee');
+                        list($refund_amount,$refund_amount_format) = Currency::codeFormat((100 - $fee) / 100 * $info->amount, $info->currency_code);
+                        if ($refund_amount > 0) {
+                            (new Payment)->refund_api($info->order->payment_id,$refund_amount,'System refund -' . $fee . '% transaction fee');
+                            $info->refund_fee = $fee;
+                            $info->refund_amount = $refund_amount;
+                            $info->refund_amount_format = $refund_amount_format;
                         }
                         $info->order->addOrderHistory($info->order, 4);
                     }else{
@@ -178,9 +181,7 @@ class Service extends Model
                             ]);
                         }
                     }else if($service_status_id==5){
-                    }else if($service_status_id==6 && $amount > 0){
-                        $info->email_refund_amount = $amount_format;
-                        $info->email_refund_fee = $fee;
+                    }else if($service_status_id==6 && $refund_amount > 0){
                         (new RemoteEmail())->send([
                             'email'=>$info->order->email,
                             'title'=>'Service Refund',

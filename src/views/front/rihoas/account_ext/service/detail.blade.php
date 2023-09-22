@@ -45,20 +45,17 @@
                         @elseif($res['info']->service_action_id==2)
                             <li><div>Maximum refund amount:</div><div>{{$res['info']->refund_amount_format}}</div></li>
                         @endif
-                        @if($res['info']->service_action_id==2 || $res['info']->service_action_id==3)
+                        @if($res['info']->service_action_id==2)
                             @if($res['info']->service_status_id>=3)
                                 <li><div>Name </div><div>{{$res['info']->service_name}}</div></li>
                                 <li><div>Address </div><div>{{$res['info']->service_address}}</div></li>
                                 <li><div>Postcode </div><div>{{$res['info']->service_postcode}}</div></li>
                                 <li><div>Phone </div><div>{{$res['info']->service_phone}}</div></li>
                             @endif
-
                             @if($res['info']->service_status_id>=4)
                                 <li><div>Shipping </div><div>{{$res['info']->c_shipping}}</div></li>
                                 <li><div>Shipping_no </div><div>{{$res['info']->c_shipping_no}}</div></li>
                             @endif
-
-
                         @endif
                     </ul>
                     @if($res['info']->img->count())
@@ -150,8 +147,8 @@
                                     <div>Express delivery information</div>
                                     <input type="hidden" name="service_id" value="{{$res['info']->id}}">
                                     <input type="hidden" name="service_action_id" value="{{$res['info']->service_action_id}}">
-                                    <input type="text" name="c_shipping" class="form-control " placeholder="c_shipping">
-                                    <input type="text" name="c_shipping_no" class="form-control " placeholder="c_shipping_no">
+                                    <input type="text" name="c_shipping" class="form-control " placeholder="Express delivery name">
+                                    <input type="text" name="c_shipping_no" class="form-control " placeholder="Tracking number">
                                     <button type="submit" class="account_btn">Shipped</button>
                                 </form>
                             </div>

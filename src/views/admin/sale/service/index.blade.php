@@ -10,6 +10,24 @@
         <div class="search_box ">
             <input type="search" name="id" placeholder="id" value="{{$res['search']['id']}}">
             <input type="search" name="order_id" placeholder="order_id" value="{{$res['search']['order_id']}}">
+            <select name="action_id" id="action_id">
+                <option value="">类型</option>
+                @foreach($dict['service_action'] as $key=>$val)
+                    <option value="{{$key}}" @if($res['search']['action_id']==$key) selected @endif>{{$val}}</option>
+                @endforeach
+            </select>
+            <select name="refund_status" id="refund_status" @if($res['search']['action_id']==1) @else style="display: none" @endif >
+                <option value="" selected>状态</option>
+                @foreach($dict['refund_status'] as $key=>$val)
+                    <option value="{{$key}}" @if($res['search']['refund_status']==$key) selected @endif>{{$val}}</option>
+                @endforeach
+            </select>
+            <select name="return_status" id="return_status" @if($res['search']['action_id']==2) @else style="display: none" @endif>
+                <option value="" selected>状态</option>
+                @foreach($dict['return_status'] as $key=>$val)
+                    <option value="{{$key}}" @if($res['search']['return_status']==$key) selected @endif>{{$val}}</option>
+                @endforeach
+            </select>
             <button class="" type="submit">搜索</button>
         </div>
         </form>
@@ -65,4 +83,17 @@
     </form>
 </div>
 
-
+<script>
+    $(function () {
+        $('#action_id').change(function () {
+            let action_id = $(this).val()
+            if(action_id==='1'){
+                $('#refund_status').show();
+                $('#return_status').hide();
+            }else{
+                $('#refund_status').hide();
+                $('#return_status').show();
+            }
+        })
+    })
+</script>

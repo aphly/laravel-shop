@@ -116,15 +116,25 @@ class ServiceController extends Controller
                     $total_all += $val->total;
                 }
             }
+
             if($info->service_action_id==1){
                 $service_refund_fee = intval($this->shop_setting['service_refund_fee']);
                 if($service_refund_fee<=100 && $service_refund_fee>=0){
                     $total_all = $res['orderInfo']->total*(100-$service_refund_fee)/100;
+                    $info->refund_fee = $service_refund_fee;
+                    list($amount,$amount_format) = Currency::codeFormat($res['orderInfo']->total,$res['orderInfo']->currency_code);
+                    list($refund_amount,$refund_amount_format) = Currency::codeFormat($total_all,$res['orderInfo']->currency_code);
+                    $info->amount = $amount;
+                    $info->amount_format = $amount_format;
+                    $info->refund_amount = $refund_amount;
+                    $info->refund_amount_format = $refund_amount_format;
                 }
+            }else{
+                list($amount,$amount_format) = Currency::codeFormat($total_all,$res['orderInfo']->currency_code);
+                $info->amount = $amount;
+                $info->amount_format = $amount_format;
             }
-            list($refund_amount,$refund_amount_format) = Currency::codeFormat($total_all,$res['orderInfo']->currency_code);
-            $info->refund_amount = $refund_amount;
-            $info->refund_amount_format = $refund_amount_format;
+
             if($info->save()){
                 ServiceProduct::insert($service_product_arr);
             }

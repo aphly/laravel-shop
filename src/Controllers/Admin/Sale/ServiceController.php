@@ -27,6 +27,10 @@ class ServiceController extends Controller
     {
         $res['search']['id'] = $request->query('id','');
         $res['search']['order_id'] = $request->query('order_id','');
+
+        $res['search']['action_id'] = $request->query('action_id','');
+        $res['search']['refund_status'] = $request->query('refund_status','');
+        $res['search']['return_status'] = $request->query('return_status','');
         $res['search']['string'] = http_build_query($request->query());
         $res['list'] = Service::when($res['search']['id'],
                 function($query,$search) {
@@ -35,6 +39,18 @@ class ServiceController extends Controller
                     }
                     if($search['order_id']!==''){
                         $query->where('order_id', $search['order_id']);
+                    }
+                    if($search['action_id']!==''){
+                        $query->where('service_action_id', $search['action_id']);
+                        if($search['action_id']==1){
+                            if($search['refund_status']!==''){
+                                $query->where('service_status_id', $search['refund_status']);
+                            }
+                        }else if($search['action_id']==2){
+                            if($search['return_status']!==''){
+                                $query->where('service_status_id', $search['return_status']);
+                            }
+                        }
                     }
                 })
             ->where('delete_at',0)

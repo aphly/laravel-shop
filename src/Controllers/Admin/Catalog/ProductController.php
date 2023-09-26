@@ -312,8 +312,8 @@ class ProductController extends Controller
         }else{
             $res['product_option'] = ProductOption::where('product_id',$product_id)->with('value_arr')->orderBy('id','desc')->get()->toArray();
             $res['option'] = Option::with('value')->get()->keyBy('id')->toArray();
-            $res['product_image'] = ProductImage::where('product_id',$product_id)->get()->keyBy('id');
-            $res['product_image']->transform(function ($item){
+            $res['product_image'] = ProductImage::where('product_id',$product_id)->whereNot('type',1)->get()->keyBy('id');
+            $res['product_image'] = $res['product_image']->map(function ($item){
                 $item->image_src = UploadFile::getPath($item->image,$item->remote);
                 return $item;
             });

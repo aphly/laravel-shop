@@ -3,8 +3,8 @@
 .price_sale{color: #e36254;display: none;}
 .price span{margin-right: 10px;}
 
-.product_option dl{display: flex;}
-.product_option dl dd{border: 1px solid #ffffff;padding: 4px;}
+.product_option dl{display: flex;overflow: hidden;}
+.product_option dl dd{border: 1px solid #ffffff;padding: 4px;flex-shrink: 0;}
 .product_option dl dd.active{border: 1px solid saddlebrown}
 .product_option img{width: 28px;height: 28px;}
 

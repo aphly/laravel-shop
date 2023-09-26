@@ -59,7 +59,7 @@
                                             <span>
                                                 <label>
                                                     <input type="hidden" name="product_option[{{$val['id']}}][{{$val['option_id']}}][option_value][{{$v['id']}}][product_image_id]" value="{{$v['product_image_id']}}">
-                                                    @if($v['product_image_id'] && $res['product_image'][$v['product_image_id']])
+                                                    @if($v['product_image_id'] && !empty($res['product_image'][$v['product_image_id']]))
                                                         <div class="imglist" data-id="product_option[{{$val['id']}}][{{$val['option_id']}}][option_value][{{$v['id']}}][product_image_id]"
                                                              data-image_id="{{$v['product_image_id']}}" data-image_src="{{$res['product_image'][$v['product_image_id']]['image_src']}}">
                                                             <img src="{{$res['product_image'][$v['product_image_id']]['image_src']}}" alt="">

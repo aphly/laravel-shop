@@ -402,8 +402,8 @@ class Product extends Model
                 foreach ($val['product_option_value'] as $v){
                     $data_image_src = '';
                     if($v['product_image_id']){
-                        if($v['product_image']['image_src']){
-                            $img = '<img src="'.$v['product_image']['image_src'].'" />';
+                        if(!empty($v['product_image']['image_src'])){
+                            $img = '<img src="'.$v['product_image']['image_src'].'" title="'.$v['option_value']['name'].'" />';
                             $data_image_src = 'data-image_src="true"';
                         }else{
                             $img = '';

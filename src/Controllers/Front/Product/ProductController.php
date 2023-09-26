@@ -114,7 +114,14 @@ class ProductController extends Controller
         }
         $res['review_image_length'] = $this->review_image_length;
         $res['review_image_size'] = $this->review_image_size;
-
+        $res['rand'] = Product::where('status',1)->whereNot('id',$res['info']->id)->where('date_available','<',time())->inRandomOrder()->limit(15)->get();
+        $res['rand']->transform(function ($item) use (&$product_ids){
+            $item->image_src= UploadFile::getPath($item->image,$item->remote);
+            $item->price= Currency::format($item->price);
+            $item->special= $item->special?Currency::format($item->special):0;
+            $item->discount= $item->discount?Currency::format($item->discount):0;
+            return $item;
+        });
         return $this->makeView('laravel-shop-front::product.detail',['res'=>$res]);
     }
 

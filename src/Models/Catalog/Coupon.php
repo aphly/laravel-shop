@@ -7,7 +7,6 @@ use Aphly\LaravelCommon\Models\Currency;
 use Aphly\LaravelCommon\Models\User;
 use Aphly\LaravelShop\Models\Checkout\Cart;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Support\Facades\Cookie;
 
 class Coupon extends Model
 {
@@ -87,7 +86,7 @@ class Coupon extends Model
 
     public function getTotal($total_data) {
         $cart_ext = [];
-        $coupon = Cookie::get('shop_coupon');
+        $coupon = session('shop_coupon');
         if($coupon){
             $info = $this->getCoupon($coupon);
             if($info) {

@@ -6,7 +6,6 @@ use Aphly\LaravelCommon\Models\User;
 use Aphly\LaravelShop\Models\Account\Wishlist;
 use Aphly\LaravelShop\Models\Checkout\Cart;
 use Aphly\LaravelShop\Models\System\Setting;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\View;
 
 class Controller extends \Aphly\LaravelCommon\Controllers\Front\Controller
@@ -34,7 +33,7 @@ class Controller extends \Aphly\LaravelCommon\Controllers\Front\Controller
                 Wishlist::$product_ids = array_column($wishlist->get('product_id')->toArray(),'product_id');
             }
         }else{
-            $shop_wishlist = Cookie::get('shop_wishlist');
+            $shop_wishlist = session('shop_wishlist');
             if($shop_wishlist){
                 $shop_wishlist_arr = json_decode($shop_wishlist,true);
                 $count = count($shop_wishlist_arr);

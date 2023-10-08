@@ -10,7 +10,6 @@ use Aphly\LaravelShop\Controllers\Front\Controller;
 use Aphly\LaravelShop\Models\Account\Wishlist;
 use Aphly\LaravelShop\Models\Catalog\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cookie;
 
 class WishlistController extends Controller
 {
@@ -46,7 +45,7 @@ class WishlistController extends Controller
                 throw new ApiException(['code'=>0,'msg'=>'add_success','data'=>['count'=>$count]]);
             }
         }else{
-            $shop_wishlist = Cookie::get('shop_wishlist');
+            $shop_wishlist = session('shop_wishlist');
             if($shop_wishlist){
                 $shop_wishlist_arr = json_decode($shop_wishlist,true);
                 $key = array_search($request->id,$shop_wishlist_arr);
@@ -59,7 +58,7 @@ class WishlistController extends Controller
                 $shop_wishlist_arr = [$request->id];
             }
             $shop_wishlist_arr = array_unique($shop_wishlist_arr);
-            Cookie::queue('shop_wishlist',json_encode($shop_wishlist_arr));
+            session(['shop_wishlist'=>json_encode($shop_wishlist_arr)]);
             throw new ApiException(['code'=>0,'msg'=>'success','data'=>['count'=>count($shop_wishlist_arr)]]);
         }
     }

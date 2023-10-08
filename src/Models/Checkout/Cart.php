@@ -12,7 +12,6 @@ use Aphly\LaravelShop\Models\Catalog\ProductSpecial;
 use Aphly\LaravelShop\Models\Catalog\Shipping;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 
 class Cart extends Model
@@ -37,7 +36,7 @@ class Cart extends Model
     }
 
     public function afterLogin() {
-        $guest = Cookie::get('guest');
+        $guest = session('guest');
         if($guest){
             $cart = self::where('guest',$guest);
             self::where('uuid',User::uuid())->update(['guest'=>$guest]);
@@ -51,7 +50,7 @@ class Cart extends Model
 
     public function add($product_id, $quantity = 1, $option = []) {
         $option = json_encode($option);
-        $where = ['uuid'=>User::uuid(),'guest'=>Cookie::get('guest'),'product_id'=>$product_id,'option'=>$option];
+        $where = ['uuid'=>User::uuid(),'guest'=>session('guest'),'product_id'=>$product_id,'option'=>$option];
         $info = self::where($where)->first();
         if(!empty($info)){
             $info->increment('quantity',$quantity);
@@ -74,7 +73,7 @@ class Cart extends Model
             $uuid = User::uuid();
             $cart_data = self::when($uuid, function ($query, $uuid) {
                 return $query->where('uuid', $uuid);
-            })->where(['guest' => Cookie::get('guest')])->with('product')->get()->toArray();
+            })->where(['guest' => session('guest')])->with('product')->get()->toArray();
 
             foreach ($cart_data as $cart) {
                 $stock = true;
@@ -231,14 +230,12 @@ class Cart extends Model
         return self::where(['id'=>$cart_id])->delete();
     }
 
-    public function clearUuid(){
+    public function clear(){
         return self::where(['uuid'=>User::uuid()])->delete();
     }
 
     public function initCart(){
-        //Cookie::queue('shop_coupon', null , -1);
-        Cookie::queue('shop_address_id', null , -1);
-        Cookie::queue('shop_shipping_id', null , -1);
+        session()->forget(['shop_address_id','shop_shipping_id']);
         self::where('uuid',0)->where('created_at','<',time()-3600*24*2)->delete();
     }
 

@@ -11,7 +11,7 @@ use Aphly\LaravelShop\Models\Catalog\Coupon;
 use Aphly\LaravelShop\Models\Checkout\Cart;
 use Aphly\LaravelShop\Models\Catalog\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cookie;
+
 
 class CartController extends Controller
 {
@@ -50,7 +50,7 @@ class CartController extends Controller
     public function edit(Request $request)
     {
         $cart = new Cart;
-        $cartInfo = $cart->where(['id'=>$request->input('cart_id',0),'guest'=>Cookie::get('guest',0)])->firstOrError();
+        $cartInfo = $cart->where(['id'=>$request->input('cart_id',0),'guest'=>session('guest',0)])->firstOrError();
         $quantity = $request->input('quantity',1);
         $cartInfo->quantity = $quantity>1?$quantity:1;
         if($cartInfo->save()){
@@ -64,7 +64,7 @@ class CartController extends Controller
     public function remove(Request $request)
     {
         $cart = new Cart;
-        $cartInfo = $cart->where(['id'=>$request->input('cart_id',0),'guest'=>Cookie::get('guest',0)])->firstOrError();
+        $cartInfo = $cart->where(['id'=>$request->input('cart_id',0),'guest'=>session('guest',0)])->firstOrError();
         if($cartInfo->delete()){
             throw new ApiException(['code'=>0,'msg'=>'success']);
         }else{
@@ -87,17 +87,17 @@ class CartController extends Controller
     {
         $res['info'] = (new Coupon)->getCoupon($request->input('coupon_code',0));
         if(!empty($res['info'])){
-            Cookie::queue('shop_coupon',$res['info']['code']);
+            session(['shop_coupon'=>$res['info']['code']]);
             throw new ApiException(['code'=>0,'msg'=>'success']);
         }else{
-            Cookie::queue('shop_coupon', null , -1);
+            session()->forget('shop_coupon');
             throw new ApiException(['code'=>1,'msg'=>'fail']);
         }
     }
 
     public function couponRemove()
     {
-        Cookie::queue('shop_coupon', null , -1);
+        session()->forget('shop_coupon');
         throw new ApiException(['code'=>0,'msg'=>'success']);
     }
 }

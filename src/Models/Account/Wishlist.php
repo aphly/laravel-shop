@@ -6,7 +6,6 @@ use Aphly\LaravelCommon\Models\User;
 use Aphly\LaravelShop\Models\Catalog\Product;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;
-use Illuminate\Support\Facades\Cookie;
 
 class Wishlist extends Model
 {
@@ -30,7 +29,7 @@ class Wishlist extends Model
     }
 
     public function afterLogin() {
-        $shop_wishlist = Cookie::get('shop_wishlist');
+        $shop_wishlist = session('shop_wishlist');
         if($shop_wishlist){
             $shop_wishlist_arr = json_decode($shop_wishlist,true);
             $count = count($shop_wishlist_arr);
@@ -50,7 +49,7 @@ class Wishlist extends Model
                 }
                 self::insert($data);
             }
-            Cookie::queue('shop_wishlist', null , -1);
+            session()->forget('shop_wishlist');
         }
     }
 

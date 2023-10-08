@@ -21,7 +21,7 @@ use Aphly\LaravelShop\Models\Sale\OrderOption;
 use Aphly\LaravelShop\Models\Sale\OrderProduct;
 use Aphly\LaravelShop\Models\Sale\OrderTotal;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cookie;
+
 
 class CheckoutController extends Controller
 {
@@ -54,12 +54,12 @@ class CheckoutController extends Controller
                 ]);
                 $input['uuid'] = User::uuid();
                 $userAddress = UserAddress::updateOrCreate(['id' => $request->input('address_id', 0)], $input);
-                Cookie::queue('shop_address_id', $userAddress->id);
+                session(['shop_address_id' => $userAddress->id]);
                 $shipping_method = (new Shipping)->getList($userAddress->id);
                 throw new ApiException(['code' => 0, 'msg' => 'shipping address success', 'data' => ['redirect' => '/checkout/shipping', 'list' => $shipping_method]]);
             } else {
-                Cookie::queue('shop_shipping_id', null, -1);
-                $res['curr_address_id'] = Cookie::get('shop_address_id', 0);
+                $request->session()->forget('shop_shipping_id');
+                $res['curr_address_id'] = session('shop_address_id', 0);
                 $res['my_address'] = (new UserAddress)->getAddresses();
                 $res['country'] = (new Country)->findAll();
                 return $this->makeView('laravel-shop-front::checkout.address', ['res' => $res]);
@@ -71,6 +71,7 @@ class CheckoutController extends Controller
 
     public function shipping(Request $request)
     {
+        session()->forget('shop_shipping_id');
         $res['title'] = 'Checkout Shipping';
         $res['breadcrumb'] = Breadcrumb::render([
             ['name'=>'Home','href'=>'/'],
@@ -83,7 +84,7 @@ class CheckoutController extends Controller
         if(!$res['count']){
             throw new ApiException(['code'=>11,'msg'=>'no cart','data'=>['redirect'=>'/cart']]);
         }
-        $address_id = Cookie::get('shop_address_id');
+        $address_id = session('shop_address_id');
         $res['address'] = (new UserAddress)->getAddress($address_id);
         if(!$res['address']){
             throw new ApiException(['code'=>12,'msg'=>'no address','data'=>['redirect'=>'/checkout/address']]);
@@ -93,17 +94,14 @@ class CheckoutController extends Controller
 			if ($shipping_method_all) {
 				foreach ($shipping_method_all as $key => $val) {
 					if ($key == $request->input('shipping_id')) {
-						Cookie::queue('shop_shipping_id', $key);
+						session(['shop_shipping_id'=> $key]);
 						$payment_method = (new PaymentMethod)->findAll();
 						throw new ApiException(['code' => 0, 'msg' => 'shipping method success', 'data' => ['redirect'=>'/checkout/payment','list' => $payment_method]]);
 					}
 				}
 			}
-			Cookie::queue('shop_shipping_id', null, -1);
 			throw new ApiException(['code' => 1, 'msg' => 'shipping method fail']);
 		}else{
-            Cookie::queue('shop_shipping_id', null, -1);
-            //$res['curr_shipping_id'] = Cookie::get('shop_shipping_id',0);
 			$res['shipping'] = (new Shipping)->getList();
             $res['shipping_default_id'] = Func::defaultId($res['shipping']);
             $res['free_shipping'] = Cart::$free_shipping;
@@ -131,12 +129,12 @@ class CheckoutController extends Controller
             if(!$res['count']){
                 throw new ApiException(['code'=>11,'msg'=>'no cart','data'=>['redirect'=>'/cart']]);
             }
-            $address_id = Cookie::get('shop_address_id');
+            $address_id = session('shop_address_id');
             $res['address'] = (new UserAddress)->getAddress($address_id);
             if(!$res['address']){
                 throw new ApiException(['code'=>12,'msg'=>'no address','data'=>['redirect'=>'/checkout/address']]);
             }
-            $shipping_id = Cookie::get('shop_shipping_id');
+            $shipping_id = session('shop_shipping_id');
             $res['shipping'] = (new Shipping)->getList($address_id,$shipping_id);
             if(!$res['shipping']){
                 throw new ApiException(['code'=>13,'msg'=>'no shipping','data'=>['redirect'=>'/checkout/shipping']]);
@@ -151,7 +149,7 @@ class CheckoutController extends Controller
             $input['id'] = Snowflake::incrId();
             $input['uuid'] = $this->user->uuid;
             $input['email'] = $this->user->initId();
-            if($cart->hasShipping()) {
+            if($res['hasShipping']) {
                 $input['address_id'] = $res['address']['id'];
                 $input['address_firstname'] = $res['address']['firstname'];
                 $input['address_lastname'] = $res['address']['lastname'];
@@ -242,7 +240,7 @@ class CheckoutController extends Controller
                     $order->payment_id = $payment->id;
                     $order->payment_method_name = $payment->method_name;
                     if($order->save()){
-                        $cart->clearUuid();
+                        $cart->clear();
                         //throw new ApiException(['code' => 1, 'msg' => 'payment hhh']);
                         $payment->pay(false);
                     }
@@ -259,7 +257,110 @@ class CheckoutController extends Controller
     }
 
 
+    function createOrder($cart,$res,$request=false){
+        $request = $request?:request();
+        $input['id'] = Snowflake::incrId();
+        $input['uuid'] = $this->user->uuid;
+        $input['email'] = $this->user->initId();
+        if($res['hasShipping']) {
+            $input['address_id'] = $res['address']['id'];
+            $input['address_firstname'] = $res['address']['firstname'];
+            $input['address_lastname'] = $res['address']['lastname'];
+            $input['address_address_1'] = $res['address']['address_1'];
+            $input['address_address_2'] = $res['address']['address_2'];
+            $input['address_city'] = $res['address']['city'];
+            $input['address_postcode'] = $res['address']['postcode'];
+            $input['address_country'] = $res['address']['country_name'];
+            $input['address_country_id'] = $res['address']['country_id'];
+            $input['address_zone'] = $res['address']['zone_name'];
+            $input['address_zone_id'] = $res['address']['zone_id'];
+            $input['address_telephone'] = $res['address']['telephone'];
+            $input['shipping_id'] = $res['shipping']['id'];
+            $input['shipping_name'] = $res['shipping']['name'];
+            $input['shipping_desc'] = $res['shipping']['desc'];
+            $input['shipping_cost'] = $res['shipping']['cost'];
+            $input['shipping_free_cost'] = $res['shipping']['free_cost'];
+            $input['shipping_geo_group_id'] = $res['shipping']['geo_group_id'];
+        }
+        $input['items'] = $res['count'];
+        $input['total'] = $res['total_data']['total'];
+        $input['total_format'] = $res['total_data']['total_format'];
 
+        $input['comment'] = '';
+        list(,,$currency) = Currency::allDefaultCurr();
+        if(!$currency){
+            throw new ApiException(['code' => 4, 'msg' => 'currency error','data'=>['redirect'=>'/cart']]);
+        }
+        $input['currency_id'] = $currency['id'];
+        $input['currency_code'] = $currency['code'];
+        $input['currency_value'] = $currency['value'];
+
+        $input['ip'] = $request->ip();
+        $input['user_agent'] = $request->header('user-agent');
+        $input['accept_language'] = $request->header('accept-language');
+        $order = Order::create($input);
+        if($order->id){
+            $orderTotal_input = [];
+            foreach ($res['total_data']['totals'] as $val){
+                $val['order_id'] = $order->id;
+                $orderTotal_input[] = $val;
+            }
+            OrderTotal::insert($orderTotal_input);
+            foreach ($res['list'] as $val){
+                $orderProduct_input = $val;
+                $orderProduct_input['order_id'] = $order->id;
+                $orderProduct_input['name'] = $val['product']['name'];
+                $orderProduct_input['sku'] = $val['product']['sku'];
+                $orderProduct_input['image'] = $val['product']['image_src'];
+                $orderProduct = OrderProduct::create($orderProduct_input);
+                if($orderProduct->id){
+                    foreach ($val['option'] as $v){
+                        $orderOption = $v;
+                        $orderOption['order_id'] = $order->id;
+                        $orderOption['order_product_id'] = $orderProduct->id;
+                        $orderOption['product_option_id'] = $v['option_id'];
+                        $orderOption['name'] = $v['option']['name'];
+                        $orderOption['type'] = $v['option']['type'];
+                        if($v['option']['type']=='radio' || $v['option']['type']=='select'){
+                            $orderOption['product_option_value_id'] = $v['product_option_value']['id'];
+                            $orderOption['value'] = $v['product_option_value']['option_value']['name'];
+                            OrderOption::create($orderOption);
+                        }else if($v['option']['type']=='checkbox'){
+                            foreach ($v['product_option_value'] as $v1){
+                                $orderOption['product_option_value_id'] = $v1['id'];
+                                $orderOption['value'] = $v1['option_value']['name'];
+                                OrderOption::create($orderOption);
+                            }
+                        }else{
+                            $orderOption['product_option_value_id'] = 0;
+                            $orderOption['value'] = $v['product_option_value'];
+                            OrderOption::create($orderOption);
+                        }
+                    }
+                }
+            }
+            $order->addOrderHistory($order, 1);
+            $payment_input['method_id'] = $input['payment_method_id'];
+            $payment_input['amount'] = $res['total_data']['total'];
+            $payment_input['currency_code'] = $currency['code'];
+            $payment_input['cancel_url'] = url('/checkout/payment');
+            $payment_input['notify_func'] = '\Aphly\LaravelShop\Models\Sale\Order@notify';
+            $payment_input['success_url'] = url('/checkout/success?redirect='.urlencode(url('/account_ext/order')));
+            $payment_input['fail_url'] = url('/checkout/fail?redirect='.urlencode($payment_input['cancel_url']));
+            $payment = (new Payment)->make($payment_input);
+            if($payment->id){
+                $order->payment_id = $payment->id;
+                $order->payment_method_name = $payment->method_name;
+                if($order->save()){
+                    $cart->clear();
+                    //throw new ApiException(['code' => 1, 'msg' => 'payment hhh']);
+                    $payment->pay(false);
+                }
+            }else{
+                throw new ApiException(['code' => 2, 'msg' => 'payment fail']);
+            }
+        }
+    }
 
 
 

@@ -10,7 +10,6 @@ use Aphly\LaravelShop\Models\Checkout\Cart;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Cookie;
 
 class Shipping extends Model
 {
@@ -40,7 +39,7 @@ class Shipping extends Model
         $res = [];
         $cart = new Cart;
         if($cart->hasShipping()){
-            $shop_address = $address_id?$address_id:(Cookie::get('shop_address_id'));
+            $shop_address = $address_id?:(session('shop_address_id'));
             if($shop_address){
                 $addrInfo = UserAddress::where('id',$shop_address)->where('uuid',User::uuid())->first();
                 if(!empty($addrInfo)) {
@@ -90,7 +89,7 @@ class Shipping extends Model
                 'ext'=>''
             ];
         }else{
-            $shop_shipping_id = Cookie::get('shop_shipping_id');
+            $shop_shipping_id = session('shop_shipping_id');
             $shipping = $this->getList();
             if(!empty($shipping[$shop_shipping_id])){
                 if($shipping[$shop_shipping_id]['free']){

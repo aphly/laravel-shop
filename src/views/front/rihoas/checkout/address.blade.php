@@ -21,7 +21,6 @@
             </div>
             <form action="/checkout/address" method="post" class="form_request" data-fn="checkout_address" id="checkout_address">
                 @csrf
-                <input type="hidden" name="address_id" value="0">
                 <div class="my_address checkout_box">
                     <div class="checkout_title">
                         My Address
@@ -31,13 +30,16 @@
                         <li data-id="{{$val['id']}}" data-firstname="{{$val['firstname']}}" data-lastname="{{$val['lastname']}}"
                             data-address_1="{{$val['address_1']}}" data-address_2="{{$val['address_2']}}"
                             data-city="{{$val['city']}}" data-postcode="{{$val['postcode']}}" data-zone_id="{{$val['zone_id']}}" data-country_id="{{$val['country_id']}}"
-                            data-telephone="{{$val['telephone']}}"><div>
-                                {{$val['firstname']}} {{$val['lastname']}}, {{$val['address_1']}}, {{$val['address_2']}},
-                                {{$val['city']}}, {{$val['zone_name']}}, {{$val['country_name']}}, {{$val['postcode']}}, {{$val['telephone']}}
-                            </div>
+                            data-telephone="{{$val['telephone']}}">
+                            <label>
+                                <input type="radio" name="address_id" value="{{$val['id']}}">
+                                <span style="margin-right: auto;">{{$val['firstname']}} {{$val['lastname']}}, {{$val['address_1']}}, {{$val['address_2']}},
+                                {{$val['city']}}, {{$val['zone_name']}}, {{$val['country_name']}}, {{$val['postcode']}}, {{$val['telephone']}}</span>
+                                <span></span>
+                            </label>
                         </li>
                     @endforeach
-                        <li data-id="0" class="active">Use a new address</li>
+                        <li data-id="0" class="active"><label><input type="radio" name="address_id" checked value="0"><span style="margin-right: auto;">Use a new address</span></label></li>
                     </ul>
                 </div>
 
@@ -130,12 +132,11 @@
     let country_zone = {};
     let curr_address_id = {{$res['curr_address_id']}};
     $(function () {
-
         $('.my_address').on('click','li',function () {
             $('.my_address li').removeClass('active')
             $(this).addClass('active')
-            let address_id = $(this).data('id');
-            $('input[name="address_id"]').val(address_id)
+            //let address_id = $(this).data('id');
+            //$('input[name="address_id"]').val(address_id)
             if($(this).data('id')===0){
                 $('.country_option').attr("selected", false)
                 $('#input-zone').html('<option value="0"> --- None --- </option>')
@@ -170,7 +171,7 @@
         })
 
         if(curr_address_id){
-            $('.my_address li[data-id="'+curr_address_id+'"]').click();
+            $('.my_address li[data-id="'+curr_address_id+'"] label').click();
         }
     })
 

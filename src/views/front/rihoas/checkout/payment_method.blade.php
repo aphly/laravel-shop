@@ -1,6 +1,7 @@
 @include('laravel-shop-front::common.header')
+<script src="https://js.stripe.com/v3/"></script>
 <style>
-.checkout_ul_payment li{display: flex;justify-content: space-between;align-items: center;}
+.checkout_ul_payment li{display: flex;justify-content: space-between;align-items: center;padding: 0;}
 .checkout_ul_payment img{height:30px; }
 </style>
 <div class="container shop_main">
@@ -36,24 +37,39 @@
             </div>
             <form action="/checkout/payment" method="post" class="form_request" data-fn="checkout_pay" id="checkout_pay">
                 @csrf
-                <input type="hidden" name="payment_method_id" value="{{$res['paymentMethod_default_id']}}">
                 <div class="checkout_box">
                     <div class="checkout_title">
                         Payment Method
                     </div>
+
                     <ul class="checkout_ul checkout_ul_payment">
                         @foreach($res['paymentMethod'] as $val)
-                            <li class="@if($res['paymentMethod_default_id']==$val['id']) active @endif" data-id="{{$val['id']}}">
-                                <div>{{$val['name']}}</div>
-                                <img src="/static/payment/img/{{$val['name']}}.png">
+                            @if($val['id']==3)
+                                @php
+                                    $card_status = true;
+                                @endphp
+                                <li style="margin-bottom: 10px;border: none;">
+                                    <input type="radio" name="payment_method_id" checked value="{{$val['id']}}" style="display: none;">
+                                    <div id="payment-element" style="width: 100%;">
+                                        <!--Stripe.js injects the Payment Element-->
+                                    </div>
+                                    <div id="payment-message" class="hidden"></div>
+                                </li>
+                            @else
+                            <li data-id="{{$val['id']}}">
+                                <label>
+                                    <input type="radio" name="payment_method_id" value="{{$val['id']}}">
+                                    <div style="margin-right: auto">{{$val['name']}}</div>
+                                    <img src="/static/payment/img/{{$val['name']}}.png">
+                                </label>
                             </li>
+                            @endif
                         @endforeach
                     </ul>
                 </div>
-
                 <div class="checkout_btn">
                     <div class="checkout_btn_l"><a href="javascript:;" onclick="self.location=document.referrer;"><i class="common-iconfont icon-xiangl"></i>Return to shipping</a></div>
-                    <button type="submit">Pay now</button>
+                    <button type="submit" id="submit">Pay now</button>
                 </div>
             </form>
         </div>
@@ -69,7 +85,11 @@
 <script>
     function checkout_pay(res) {
         if(!res.code){
-            location.href = res.data.redirect
+            if(res.data.card){
+                handleSubmit();
+            }else{
+                location.href = res.data.redirect
+            }
         }else{
             if(typeof res.data.redirect !=='undefined'){
                 location.href = res.data.redirect
@@ -82,8 +102,99 @@
         $('.checkout_ul').on('click','li',function () {
             $('.checkout_ul li').removeClass('active')
             $(this).addClass('active')
-            $('input[name="payment_method_id"]').val($(this).data('id'))
         })
     })
 </script>
+
+@if($card_status)
+<script>
+    const stripe = Stripe("{{$res['stripe']->pk}}");
+    let elements;
+    const items = { amount: {{$res['total_data']['total']}},currency:'{{$res['currency']['code']}}',_token:'{{csrf_token()}}' };
+    let emailAddress = '{{$id}}';
+    async function initialize() {
+        const res = await fetch("/card/create", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(items),
+        }).then((r) => r.json());
+        const appearance = {};
+        if(!res.code){
+            let clientSecret = res.data.clientSecret;
+            elements = stripe.elements({ clientSecret,appearance });
+            const paymentElementOptions = {
+                layout: "accordion"
+            };
+            const paymentElement = elements.create("payment", paymentElementOptions);
+            paymentElement.mount("#payment-element");
+        }
+    }
+
+    async function handleSubmit() {
+        setLoading(true);
+        const { error } = await stripe.confirmPayment({
+            elements,
+            confirmParams: {
+                return_url: "{{$res['success_url']}}",
+                receipt_email: emailAddress,
+            },
+        });
+        if (error.type === "card_error" || error.type === "validation_error") {
+            showMessage(error.message);
+        } else {
+            showMessage("An unexpected error occurred.");
+        }
+        setLoading(false);
+    }
+
+    // Fetches the payment intent status after payment submission
+    async function checkStatus() {
+        const clientSecret = new URLSearchParams(window.location.search).get(
+            "payment_intent_client_secret"
+        );
+        if (!clientSecret) {
+            return;
+        }
+        const { paymentIntent } = await stripe.retrievePaymentIntent(clientSecret);
+        switch (paymentIntent.status) {
+            case "succeeded":
+                showMessage("Payment succeeded!");
+                break;
+            case "processing":
+                showMessage("Your payment is processing.");
+                break;
+            case "requires_payment_method":
+                showMessage("Your payment was not successful, please try again.");
+                break;
+            default:
+                showMessage("Something went wrong.");
+                break;
+        }
+    }
+
+    // ------- UI helpers -------
+
+    function showMessage(messageText) {
+        const messageContainer = document.querySelector("#payment-message");
+        messageContainer.classList.remove("hidden");
+        messageContainer.textContent = messageText;
+        setTimeout(function () {
+            messageContainer.classList.add("hidden");
+            messageContainer.textContent = "";
+        }, 4000);
+    }
+
+    function setLoading(isLoading) {
+        if (isLoading) {
+            document.querySelector("#submit").disabled = true;
+        } else {
+            document.querySelector("#submit").disabled = false;
+        }
+    }
+
+    initialize();
+    checkStatus();
+</script>
+@endif
+
 @include('laravel-shop-front::common.footer')

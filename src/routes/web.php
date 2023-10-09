@@ -58,6 +58,9 @@ Route::middleware(['web'])->group(function () {
 
         //cart
         Route::post('cart/{id}/wishlist', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@addWishlist')->where('id', '[0-9]+');
+
+        //card create
+        Route::post('card/create', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@cardCreate');
     });
 
     Route::middleware(['guest'])->group(function () {

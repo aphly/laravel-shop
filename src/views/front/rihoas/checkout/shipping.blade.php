@@ -27,7 +27,6 @@
             </div>
             <form action="/checkout/shipping" method="post" class="form_request" data-fn="checkout_shipping">
                 @csrf
-                <input type="hidden" name="shipping_id" value="{{$res['shipping_default_id']}}">
                 <div class="my_address checkout_box">
                     <div class="checkout_title">
                         Shipping Method
@@ -35,20 +34,23 @@
                     <ul class="checkout_ul">
                         @foreach($res['shipping'] as $val)
                             <li class="@if($res['shipping_default_id']==$val['id']) active @endif" data-id="{{$val['id']}}">
-                                <div class="">
-                                    {{$val['name']}}
-                                </div>
-                                <div class="desc">
-                                    {{$val['desc']}}
-                                </div>
-                                <div>
-                                    @if($res['free_shipping'] || $val['free'])
-                                        <span class="old_price">{{$val['cost_format']}}</span>
-                                        <span>Free</span>
-                                    @else
-                                        {{$val['cost_format']}}
-                                    @endif
-                                </div>
+                                <label>
+                                    <input type="radio" name="shipping_id" value="{{$val['id']}}" @if($res['shipping_default_id']==$val['id']) checked @endif >
+                                    <div class="">
+                                        {{$val['name']}}
+                                    </div>
+                                    <div class="desc" >
+                                        {{$val['desc']}}
+                                    </div>
+                                    <div>
+                                        @if($res['free_shipping'] || $val['free'])
+                                            <span class="old_price">{{$val['cost_format']}}</span>
+                                            <span>Free</span>
+                                        @else
+                                            {{$val['cost_format']}}
+                                        @endif
+                                    </div>
+                                </label>
                             </li>
                         @endforeach
                     </ul>
@@ -70,7 +72,7 @@
 <style>
     .checkout_ul li{display: flex;justify-content: space-between;}
     .checkout_ul li div:first-child{margin-right: 10px;}
-    .checkout_ul li div:nth-child(2){margin-right: auto;}
+    .checkout_ul li div:nth-child(3){margin-right: auto;margin-left: 10px;}
 </style>
 <script>
 function checkout_shipping(res) {
@@ -82,7 +84,7 @@ $(function () {
     $('.checkout_ul').on('click','li',function () {
         $('.checkout_ul li').removeClass('active')
         $(this).addClass('active')
-        $('input[name="shipping_id"]').val($(this).data('id'))
+        //$('input[name="shipping_id"]').val($(this).data('id'))
     })
 })
 </script>

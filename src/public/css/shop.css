@@ -252,8 +252,10 @@ img{border-radius: 6px;}
 .checkout_info li:last-child{margin-bottom: 0;padding-bottom: 0;border-bottom: none;flex-shrink: 0;}
 .checkout_info li span:last-child a{color: var(--btn_bg_hover);}
 
-.checkout_ul li{ padding: 10px 15px;border-radius: 4px;cursor: pointer;border: 1px solid #ced4da;margin-bottom: 10px;}
+.checkout_ul li{ padding: 0;border-radius: 4px;cursor: pointer;border: 1px solid #ced4da;margin-bottom: 10px;}
 .checkout_ul li.active{border:1px solid #333;}
+.checkout_ul li label{padding: 10px 20px;margin-bottom: 0; width: 100%; display: flex;justify-content: space-between;align-items: center;}
+.checkout_ul li label input{margin-right: 10px;}
 
 .checkout_btn{display: flex;justify-content: space-between;align-items: center;}
 .checkout_btn button{background-color: var(--btn_bg);padding: 14px 20px;color: #fff;border: none;border-radius: 4px;}

@@ -49,11 +49,13 @@
                                     $card_status = true;
                                 @endphp
                                 <li style="margin-bottom: 10px;border: none;">
-                                    <input type="radio" name="payment_method_id" checked value="{{$val['id']}}" style="display: none;">
-                                    <div id="payment-element" style="width: 100%;">
-                                        <!--Stripe.js injects the Payment Element-->
+                                    <div style="width: 100%;">
+                                        <input type="radio" name="payment_method_id" checked value="{{$val['id']}}" style="display: none;">
+                                        <div id="payment-element" style="width: 100%;">
+                                            <!--Stripe.js injects the Payment Element-->
+                                        </div>
+                                        <div id="payment-message" class="hidden"></div>
                                     </div>
-                                    <div id="payment-message" class="hidden"></div>
                                 </li>
                             @else
                             <li data-id="{{$val['id']}}">
@@ -112,6 +114,7 @@
     let elements;
     const items = { amount: {{$res['total_data']['total']}},currency:'{{$res['currency']['code']}}',_token:'{{csrf_token()}}' };
     let emailAddress = '{{$id}}';
+
     async function initialize() {
         const res = await fetch("/card/create", {
             method: "POST",
@@ -129,13 +132,12 @@
             paymentElement.mount("#payment-element");
         }
     }
-
     async function handleSubmit() {
         setLoading(true);
         const { error } = await stripe.confirmPayment({
             elements,
             confirmParams: {
-                return_url: "{{$res['success_url']}}",
+                return_url: "{{url('/payment/stripeCard/return')}}",
                 receipt_email: emailAddress,
             },
         });
@@ -146,8 +148,6 @@
         }
         setLoading(false);
     }
-
-    // Fetches the payment intent status after payment submission
     async function checkStatus() {
         const clientSecret = new URLSearchParams(window.location.search).get(
             "payment_intent_client_secret"
@@ -172,8 +172,6 @@
         }
     }
 
-    // ------- UI helpers -------
-
     function showMessage(messageText) {
         const messageContainer = document.querySelector("#payment-message");
         messageContainer.classList.remove("hidden");
@@ -183,7 +181,6 @@
             messageContainer.textContent = "";
         }, 4000);
     }
-
     function setLoading(isLoading) {
         if (isLoading) {
             document.querySelector("#submit").disabled = true;
@@ -191,10 +188,13 @@
             document.querySelector("#submit").disabled = false;
         }
     }
-
-    initialize();
-    checkStatus();
+    $(function () {
+        initialize();
+    })
 </script>
+<style>
+    #payment-message{padding: 5px 20px;font-weight: 600;}
+</style>
 @endif
 
 @include('laravel-shop-front::common.footer')

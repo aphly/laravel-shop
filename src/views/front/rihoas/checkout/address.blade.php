@@ -214,7 +214,7 @@
         }
     }
     function makeZone(data){
-        console.log(data)
+        //console.log(data)
         let html = '';
         if(data.length){
             html = '<option value="" class="zone_option"> --- Please Select --- </option>';

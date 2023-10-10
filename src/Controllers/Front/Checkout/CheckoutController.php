@@ -157,9 +157,9 @@ class CheckoutController extends Controller
                 throw new ApiException(['code' => 2, 'msg' => 'payment method fail','data'=>['redirect'=>'/checkout/payment']]);
             }
             if($input['payment_method_id']==3) {
-                $clientSecret = session('clientSecret', '');
-                if(!$clientSecret){
-                    throw new ApiException(['code' => 1, 'msg' => 'clientSecret error']);
+                $card_payment_intent = session('card_payment_intent', '');
+                if(!$card_payment_intent){
+                    throw new ApiException(['code' => 1, 'msg' => 'card_payment_intent error']);
                 }
             }
             $input['id'] = Snowflake::incrId();
@@ -253,10 +253,11 @@ class CheckoutController extends Controller
                     $order->payment_id = $payment->id;
                     $order->payment_method_name = $payment->method_name;
                     if($order->save()){
-                        $cart->clear();
                         //throw new ApiException(['code' => 1, 'msg' => 'payment hhh']);
+                        $cart->clear();
                         if($input['payment_method_id']==3){
-                            $payment->transaction_id = $clientSecret;
+                            session(['card_payment_id'=>$payment->id]);
+                            $payment->transaction_id = $card_payment_intent;
                             $payment->save();
                             throw new ApiException(['code' => 0, 'msg' => 'success','data'=>['card'=>1]]);
                         }else{
@@ -283,8 +284,5 @@ class CheckoutController extends Controller
         (new StripeCard)->create($amount,$currency);
     }
 
-    function cardClear(){
-        (new StripeCard)->clear();
-    }
 
 }

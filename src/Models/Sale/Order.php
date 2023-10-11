@@ -57,20 +57,13 @@ class Order extends Model
 
     public function notify($payment)
     {
-        DB::beginTransaction();
-        try {
-            $info = self::where(['payment_id'=>$payment->id])->lockForUpdate()->first();
-            if(!empty($info) && $info->order_status_id==1){
-                $info->order_status_id=2;
-                if($info->save()){
-                    $this->addOrderHistory($info,$info->order_status_id);
-                }
+        $info = self::where(['payment_id'=>$payment->id])->lockForUpdate()->first();
+        if(!empty($info) && $info->order_status_id==1){
+            $info->order_status_id=2;
+            if($info->save()){
+                $this->addOrderHistory($info,$info->order_status_id);
             }
-        }catch (ApiException $e) {
-            DB::rollBack();
-            throw $e;
         }
-        DB::commit();
     }
 
     public function handle($info){

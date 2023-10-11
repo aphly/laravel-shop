@@ -259,7 +259,7 @@ class CheckoutController extends Controller
                             session(['card_payment_id'=>$payment->id]);
                             $payment->transaction_id = $card_payment_intent;
                             $payment->save();
-                            throw new ApiException(['code' => 0, 'msg' => 'success','data'=>['card'=>1]]);
+                            throw new ApiException(['code' => 0, 'msg' => 'success','data'=>['card'=>1,'payment_id'=>$payment->id]]);
                         }else{
                             $payment->pay(false);
                         }

@@ -88,7 +88,7 @@
     function checkout_pay(res) {
         if(!res.code){
             if(res.data.card){
-                handleSubmit();
+                handleSubmit(res.data.payment_id);
             }else{
                 location.href = res.data.redirect
             }
@@ -132,7 +132,7 @@
             paymentElement.mount("#payment-element");
         }
     }
-    async function handleSubmit() {
+    async function handleSubmit(payment_id) {
         setLoading(true);
         const { error } = await stripe.confirmPayment({
             elements,

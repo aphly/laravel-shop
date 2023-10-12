@@ -2,6 +2,7 @@
 
 namespace Aphly\LaravelShop\Models\Catalog;
 
+use Aphly\Laravel\Libs\Math;
 use Aphly\LaravelCommon\Models\UserAddress;
 use Aphly\LaravelCommon\Models\Currency;
 use Aphly\LaravelCommon\Models\GeoGroup;
@@ -110,7 +111,8 @@ class Shipping extends Model
                         'sort' => 3,
                         'ext'=>$shop_shipping_id
                     ];
-                    $total_data['total'] += $value;
+                    //$total_data['total'] += $value;
+                    $total_data['total'] = Math::add($total_data['total'],$value);
                 }
             }
         }

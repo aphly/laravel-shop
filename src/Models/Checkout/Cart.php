@@ -2,6 +2,7 @@
 
 namespace Aphly\LaravelShop\Models\Checkout;
 
+use Aphly\Laravel\Libs\Math;
 use Aphly\Laravel\Models\UploadFile;
 use Aphly\LaravelCommon\Models\Currency;
 use Aphly\LaravelCommon\Models\User;
@@ -88,7 +89,8 @@ class Cart extends Model
                                 if ($option_value[$k]['option']['type'] == 'select' || $option_value[$k]['option']['type'] == 'radio') {
                                     $option_value_arr[] = $option_value[$k]['product_option_value'][$v]['option_value']['name'];
                                     if (!empty($option_value[$k]['product_option_value'][$v])) {
-                                        $option_price += $option_value[$k]['product_option_value'][$v]['price'];
+                                        //$option_price += $option_value[$k]['product_option_value'][$v]['price'];
+                                        $option_price = Math::add($option_price,$option_value[$k]['product_option_value'][$v]['price']);
                                         if ($option_value[$k]['product_option_value'][$v]['subtract'] == 1 && (!$option_value[$k]['product_option_value'][$v]['quantity'] || ($option_value[$k]['product_option_value'][$v]['quantity'] < $cart['quantity']))) {
                                             $stock = false;
                                         }
@@ -102,7 +104,8 @@ class Cart extends Model
                                     foreach ($v as $v1) {
                                         if (!empty($option_value[$k]['product_option_value'][$v1])) {
                                             $option_value_arr[] = $option_value[$k]['product_option_value'][$v1]['option_value']['name'];
-                                            $option_price += $option_value[$k]['product_option_value'][$v1]['price'];
+                                            //$option_price += $option_value[$k]['product_option_value'][$v1]['price'];
+                                            $option_price = Math::add($option_price,$option_value[$k]['product_option_value'][$v1]['price']);
                                             $arr[$v1] = $option_value[$k]['product_option_value'][$v1];
                                             if ($option_value[$k]['product_option_value'][$v1]['subtract'] == 1 && (!$option_value[$k]['product_option_value'][$v1]['quantity'] || ($option_value[$k]['product_option_value'][$v1]['quantity'] < $cart['quantity']))) {
                                                 $stock = false;
@@ -149,8 +152,8 @@ class Cart extends Model
                     }
 
                     list($price,$price_format) = Currency::format($price + $option_price,2);
-                    $total = $price * $cart['quantity'];
-
+                    //$total = $price * $cart['quantity'];
+                    $total = Math::mul($price,$cart['quantity']);
                     $cart['product']['image_src'] = UploadFile::getPath($cart['product']['image'],$cart['product']['remote']);
                     $list[$cart['id']] = $cart;
                     $list[$cart['id']]['option'] = $option_value;
@@ -191,7 +194,8 @@ class Cart extends Model
         $list = $this->getList();
         $total = 0;
         foreach ($list as $cart) {
-            $total += $cart['total'];
+            //$total += $cart['total'];
+            $total = Math::add($total,$cart['total']);
         }
         return $total;
     }
@@ -210,7 +214,8 @@ class Cart extends Model
         $list = $this->getList($refresh);
         foreach ($list as $cart) {
             $count += $cart['quantity'];
-            $sub_total += $cart['total'];
+            //$sub_total += $cart['total'];
+            $sub_total = Math::add($sub_total,$cart['total']);
         }
         return [$count,$list,$sub_total];
     }
@@ -262,7 +267,8 @@ class Cart extends Model
             'sort' => 1,
             'ext'=>$count
         ];
-        $total_data['total'] += $sub_total;
+        //$total_data['total'] += $sub_total;
+        $total_data['total'] = Math::add($total_data['total'],$sub_total);
         $cart_ext = (new Coupon)->getTotal($total_data);
 
 		(new Shipping)->getTotal($total_data);

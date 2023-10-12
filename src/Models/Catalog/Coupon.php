@@ -2,6 +2,7 @@
 
 namespace Aphly\LaravelShop\Models\Catalog;
 
+use Aphly\Laravel\Libs\Math;
 use Aphly\Laravel\Models\Model;
 use Aphly\LaravelCommon\Models\Currency;
 use Aphly\LaravelCommon\Models\User;
@@ -101,7 +102,8 @@ class Coupon extends Model
                     $sub_total = 0;
                     foreach ($cart->getList() as $product) {
                         if (in_array($product['product_id'], $info['product'])) {
-                            $sub_total += $product['total'];
+                            //$sub_total += $product['total'];
+                            $sub_total = Math::add($sub_total,$product['total']);
                         }
                     }
                 }
@@ -119,16 +121,20 @@ class Coupon extends Model
                     }
                     if ($status) {
                         if ($info['type'] == 2) {
-                            $discount = $info['discount'] * ($product['total'] / $sub_total);
+                            //$discount = $info['discount'] * ($product['total'] / $sub_total);
+                            $discount = Math::mul($info['discount'],Math::div($product['total'],$sub_total));
                         } elseif ($info['type'] == 1) {
-                            $discount = $product['total'] / 100 * $info['discount'];
+                            //$discount = $product['total'] / 100 * $info['discount'];
+                            $discount = Math::mul(Math::div($product['total'],100),$info['discount']);
                         }
                     }
-                    $discount = Currency::numberFormat($discount);
-                    $discount_total += $discount;
+                    //$discount = Currency::numberFormat($discount);
+                    //$discount_total += $discount;
+                    $discount_total = Math::add($discount_total,$discount);
                     $cart_ext[$key]['discount'] = $discount;
                     $cart_ext[$key]['discount_format'] = Currency::_format($discount);
-                    $real_total = $product['total'] - $discount;
+                    //$real_total = $product['total'] - $discount;
+                    $real_total = Math::sub($product['total'],$discount);
                     $cart_ext[$key]['real_total'] = $real_total;
                     $cart_ext[$key]['real_total_format'] = Currency::_format($real_total);
                 }
@@ -151,7 +157,8 @@ class Coupon extends Model
                         'sort_order' => 2,
                         'ext' => $coupon
                     );
-                    $total_data['total'] -= $discount_total;
+                    //$total_data['total'] -= $discount_total;
+                    $total_data['total'] = Math::sub($total_data['total'],$discount_total);
                 }
             }
         }

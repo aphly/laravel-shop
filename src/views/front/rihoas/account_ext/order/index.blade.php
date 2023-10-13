@@ -42,7 +42,7 @@
                                 @endif
                                     <a href="/account_ext/order/detail?id={{$val->id}}">Detail</a>
                                 @if($val->orderStatus->id==1)
-                                    @if($val->payment_id)
+                                    @if($val->payment_id && $val->payment_method_name!='stripeCard')
                                         <a href="/account_ext/order/pay?id={{$val->id}}">Pay</a>
                                     @endif
                                 @endif

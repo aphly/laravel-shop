@@ -41,16 +41,18 @@
                     <div class="checkout_title">
                         Payment Method
                     </div>
-
                     <ul class="checkout_ul checkout_ul_payment">
                         @foreach($res['paymentMethod'] as $val)
                             @if($val['id']==3)
                                 @php
                                     $card_status = true;
                                 @endphp
-                                <li style="margin-bottom: 10px;border: none;">
+                                <li style="margin-bottom: 10px;justify-content: left;flex-wrap: wrap;">
+                                    <label style="width: 100%">
+                                        <input type="radio" name="payment_method_id" value="{{$val['id']}}" >
+                                        <div style="margin-right: auto">Other</div>
+                                    </label>
                                     <div style="width: 100%;">
-                                        <input type="radio" name="payment_method_id" checked value="{{$val['id']}}" style="display: none;">
                                         <div id="payment-element" style="width: 100%;">
                                             <!--Stripe.js injects the Payment Element-->
                                         </div>
@@ -101,10 +103,11 @@
         }
     }
     $(function () {
-        $('.checkout_ul').on('click','li',function () {
+        $('.checkout_ul').on('click','label',function () {
             $('.checkout_ul li').removeClass('active')
-            $(this).addClass('active')
+            $(this).closest('li').addClass('active')
         })
+        $('.checkout_ul li:first label').click()
     })
 </script>
 
@@ -121,7 +124,14 @@
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(items),
         }).then((r) => r.json());
-        const appearance = {};
+        const appearance = {
+            rules: {
+                '.AccordionItem':{
+                    'border':'1px solid #fff',
+                    'boxShadow':'none'
+                }
+            }
+        };
         if(!res.code){
             let clientSecret = res.data.clientSecret;
             elements = stripe.elements({ clientSecret,appearance });
@@ -141,11 +151,12 @@
                 receipt_email: emailAddress,
             },
         });
-        if (error.type === "card_error" || error.type === "validation_error") {
-            showMessage(error.message);
-        } else {
-            showMessage("An unexpected error occurred.");
-        }
+        location.href = '{{url('/payment/stripeCard/return')}}';
+        // if (error.type === "card_error" || error.type === "validation_error") {
+        //     showMessage(error.message);
+        // } else {
+        //     showMessage("An unexpected error occurred.");
+        // }
         setLoading(false);
     }
     async function checkStatus() {

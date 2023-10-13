@@ -146,8 +146,12 @@
 
                 <div class="order_btns">
                     @if($res['info']->order_status_id==1)
-                        @if($res['info']->payment_id)
-                            <a href="/account_ext/order/pay?id={{$res['info']->id}}" class="account_btn">Pay</a>
+                        @if($res['info']->payment_method_name=='stripeCard' && $res['info']->payment_id)
+
+                        @else
+                            @if($res['info']->payment_id)
+                                <a href="/account_ext/order/pay?id={{$res['info']->id}}" class="account_btn">Pay</a>
+                            @endif
                         @endif
                         <a href="/account_ext/order/close?id={{$res['info']->id}}" data-fn="close_res" class="a_request account_btn" data-_token="{{csrf_token()}}">Close</a>
                     @elseif($res['info']->order_status_id==2)

@@ -1,5 +1,21 @@
 @include('laravel-shop-front::common.header')
 <link rel="stylesheet" href="{{ URL::asset('static/shop/css/swiper-bundle.min.css') }}"/>
+<link rel="stylesheet" href="{{ URL::asset('static/base/css/video-js.min.css') }}">
+<script src='{{ URL::asset('static/base/js/video.min.js') }}' type='text/javascript'></script>
+<style>
+    .vjs-volume-panel{order:80}
+    .vjs-picture-in-picture-control{order:90}
+    .vjs-fullscreen-control{order:100}
+    video {object-fit: cover;}
+    .video_box{width:60%;margin: 0 auto;}
+    .video-js .vjs-control-bar{background-color: rgba(43,51,63,0);}
+    .video-js .vjs-volume-vertical{background-color: rgba(43,51,63,0);}
+    .video-js{font-size: 12px;width: 100%;}
+    .video-js .vjs-big-play-button{background-color: rgba(43,51,63,0);}
+    @media (max-width: 1200px) {
+        .video_box{width: 100%;}
+    }
+</style>
 <style>
     .add_cart_btn{background: #e7a1a2;border: none;color: #fff}
     .add_cart_btn:hover{background: #e59798;}
@@ -181,6 +197,35 @@
         </div>
         <div class="description">
             <div>{!! $res['info']->desc->description??'' !!}</div>
+        </div>
+
+        <div class="description_video">
+            @if(!empty($res['info_video'][1]))
+                <div class="">
+                    @foreach($res['info_video'][1] as $k0=>$v0)
+                        <div class="video_box" style="">
+                            <video class="video-js video-js_{{$v0['id']}} vjs-4-3"
+                                   controls
+                                   preload="auto"
+                                   data-setup='{}'>
+                                <source src="{{$v0['video_src']}}" type="video/mp4" />
+                            </video>
+                        </div>
+                        <script>
+                            videojs(document.querySelector('.video-js_{{$v0['id']}}'),{
+                                controlBar:{
+                                    volumePanel:{
+                                        inline: false,
+                                    },
+                                    remainingTimeDisplay:{
+                                        displayNegative:false
+                                    }
+                                }
+                            });
+                        </script>
+                    @endforeach
+                </div>
+            @endif
         </div>
 
         <div class="description_img">

@@ -98,6 +98,7 @@ class ProductController extends Controller
         list($res['special_price'],$res['special_price_format']) = $res['info']->findSpecial($res['info']->id);
         $res['info_discount'] = $res['info']->findDiscount($res['info']->id);
         $res['info_img'] = $res['info']->imgById($res['info']->id,$res['info']->is_color_group);
+        $res['info_video'] = $res['info']->videoById($res['info']->id);
 
         //$res['info_reward'] = $res['info']->findReward($res['info']->id,$group_id);
         //$res['shipping'] = Shipping::where('cost',0)->firstToArray();

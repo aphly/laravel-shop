@@ -140,6 +140,10 @@ Route::middleware(['web'])->group(function () {
             Route::match(['post'],'product/img_save', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@imgSave');
             Route::match(['get'],'product_img/{id}/del', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@imgDel')->where('id', '[0-9]+');
 
+            Route::match(['get', 'post'],'product/video', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@video');
+            Route::match(['post'],'product/video_save', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@videoSave');
+            Route::match(['get'],'product_video/{id}/del', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@videoDel')->where('id', '[0-9]+');
+
             Route::match(['get', 'post'],'product/special', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@special');
             Route::match(['get', 'post'],'product/discount', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@discount');
 

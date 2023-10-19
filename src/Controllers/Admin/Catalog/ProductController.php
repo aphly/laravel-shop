@@ -19,6 +19,7 @@ use Aphly\LaravelShop\Models\Catalog\ProductImage;
 use Aphly\LaravelShop\Models\Catalog\ProductOption;
 use Aphly\LaravelShop\Models\Catalog\ProductOptionValue;
 use Aphly\LaravelShop\Models\Catalog\ProductSpecial;
+use Aphly\LaravelShop\Models\Catalog\ProductVideo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -242,6 +243,63 @@ class ProductController extends Controller
         }else{
             Product::where(['id'=>$product_id])->update(['image'=>'','remote'=>0]);
         }
+    }
+
+    public function video(Request $request)
+    {
+        $res['product'] = $this->getProductId($request);
+        $res['info_video'] = ProductVideo::where('product_id',$res['product']->id)->orderBy('sort','desc')->get();
+        if($request->isMethod('post')) {
+            if($request->hasFile('file')) {
+                $UploadFile = new UploadFile(10,['mp4']);
+                $remote = $UploadFile->isRemote();
+                $file_path = $UploadFile->uploads(1,$request->file('file'), 'public/shop/product/video');
+                $video_src = $insertData = [];
+                foreach ($file_path as $key=>$val) {
+                    $video_src[] = UploadFile::getPath($val,$remote);
+                    $insertData[] = ['product_id'=>$res['product']->id,'video'=>$val,'sort'=>-1,'remote'=>$remote];
+                }
+                if ($insertData) {
+                    ProductVideo::insert($insertData);
+                    throw new ApiException(['code' => 0, 'msg' => '上传成功', 'data' => ['redirect' => '/shop_admin/product/video?product_id='.$res['product']->id,'video'=>$video_src]]);
+                }
+            }
+            throw new ApiException(['code'=>2,'data'=>'','msg'=>'上传错误']);
+        }else{
+            $res['breadcrumb'] = Breadcrumb::render([
+                ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
+                ['name'=>$res['product']->name],
+                ['name'=>'视频','href'=>'/shop_admin/'.$this->currArr['key'].'/video?product_id='.$res['product']->id]
+            ]);
+            $res['info_video']->transform(function ($item){
+                $item->video_src = UploadFile::getPath($item->video,$item->remote);
+                return $item;
+            });
+            return $this->makeView('laravel-shop::admin.catalog.product.video',['res'=>$res]);
+        }
+    }
+
+    public function videoSave(Request $request)
+    {
+        $res['product'] = $this->getProductId($request);
+        $post = $request->input('video');
+        foreach ($post['sort'] as $k=>$v){
+            ProductVideo::find($k)->update(['sort'=>$v]);
+        }
+        foreach ($post['type'] as $k=>$v){
+            ProductVideo::find($k)->update(['type'=>$v]);
+        }
+        throw new ApiException(['code' => 0, 'msg' => '更新成功', 'data' => ['redirect' =>  '/shop_admin/product/video?product_id='.$res['product']->id]]);
+    }
+
+    public function videoDel(Request $request)
+    {
+        $info_obj = ProductVideo::where('id',$request->id);
+        $info = $info_obj->first();
+        if($info_obj->delete()){
+            UploadFile::del($info->video,$info->remote);
+        }
+        throw new ApiException(['code'=>0,'msg'=>'操作成功']);
     }
 
     public function attribute(Request $request)

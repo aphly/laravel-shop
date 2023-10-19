@@ -44,6 +44,16 @@ class Product extends Model
         return $res;
     }
 
+    function videoById($product_id){
+        $productImage = ProductVideo::where('product_id',$product_id)->orderBy('sort','desc')->get()->toArray();
+        $res = [];
+        foreach($productImage as $val){
+            $val['video_src'] = UploadFile::getPath($val['video'],$val['remote']);
+            $res[$val['type']][] = $val;
+        }
+        return $res;
+    }
+
     function imgByIds($product_ids){
         $productImage = ProductImage::whereIN('product_id',$product_ids)->orderBy('sort','desc')->get()->toArray();
         $res = [];

@@ -11,7 +11,7 @@
     .video-js .vjs-control-bar{background-color: rgba(43,51,63,0);}
     .video-js .vjs-volume-vertical{background-color: rgba(43,51,63,0);}
     .video-js{font-size: 12px;width: 100%;}
-    .video-js .vjs-big-play-button{background-color: rgba(43,51,63,0);}
+    .video-js .vjs-big-play-button{background-color: rgba(43,51,63,0);border-radius: 50%; width: 2em; height: 2em; line-height: 1.9em; border: 3px solid #fff;margin-left: -1em;}
     @media (max-width: 1200px) {
         .video_box{width: 100%;}
     }
@@ -204,7 +204,7 @@
                 <div class="">
                     @foreach($res['info_video'][1] as $k0=>$v0)
                         <div class="video_box" style="">
-                            <video class="video-js video-js_{{$v0['id']}} vjs-4-3"
+                            <video class="video-js video-js_{{$v0['id']}} vjs-16-9"
                                    controls
                                    preload="auto"
                                    data-setup='{}'>

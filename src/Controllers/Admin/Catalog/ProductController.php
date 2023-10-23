@@ -533,4 +533,6 @@ class ProductController extends Controller
     function getProductId($request){
         return Product::where('id',$request->input('product_id',0))->firstOrError();
     }
+
+
 }

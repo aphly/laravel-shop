@@ -18,7 +18,7 @@
 </style>
 <div class="imain">
     <div style="margin-bottom: 50px;">
-        <div style="margin-bottom: 10px;color: #999;">使用1:1视频，时长<=60s,大小在10M之内</div>
+        <div style="margin-bottom: 10px;color: #999;">使用1:1视频，时长<=60s,大小在10M之内,建议一个视频</div>
         <label>
             <div class="btn btn-primary">
                 选择视频
@@ -45,7 +45,7 @@
                             </div>
                             <input type="text" style="margin-bottom: 5px;" class="form-control" name="video[sort][{{$v['id']}}]" value="{{$v['sort']}}">
                             <select name="video[type][{{$v['id']}}]" class="form-control" style="margin-bottom: 5px;">
-                                <option value="0" @if($v['type']===0) selected @endif>橱窗</option>
+{{--                                <option value="0" @if($v['type']===0) selected @endif>橱窗</option>--}}
                                 <option value="1" @if($v['type']===1) selected @endif>描述</option>
                             </select>
                         </li>

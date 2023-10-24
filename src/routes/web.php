@@ -162,6 +162,8 @@ Route::middleware(['web'])->group(function () {
             Route::get('service/view', 'Aphly\LaravelShop\Controllers\Admin\Sale\ServiceController@view');
             Route::post('service/history_save', 'Aphly\LaravelShop\Controllers\Admin\Sale\ServiceController@historySave');
 
+            Route::match(['get', 'post'],'product/sync', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@sync');
+
         });
     });
 });

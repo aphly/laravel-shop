@@ -9,6 +9,7 @@ use Aphly\LaravelShop\Models\Catalog\CategoryPath;
 use Aphly\LaravelShop\Models\Catalog\Filter;
 use Aphly\LaravelShop\Controllers\Admin\Controller;
 use Aphly\LaravelShop\Models\Catalog\Option;
+use Aphly\LaravelShop\Models\Catalog\OptionValue;
 use Aphly\LaravelShop\Models\Catalog\Product;
 use Aphly\LaravelShop\Models\Catalog\ProductAttribute;
 use Aphly\LaravelShop\Models\Catalog\ProductCategory;
@@ -20,6 +21,8 @@ use Aphly\LaravelShop\Models\Catalog\ProductOption;
 use Aphly\LaravelShop\Models\Catalog\ProductOptionValue;
 use Aphly\LaravelShop\Models\Catalog\ProductSpecial;
 use Aphly\LaravelShop\Models\Catalog\ProductVideo;
+use Aphly\LaravelShop\Models\Catalog\ReviewImage;
+use Aphly\LaravelShop\Models\Sale\ServiceImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -534,5 +537,23 @@ class ProductController extends Controller
         return Product::where('id',$request->input('product_id',0))->firstOrError();
     }
 
-
+    function sync(Request $request){
+        if($request->isMethod('post')) {
+            $type = $request->input('type',[]);
+            if (in_array('product',$type)) {
+                Product::query()->update(['remote' => 1]);
+                ProductImage::query()->update(['remote' => 1]);
+            }else if(in_array('review',$type)){
+                ReviewImage::query()->update(['remote' => 1]);
+            }else if(in_array('service',$type)){
+                ServiceImage::query()->update(['remote' => 1]);
+            }else if(in_array('option',$type)){
+                OptionValue::query()->update(['remote' => 1]);
+            }
+            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
+        }else{
+            $res['title'] = '同步';
+            return $this->makeView('laravel-shop::admin.catalog.product.sync',['res'=>$res]);
+        }
+    }
 }

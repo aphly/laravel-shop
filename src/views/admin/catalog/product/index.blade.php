@@ -21,7 +21,11 @@
             <button class="" type="submit">搜索</button>
         </div>
         </form>
-        <div class=""><a data-href="/shop_admin/product/add" class="badge badge-info ajax_html add">新增</a></div>
+
+        <div class="">
+            <a data-href="/shop_admin/product/sync" class="badge badge-info ajax_html add">OSS</a>
+            <a data-href="/shop_admin/product/add" class="badge badge-info ajax_html add">新增</a>
+        </div>
     </div>
 
     <form method="post"  @if($res['search']['string']) action="/shop_admin/product/del?{{$res['search']['string']}}" @else action="/shop_admin/product/del" @endif  class="del_form">

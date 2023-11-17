@@ -91,8 +91,8 @@ class ProductController extends Controller
         ],false);
         $res['quantityInCart'] = (new Cart)->quantityInCart($request->id);
         list($res['info']->price,$res['info']->price_format) = Currency::format($res['info']->price,2);
-
-        //$group_id = User::groupId();
+        $res['color'] = $request->query('color',0);
+            //$group_id = User::groupId();
         $res['info_attr'] = $res['info']->findAttribute($res['info']->id);
         $res['info_option'] = $res['info']->findOption($res['info']->id,true);
         list($res['special_price'],$res['special_price_format']) = $res['info']->findSpecial($res['info']->id);

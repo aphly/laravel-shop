@@ -600,8 +600,12 @@
             $(this).nextAll().removeClass('on')
             $('.rating_js').val($(this).data('val'))
         })
-
+        @if($res['color'])
+        $('.flag_radio .div_ul>.position-relative[data-image_src="true"] label[data-option_value_id="'+{{$res['color']}}+'"]').click();
+        $('.flag_radio .div_ul>.position-relative:not([data-image_src="true"]):first-child label').click();
+        @else
         $('.flag_radio .div_ul>.position-relative:first-child label').click();
+        @endif
         price();
     })
 

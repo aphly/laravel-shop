@@ -2,27 +2,35 @@
 
 namespace Aphly\LaravelShop\Controllers\Front;
 
-use Aphly\LaravelCommon\Models\User;
+use Aphly\LaravelBlog\Models\User;
+use Aphly\LaravelShop\Models\Setting\Currency;
 use Aphly\LaravelShop\Models\Account\Wishlist;
 use Aphly\LaravelShop\Models\Checkout\Cart;
-use Aphly\LaravelShop\Models\System\Setting;
+use Aphly\LaravelShop\Models\Setting\Config;
 use Illuminate\Support\Facades\View;
 
-class Controller extends \Aphly\LaravelCommon\Controllers\Front\Controller
+class Controller extends \Aphly\LaravelBlog\Controllers\Front\Controller
 {
-    public $shop_setting = [];
+    public $shop_config = [];
+
+    public $currency = [];
 
     public function __construct()
     {
         $this->middleware(function ($request, $next){
-            $this->shop_setting = Setting::findAll();
-            View::share("shop_setting",$this->shop_setting);
             return $next($request);
         });
         parent::__construct();
     }
 
     public function afterController(){
+        $this->shop_config = Config::findAll();
+        View::share("shop_config",$this->shop_config);
+        $this->currency = (new Currency)->allDefaultCurr();
+        if(isset($this->currency[2]) && !empty($this->currency[2]['timezone'])){
+            date_default_timezone_set($this->currency[2]['timezone']);
+        }
+        View::share("currency",$this->currency);
         list($cart_num) = (new Cart)->countList();
         View::share("cart_num",$cart_num);
         $count = 0;

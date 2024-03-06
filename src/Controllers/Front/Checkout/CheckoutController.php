@@ -7,9 +7,9 @@ use Aphly\Laravel\Libs\Func;
 use Aphly\Laravel\Libs\Snowflake;
 use Aphly\Laravel\Models\Breadcrumb;
 use Aphly\Laravel\Requests\FormRequest;
-use Aphly\LaravelCommon\Models\Country;
-use Aphly\LaravelCommon\Models\Currency;
-use Aphly\LaravelCommon\Models\User;
+use Aphly\LaravelShop\Models\Setting\Country;
+use Aphly\LaravelShop\Models\Setting\Currency;
+use Aphly\LaravelBlog\Models\User;
 use Aphly\LaravelPayment\Models\Payment;
 use Aphly\LaravelPayment\Models\PaymentMethod;
 use Aphly\LaravelPayment\Models\Stripe;
@@ -17,12 +17,11 @@ use Aphly\LaravelPayment\Models\StripeCard;
 use Aphly\LaravelShop\Controllers\Front\Controller;
 use Aphly\LaravelShop\Models\Catalog\Shipping;
 use Aphly\LaravelShop\Models\Checkout\Cart;
-use Aphly\LaravelCommon\Models\UserAddress;
+use Aphly\LaravelShop\Models\Account\UserAddress;
 use Aphly\LaravelShop\Models\Sale\Order;
 use Aphly\LaravelShop\Models\Sale\OrderOption;
 use Aphly\LaravelShop\Models\Sale\OrderProduct;
 use Aphly\LaravelShop\Models\Sale\OrderTotal;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
 
@@ -65,7 +64,7 @@ class CheckoutController extends Controller
                 $res['curr_address_id'] = session('shop_address_id', 0);
                 $res['my_address'] = (new UserAddress)->getAddresses();
                 $res['country'] = (new Country)->findAll();
-                return $this->makeView('laravel-shop-front::checkout.address', ['res' => $res]);
+                return $this->makeView('laravel-front::checkout.address', ['res' => $res]);
             }
         }else{
             throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>'/checkout/payment']]);
@@ -108,7 +107,7 @@ class CheckoutController extends Controller
 			$res['shipping'] = (new Shipping)->getList();
             $res['shipping_default_id'] = Func::defaultId($res['shipping']);
             $res['free_shipping'] = Cart::$free_shipping;
-			return $this->makeView('laravel-shop-front::checkout.shipping',['res'=>$res]);
+			return $this->makeView('laravel-front::checkout.shipping',['res'=>$res]);
 		}
     }
 
@@ -273,7 +272,7 @@ class CheckoutController extends Controller
 			$res['paymentMethod'] = (new PaymentMethod)->findAll();
             $res['paymentMethod_default_id'] = Func::defaultId($res['paymentMethod']);
             $res['stripe'] =  new Stripe;
-			return $this->makeView('laravel-shop-front::checkout.payment_method',['res'=>$res]);
+			return $this->makeView('laravel-front::checkout.payment_method',['res'=>$res]);
 		}
     }
 

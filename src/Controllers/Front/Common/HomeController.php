@@ -4,7 +4,7 @@ namespace Aphly\LaravelShop\Controllers\Front\Common;
 
 
 use Aphly\Laravel\Models\UploadFile;
-use Aphly\LaravelCommon\Models\Currency;
+use Aphly\LaravelShop\Models\Setting\Currency;
 use Aphly\LaravelShop\Controllers\Front\Controller;
 use Aphly\LaravelShop\Models\Catalog\Product;
 
@@ -48,7 +48,7 @@ class HomeController extends Controller
             }
         }
         //$res['product_image'] = $product->imgByIds($product_ids);
-        return $this->makeView('laravel-shop-front::common.home.index',['res'=>$res]);
+        return $this->makeView('laravel-front::common.home.index',['res'=>$res]);
     }
 
 }

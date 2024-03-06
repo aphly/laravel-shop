@@ -3,7 +3,7 @@
 namespace Aphly\LaravelShop\Controllers\Front\AccountExt;
 
 use Aphly\Laravel\Models\UploadFile;
-use Aphly\LaravelCommon\Models\User;
+use Aphly\LaravelBlog\Models\User;
 use Aphly\LaravelShop\Controllers\Front\Controller;
 use Aphly\LaravelShop\Models\Catalog\Review;
 use Aphly\LaravelShop\Models\Catalog\ReviewImage;
@@ -24,7 +24,7 @@ class ReviewController extends Controller
             $item->product->image_src = UploadFile::getPath($item->product->image,$item->product->remote);
             return $item;
         });
-        return $this->makeView('laravel-shop-front::account_ext.review.index',['res'=>$res]);
+        return $this->makeView('laravel-front::account_ext.review.index',['res'=>$res]);
     }
 
     public function detail(Request $request){
@@ -34,7 +34,7 @@ class ReviewController extends Controller
         foreach ($res['reviewImage'] as $val){
             $val->image_src = UploadFile::getPath($val->image,$val->remote);
         }
-        return $this->makeView('laravel-shop-front::account_ext.review.detail',['res'=>$res]);
+        return $this->makeView('laravel-front::account_ext.review.detail',['res'=>$res]);
     }
 
 }

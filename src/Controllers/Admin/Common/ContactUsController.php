@@ -4,7 +4,7 @@ namespace Aphly\LaravelShop\Controllers\Admin\Common;
 
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Models\Breadcrumb;
-use Aphly\LaravelCommon\Models\RemoteEmail;
+use Aphly\LaravelBlog\Models\RemoteEmail;
 use Aphly\LaravelShop\Controllers\Admin\Controller;
 use Aphly\LaravelShop\Models\Common\ContactUs;
 use Illuminate\Http\Request;
@@ -73,7 +73,7 @@ class ContactUsController extends Controller
                 'email'=>$input['email'],
                 'title'=>$input['title'],
                 'content'=>$input['content'],
-                'type'=>config('common.email_type'),
+                'type'=>config('blog.email_type'),
                 'queue_priority'=>0,
                 'is_cc'=>0
             ]);

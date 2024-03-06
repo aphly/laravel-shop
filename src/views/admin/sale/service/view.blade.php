@@ -197,22 +197,22 @@
                             <div id="shipping_info" style="display: none;">
                                 <div class="form-group">
                                     <label for="">退货人姓名</label>
-                                    <input type="text" name="service_name" class="form-control" value="{{$res['info']->service_name??$res['shop_setting']['service_name']}}">
+                                    <input type="text" name="service_name" class="form-control" value="{{$res['info']->service_name??$res['shop_config']['service_name']}}">
                                     <div class="invalid-feedback"></div>
                                 </div>
                                 <div class="form-group">
                                     <label for="">退货人地址</label>
-                                    <input type="text" name="service_address" class="form-control" value="{{$res['info']->service_address??$res['shop_setting']['service_address']}}">
+                                    <input type="text" name="service_address" class="form-control" value="{{$res['info']->service_address??$res['shop_config']['service_address']}}">
                                     <div class="invalid-feedback"></div>
                                 </div>
                                 <div class="form-group">
                                     <label for="">退货人邮编</label>
-                                    <input type="text" name="service_postcode" class="form-control" value="{{$res['info']->service_postcode??$res['shop_setting']['service_postcode']}}">
+                                    <input type="text" name="service_postcode" class="form-control" value="{{$res['info']->service_postcode??$res['shop_config']['service_postcode']}}">
                                     <div class="invalid-feedback"></div>
                                 </div>
                                 <div class="form-group">
                                     <label for="">退货人电话</label>
-                                    <input type="text" name="service_phone" class="form-control" value="{{$res['info']->service_phone??$res['shop_setting']['service_phone']}}">
+                                    <input type="text" name="service_phone" class="form-control" value="{{$res['info']->service_phone??$res['shop_config']['service_phone']}}">
                                     <div class="invalid-feedback"></div>
                                 </div>
                             </div>

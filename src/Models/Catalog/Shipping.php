@@ -3,10 +3,10 @@
 namespace Aphly\LaravelShop\Models\Catalog;
 
 use Aphly\Laravel\Libs\Math;
-use Aphly\LaravelCommon\Models\UserAddress;
-use Aphly\LaravelCommon\Models\Currency;
-use Aphly\LaravelCommon\Models\GeoGroup;
-use Aphly\LaravelCommon\Models\User;
+use Aphly\LaravelShop\Models\Account\UserAddress;
+use Aphly\LaravelShop\Models\Setting\Currency;
+use Aphly\LaravelShop\Models\Setting\GeoGroup;
+use Aphly\LaravelBlog\Models\User;
 use Aphly\LaravelShop\Models\Checkout\Cart;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;

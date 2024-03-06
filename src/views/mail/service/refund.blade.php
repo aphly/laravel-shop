@@ -1,4 +1,4 @@
-@include('laravel-common::mail.header')
+@include('laravel-front::mail.header')
     <div style="font-size: 28px;line-height: 40px;margin-bottom: 10px;">
         Service Refunded
     </div>
@@ -14,4 +14,4 @@
         </div>
     </div>
 
-@include('laravel-common::mail.footer')
+@include('laravel-blog::mail.footer')

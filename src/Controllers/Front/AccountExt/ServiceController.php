@@ -4,8 +4,8 @@ namespace Aphly\LaravelShop\Controllers\Front\AccountExt;
 
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Models\UploadFile;
-use Aphly\LaravelCommon\Models\Currency;
-use Aphly\LaravelCommon\Models\User;
+use Aphly\LaravelShop\Models\Setting\Currency;
+use Aphly\LaravelBlog\Models\User;
 use Aphly\LaravelPayment\Models\PaymentRefund;
 use Aphly\LaravelShop\Controllers\Front\Controller;
 
@@ -25,7 +25,7 @@ class ServiceController extends Controller
         $res['list'] = Service::where(['uuid'=>User::uuid()])->where('delete_at',0)->with('product')->with('order')
             ->orderBy('created_at','desc')->Paginate(config('admin.perPage'))->withQueryString();
         $res['title'] = 'My Service';
-        return $this->makeView('laravel-shop-front::account_ext.service.index',['res'=>$res]);
+        return $this->makeView('laravel-front::account_ext.service.index',['res'=>$res]);
     }
 
     public function detail(Request $request){
@@ -39,7 +39,7 @@ class ServiceController extends Controller
         foreach ($res['info']->img as $val){
             $val->image_src = UploadFile::getPath($val->image,$val->remote);
         }
-        return $this->makeView('laravel-shop-front::account_ext.service.detail',['res'=>$res]);
+        return $this->makeView('laravel-front::account_ext.service.detail',['res'=>$res]);
     }
 
     public function service_pre($request){
@@ -51,7 +51,7 @@ class ServiceController extends Controller
     public function form(Request $request){
         $res = $this->service_pre($request);
         $res['title'] = 'Service Form';
-        $service_refund_fee = intval($this->shop_setting['service_refund_fee']);
+        $service_refund_fee = intval($this->shop_config['service_refund_fee']);
         if($service_refund_fee>=0 && $service_refund_fee<=100){
             $total_all = floatval($res['orderInfo']->total)*(100-$service_refund_fee)/100;
         }else{
@@ -59,7 +59,7 @@ class ServiceController extends Controller
         }
         list($refund_amount,$res['refund_amount_format']) = Currency::codeFormat($total_all,$res['orderInfo']->currency_code);
         $res['info'] = Service::where('id',$request->query('id',0))->with('product')->firstOrNew();
-        return $this->makeView('laravel-shop-front::account_ext.service.form',['res'=>$res]);
+        return $this->makeView('laravel-front::account_ext.service.form',['res'=>$res]);
     }
 
     public function save(Request $request){
@@ -118,7 +118,7 @@ class ServiceController extends Controller
             }
 
             if($info->service_action_id==1){
-                $service_refund_fee = intval($this->shop_setting['service_refund_fee']);
+                $service_refund_fee = intval($this->shop_config['service_refund_fee']);
                 if($service_refund_fee<=100 && $service_refund_fee>=0){
                     $total_all = $res['orderInfo']->total*(100-$service_refund_fee)/100;
                     $info->refund_fee = $service_refund_fee;

@@ -2,7 +2,7 @@
 
 namespace Aphly\LaravelShop\Models\Account;
 
-use Aphly\LaravelCommon\Models\User;
+use Aphly\LaravelBlog\Models\User;
 use Aphly\LaravelShop\Models\Catalog\Product;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;

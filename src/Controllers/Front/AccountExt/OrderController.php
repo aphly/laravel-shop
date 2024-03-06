@@ -3,8 +3,8 @@
 namespace Aphly\LaravelShop\Controllers\Front\AccountExt;
 
 use Aphly\Laravel\Exceptions\ApiException;
-use Aphly\LaravelCommon\Models\Currency;
-use Aphly\LaravelCommon\Models\User;
+use Aphly\LaravelShop\Models\Setting\Currency;
+use Aphly\LaravelBlog\Models\User;
 use Aphly\LaravelPayment\Models\Payment;
 use Aphly\LaravelPayment\Models\PaymentRefund;
 use Aphly\LaravelShop\Controllers\Front\Controller;
@@ -20,12 +20,12 @@ class OrderController extends Controller
         $res['title'] = 'My Orders';
         $res['list'] = Order::where(['uuid'=>User::uuid()])->where('delete_at',0)->with('orderStatus')->with('orderProduct')
             ->orderBy('created_at','desc')->Paginate(config('admin.perPage'))->withQueryString();
-        $res['cancel_fee_24'] = $this->shop_setting['order_cancel_fee_24'];
-        $res['cancel_fee'] = $this->shop_setting['order_cancel_fee'];
+        $res['cancel_fee_24'] = $this->shop_config['order_cancel_fee_24'];
+        $res['cancel_fee'] = $this->shop_config['order_cancel_fee'];
 //        foreach ($res['list'] as $val){
 //            list($val->cancelAmount,$val->cancelAmountFormat) = Currency::codeFormat((100 - $cancel_fee)/100*$val->total,$val->currency_code);
 //        }
-        return $this->makeView('laravel-shop-front::account_ext.order.index',['res'=>$res]);
+        return $this->makeView('laravel-front::account_ext.order.index',['res'=>$res]);
     }
 
     public function detail(Request $request){
@@ -37,14 +37,14 @@ class OrderController extends Controller
         $res['orderProduct'] = OrderProduct::where('order_id',$res['info']->id)->with('orderOption')->get();
         $res['orderHistory'] = OrderHistory::where('order_id',$res['info']->id)->with('orderStatus')->orderBy('created_at','asc')->get();
         $res['orderRefund'] = PaymentRefund::where('payment_id',$res['info']->payment_id)->get();
-        $cancel_fee = $this->shop_setting['order_cancel_fee'];
+        $cancel_fee = $this->shop_config['order_cancel_fee'];
         foreach ($res['orderHistory'] as $val){
             if($val->order_status_id==2 && $val->created_at->timestamp+24*3600>time()){
-                $cancel_fee = $this->shop_setting['order_cancel_fee_24'];
+                $cancel_fee = $this->shop_config['order_cancel_fee_24'];
             }
         }
         list($res['cancelAmount'],$res['cancelAmountFormat']) = Currency::codeFormat((100 - $cancel_fee)/100*$res['info']->total,$res['info']->currency_code);
-        return $this->makeView('laravel-shop-front::account_ext.order.detail',['res'=>$res]);
+        return $this->makeView('laravel-front::account_ext.order.detail',['res'=>$res]);
     }
 
     public function pay(Request $request)
@@ -74,9 +74,9 @@ class OrderController extends Controller
         $orderHistory = OrderHistory::where(['order_id'=>$res['info']->id,'order_status_id'=>2])->first();
         if($res['info']->order_status_id==2 && !empty($orderHistory)){
             if(now()->between($orderHistory->created_at,$orderHistory->created_at->addDay())){
-                $cancel_fee = $this->shop_setting['order_cancel_fee'];
+                $cancel_fee = $this->shop_config['order_cancel_fee'];
             }else{
-                $cancel_fee = $this->shop_setting['order_cancel_fee_24'];
+                $cancel_fee = $this->shop_config['order_cancel_fee_24'];
             }
             list($amount,$amount_format) = Currency::codeFormat((100 - $cancel_fee)/100*$res['info']->total,$res['info']->currency_code);
             (new Payment)->refund_api($res['info']->payment_id,$amount,'Customer cancel -'.$cancel_fee.'% fee');

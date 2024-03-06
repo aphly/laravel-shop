@@ -5,8 +5,8 @@ namespace Aphly\LaravelShop\Models\Sale;
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Mail\MailSend;
 use Aphly\Laravel\Models\Model;
-use Aphly\LaravelCommon\Models\Currency;
-use Aphly\LaravelCommon\Models\RemoteEmail;
+use Aphly\LaravelShop\Models\Setting\Currency;
+use Aphly\LaravelBlog\Models\RemoteEmail;
 use Aphly\LaravelPayment\Models\Payment;
 use Aphly\LaravelShop\Mail\Order\Cancel;
 use Aphly\LaravelShop\Mail\Order\Paid;
@@ -15,7 +15,7 @@ use Aphly\LaravelShop\Mail\Order\Shipped;
 use Aphly\LaravelShop\Models\Catalog\Product;
 use Aphly\LaravelShop\Models\Catalog\ProductOptionValue;
 use Aphly\LaravelShop\Models\Catalog\Shipping;
-use Aphly\LaravelShop\Models\System\Setting;
+use Aphly\LaravelShop\Models\Setting\Config;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -91,22 +91,22 @@ class Order extends Model
     }
 
     public function addOrderHistory($info, $order_status_id, $input = []){
-        $shop_setting = Setting::findAll();
+        $shop_config = Config::findAll();
         $notify = $amount = 0;
         if($order_status_id==2){
             //Paid
-            $notify = $shop_setting['order_paid_notify'];
+            $notify = $shop_config['order_paid_notify'];
             $this->handle($info);
         }else if($order_status_id==3){
             //Shipped
             $info->shipping_no = $input['shipping_no']??'';
         }else if($order_status_id==6){
             //Canceled
-            $notify = $shop_setting['order_canceled_notify'];
+            $notify = $shop_config['order_canceled_notify'];
             $this->rollback($info);
         }else if($order_status_id==7){
             //Refunded
-            $notify = $shop_setting['order_refunded_notify'];
+            $notify = $shop_config['order_refunded_notify'];
             if($info->order_status_id>=2) {
                 $fee = intval($input['fee']);
                 if($fee>=0 && $fee<=100) {
@@ -149,7 +149,7 @@ class Order extends Model
                         'email'=>$info->email,
                         'title'=>'Order Paid',
                         'content'=>(new Paid($info))->render(),
-                        'type'=>config('common.email_type'),
+                        'type'=>config('blog.email_type'),
                         'queue_priority'=>0,
                         'is_cc'=>1
                     ]);
@@ -159,7 +159,7 @@ class Order extends Model
                         'email'=>$info->email,
                         'title'=>'Order Shipped',
                         'content'=>(new Shipped($info))->render(),
-                        'type'=>config('common.email_type'),
+                        'type'=>config('blog.email_type'),
                         'queue_priority'=>0,
                         'is_cc'=>0
                     ]);
@@ -171,7 +171,7 @@ class Order extends Model
                         'email'=>$info->email,
                         'title'=>'Order cancel',
                         'content'=>(new Cancel($info))->render(),
-                        'type'=>config('common.email_type'),
+                        'type'=>config('blog.email_type'),
                         'queue_priority'=>0,
                         'is_cc'=>1
                     ]);
@@ -183,7 +183,7 @@ class Order extends Model
                         'email'=>$info->email,
                         'title'=>'Order Refunded',
                         'content'=>(new Refunded($info,$orderHistory))->render(),
-                        'type'=>config('common.email_type'),
+                        'type'=>config('blog.email_type'),
                         'queue_priority'=>0,
                         'is_cc'=>0
                     ]);

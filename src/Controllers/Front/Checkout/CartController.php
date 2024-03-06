@@ -4,7 +4,7 @@ namespace Aphly\LaravelShop\Controllers\Front\Checkout;
 
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Models\Breadcrumb;
-use Aphly\LaravelCommon\Models\User;
+use Aphly\LaravelBlog\Models\User;
 use Aphly\LaravelShop\Controllers\Front\Controller;
 use Aphly\LaravelShop\Models\Account\Wishlist;
 use Aphly\LaravelShop\Models\Catalog\Coupon;
@@ -25,7 +25,7 @@ class CartController extends Controller
         $cart = new Cart;
         $cart->initCart();
         list($res['count'],$res['list'],$res['total_data']) = $cart->totalData();
-        return $this->makeView('laravel-shop-front::checkout.cart',['res'=>$res]);
+        return $this->makeView('laravel-front::checkout.cart',['res'=>$res]);
     }
 
     public function add(Request $request)

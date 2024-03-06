@@ -5,16 +5,13 @@ namespace Aphly\LaravelShop\Controllers\Admin\Sale;
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Models\Breadcrumb;
 use Aphly\Laravel\Models\UploadFile;
-use Aphly\LaravelCommon\Models\Currency;
 use Aphly\LaravelPayment\Models\Payment;
 use Aphly\LaravelShop\Controllers\Admin\Controller;
-use Aphly\LaravelShop\Models\Catalog\Shipping;
-use Aphly\LaravelShop\Models\Sale\Order;
 use Aphly\LaravelShop\Models\Sale\OrderProduct;
 use Aphly\LaravelShop\Models\Sale\Service;
 use Aphly\LaravelShop\Models\Sale\ServiceHistory;
 use Aphly\LaravelShop\Models\Sale\ServiceProduct;
-use Aphly\LaravelShop\Models\System\Setting;
+use Aphly\LaravelShop\Models\Setting\Config;
 use Illuminate\Http\Request;
 
 class ServiceController extends Controller
@@ -75,7 +72,7 @@ class ServiceController extends Controller
             ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
             ['name'=>'详情','href'=>'/shop_admin/'.$this->currArr['key'].'/view?id='.$res['info']->id]
         ]);
-        $res['shop_setting'] = Setting::findAll();
+        $res['shop_config'] = Config::findAll();
         return $this->makeView('laravel-shop::admin.sale.service.view',['res'=>$res]);
     }
 

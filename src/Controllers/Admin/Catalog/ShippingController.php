@@ -4,7 +4,7 @@ namespace Aphly\LaravelShop\Controllers\Admin\Catalog;
 
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Models\Breadcrumb;
-use Aphly\LaravelCommon\Models\GeoGroup;
+use Aphly\LaravelShop\Models\Setting\GeoGroup;
 use Aphly\LaravelShop\Controllers\Admin\Controller;
 use Aphly\LaravelShop\Models\Catalog\Shipping;
 use Illuminate\Http\Request;

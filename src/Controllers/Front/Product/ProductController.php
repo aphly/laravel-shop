@@ -5,7 +5,7 @@ namespace Aphly\LaravelShop\Controllers\Front\Product;
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Models\Breadcrumb;
 use Aphly\Laravel\Models\UploadFile;
-use Aphly\LaravelCommon\Models\Currency;
+use Aphly\LaravelShop\Models\Setting\Currency;
 use Aphly\LaravelShop\Controllers\Front\Controller;
 use Aphly\LaravelShop\Models\Account\Wishlist;
 use Aphly\LaravelShop\Models\Catalog\FilterGroup;
@@ -77,7 +77,7 @@ class ProductController extends Controller
         }
         $res['filterGroup'] = FilterGroup::where('status',1)->with('filter')->get();
         $res['option'] = Option::where(['status'=>1,'is_filter'=>1])->with('value')->get();
-        return $this->makeView('laravel-shop-front::product.index',['res'=>$res]);
+        return $this->makeView('laravel-front::product.index',['res'=>$res]);
     }
 
     public function detail(Request $request)
@@ -123,7 +123,7 @@ class ProductController extends Controller
             $item->discount= $item->discount?Currency::format($item->discount):0;
             return $item;
         });
-        return $this->makeView('laravel-shop-front::product.detail',['res'=>$res]);
+        return $this->makeView('laravel-front::product.detail',['res'=>$res]);
     }
 
     public function reviewAdd(Request $request)
@@ -133,7 +133,7 @@ class ProductController extends Controller
             throw new ApiException(['code'=>1,'msg'=>'Content cannot be empty']);
         }
 
-        if($this->shop_setting['review_limit']){
+        if($this->shop_config['review_limit']){
             $count = Review::where(['uuid'=>$this->user->uuid,'product_id'=>$request->id])->count();
             if($count>0){
                 throw new ApiException(['code'=>1,'msg'=>'The product can only be reviewed once']);

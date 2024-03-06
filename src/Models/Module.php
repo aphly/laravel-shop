@@ -7,13 +7,18 @@ use Aphly\Laravel\Models\Manager;
 use Aphly\Laravel\Models\Menu;
 use Aphly\Laravel\Models\Module as Module_base;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class Module extends Module_base
 {
     public $dir = __DIR__;
 
-    public function install($module_id){
-        parent::install($module_id);
+    public function remoteInstall($module_id){
+        $path = storage_path('app/private/shop_init.sql');
+        if(file_exists($path)){
+            DB::unprepared(file_get_contents($path));
+        }
+
         $manager = Manager::where('username','admin')->firstOrError();
         $menu = Menu::create(['name' => '商城','route' =>'','pid'=>0,'uuid'=>$manager->uuid,'type'=>1,'module_id'=>$module_id,'sort'=>10]);
         if($menu){
@@ -30,6 +35,13 @@ class Module extends Module_base
                 $data[] =['name' => '文章管理','route' =>'shop_admin/information/index','pid'=>$menu21->id,'uuid'=>$manager->uuid,'type'=>2,'module_id'=>$module_id,'sort'=>0];
                 DB::table('admin_menu')->insert($data);
             }
+            $menu22 = Menu::create(['name' => '用户','route' =>'','pid'=>$menu->id,'uuid'=>$manager->uuid,'type'=>1,'module_id'=>$module_id,'sort'=>9]);
+            if($menu22){
+                $data=[];
+                $data[] =['name' => '地址','route' =>'shop_admin/user_address/index','pid'=>$menu22->id,'uuid'=>$manager->uuid,'type'=>2,'module_id'=>$module_id,'sort'=>0];
+                $data[] =['name' => '用户组','route' =>'shop_admin/group/index','pid'=>$menu22->id,'uuid'=>$manager->uuid,'type'=>2,'module_id'=>$module_id,'sort'=>0];
+                DB::table('admin_menu')->insert($data);
+            }
             $menu22 = Menu::create(['name' => '销售','route' =>'','pid'=>$menu->id,'uuid'=>$manager->uuid,'type'=>1,'module_id'=>$module_id,'sort'=>9]);
             if($menu22){
                 $data=[];
@@ -39,10 +51,14 @@ class Module extends Module_base
                 $data[] =['name' => '联系我们','route' =>'shop_admin/contact_us/index','pid'=>$menu22->id,'uuid'=>$manager->uuid,'type'=>2,'module_id'=>$module_id,'sort'=>0];
                 DB::table('admin_menu')->insert($data);
             }
-            $menu23 = Menu::create(['name' => '本地','route' =>'','pid'=>$menu->id,'uuid'=>$manager->uuid,'type'=>1,'module_id'=>$module_id,'sort'=>8]);
+            $menu23 = Menu::create(['name' => '设置','route' =>'','pid'=>$menu->id,'uuid'=>$manager->uuid,'type'=>1,'module_id'=>$module_id,'sort'=>8]);
             if($menu23){
                 $data=[];
-                $data[] =['name' => '设置','route' =>'shop_admin/setting/index','pid'=>$menu23->id,'uuid'=>$manager->uuid,'type'=>2,'module_id'=>$module_id,'sort'=>0];
+                $data[] =['name' => '配置','route' =>'shop_admin/config/index','pid'=>$menu23->id,'uuid'=>$manager->uuid,'type'=>2,'module_id'=>$module_id,'sort'=>0];
+                $data[] =['name' => '国家','route' =>'shop_admin/country/index','pid'=>$menu23->id,'uuid'=>$manager->uuid,'type'=>2,'module_id'=>$module_id,'sort'=>0];
+                $data[] =['name' => '地区','route' =>'shop_admin/zone/index','pid'=>$menu23->id,'uuid'=>$manager->uuid,'type'=>2,'module_id'=>$module_id,'sort'=>0];
+                $data[] =['name' => '货币','route' =>'shop_admin/currency/index','pid'=>$menu23->id,'uuid'=>$manager->uuid,'type'=>2,'module_id'=>$module_id,'sort'=>0];
+                $data[] =['name' => 'Geo','route' =>'shop_admin/geo/index','pid'=>$menu23->id,'uuid'=>$manager->uuid,'type'=>2,'module_id'=>$module_id,'sort'=>0];
                 DB::table('admin_menu')->insert($data);
             }
         }
@@ -149,8 +165,11 @@ class Module extends Module_base
 
         return 'install_ok';
     }
-    public function uninstall($module_id){
-        parent::uninstall($module_id);
+    public function remoteUninstall($module_id){
+        Schema::dropIfExists('shop_group');
+        Schema::dropIfExists('shop_country');
+        Schema::dropIfExists('shop_zone');
+        Schema::dropIfExists('shop_currency');
         return 'uninstall_ok';
     }
 

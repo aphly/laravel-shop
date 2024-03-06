@@ -3,7 +3,7 @@
 namespace Aphly\LaravelShop\Models\Catalog;
 
 use Aphly\Laravel\Models\UploadFile;
-use Aphly\LaravelCommon\Models\Currency;
+use Aphly\LaravelShop\Models\Setting\Currency;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;
 use Illuminate\Database\Query\JoinClause;

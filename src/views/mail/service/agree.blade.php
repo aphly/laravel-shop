@@ -1,4 +1,4 @@
-@include('laravel-common::mail.header')
+@include('laravel-blog::mail.header')
     <div style="font-size: 28px;line-height: 40px;margin-bottom: 10px;">
         Service Agree
     </div>
@@ -7,4 +7,4 @@
         {{$serviceHistory->comment??'Your request has been approved'}}
     </div>
 
-@include('laravel-common::mail.footer')
+@include('laravel-blog::mail.footer')

@@ -15,12 +15,24 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['web'])->group(function () {
 
+    //currency
+    Route::get('currency/{id}', 'Aphly\LaravelBlog\Controllers\Front\CurrencyController@ajax')->where('id', '[0-9]+');
+    //country
+    Route::get('country/{id}/zone', 'Aphly\LaravelBlog\Controllers\Front\CountryController@zone')->where('id', '[0-9]+');
+    //checkout
+    Route::get('checkout/success', 'Aphly\LaravelBlog\Controllers\Front\CheckoutController@success');
+    Route::get('checkout/fail', 'Aphly\LaravelBlog\Controllers\Front\CheckoutController@fail');
+
     //wishlist
     Route::post('wishlist/product/{id}', 'Aphly\LaravelShop\Controllers\Front\AccountExt\WishlistController@product')->where('id', '[0-9]+');
 
     Route::middleware(['userAuth'])->group(function () {
         //account
         Route::prefix('account_ext')->group(function () {
+
+            Route::get('address', 'Aphly\LaravelBlog\Controllers\Front\AccountExt\AddressController@index');
+            Route::match(['get', 'post'],'address/save', 'Aphly\LaravelBlog\Controllers\Front\AccountExt\AddressController@save');
+            Route::get('address/{id}/remove', 'Aphly\LaravelBlog\Controllers\Front\AccountExt\AddressController@remove')->where('id', '[0-9]+');
 
             //wishlist
             Route::get('wishlist', 'Aphly\LaravelShop\Controllers\Front\AccountExt\WishlistController@index');
@@ -96,8 +108,11 @@ Route::middleware(['web'])->group(function () {
             $route_arr = [
                 ['attribute','\Catalog\AttributeController'],['option','\Catalog\OptionController'],['review','\Catalog\ReviewController'],['filter','\Catalog\FilterController'],
                 ['shipping','\Catalog\ShippingController'],['coupon','\Sale\CouponController'],['order','\Sale\OrderController'],['service','\Sale\ServiceController'],
-                ['information','\Common\InformationController'],['contact_us','\Common\ContactUsController']
+                ['information','\Common\InformationController'],['contact_us','\Common\ContactUsController'],
+                ['group','\GroupController'],['user_address','\UserAddressController'],
+                ['country','\Setting\CountryController'],['geo','\Setting\GeoController'],['zone','\Setting\ZoneController'],['currency','\Setting\CurrencyController']
             ];
+
 
             foreach ($route_arr as $val){
                 Route::get($val[0].'/index', 'Aphly\LaravelShop\Controllers\Admin'.$val[1].'@index');
@@ -124,8 +139,8 @@ Route::middleware(['web'])->group(function () {
             Route::get('category/ajax', 'Aphly\LaravelShop\Controllers\Admin\Catalog\CategoryController@ajax');
             Route::get('category/tree', 'Aphly\LaravelShop\Controllers\Admin\Catalog\CategoryController@tree');
 
-            Route::get('setting/index', 'Aphly\LaravelShop\Controllers\Admin\System\SettingController@index');
-            Route::post('setting/save', 'Aphly\LaravelShop\Controllers\Admin\System\SettingController@save');
+            Route::get('config/index', 'Aphly\LaravelShop\Controllers\Admin\Setting\ConfigController@index');
+            Route::post('config/save', 'Aphly\LaravelShop\Controllers\Admin\Setting\ConfigController@save');
 
             Route::get('product/index', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@index');
             Route::match(['get', 'post'],'product/add', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@add');

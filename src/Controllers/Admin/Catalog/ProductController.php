@@ -24,7 +24,6 @@ use Aphly\LaravelShop\Models\Catalog\ProductVideo;
 use Aphly\LaravelShop\Models\Catalog\ReviewImage;
 use Aphly\LaravelShop\Models\Sale\ServiceImage;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {

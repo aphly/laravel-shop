@@ -4,8 +4,8 @@ namespace Aphly\LaravelShop\Controllers\Front\AccountExt;
 
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Models\UploadFile;
-use Aphly\LaravelCommon\Models\Currency;
-use Aphly\LaravelCommon\Models\User;
+use Aphly\LaravelShop\Models\Setting\Currency;
+use Aphly\LaravelBlog\Models\User;
 use Aphly\LaravelShop\Controllers\Front\Controller;
 use Aphly\LaravelShop\Models\Account\Wishlist;
 use Aphly\LaravelShop\Models\Catalog\Product;
@@ -28,7 +28,7 @@ class WishlistController extends Controller
             $val->special= $val->special?Currency::format($val->special):0;
             $val->discount= $val->discount?Currency::format($val->discount):0;
         }
-        return $this->makeView('laravel-shop-front::account_ext.wishlist.index',['res'=>$res]);
+        return $this->makeView('laravel-front::account_ext.wishlist.index',['res'=>$res]);
     }
 
     public function product(Request $request){

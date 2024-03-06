@@ -30,9 +30,9 @@ Route::middleware(['web'])->group(function () {
         //account
         Route::prefix('account_ext')->group(function () {
 
-            Route::get('address', 'Aphly\LaravelBlog\Controllers\Front\AccountExt\AddressController@index');
-            Route::match(['get', 'post'],'address/save', 'Aphly\LaravelBlog\Controllers\Front\AccountExt\AddressController@save');
-            Route::get('address/{id}/remove', 'Aphly\LaravelBlog\Controllers\Front\AccountExt\AddressController@remove')->where('id', '[0-9]+');
+            Route::get('address', 'Aphly\LaravelShop\Controllers\Front\AccountExt\AddressController@index');
+            Route::match(['get', 'post'],'address/save', 'Aphly\LaravelShop\Controllers\Front\AccountExt\AddressController@save');
+            Route::get('address/{id}/remove', 'Aphly\LaravelShop\Controllers\Front\AccountExt\AddressController@remove')->where('id', '[0-9]+');
 
             //wishlist
             Route::get('wishlist', 'Aphly\LaravelShop\Controllers\Front\AccountExt\WishlistController@index');

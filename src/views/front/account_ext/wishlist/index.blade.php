@@ -7,7 +7,7 @@
         .delete i{margin-right: 5px;}
     </style>
     <div class="account_info">
-        @include('larave-front::account_ext.left_menu')
+        @Linclude('laravel-front::account.left_menu')
         <div class="account-main-section">
             <div class="">
                 <div class="top-desc d-flex justify-content-between">
@@ -48,7 +48,7 @@
                     @endforeach
                 </ul>
                 <div>
-                    {{$res['list']->links('larave-front::common.pagination')}}
+                    {{$res['list']->links()}}
                 </div>
             </div>
         </div>

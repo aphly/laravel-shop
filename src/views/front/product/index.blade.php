@@ -271,7 +271,7 @@
                 @endforeach
             </ul>
             <div>
-                {{$res['list']->links('larave-front::common.pagination')}}
+                {{$res['list']->links()}}
             </div>
         </div>
     </div>

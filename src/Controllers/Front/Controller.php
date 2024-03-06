@@ -21,6 +21,7 @@ class Controller extends \Aphly\LaravelBlog\Controllers\Front\Controller
             return $next($request);
         });
         parent::__construct();
+        dd($this->currency);
     }
 
     public function afterController(){

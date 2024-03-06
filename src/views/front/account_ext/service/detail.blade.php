@@ -9,7 +9,7 @@
         .order_detail_title {font-weight: 500; border-top: 1px solid #f1f1f1;padding-top: 15px;}
     </style>
     <div class="account_info">
-        @include('larave-front::account_ext.left_menu')
+        @Linclude('laravel-front::account.left_menu')
         <div class="account-main-section" style="background: transparent;">
             <div class="service_detail">
                 <div class="top-desc d-flex justify-content-between">

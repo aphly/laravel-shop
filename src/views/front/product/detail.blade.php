@@ -355,7 +355,7 @@
                 @endforeach
             </ul>
             <div>
-                {{$res['review']->links('larave-front::common.pagination')}}
+                {{$res['review']->links()}}
             </div>
         @endif
     </div>

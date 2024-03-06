@@ -42,7 +42,7 @@
         .file_img img{width: 80px;height: 80px;margin-right: 10px;}
     </style>
     <div class="account_info">
-        @include('larave-front::account_ext.left_menu')
+        @Linclude('laravel-front::account.left_menu')
         <div class="account-main-section" style="background: transparent;">
             <div class="order">
                 <div class="top-desc d-flex justify-content-between">

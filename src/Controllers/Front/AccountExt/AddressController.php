@@ -23,7 +23,7 @@ class AddressController extends Controller
         }
         $res['country'] = (new Country)->findAllIds($country_ids);
         $res['zone'] = (new Zone)->findAllIds($zone_ids);
-        return $this->makeView('larave-front::account_ext.address.index',['res'=>$res]);
+        return $this->makeView('laravel-front::account_ext.address.index',['res'=>$res]);
     }
 
     public function save(Request $request){
@@ -62,7 +62,7 @@ class AddressController extends Controller
             }else{
                 $res['zone'] = [];
             }
-            return $this->makeView('larave-front::account_ext.address.form',['res'=>$res]);
+            return $this->makeView('laravel-front::account_ext.address.form',['res'=>$res]);
         }
     }
 

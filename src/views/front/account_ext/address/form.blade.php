@@ -2,7 +2,7 @@
 
 <div class="container">
     <div class="d-flex justify-content-between account_info">
-        @include('larave-front::account_ext.left_menu')
+        @Linclude('laravel-front::account.left_menu')
         <div class="account-main-section">
             <div class="">
                 <div class="top-desc d-flex justify-content-between">

@@ -18,7 +18,7 @@ class CheckoutController extends Controller
         if($res['redirect']){
             $res['redirect']= urldecode($res['redirect']);
         }
-        return $this->makeView('larave-front::checkout.success',['res'=>$res]);
+        return $this->makeView('laravel-front::checkout.success',['res'=>$res]);
     }
 
     public function fail(Request $request)
@@ -29,7 +29,7 @@ class CheckoutController extends Controller
         if($res['redirect']){
             $res['redirect']= urldecode($res['redirect']);
         }
-        return $this->makeView('larave-front::checkout.fail',['res'=>$res]);
+        return $this->makeView('laravel-front::checkout.fail',['res'=>$res]);
     }
 
 }

@@ -13,7 +13,7 @@
         .total_data li:last-child{font-weight: 600}
     </style>
     <div class="account_info">
-        @include('larave-front::account_ext.left_menu')
+        @Linclude('laravel-front::account.left_menu')
         <div class="account-main-section">
             <div class="order">
                 <div class="top-desc d-flex justify-content-between">

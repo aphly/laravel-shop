@@ -6,27 +6,25 @@
 </style>
 <div class="imain">
     <div class="itop ">
-        <form method="get" action="/shop_admin/user_address/index" class="select_form">
+        <form method="get" action="/shop_admin/Wishlist/index" class="select_form">
         <div class="search_box ">
             <input type="search" name="uuid" placeholder="uuid" value="{{$res['search']['uuid']}}">
             <button class="" type="submit">搜索</button>
         </div>
         </form>
         <div class="">
-            <a class="badge badge-primary ajax_html show_all0_btn " data-href="/shop_admin/user_address/form">添加</a>
+            <a class="badge badge-primary ajax_html show_all0_btn " data-href="/shop_admin/Wishlist/form">添加</a>
         </div>
     </div>
 
-    <form method="post"  @if($res['search']['string']) action="/shop_admin/user_address/del?{{$res['search']['string']}}" @else action="/shop_admin/user_address/del" @endif  class="del_form">
+    <form method="post"  @if($res['search']['string']) action="/shop_admin/Wishlist/del?{{$res['search']['string']}}" @else action="/shop_admin/Wishlist/del" @endif  class="del_form">
     @csrf
         <div class="table_scroll">
             <div class="table">
                 <ul class="table_header">
                     <li >ID</li>
                     <li >uuid</li>
-                    <li >firstname</li>
-                    <li >lastname</li>
-                    <li >telephone</li>
+                    <li >产品</li>
                     <li >操作</li>
                 </ul>
                 @if($res['list']->total())
@@ -35,16 +33,10 @@
                         <li><input type="checkbox" class="delete_box" name="delete[]" value="{{$v['id']}}">{{$v['id']}}</li>
                         <li>{{ $v->uuid }}</li>
                         <li>
-                            {{$v->firstname}}
+                            <a href="/product/{{$v->product_id}}">{{$v->product->name}}</a>
                         </li>
                         <li>
-                            {{$v->lastname}}
-                        </li>
-                        <li>
-                            {{$v->telephone}}
-                        </li>
-                        <li>
-                            <a class="badge badge-info ajax_html" data-href="/shop_admin/user_address/form?id={{$v['id']}}">编辑</a>
+                            <a class="badge badge-info ajax_html" data-href="/shop_admin/wishlist/form?id={{$v['id']}}">编辑</a>
                         </li>
                     </ul>
                     @endforeach

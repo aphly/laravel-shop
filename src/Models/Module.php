@@ -30,7 +30,6 @@ class Module extends Module_base
                 $data[] =['name' => '筛选管理','route' =>'shop_admin/filter/index','pid'=>$menu21->id,'uuid'=>$manager->uuid,'type'=>2,'module_id'=>$module_id,'sort'=>0];
                 $data[] =['name' => '属性管理','route' =>'shop_admin/attribute/index','pid'=>$menu21->id,'uuid'=>$manager->uuid,'type'=>2,'module_id'=>$module_id,'sort'=>0];
                 $data[] =['name' => '选项管理','route' =>'shop_admin/option/index','pid'=>$menu21->id,'uuid'=>$manager->uuid,'type'=>2,'module_id'=>$module_id,'sort'=>0];
-                $data[] =['name' => '评论管理','route' =>'shop_admin/review/index','pid'=>$menu21->id,'uuid'=>$manager->uuid,'type'=>2,'module_id'=>$module_id,'sort'=>0];
                 $data[] =['name' => '物流管理','route' =>'shop_admin/shipping/index','pid'=>$menu21->id,'uuid'=>$manager->uuid,'type'=>2,'module_id'=>$module_id,'sort'=>0];
                 $data[] =['name' => '文章管理','route' =>'shop_admin/information/index','pid'=>$menu21->id,'uuid'=>$manager->uuid,'type'=>2,'module_id'=>$module_id,'sort'=>0];
                 DB::table('admin_menu')->insert($data);
@@ -40,6 +39,8 @@ class Module extends Module_base
                 $data=[];
                 $data[] =['name' => '地址','route' =>'shop_admin/user_address/index','pid'=>$menu22->id,'uuid'=>$manager->uuid,'type'=>2,'module_id'=>$module_id,'sort'=>0];
                 $data[] =['name' => '用户组','route' =>'shop_admin/group/index','pid'=>$menu22->id,'uuid'=>$manager->uuid,'type'=>2,'module_id'=>$module_id,'sort'=>0];
+                $data[] =['name' => '心愿单','route' =>'shop_admin/wishlist/index','pid'=>$menu22->id,'uuid'=>$manager->uuid,'type'=>2,'module_id'=>$module_id,'sort'=>0];
+                $data[] =['name' => '评论','route' =>'shop_admin/review/index','pid'=>$menu22->id,'uuid'=>$manager->uuid,'type'=>2,'module_id'=>$module_id,'sort'=>0];
                 DB::table('admin_menu')->insert($data);
             }
             $menu22 = Menu::create(['name' => '销售','route' =>'','pid'=>$menu->id,'uuid'=>$manager->uuid,'type'=>1,'module_id'=>$module_id,'sort'=>9]);

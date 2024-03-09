@@ -5,16 +5,16 @@ namespace Aphly\LaravelShop\Controllers\Front\Product;
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Models\Breadcrumb;
 use Aphly\Laravel\Models\UploadFile;
-use Aphly\LaravelShop\Models\Setting\Currency;
 use Aphly\LaravelShop\Controllers\Front\Controller;
+use Aphly\LaravelShop\Models\Account\Review;
+use Aphly\LaravelShop\Models\Account\ReviewImage;
 use Aphly\LaravelShop\Models\Account\Wishlist;
 use Aphly\LaravelShop\Models\Catalog\FilterGroup;
 use Aphly\LaravelShop\Models\Catalog\Option;
 use Aphly\LaravelShop\Models\Catalog\Product;
-use Aphly\LaravelShop\Models\Catalog\Review;
-use Aphly\LaravelShop\Models\Catalog\ReviewImage;
 use Aphly\LaravelShop\Models\Checkout\Cart;
 use Aphly\LaravelShop\Models\Sale\OrderProduct;
+use Aphly\LaravelShop\Models\Setting\Currency;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -49,7 +49,7 @@ class ProductController extends Controller
         }
         $res['wishlist_product_ids'] = Wishlist::$product_ids;
         $res['sort'] = $product->sortArr();
-        $res['price'] = $product->priceArr($this->currency[2]['symbol_left']);
+        $res['price'] = $product->priceArr(self::$_G['currency'][2]['symbol_left']);
         return $res;
     }
 
@@ -133,7 +133,7 @@ class ProductController extends Controller
             throw new ApiException(['code'=>1,'msg'=>'Content cannot be empty']);
         }
 
-        if($this->shop_config['review_limit']){
+        if(self::$_G['shop_config']['review_limit']){
             $count = Review::where(['uuid'=>$this->user->uuid,'product_id'=>$request->id])->count();
             if($count>0){
                 throw new ApiException(['code'=>1,'msg'=>'The product can only be reviewed once']);

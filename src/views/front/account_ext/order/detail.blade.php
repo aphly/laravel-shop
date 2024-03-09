@@ -213,4 +213,4 @@ $(function () {
 
 })
 </script>
-@include('laravel-front::common.footer')
+@Linclude('laravel-front::common.footer')

@@ -49,4 +49,4 @@
         alert_msg(res,false,3000)
     }
 </script>
-@include('laravel-front::common.footer')
+@Linclude('laravel-front::common.footer')

@@ -18,7 +18,7 @@
                 <ul class="checkout_info">
                     <li>
                         <span>Contact</span>
-                        <span>{{$id}}</span>
+                        <span>{{$email}}</span>
                         <span></span>
                     </li>
                     @if($res['hasShipping'])
@@ -116,7 +116,7 @@
     const stripe = Stripe("{{$res['stripe']->pk}}");
     let elements;
     const items = { amount: {{$res['total_data']['total']}},currency:'{{$res['currency']['code']}}',_token:'{{csrf_token()}}' };
-    let emailAddress = '{{$id}}';
+    let emailAddress = '{{$email}}';
 
     async function initialize() {
         const res = await fetch("/card/create", {
@@ -208,4 +208,4 @@
 </style>
 @endif
 
-@include('laravel-front::common.footer')
+@Linclude('laravel-front::common.footer')

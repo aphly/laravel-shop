@@ -1,6 +1,6 @@
 <?php
 return [
-
+    'name'=>'my shop',
     'menu'=>[
         'about_us'=>'/information/1',
         'terms_of_service'=>'/information/2',

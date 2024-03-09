@@ -1,9 +1,9 @@
 <?php
 
-namespace Aphly\LaravelShop\Models\Catalog;
+namespace Aphly\LaravelShop\Models\Account;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ReviewImage extends Model
 {

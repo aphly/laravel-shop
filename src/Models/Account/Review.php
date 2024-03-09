@@ -1,10 +1,11 @@
 <?php
 
-namespace Aphly\LaravelShop\Models\Catalog;
+namespace Aphly\LaravelShop\Models\Account;
 
-use Aphly\Laravel\Models\UploadFile;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;
+use Aphly\Laravel\Models\UploadFile;
+use Aphly\LaravelShop\Models\Catalog\Product;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Review extends Model
 {

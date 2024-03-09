@@ -16,12 +16,12 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['web'])->group(function () {
 
     //currency
-    Route::get('currency/{id}', 'Aphly\LaravelBlog\Controllers\Front\CurrencyController@ajax')->where('id', '[0-9]+');
+    Route::get('currency/{id}', 'Aphly\LaravelShop\Controllers\Front\Common\CurrencyController@ajax')->where('id', '[0-9]+');
     //country
-    Route::get('country/{id}/zone', 'Aphly\LaravelBlog\Controllers\Front\CountryController@zone')->where('id', '[0-9]+');
+    Route::get('country/{id}/zone', 'Aphly\LaravelShop\Controllers\Front\Common\CountryController@zone')->where('id', '[0-9]+');
     //checkout
-    Route::get('checkout/success', 'Aphly\LaravelBlog\Controllers\Front\CheckoutController@success');
-    Route::get('checkout/fail', 'Aphly\LaravelBlog\Controllers\Front\CheckoutController@fail');
+    Route::get('checkout/success', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@success');
+    Route::get('checkout/fail', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@fail');
 
     //wishlist
     Route::post('wishlist/product/{id}', 'Aphly\LaravelShop\Controllers\Front\AccountExt\WishlistController@product')->where('id', '[0-9]+');
@@ -106,11 +106,13 @@ Route::middleware(['web'])->group(function () {
         Route::middleware(['rbac'])->group(function () {
 
             $route_arr = [
-                ['attribute','\Catalog\AttributeController'],['option','\Catalog\OptionController'],['review','\Catalog\ReviewController'],['filter','\Catalog\FilterController'],
+                ['attribute','\Catalog\AttributeController'],['option','\Catalog\OptionController'],['filter','\Catalog\FilterController'],
                 ['shipping','\Catalog\ShippingController'],['coupon','\Sale\CouponController'],['order','\Sale\OrderController'],['service','\Sale\ServiceController'],
                 ['information','\Common\InformationController'],['contact_us','\Common\ContactUsController'],
-                ['group','\GroupController'],['user_address','\UserAddressController'],
-                ['country','\Setting\CountryController'],['geo','\Setting\GeoController'],['zone','\Setting\ZoneController'],['currency','\Setting\CurrencyController']
+                ['country','\Setting\CountryController'],['geo','\Setting\GeoController'],['zone','\Setting\ZoneController'],
+                ['currency','\Setting\CurrencyController'],
+                ['group','\Account\GroupController'],['user_address','\Account\UserAddressController'],
+                ['review','\Account\ReviewController'],['wishlist','\Account\WishlistController'],
             ];
 
 

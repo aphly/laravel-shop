@@ -142,4 +142,4 @@
         $('.product_option dd:first-child').click();
     })
 </script>
-@include('laravel-front::common.footer')
+@Linclude('laravel-front::common.footer')

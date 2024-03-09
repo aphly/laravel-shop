@@ -283,5 +283,25 @@ class CheckoutController extends Controller
         (new StripeCard)->create($amount,$currency);
     }
 
+    public function success(Request $request)
+    {
+        $res['title'] = 'Checkout Success';
+        //$res['payment'] = Payment::where('id',$request->query('payment_id',0))->first();
+        $res['redirect'] = $request->query('redirect','');
+        if($res['redirect']){
+            $res['redirect']= urldecode($res['redirect']);
+        }
+        return $this->makeView('laravel-front::checkout.success',['res'=>$res]);
+    }
 
+    public function fail(Request $request)
+    {
+        $res['title'] = 'Checkout Fail';
+        //$res['payment'] = Payment::where('id',$request->query('payment_id',0))->first();
+        $res['redirect'] = $request->query('redirect','');
+        if($res['redirect']){
+            $res['redirect']= urldecode($res['redirect']);
+        }
+        return $this->makeView('laravel-front::checkout.fail',['res'=>$res]);
+    }
 }

@@ -7,31 +7,29 @@ use Aphly\LaravelShop\Models\Setting\Currency;
 use Aphly\LaravelShop\Models\Account\Wishlist;
 use Aphly\LaravelShop\Models\Checkout\Cart;
 use Aphly\LaravelShop\Models\Setting\Config;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 
 class Controller extends \Aphly\LaravelBlog\Controllers\Front\Controller
 {
-    public $shop_config = [];
-
-    public $currency = [];
 
     public function __construct()
     {
+        parent::__construct();
         $this->middleware(function ($request, $next){
             return $next($request);
         });
-        parent::__construct();
-        dd($this->currency);
+        //dd(self::$_G);
     }
 
     public function afterController(){
-        $this->shop_config = Config::findAll();
-        View::share("shop_config",$this->shop_config);
-        $this->currency = (new Currency)->allDefaultCurr();
-        if(isset($this->currency[2]) && !empty($this->currency[2]['timezone'])){
-            date_default_timezone_set($this->currency[2]['timezone']);
+        parent::$_G['shop_config'] = Config::findAll();
+        View::share("shop_config",parent::$_G['shop_config']);
+        parent::$_G['currency'] = (new Currency)->allDefaultCurr();
+        if(isset(parent::$_G['currency'][2]) && !empty(parent::$_G['currency'][2]['timezone'])){
+            date_default_timezone_set(parent::$_G['currency'][2]['timezone']);
         }
-        View::share("currency",$this->currency);
+        View::share("currency",parent::$_G['currency']);
         list($cart_num) = (new Cart)->countList();
         View::share("cart_num",$cart_num);
         $count = 0;
@@ -41,6 +39,7 @@ class Controller extends \Aphly\LaravelBlog\Controllers\Front\Controller
             if($count){
                 Wishlist::$product_ids = array_column($wishlist->get('product_id')->toArray(),'product_id');
             }
+            View::share("email",Auth::guard('user')->user()->initId());
         }else{
             $shop_wishlist = session('shop_wishlist');
             if($shop_wishlist){
@@ -50,6 +49,7 @@ class Controller extends \Aphly\LaravelBlog\Controllers\Front\Controller
                     Wishlist::$product_ids = $shop_wishlist_arr;
                 }
             }
+            View::share("email",'');
         }
         View::share("wishlist_num",$count);
     }

@@ -14,7 +14,7 @@
                 <ul class="checkout_info">
                     <li>
                         <span>Contact</span>
-                        <span>{{$id}}</span>
+                        <span>{{$email}}</span>
                         <span></span>
                     </li>
                 </ul>
@@ -234,4 +234,4 @@
         }
     }
 </script>
-@include('laravel-front::common.footer')
+@Linclude('laravel-front::common.footer')

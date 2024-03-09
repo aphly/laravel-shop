@@ -5,8 +5,8 @@ namespace Aphly\LaravelShop\Controllers\Front\AccountExt;
 use Aphly\Laravel\Models\UploadFile;
 use Aphly\LaravelBlog\Models\User;
 use Aphly\LaravelShop\Controllers\Front\Controller;
-use Aphly\LaravelShop\Models\Catalog\Review;
-use Aphly\LaravelShop\Models\Catalog\ReviewImage;
+use Aphly\LaravelShop\Models\Account\Review;
+use Aphly\LaravelShop\Models\Account\ReviewImage;
 use Illuminate\Http\Request;
 
 class ReviewController extends Controller

@@ -51,7 +51,7 @@ class ServiceController extends Controller
     public function form(Request $request){
         $res = $this->service_pre($request);
         $res['title'] = 'Service Form';
-        $service_refund_fee = intval($this->shop_config['service_refund_fee']);
+        $service_refund_fee = intval(self::$_G['shop_config']['service_refund_fee']);
         if($service_refund_fee>=0 && $service_refund_fee<=100){
             $total_all = floatval($res['orderInfo']->total)*(100-$service_refund_fee)/100;
         }else{
@@ -118,7 +118,7 @@ class ServiceController extends Controller
             }
 
             if($info->service_action_id==1){
-                $service_refund_fee = intval($this->shop_config['service_refund_fee']);
+                $service_refund_fee = intval(self::$_G['shop_config']['service_refund_fee']);
                 if($service_refund_fee<=100 && $service_refund_fee>=0){
                     $total_all = $res['orderInfo']->total*(100-$service_refund_fee)/100;
                     $info->refund_fee = $service_refund_fee;

@@ -4,7 +4,7 @@ namespace Aphly\LaravelShop\Controllers\Front\Checkout;
 
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Models\Breadcrumb;
-use Aphly\LaravelBlog\Models\User;
+use Aphly\Laravel\Models\User;
 use Aphly\LaravelShop\Controllers\Front\Controller;
 use Aphly\LaravelShop\Models\Account\Wishlist;
 use Aphly\LaravelShop\Models\Catalog\Coupon;

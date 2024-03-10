@@ -6,7 +6,7 @@ use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Mail\MailSend;
 use Aphly\Laravel\Models\Model;
 use Aphly\LaravelShop\Models\Setting\Currency;
-use Aphly\LaravelBlog\Models\RemoteEmail;
+use Aphly\Laravel\Models\RemoteEmail;
 use Aphly\LaravelPayment\Models\Payment;
 use Aphly\LaravelShop\Mail\Order\Cancel;
 use Aphly\LaravelShop\Mail\Order\Paid;
@@ -149,7 +149,7 @@ class Order extends Model
                         'email'=>$info->email,
                         'title'=>'Order Paid',
                         'content'=>(new Paid($info))->render(),
-                        'type'=>config('blog.email_type'),
+                        'type'=>config('base.email_type'),
                         'queue_priority'=>0,
                         'is_cc'=>1
                     ]);
@@ -159,7 +159,7 @@ class Order extends Model
                         'email'=>$info->email,
                         'title'=>'Order Shipped',
                         'content'=>(new Shipped($info))->render(),
-                        'type'=>config('blog.email_type'),
+                        'type'=>config('base.email_type'),
                         'queue_priority'=>0,
                         'is_cc'=>0
                     ]);
@@ -171,7 +171,7 @@ class Order extends Model
                         'email'=>$info->email,
                         'title'=>'Order cancel',
                         'content'=>(new Cancel($info))->render(),
-                        'type'=>config('blog.email_type'),
+                        'type'=>config('base.email_type'),
                         'queue_priority'=>0,
                         'is_cc'=>1
                     ]);
@@ -183,7 +183,7 @@ class Order extends Model
                         'email'=>$info->email,
                         'title'=>'Order Refunded',
                         'content'=>(new Refunded($info,$orderHistory))->render(),
-                        'type'=>config('blog.email_type'),
+                        'type'=>config('base.email_type'),
                         'queue_priority'=>0,
                         'is_cc'=>0
                     ]);

@@ -56,7 +56,7 @@
                                 @endforeach
                             </div>
                         @else
-                            <img src="{{ URL::asset('static/base/img/none.png') }}" class="aphly_viewer">
+                            <img src="{{ URL::asset('static/base/admin/img/none.png') }}" class="aphly_viewer">
                         @endif
                     </div>
                     @if(!empty($res['info_img'][0]))
@@ -93,7 +93,7 @@
                                 @endforeach
                             </ul>
                         @else
-                            <img src="{{ URL::asset('static/base/img/none.png') }}" class="aphly_viewer">
+                            <img src="{{ URL::asset('static/base/admin/img/none.png') }}" class="aphly_viewer">
                         @endif
                     </div>
                     @if(!empty($res['info_img'][0]))
@@ -406,7 +406,7 @@
                 <li class="">
                     <div class="image">
                         <a href="/product/{{$val->id}}">
-                            <img src="{{ URL::asset('static/base/img/none.png') }}" data-original="{{ $val->image_src }}"  class="img-responsive lazy" >
+                            <img src="{{ URL::asset('static/base/admin/img/none.png') }}" data-original="{{ $val->image_src }}"  class="img-responsive lazy" >
                         </a>
                     </div>
                     <a href="/product/{{$val->id}}"><div class="p_name">{{$val->name}}</div></a>

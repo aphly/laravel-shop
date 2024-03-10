@@ -3,7 +3,7 @@
 namespace Aphly\LaravelShop\Controllers\Front\Common;
 
 use Aphly\Laravel\Exceptions\ApiException;
-use Aphly\LaravelBlog\Models\User;
+use Aphly\Laravel\Models\User;
 use Aphly\LaravelShop\Controllers\Front\Controller;
 use Aphly\LaravelShop\Models\Common\ContactUs;
 use Illuminate\Http\Request;

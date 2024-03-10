@@ -5,7 +5,7 @@ namespace Aphly\LaravelShop\Models\Sale;
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Models\Model;
 use Aphly\LaravelShop\Models\Setting\Currency;
-use Aphly\LaravelBlog\Models\RemoteEmail;
+use Aphly\Laravel\Models\RemoteEmail;
 use Aphly\LaravelPayment\Models\Payment;
 //use Aphly\LaravelShop\Jobs\Service\Refund;
 use Aphly\LaravelShop\Mail\Service\Agree;
@@ -114,7 +114,7 @@ class Service extends Model
                                 'email'=>$shop_config['service_email'],
                                 'title'=>'Service Request',
                                 'content'=>(new Request($info))->render(),
-                                'type'=>config('blog.email_type'),
+                                'type'=>config('base.email_type'),
                                 'queue_priority'=>0,
                                 'is_cc'=>0
                             ]);
@@ -124,7 +124,7 @@ class Service extends Model
                             'email'=>$info->order->email,
                             'title'=>'Service Refusal',
                             'content'=>(new Refusal($info,$serviceHistory))->render(),
-                            'type'=>config('blog.email_type'),
+                            'type'=>config('base.email_type'),
                             'queue_priority'=>0,
                             'is_cc'=>0
                         ]);
@@ -134,7 +134,7 @@ class Service extends Model
                             'email'=>$info->order->email,
                             'title'=>'Service Refund',
                             'content'=>(new Refund($info))->render(),
-                            'type'=>config('blog.email_type'),
+                            'type'=>config('base.email_type'),
                             'queue_priority'=>0,
                             'is_cc'=>0
                         ]);
@@ -146,7 +146,7 @@ class Service extends Model
                                 'email'=>$shop_config['service_email'],
                                 'title'=>'Service Request',
                                 'content'=>(new Request($info))->render(),
-                                'type'=>config('blog.email_type'),
+                                'type'=>config('base.email_type'),
                                 'queue_priority'=>0,
                                 'is_cc'=>0
                             ]);
@@ -156,7 +156,7 @@ class Service extends Model
                             'email'=>$info->order->email,
                             'title'=>'Service Refusal',
                             'content'=>(new Refusal($info,$serviceHistory))->render(),
-                            'type'=>config('blog.email_type'),
+                            'type'=>config('base.email_type'),
                             'queue_priority'=>0,
                             'is_cc'=>0
                         ]);
@@ -165,7 +165,7 @@ class Service extends Model
                             'email'=>$info->order->email,
                             'title'=>'Service Agree',
                             'content'=>(new Agree($info,$serviceHistory))->render(),
-                            'type'=>config('blog.email_type'),
+                            'type'=>config('base.email_type'),
                             'queue_priority'=>0,
                             'is_cc'=>0
                         ]);
@@ -175,7 +175,7 @@ class Service extends Model
                                 'email' => $shop_config['service_email'],
                                 'title' => 'Service Awaiting',
                                 'content' => (new Awaiting($info))->render(),
-                                'type' => config('blog.email_type'),
+                                'type' => config('base.email_type'),
                                 'queue_priority' => 0,
                                 'is_cc' => 0
                             ]);
@@ -186,7 +186,7 @@ class Service extends Model
                             'email'=>$info->order->email,
                             'title'=>'Service Refund',
                             'content'=>(new Refund($info))->render(),
-                            'type'=>config('blog.email_type'),
+                            'type'=>config('base.email_type'),
                             'queue_priority'=>0,
                             'is_cc'=>0
                         ]);

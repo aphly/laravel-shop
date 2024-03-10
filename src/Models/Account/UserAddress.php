@@ -3,7 +3,7 @@
 namespace Aphly\LaravelShop\Models\Account;
 
 use Aphly\LaravelShop\Models\Setting\Country;
-use Aphly\LaravelBlog\Models\User;
+use Aphly\Laravel\Models\User;
 use Aphly\LaravelShop\Models\Setting\Zone;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;

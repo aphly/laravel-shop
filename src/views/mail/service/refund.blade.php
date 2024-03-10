@@ -14,4 +14,4 @@
         </div>
     </div>
 
-@include('laravel-blog::mail.footer')
+@include('laravel::mail.footer')

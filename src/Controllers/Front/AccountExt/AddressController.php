@@ -3,9 +3,9 @@
 namespace Aphly\LaravelShop\Controllers\Front\AccountExt;
 
 use Aphly\Laravel\Exceptions\ApiException;
-use Aphly\LaravelBlog\Controllers\Front\Controller;
+use Aphly\Laravel\Controllers\Front\Controller;
 use Aphly\LaravelShop\Models\Setting\Country;
-use Aphly\LaravelBlog\Models\User;
+use Aphly\Laravel\Models\User;
 use Aphly\LaravelShop\Models\Account\UserAddress;
 use Aphly\LaravelShop\Models\Setting\Zone;
 use Illuminate\Http\Request;

@@ -84,9 +84,9 @@
 <style>
 </style>
 @if(in_array('Aphly\LaravelStatistics',$comm_module))
-    <script src="{{ URL::asset('static/statistics/js/statistics.js') }}" data-appid="{{config('blog.statistics_appid')}}" id="statistics"></script>
+    <script src="{{ URL::asset('static/statistics/js/statistics.js') }}" data-appid="{{config('base.statistics_appid')}}" id="statistics"></script>
 @endif
-<script src="{{ URL::asset('static/base/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ URL::asset('static/base/admin/js/bootstrap.bundle.min.js') }}"></script>
 <script>
     var aphly_viewerjs = document.querySelectorAll('.aphly_viewer_js');
     if(aphly_viewerjs){

@@ -9,7 +9,7 @@ use Aphly\Laravel\Models\Breadcrumb;
 use Aphly\Laravel\Requests\FormRequest;
 use Aphly\LaravelShop\Models\Setting\Country;
 use Aphly\LaravelShop\Models\Setting\Currency;
-use Aphly\LaravelBlog\Models\User;
+use Aphly\Laravel\Models\User;
 use Aphly\LaravelPayment\Models\Payment;
 use Aphly\LaravelPayment\Models\PaymentMethod;
 use Aphly\LaravelPayment\Models\Stripe;

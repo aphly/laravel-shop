@@ -4,7 +4,7 @@ namespace Aphly\LaravelShop\Controllers\Front\AccountExt;
 
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\LaravelShop\Models\Setting\Currency;
-use Aphly\LaravelBlog\Models\User;
+use Aphly\Laravel\Models\User;
 use Aphly\LaravelPayment\Models\Payment;
 use Aphly\LaravelPayment\Models\PaymentRefund;
 use Aphly\LaravelShop\Controllers\Front\Controller;

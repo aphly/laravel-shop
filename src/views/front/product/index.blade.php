@@ -213,11 +213,11 @@
                                         @foreach($res['product_option_value_image'][$val->id] as $k=>$v)
                                             @if(reset($res['product_option_value_image'][$val->id]) ===$v)
                                                 <dd class="active" data-image_id="{{$k}}" >
-                                                    <img src="{{ URL::asset('static/base/img/none.png') }}" data-original="{{$v}}" class="lazy" />
+                                                    <img src="{{ URL::asset('static/base/admin/img/none.png') }}" data-original="{{$v}}" class="lazy" />
                                                 </dd>
                                             @else
                                                 <dd data-image_id="{{$k}}" >
-                                                    <img src="{{ URL::asset('static/base/img/none.png') }}" data-original="{{$v}}" class="lazy" />
+                                                    <img src="{{ URL::asset('static/base/admin/img/none.png') }}" data-original="{{$v}}" class="lazy" />
                                                 </dd>
                                             @endif
                                         @endforeach
@@ -227,7 +227,7 @@
                         @else
                             <div class="image">
                                 <a href="/product/{{$val->id}}">
-                                    <img src="{{ URL::asset('static/base/img/none.png') }}" data-original="{{ $val->image_src }}"  class="img-responsive lazy" >
+                                    <img src="{{ URL::asset('static/base/admin/img/none.png') }}" data-original="{{ $val->image_src }}"  class="img-responsive lazy" >
                                 </a>
                             </div>
                         @endif
@@ -261,7 +261,7 @@
                                 <dl>
                                     @foreach($res['product_option_value_image'][$val->id] as $k=>$v)
                                         <dd data-image_id="{{$k}}" >
-                                            <img src="{{ URL::asset('static/base/img/none.png') }}" data-original="{{$v}}" class="lazy" />
+                                            <img src="{{ URL::asset('static/base/admin/img/none.png') }}" data-original="{{$v}}" class="lazy" />
                                         </dd>
                                     @endforeach
                                 </dl>

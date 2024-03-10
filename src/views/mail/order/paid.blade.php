@@ -1,4 +1,4 @@
-@include('laravel-blog::mail.header')
+@include('laravel::mail.header')
     <div style="font-size: 28px;line-height: 40px;margin-bottom: 10px;">
         Order Paid
     </div>
@@ -73,4 +73,4 @@
             @endif
         </div>
     </div>
-@include('laravel-blog::mail.footer')
+@include('laravel::mail.footer')

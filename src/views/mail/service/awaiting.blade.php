@@ -1,4 +1,4 @@
-@include('laravel-blog::mail.header')
+@include('laravel::mail.header')
     <div style="font-size: 28px;line-height: 40px;margin-bottom: 10px;">
         Service Awaiting
     </div>
@@ -8,4 +8,4 @@
         The product has been shipped.
     </div>
 
-@include('laravel-blog::mail.footer')
+@include('laravel::mail.footer')

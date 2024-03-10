@@ -5,7 +5,7 @@ namespace Aphly\LaravelShop\Controllers\Front\AccountExt;
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Models\UploadFile;
 use Aphly\LaravelShop\Models\Setting\Currency;
-use Aphly\LaravelBlog\Models\User;
+use Aphly\Laravel\Models\User;
 use Aphly\LaravelShop\Controllers\Front\Controller;
 use Aphly\LaravelShop\Models\Account\Wishlist;
 use Aphly\LaravelShop\Models\Catalog\Product;

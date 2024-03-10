@@ -59,11 +59,11 @@
                                         @foreach($res['product_option_value_image'][$product_id] as $k=>$v)
                                             @if(reset($res['product_option_value_image'][$product_id]) ===$v)
                                                 <dd class="active" data-image_id="{{$k}}" >
-                                                    <img src="{{ URL::asset('static/base/img/none.png') }}" data-original="{{$v}}" class="lazy" />
+                                                    <img src="{{ URL::asset('static/base/admin/img/none.png') }}" data-original="{{$v}}" class="lazy" />
                                                 </dd>
                                             @else
                                                 <dd data-image_id="{{$k}}" >
-                                                    <img src="{{ URL::asset('static/base/img/none.png') }}" data-original="{{$v}}" class="lazy" />
+                                                    <img src="{{ URL::asset('static/base/admin/img/none.png') }}" data-original="{{$v}}" class="lazy" />
                                                 </dd>
                                             @endif
                                         @endforeach
@@ -73,7 +73,7 @@
                         @else
                             <div class="image">
                                 <a href="/product/{{$product_id}}">
-                                    <img src="{{ URL::asset('static/base/img/none.png') }}" data-original="{{ $res['products'][$product_id]->image_src }}"  class="img-responsive lazy" >
+                                    <img src="{{ URL::asset('static/base/admin/img/none.png') }}" data-original="{{ $res['products'][$product_id]->image_src }}"  class="img-responsive lazy" >
                                 </a>
                             </div>
                         @endif
@@ -101,7 +101,7 @@
                                 <dl>
                                     @foreach($res['product_option_value_image'][$product_id] as $k=>$v)
                                         <dd data-image_id="{{$k}}" >
-                                            <img src="{{ URL::asset('static/base/img/none.png') }}" data-original="{{$v}}" class="lazy" />
+                                            <img src="{{ URL::asset('static/base/admin/img/none.png') }}" data-original="{{$v}}" class="lazy" />
                                         </dd>
                                     @endforeach
                                 </dl>

@@ -2,7 +2,7 @@
 
 namespace Aphly\LaravelShop\Mail\Order;
 
-use Aphly\LaravelBlog\Models\User;
+use Aphly\Laravel\Models\User;
 use Aphly\LaravelShop\Models\Sale\Order;
 use Aphly\LaravelShop\Models\Sale\OrderProduct;
 use Aphly\LaravelShop\Models\Sale\OrderTotal;

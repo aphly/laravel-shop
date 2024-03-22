@@ -1,4 +1,4 @@
-@Linclude('laravel-front::common.header')
+@include(config('base.view_namespace_front_blade').'::common.header')
 <style>
 </style>
 <div class="container shop_main">
@@ -234,4 +234,4 @@
         }
     }
 </script>
-@Linclude('laravel-front::common.footer')
+@include(config('base.view_namespace_front_blade').'::common.footer')

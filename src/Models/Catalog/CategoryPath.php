@@ -30,13 +30,13 @@ class CategoryPath extends Model
         DB::table($this->table)->upsert($insertData, ['category_id', 'path_id']);
     }
 
-    public function getByIds($ids){
-        return self::leftJoin('shop_category as c1','c1.id','=','shop_category_path.category_id')
-            ->leftJoin('shop_category as c2','c2.id','=','shop_category_path.path_id')
+    public function getByIds($ids,$pre='shop_'){
+        return self::leftJoin($pre.'category as c1','c1.id','=',$pre.'category_path.category_id')
+            ->leftJoin($pre.'category as c2','c2.id','=',$pre.'category_path.path_id')
             ->whereIn('c1.id', $ids)
             ->groupBy('category_id')
-            ->selectRaw('any_value(c1.`id`) AS id,any_value(shop_category_path.`category_id`) AS category_id,
-            GROUP_CONCAT(c2.`name` ORDER BY shop_category_path.level SEPARATOR \'&nbsp;&nbsp;&gt;&nbsp;&nbsp;\') AS name')
+            ->selectRaw('any_value(c1.`id`) AS id,any_value('.$pre.'category_path.`category_id`) AS category_id,
+            GROUP_CONCAT(c2.`name` ORDER BY '.$pre.'category_path.level SEPARATOR \'&nbsp;&nbsp;&gt;&nbsp;&nbsp;\') AS name')
             ->get()->keyBy('id')->toArray();
     }
 }

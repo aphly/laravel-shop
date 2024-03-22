@@ -1,4 +1,4 @@
-@Linclude('laravel-front::common.header')
+@include(config('base.view_namespace_front_blade').'::common.header')
 <div>
     <div class="home_carousel">
         <div id="carouselCaptionsHome" class="carousel slide" data-ride="carousel">
@@ -142,4 +142,4 @@
         $('.product_option dd:first-child').click();
     })
 </script>
-@Linclude('laravel-front::common.footer')
+@include(config('base.view_namespace_front_blade').'::common.footer')

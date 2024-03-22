@@ -1,4 +1,4 @@
-@Linclude('laravel-front::common.header')
+@include(config('base.view_namespace_front_blade').'::common.header')
 <link rel="stylesheet" href="{{ URL::asset('static/shop/css/swiper-bundle.min.css') }}"/>
 <link rel="stylesheet" href="{{ URL::asset('static/base/css/video-js.min.css') }}">
 <script src='{{ URL::asset('static/base/js/video.min.js') }}' type='text/javascript'></script>
@@ -611,4 +611,4 @@
 
 </script>
 
-@Linclude('laravel-front::common.footer')
+@include(config('base.view_namespace_front_blade').'::common.footer')

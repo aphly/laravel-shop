@@ -1,4 +1,4 @@
-@Linclude('laravel-front::common.header')
+@include(config('base.view_namespace_front_blade').'::common.header')
 <style>
     .checkout_ul .desc{color:#36970e}
 </style>
@@ -88,4 +88,4 @@ $(function () {
     })
 })
 </script>
-@Linclude('laravel-front::common.footer')
+@include(config('base.view_namespace_front_blade').'::common.footer')

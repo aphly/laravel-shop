@@ -1,4 +1,4 @@
-@Linclude('laravel-front::common.header')
+@include(config('base.view_namespace_front_blade').'::common.header')
 
 <style>
     .cart-content{display: flex;flex-wrap: wrap;}
@@ -338,4 +338,4 @@
     }
 
 </script>
-@Linclude('laravel-front::common.footer')
+@include(config('base.view_namespace_front_blade').'::common.footer')

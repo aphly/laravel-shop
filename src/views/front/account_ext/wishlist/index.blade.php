@@ -1,4 +1,4 @@
-@Linclude('laravel-front::common.header')
+@include(config('base.view_namespace_front_blade').'::common.header')
 <section class="container">
     <style>
         .wishlist_img{width: 80px;height: 80px;margin-right: 20px;}
@@ -7,7 +7,7 @@
         .delete i{margin-right: 5px;}
     </style>
     <div class="account_info">
-        @Linclude('laravel-front::account.left_menu')
+        @include(config('base.view_namespace_front_blade').'::account.left_menu')
         <div class="account-main-section">
             <div class="">
                 <div class="top-desc d-flex justify-content-between">
@@ -78,4 +78,4 @@ $(function () {
     })
 })
 </script>
-@Linclude('laravel-front::common.footer')
+@include(config('base.view_namespace_front_blade').'::common.footer')

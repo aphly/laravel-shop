@@ -1,4 +1,4 @@
-@Linclude('laravel-front::common.header')
+@include(config('base.view_namespace_front_blade').'::common.header')
 <script src="https://js.stripe.com/v3/"></script>
 <style>
 .checkout_ul_payment li{display: flex;justify-content: space-between;align-items: center;padding: 0;}
@@ -208,4 +208,4 @@
 </style>
 @endif
 
-@Linclude('laravel-front::common.footer')
+@include(config('base.view_namespace_front_blade').'::common.footer')

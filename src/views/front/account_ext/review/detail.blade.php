@@ -1,4 +1,4 @@
-@Linclude('laravel-front::common.header')
+@include(config('base.view_namespace_front_blade').'::common.header')
 <section class="container">
     <style>
         .order ul li{display: flex;margin-bottom: 5px;}
@@ -13,7 +13,7 @@
         .total_data li:last-child{font-weight: 600}
     </style>
     <div class="account_info">
-        @Linclude('laravel-front::account.left_menu')
+        @include(config('base.view_namespace_front_blade').'::account.left_menu')
         <div class="account-main-section">
             <div class="order">
                 <div class="top-desc d-flex justify-content-between">
@@ -54,4 +54,4 @@ $(function () {
 
 })
 </script>
-@Linclude('laravel-front::common.footer')
+@include(config('base.view_namespace_front_blade').'::common.footer')

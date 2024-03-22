@@ -1,4 +1,4 @@
-@Linclude('laravel-front::common.header')
+@include(config('base.view_namespace_front_blade').'::common.header')
 <section class="container">
     <style>
         .order_product .option{display: flex;align-items: center;flex-wrap: wrap;width: 100%}
@@ -28,7 +28,7 @@
         .order_detail_title{font-weight: 500;border-top: 1px solid #f1f1f1; padding-top: 15px;}
     </style>
     <div class="account_info">
-        @Linclude('laravel-front::account.left_menu')
+        @include(config('base.view_namespace_front_blade').'::account.left_menu')
         <div class="account-main-section">
             <div class="order">
                 <div class="top-desc d-flex justify-content-between">
@@ -213,4 +213,4 @@ $(function () {
 
 })
 </script>
-@Linclude('laravel-front::common.footer')
+@include(config('base.view_namespace_front_blade').'::common.footer')

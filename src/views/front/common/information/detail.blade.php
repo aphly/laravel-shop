@@ -1,4 +1,4 @@
-@Linclude('laravel-front::common.header')
+@include(config('base.view_namespace_front_blade').'::common.header')
 
 <section class="information">
     <div class=" container">
@@ -49,4 +49,4 @@
         alert_msg(res,false,3000)
     }
 </script>
-@Linclude('laravel-front::common.footer')
+@include(config('base.view_namespace_front_blade').'::common.footer')

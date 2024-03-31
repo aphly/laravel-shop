@@ -51,7 +51,7 @@ class ServiceController extends Controller
                     }
                 })
             ->where('delete_at',0)
-            ->orderBy('created_at','desc')->Paginate(config('admin.perPage'))->withQueryString();
+            ->orderBy('created_at','desc')->Paginate(config('base.perPage'))->withQueryString();
         $res['breadcrumb'] = Breadcrumb::render([
             ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url]
         ]);

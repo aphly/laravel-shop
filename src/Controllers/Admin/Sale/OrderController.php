@@ -39,7 +39,7 @@ class OrderController extends Controller
                         $query->where('order_status_id', $search['status']);
                     }
                 })
-            ->with('orderStatus')->orderBy('created_at','desc')->Paginate(config('admin.perPage'))->withQueryString();
+            ->with('orderStatus')->orderBy('created_at','desc')->Paginate(config('base.perPage'))->withQueryString();
         $res['orderStatus'] = OrderStatus::get();
         $res['breadcrumb'] = Breadcrumb::render([
             ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url]

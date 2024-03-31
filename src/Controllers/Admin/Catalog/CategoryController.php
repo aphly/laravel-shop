@@ -33,7 +33,7 @@ class CategoryController extends Controller
                 any_value(c1.`status`) AS status,
                 any_value(c1.`sort`) AS sort')
             ->orderBy('c1.sort','desc')
-            ->Paginate(config('admin.perPage'))->withQueryString();
+            ->Paginate(config('base.perPage'))->withQueryString();
         $res['breadcrumb'] = Breadcrumb::render([
             ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url]
         ]);

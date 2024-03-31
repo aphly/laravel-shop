@@ -104,7 +104,7 @@ class ProductController extends Controller
         //$res['shipping'] = Shipping::where('cost',0)->firstToArray();
         $res['wishlist_product_ids'] = Wishlist::$product_ids;
         $res['review'] = Review::where('product_id',$res['info']->id)->with('img')->orderBy('created_at','desc')
-            ->Paginate(config('admin.perPage'))->withQueryString();
+            ->Paginate(config('base.perPage'))->withQueryString();
         $res['reviewRatingAvg'] = Review::where('product_id',$res['info']->id)->avg('rating');
         $res['reviewRatingAvg'] = intval($res['reviewRatingAvg']*10)/10;
         $res['reviewRatingAvg_100'] = $res['reviewRatingAvg']/5*100;

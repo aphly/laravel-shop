@@ -14,7 +14,7 @@ class ReviewController extends Controller
     public function index()
     {
         $res['list'] = Review::where(['uuid'=>User::uuid()])->with('product')->with('img')->orderBy('created_at','desc')
-            ->Paginate(config('admin.perPage'))->withQueryString();
+            ->Paginate(config('base.perPage'))->withQueryString();
         $res['title'] = 'Review';
         $res['list']->transform(function ($item) {
             $item->img->transform(function ($i) {

@@ -263,7 +263,7 @@ class Product extends Model
                         return $query->orderBy('rating','desc');
                     }
                 });
-        return $res->Paginate(config('admin.perPage'))->withQueryString();
+        return $res->Paginate(config('base.perPage'))->withQueryString();
     }
 
     function sortArr(){

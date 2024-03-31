@@ -15,7 +15,7 @@ class AddressController extends Controller
     public function index()
     {
         $res['title'] = '';
-        $res['list'] = UserAddress::where(['uuid'=>User::uuid()])->orderBy('id','desc')->Paginate(config('admin.perPage'))->withQueryString();
+        $res['list'] = UserAddress::where(['uuid'=>User::uuid()])->orderBy('id','desc')->Paginate(config('base.perPage'))->withQueryString();
         $country_ids = $zone_ids = [];
         foreach ($res['list'] as $val){
             $country_ids[] = $val['country_id'];

@@ -19,7 +19,7 @@ class ShippingController extends Controller
     {
         $res['search']['string'] = http_build_query($request->query());
         $res['list'] = Shipping::orderBy('id','desc')->with('geoGroup')
-            ->Paginate(config('admin.perPage'))->withQueryString();
+            ->Paginate(config('base.perPage'))->withQueryString();
         $res['breadcrumb'] = Breadcrumb::render([
             ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url]
         ]);

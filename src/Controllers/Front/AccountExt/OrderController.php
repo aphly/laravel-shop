@@ -19,7 +19,7 @@ class OrderController extends Controller
     {
         $res['title'] = 'My Orders';
         $res['list'] = Order::where(['uuid'=>User::uuid()])->where('delete_at',0)->with('orderStatus')->with('orderProduct')
-            ->orderBy('created_at','desc')->Paginate(config('admin.perPage'))->withQueryString();
+            ->orderBy('created_at','desc')->Paginate(config('base.perPage'))->withQueryString();
         $res['cancel_fee_24'] = self::$_G['shop_config']['order_cancel_fee_24'];
         $res['cancel_fee'] = self::$_G['shop_config']['order_cancel_fee'];
 //        foreach ($res['list'] as $val){

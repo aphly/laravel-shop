@@ -22,7 +22,7 @@ class ReviewController extends Controller
         $res['search']['string'] = http_build_query($request->query());
         $res['list'] = Review::orderBy('id','desc')
             ->with('product')
-            ->Paginate(config('admin.perPage'))->withQueryString();
+            ->Paginate(config('base.perPage'))->withQueryString();
         $review_ids = $res['reviewImage'] = [];
         foreach ($res['list'] as $val){
             $review_ids[] = $val->id;

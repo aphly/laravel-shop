@@ -23,7 +23,7 @@ class ServiceController extends Controller
     public function index()
     {
         $res['list'] = Service::where(['uuid'=>User::uuid()])->where('delete_at',0)->with('product')->with('order')
-            ->orderBy('created_at','desc')->Paginate(config('admin.perPage'))->withQueryString();
+            ->orderBy('created_at','desc')->Paginate(config('base.perPage'))->withQueryString();
         $res['title'] = 'My Service';
         return $this->makeView('laravel-front::account_ext.service.index',['res'=>$res]);
     }

@@ -45,7 +45,7 @@ class ProductController extends Controller
                     $query->where('status', $search['status']);
                 }
             })
-            ->Paginate(config('admin.perPage'))->withQueryString();
+            ->Paginate(config('base.perPage'))->withQueryString();
         $res['list']->transform(function ($item){
             $item->image_src = UploadFile::getPath($item->image,$item->remote);
             return $item;

@@ -161,7 +161,7 @@
             form_err_11000(res,_this);
         }else{
             _this.find('input.form-control').removeClass('is-valid');
-            alert_msg(res);
+            alert_msg(res.msg);
         }
     }
 </script>

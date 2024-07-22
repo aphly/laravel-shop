@@ -15,7 +15,7 @@ class ReviewController extends Controller
 {
     public $index_url='/shop_admin/review/index';
 
-    private $currArr = ['name'=>'评论','key'=>'review'];
+    public $currArr = ['name'=>'评论','key'=>'review','admin'=>'shop_admin'];
 
     public function index(Request $request)
     {

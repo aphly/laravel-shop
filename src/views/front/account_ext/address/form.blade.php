@@ -104,7 +104,7 @@
                 obj.next('.invalid-feedback').html(str);
             }
         }else{
-            alert_msg(res)
+            alert_msg(res.msg)
         }
     }
     let country_zone = {};

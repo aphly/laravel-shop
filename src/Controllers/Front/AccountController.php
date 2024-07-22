@@ -15,6 +15,8 @@ use Aphly\Laravel\Mail\Verify;
 use Aphly\Laravel\Models\User;
 use Aphly\Laravel\Models\UserAuth;
 use Aphly\Laravel\Requests\AccountRequest;
+use Aphly\LaravelShop\Models\Account\Wishlist;
+use Aphly\LaravelShop\Models\Checkout\Cart;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -83,7 +85,6 @@ class AccountController extends Controller
     {
         $key = 'user_login_'.$request->ip();
         if($request->isMethod('post')) {
-            $comm = Comm::where('host',config('base.local_host'))->firstOrError();
             $arr['id'] = $request->input('id');
             $id_type = $request->input('id_type');
             if(in_array($id_type,UserAuth::$id_type)){
@@ -103,9 +104,10 @@ class AccountController extends Controller
                     if(Hash::check($request->input('password',''),$userAuth->password)){
                         $user = User::where(['uuid'=>$userAuth->uuid])->firstOrError();
                         $userAuthModel->update(['last_time'=>time(),'last_ip'=>$request->ip(),'user_agent' => $request->header('user-agent'),'accept_language' => $request->header('accept-language')]);
-                        $user->generateToken();
+                        $user->generateWebToken();
                         Auth::guard('user')->login($user);
-                        $user->afterLogin();
+                        (new Wishlist)->afterLogin();
+                        (new Cart)->afterLogin();
                         $user->id_type = $userAuth->id_type;
                         $user->id = $userAuth->id;
                         throw new ApiException(['code'=>0,'msg'=>'login success','data'=>['redirect'=>$user->redirect(),'user'=>$user]]);
@@ -153,12 +155,13 @@ class AccountController extends Controller
                     $user = User::create([
                         'nickname' => str::random(8),
                         'uuid' => $userAuth->uuid,
-                        'token' => Str::random(64),
-                        'token_expire' => time() + 120 * 60,
+                        'web_token' => Str::random(64),
+                        'web_token_expire' => time() + 120 * 60,
                         'comm_id'=>$comm->id
                     ]);
                     Auth::guard('user')->login($user);
-                    $user->afterRegister();
+                    (new Wishlist)->afterRegister();
+                    (new Cart)->afterRegister();
                     $user->id_type = $userAuth->id_type;
                     $user->id = $userAuth->id;
                     if ($userAuth->id_type == 'email' && config('base.email_verify')) {
@@ -172,7 +175,7 @@ class AccountController extends Controller
                         ]);
                     }
                     $this->limiterIncrement($key,15*60);
-                    throw new ApiException(['code' => 0, 'msg' => 'Register success', 'data' => ['redirect' => $user->redirect(), 'user' => $user]]);
+                    throw new ApiException(['code' => 0, 'msg' => 'Register success', 'data' => ['redirect' => $user->redirect()]]);
                 } else {
                     throw new ApiException(['code' => 1, 'msg' => 'Register fail']);
                 }

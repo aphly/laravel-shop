@@ -1,7 +1,7 @@
 @include(config('base.view_namespace_front_blade').'::common.header')
 <link rel="stylesheet" href="{{ URL::asset('static/shop/css/swiper-bundle.min.css') }}"/>
-<link rel="stylesheet" href="{{ URL::asset('static/base/css/video-js.min.css') }}">
-<script src='{{ URL::asset('static/base/js/video.min.js') }}' type='text/javascript'></script>
+<link rel="stylesheet" href="{{ URL::asset('static/base/admin/css/video-js.min.css') }}">
+<script src='{{ URL::asset('static/base/admin/js/video.min.js') }}' type='text/javascript'></script>
 <style>
     .vjs-volume-panel{order:80}
     .vjs-picture-in-picture-control{order:90}
@@ -369,7 +369,7 @@
                     location.reload()
                 }
             }else{
-                alert_msg(res)
+                alert_msg(res.msg)
             }
         }
         $(function () {
@@ -531,6 +531,17 @@
             price()
         })
 
+        $('.flag_text input').blur(function(){
+            price()
+        });
+
+        $('.flag_textarea textarea').blur(function(){
+            price()
+        });
+        $('.flag_date input').blur(function(){
+            price()
+        });
+
         function price() {
             let price_js = $('.price_js').data('price')
             let discount_js = $('.discount_js')
@@ -566,7 +577,30 @@
                     select_price+=$(this).data('price')
                 })
             })
-            let price = new Decimal(price_js).plus(radio_price).plus(checkbox_price).plus(select_price).toNumber();
+            let text_price = 0;
+            $('.flag_text').each(function () {
+                let input = $(this).find('input')
+                if(input.val()){
+                    text_price = input.data('price');
+                }
+            })
+
+            let textarea_price = 0;
+            $('.flag_textarea').each(function () {
+                let textarea = $(this).find('textarea')
+                if(textarea.val()){
+                    textarea_price = textarea.data('price');
+                }
+            })
+
+            let date_price = 0;
+            $('.flag_date').each(function () {
+                let input = $(this).find('input')
+                if(input.val()){
+                    date_price = input.data('price');
+                }
+            })
+            let price = new Decimal(price_js).plus(radio_price).plus(checkbox_price).plus(select_price).plus(text_price).plus(textarea_price).plus(date_price).toNumber();
 
             $('.price_js').html(currency._format(price,'{{$currency[2]['symbol_left']}}','{{$currency[2]['symbol_right']}}'))
         }

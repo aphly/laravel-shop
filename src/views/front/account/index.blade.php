@@ -64,7 +64,7 @@
                 processData: false,
                 dataType: "json",
                 success: function(res){
-                    alert_msg(res,true)
+                    alert_res(res)
                 },
                 complete:function(XMLHttpRequest,textStatus){
                     //console.log(XMLHttpRequest,textStatus)

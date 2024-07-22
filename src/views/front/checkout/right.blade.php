@@ -8,6 +8,7 @@
 }
 .checkout-totals{padding: 0 5px;}
 .checkout_coupon_form{display: flex;justify-content: space-between;}
+
 @media (max-width: 1199.99px) {
     .checkout{flex-direction:column-reverse}
     .items-info-list-all{display: none;}
@@ -43,9 +44,13 @@
                             <li class="title wenzi">
                                 {{$val['product']['name']}}
                             </li>
-                            <li class="option_name_str wenzi">
-                                @if($val['option_value_str'])
-                                {{$val['option_value_str']}}
+                            <li class="option_name_str ">
+                                @if($val['option_value_arr'])
+                                    <dl class="option_value_arr">
+                                        @foreach($val['option_value_arr'] as $v)
+                                            <dd>{{$v}}</dd>
+                                        @endforeach
+                                    </dl>
                                 @endif
                             </li>
                             <li class="price_qty">

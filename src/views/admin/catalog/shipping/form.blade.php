@@ -53,7 +53,7 @@
 
             <div class="form-group">
                 <label for="">排序</label>
-                <input type="number" name="sort" class="form-control " value="{{$res['info']->sort}}">
+                <input type="number" name="sort" class="form-control " value="{{$res['info']->sort?:0}}">
                 <div class="invalid-feedback"></div>
             </div>
 

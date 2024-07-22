@@ -6,35 +6,42 @@
 </style>
 <div class="imain">
     <div class="itop ">
-        <form method="get" action="/shop_admin/Wishlist/index" class="select_form">
+        <form method="get" action="/shop_admin/subscribe/index" class="select_form">
         <div class="search_box ">
-            <input type="search" name="uuid" placeholder="uuid" value="{{$res['search']['uuid']}}">
+            <input type="search" name="email" placeholder="subscribe name" value="{{$res['search']['email']}}">
             <button class="" type="submit">搜索</button>
         </div>
         </form>
-        
     </div>
 
-    <form method="post"  @if($res['search']['string']) action="/shop_admin/Wishlist/del?{{$res['search']['string']}}" @else action="/shop_admin/Wishlist/del" @endif  class="del_form">
+    <form method="post"  @if($res['search']['string']) action="/shop_admin/subscribe/del?{{$res['search']['string']}}" @else action="/shop_admin/subscribe/del" @endif  class="del_form">
     @csrf
         <div class="table_scroll">
             <div class="table">
                 <ul class="table_header">
                     <li >ID</li>
-                    <li >uuid</li>
-                    <li >产品</li>
+                    <li >Email</li>
+                    <li >状态</li>
+                    <li >时间</li>
                     <li >操作</li>
                 </ul>
                 @if($res['list']->total())
                     @foreach($res['list'] as $v)
                     <ul class="table_tbody">
                         <li><input type="checkbox" class="delete_box" name="delete[]" value="{{$v['id']}}">{{$v['id']}}</li>
-                        <li>{{ $v->uuid }}</li>
+                        <li>{{ $v['email'] }}</li>
                         <li>
-                            <a href="/product/{{$v->product_id}}">{{$v->product->name}}</a>
+                            @if($dict['status'])
+                                @if($v->status==1)
+                                    <span class="badge badge-success">{{$dict['status'][$v->status]}}</span>
+                                @else
+                                    <span class="badge badge-secondary">{{$dict['status'][$v->status]}}</span>
+                                @endif
+                            @endif
                         </li>
+                        <li>{{ $v->created_at }}</li>
                         <li>
-                            <a class="badge badge-info ajax_html" data-href="/shop_admin/wishlist/form?id={{$v['id']}}">编辑</a>
+                            <a class="badge badge-info ajax_html" data-href="/shop_admin/subscribe/form?id={{$v['id']}}">编辑</a>
                         </li>
                     </ul>
                     @endforeach

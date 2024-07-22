@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('title',128);
             $table->text('content');
-            $table->unsignedInteger('viewed')->nullable()->default(1);
-            $table->tinyInteger('status')->nullable()->default(1);
+            $table->unsignedInteger('viewed')->default(1);
+            $table->tinyInteger('status')->default(1);
             $table->unsignedBigInteger('created_at');
             $table->unsignedBigInteger('updated_at');
         });

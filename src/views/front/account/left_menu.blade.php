@@ -9,7 +9,7 @@
             <li><a href="/account/index" @if('account/index'==$uri) class="active" @endif>Dashboard</a></li>
             <li><a href="/account_ext/wishlist" @if('account_ext/wishlist'==$uri) class="active" @endif>My Wishlist</a></li>
             <li><a href="/account_ext/address" @if('account_ext/address'==$uri || 'account_ext/address/save'==$uri) class="active" @endif>My Address Book</a></li>
-            <li><a href="/account/subscribe" @if('account/subscribe'==$uri) class="active" @endif>My Subscribe</a></li>
+            <li><a href="/account_ext/subscribe" @if('account_ext/subscribe'==$uri) class="active" @endif>My Subscribe</a></li>
         </ul>
 
         <div class="sidebar-menu-title">Order Details</div>

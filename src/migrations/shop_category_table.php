@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('cn_name',128)->nullable();
             $table->string('icon',255)->nullable();
             $table->integer('pid')->unsigned();
-            $table->integer('sort')->unsigned()->nullable();
+            $table->integer('sort')->unsigned()->default(0);
             $table->tinyInteger('type')->default(1);
             $table->tinyInteger('status');
             $table->string('meta_title',255)->nullable();

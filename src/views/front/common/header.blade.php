@@ -4,28 +4,28 @@
 <link rel="stylesheet" href="{{ URL::asset('static/base/front/css/font.css') }}">
 <style>
     :root{
-        --btn_bg: #f39797;
+        --btn_bg: #a67b42;
         --btn_color:#fff;
-        --btn_bg_hover: #e57a6f;
+        --btn_bg_hover: #a67b42;
         --btn_color_hover:#fff;
     }
     .m_menu1111{width: 30%;}
     .header11{margin-right: 20px;}
     .text-brand {
-        --tw-gradient-from: #f8abad !important;
-        --tw-gradient-to: #de8080 !important;
+        --tw-gradient-from: #de922d !important;
+        --tw-gradient-to: #a67b42 !important;
         --tw-gradient-stops: var(--tw-gradient-from),var(--tw-gradient-to,rgba(28,157,254,0));
         background-image: linear-gradient(to right,var(--tw-gradient-stops));
     }
-    header a:hover{color:#de8080 !important;}
-    .btn-apply-code{background: #e3a086 !important;}
-    .checkout_ul li.active{border: 1px solid #767576 !important;font-weight: 600}
-    .info_option label.active{border: 1px solid #de8080 !important;}
-    .info_option label:hover{border: 1px solid #fcc5c6 !important;}
-    .cart_num, .wishlist_num{background: #de8080;}
-    .wishlist_one i{color: #de8080;}
+    header a:hover{color:var(--btn_bg) !important;}
+    .btn-apply-code{background: var(--btn_bg) !important;}
+    .checkout_ul li.active{border: 1px solid var(--btn_bg) !important;font-weight: 600}
+    .info_option label.active{border: 1px solid var(--btn_bg) !important;}
+    .info_option label:hover{border: 1px solid var(--btn_bg) !important;}
+    .cart_num, .wishlist_num{background: var(--btn_bg);}
+    .wishlist_one i{color: var(--btn_bg);}
     .sidebar-menu ul li a.active{color:var(--btn_bg) !important;}
-    .checkout_ul input[type='radio']{accent-color:#de8080}
+    .checkout_ul input[type='radio']{accent-color:var(--btn_bg)}
 </style>
 <header>
     <div class="header1">

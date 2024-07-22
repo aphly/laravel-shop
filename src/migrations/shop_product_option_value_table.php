@@ -23,7 +23,7 @@ return new class extends Migration
             $table->integer('quantity')->nullable();
             $table->tinyInteger('subtract')->unsigned()->nullable();
             $table->decimal('price',15,2)->nullable();
-            $table->integer('sort')->default(0)->nullable();
+            $table->integer('sort')->default(0);
             $table->engine = 'InnoDB';
         });
     }

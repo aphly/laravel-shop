@@ -18,7 +18,7 @@ class ServiceController extends Controller
 {
     public $index_url='/shop_admin/service/index';
 
-    private $currArr = ['name'=>'售后','key'=>'service'];
+    public $currArr = ['name'=>'售后','key'=>'service','admin'=>'shop_admin'];
 
     public function index(Request $request)
     {

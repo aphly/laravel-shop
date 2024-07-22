@@ -109,7 +109,7 @@
         })
     }
     function subscribe_res(res,_this) {
-        alert_msg(res)
+        alert_msg(res.msg)
     }
     $(function() {
         $("img.lazy").lazyload({effect : "fadeIn",threshold :50});

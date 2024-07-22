@@ -29,7 +29,7 @@ class ProductController extends Controller
 {
     public $index_url='/shop_admin/product/index';
 
-    private $currArr = ['name'=>'商品','key'=>'product'];
+    public $currArr = ['name'=>'商品','key'=>'product','admin'=>'shop_admin'];
 
     public function index(Request $request)
     {
@@ -185,7 +185,8 @@ class ProductController extends Controller
                 if ($insertData) {
                     ProductImage::insert($insertData);
                     $this->updateImg($res['product']->id);
-                    throw new ApiException(['code' => 0, 'msg' => '上传成功', 'data' => ['redirect' => '/shop_admin/product/img?product_id='.$res['product']->id,'imgs'=>$img_src]]);
+                    throw new ApiException(['code' => 0, 'msg' => '上传成功',
+                        'data' => ['redirect' => '/shop_admin/product/img?product_id='.$res['product']->id,'imgs'=>$img_src]]);
                 }
             }
             throw new ApiException(['code'=>2,'data'=>'','msg'=>'上传错误']);
@@ -346,6 +347,7 @@ class ProductController extends Controller
                 foreach ($val as $k=>$v){
                     $arr['option_id'] = $k;
                     $arr['value'] = $v['value']??'';
+                    $arr['price'] = $v['price']??0;
                     $arr['required'] = $v['required']??0;
                     $option_value = $v['option_value']??[];
                 }

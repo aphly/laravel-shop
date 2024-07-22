@@ -98,7 +98,7 @@
             if(typeof res.data.redirect !=='undefined'){
                 location.href = res.data.redirect
             }else{
-                alert_msg(res,true)
+                alert_msg(res.msg)
             }
         }
     }

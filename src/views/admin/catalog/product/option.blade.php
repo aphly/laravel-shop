@@ -88,23 +88,23 @@
                                 </ul>
                                 @elseif($res['option'][$val['option_id']]['type']=='text')
                                     <div class="form-group">
-                                        <label class="control-label">选项值</label>
+                                        <label class="control-label">价格</label>
                                         <div class="">
-                                            <input type="text" name="product_option[{{$val['id']}}][{{$val['option_id']}}][value]" value="{{$val['value']}}" placeholder="选项值" class="form-control">
+                                            <input type="text" name="product_option[{{$val['id']}}][{{$val['option_id']}}][price]" value="{{$val['price']}}" placeholder="price" class="form-control">
                                         </div>
                                     </div>
                                 @elseif($res['option'][$val['option_id']]['type']=='textarea')
                                     <div class="form-group">
-                                        <label class="control-label">选项值</label>
+                                        <label class="control-label">价格</label>
                                         <div class="">
-                                            <textarea name="product_option[{{$val['id']}}][{{$val['option_id']}}][value]" rows="5" placeholder="选项值" class="form-control">{{$val['value']}}</textarea>
+                                            <input type="text" name="product_option[{{$val['id']}}][{{$val['option_id']}}][price]" value="{{$val['price']}}" placeholder="price" class="form-control">
                                         </div>
                                     </div>
                                 @elseif($res['option'][$val['option_id']]['type']=='date' || $res['option'][$val['option_id']]['type']=='time' || $res['option'][$val['option_id']]['type']=='datetime-local')
                                     <div class="form-group">
-                                        <label class="control-label">选项值</label>
+                                        <label class="control-label">价格</label>
                                         <div class="">
-                                            <input type="{{$res['option'][$val['option_id']]['type']}}" name="product_option[{{$val['id']}}][{{$val['option_id']}}][value]" value="{{$val['value']}}" placeholder="选项值" class="form-control">
+                                            <input type="text" name="product_option[{{$val['id']}}][{{$val['option_id']}}][price]" value="{{$val['price']}}" placeholder="price" class="form-control">
                                         </div>
                                     </div>
                                 @endif
@@ -253,23 +253,23 @@
             }
         }else if(type=='text'){
             html += `<div class="form-group">
-                        <label class="control-label">选项值</label>
+                        <label class="control-label">价格</label>
                         <div class="">
-                            <input type="text" name="product_option[${id}][${option_id}][value]" value="" placeholder="选项值" class="form-control">
+                            <input type="text" name="product_option[${id}][${option_id}][price]" value="" placeholder="价格" class="form-control">
                         </div>
                     </div>`
         }else if(type=='textarea'){
             html += `<div class="form-group">
-                        <label class="control-label">选项值</label>
+                        <label class="control-label">价格</label>
                         <div class="">
-                            <textarea name="product_option[${id}][${option_id}][value]" rows="5" placeholder="选项值" class="form-control"></textarea>
+                            <input type="text" name="product_option[${id}][${option_id}][price]" value="" placeholder="价格" class="form-control">
                         </div>
                     </div>`
         }else if(type=='date' || type=='time' || type=='datetime-local'){
             html += `<div class="form-group">
-                        <label class="control-label">选项值</label>
+                        <label class="control-label">价格</label>
                         <div class="">
-                            <input type="${type}" name="product_option[${id}][${option_id}][value]" value="" placeholder="选项值" class="form-control">
+                            <input type="text" name="product_option[${id}][${option_id}][price]" value="" placeholder="价格" class="form-control">
                         </div>
                     </div>`
         }

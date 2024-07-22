@@ -21,6 +21,7 @@ class AddressController extends Controller
             $country_ids[] = $val['country_id'];
             $zone_ids[] = $val['zone_id'];
         }
+
         $res['country'] = (new Country)->findAllIds($country_ids);
         $res['zone'] = (new Zone)->findAllIds($zone_ids);
         return $this->makeView('laravel-front::account_ext.address.index',['res'=>$res]);

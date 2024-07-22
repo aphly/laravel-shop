@@ -13,7 +13,7 @@ class ContactUsController extends Controller
 {
     public $index_url = '/shop_admin/contact_us/index';
 
-    private $currArr = ['name'=>'联系我们','key'=>'contact_us'];
+    public $currArr = ['name'=>'联系我们','key'=>'contact_us','admin'=>'shop_admin'];
 
     public function index(Request $request)
     {

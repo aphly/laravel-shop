@@ -14,7 +14,7 @@ class ConfigController extends Controller
 {
     public $index_url='/shop_admin/config/index';
 
-    private $currArr = ['name'=>'设置','key'=>'setting'];
+    public $currArr = ['name'=>'设置','key'=>'setting','admin'=>'shop_admin'];
 
     public function index(Request $request)
     {

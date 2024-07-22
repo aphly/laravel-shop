@@ -13,7 +13,7 @@ class CategoryController extends Controller
 {
     public $index_url='/shop_admin/category/index';
 
-    private $currArr = ['name'=>'分类','key'=>'category'];
+    public $currArr = ['name'=>'分类','key'=>'category','admin'=>'shop_admin'];
 
     public function index(Request $request)
     {

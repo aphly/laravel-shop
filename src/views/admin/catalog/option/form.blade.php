@@ -146,8 +146,7 @@
             processData: false,
             dataType: "json",
             success: function(res){
-                alert_msg(res)
-                if(!res.code && res.data.redirect) {
+                if(res.data.redirect) {
                     iload(res.data.redirect);
                 }
             }

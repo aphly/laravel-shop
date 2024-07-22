@@ -389,6 +389,7 @@ class Product extends Model
         }
         $res = [];
         foreach ($productOption as $key=>$val){
+            list($val['price'],$val['price_format']) = Currency::format($val['price'],2);
             $res[$key] = $val;
             $res[$key]['product_option_value'] = $productOptionValueGroup[$val['id']]??[];
         }
@@ -399,7 +400,7 @@ class Product extends Model
         $html = '';
         foreach ($options as $val){
             if($val['option']['type']=='select'){
-                $html .= '<div class="form-group flag_select'.($val['required']==1?'required':'').'">
+                $html .= '<div class="form-group flag_select '.($val['required']==1?'required':'').'">
                               <div class="control-label">'.$val['option']['name'].'</div>
                               <select name="option['.$val['id'].']" class="form-control" '.($val['required']==1?'required':'').'>';
                 foreach ($val['product_option_value'] as $v){
@@ -438,19 +439,19 @@ class Product extends Model
                 }
                 $html .= '</div></div>';
             }else if($val['option']['type']=='text'){
-                $html .= '<div class="form-group '.($val['required']==1?'required':'').'">
+                $html .= '<div class="form-group flag_text '.($val['required']==1?'required':'').'">
                               <div class="control-label">'.$val['option']['name'].'</div>
-                              <input type="text" '.($val['required']==1?'required':'').' name="option['.$val['id'].']" value="'.$val['value'].'" placeholder="'.$val['option']['name'].'" class="form-control" />
+                              <input type="text" '.($val['required']==1?'required':'').' name="option['.$val['id'].']" data-price="'.$val['price'].'" placeholder="'.$val['option']['name'].'" class="form-control" />
                             </div>';
             }else if($val['option']['type']=='textarea'){
-                $html .= '<div class="form-group '.($val['required']==1?'required':'').'">
+                $html .= '<div class="form-group flag_textarea '.($val['required']==1?'required':'').'">
                               <div class="control-label">'.$val['option']['name'].'</div>
-                              <textarea '.($val['required']==1?'required':'').' name="option['.$val['id'].']" placeholder="'.$val['value'].'" class="form-control" >'.$val['value'].'</textarea>
+                              <textarea '.($val['required']==1?'required':'').' name="option['.$val['id'].']" data-price="'.$val['price'].'" placeholder="'.$val['value'].'" class="form-control" >'.$val['value'].'</textarea>
                             </div>';
             }else if($val['option']['type']=='date' || $val['option']['type']=='datetime-local' || $val['option']['type']=='date'){
-                $html .= '<div class="form-group '.($val['required']==1?'required':'').'">
+                $html .= '<div class="form-group flag_date '.($val['required']==1?'required':'').'">
                               <div class="control-label">'.$val['option']['name'].'</div>
-                              <input '.($val['required']==1?'required':'').' type="'.$val['option']['type'].'" name="option['.$val['id'].']" value="'.$val['value'].'" placeholder="'.$val['value'].'" class="form-control" />
+                              <input '.($val['required']==1?'required':'').' type="'.$val['option']['type'].'" name="option['.$val['id'].']" data-price="'.$val['price'].'" placeholder="'.$val['value'].'" class="form-control" />
                             </div>';
             }
 

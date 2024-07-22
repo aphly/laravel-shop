@@ -14,7 +14,7 @@ class OptionController extends Controller
 {
     public $index_url='/shop_admin/option/index';
 
-    private $currArr = ['name'=>'选项','key'=>'option'];
+    public $currArr = ['name'=>'选项','key'=>'option','admin'=>'shop_admin'];
 
     public function index(Request $request)
     {

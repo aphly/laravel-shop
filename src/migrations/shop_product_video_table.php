@@ -18,8 +18,8 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id')->index();
             $table->string('video',255);
             $table->tinyInteger('remote')->default(0);
-            $table->tinyInteger('type')->nullable()->default(0);
-            $table->integer('sort')->nullable()->default(0);
+            $table->tinyInteger('type')->default(0);
+            $table->integer('sort')->default(0);
         });
     }
 

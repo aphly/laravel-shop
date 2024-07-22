@@ -14,7 +14,7 @@ class InformationController extends Controller
 {
     public $index_url = '/shop_admin/information/index';
 
-    private $currArr = ['name'=>'信息','key'=>'information'];
+    public $currArr = ['name'=>'信息','key'=>'information','admin'=>'shop_admin'];
 
     public $imgSize = 1;
 

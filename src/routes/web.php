@@ -14,6 +14,36 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware(['web'])->group(function () {
+    //Subscribe
+    Route::post('subscribe/ajax', 'Aphly\LaravelShop\Controllers\Front\AccountExt\SubscribeController@ajax');
+
+    //404
+    Route::get('404', 'Aphly\LaravelShop\Controllers\Front\StatusController@notfound');
+    Route::get('blocked','Aphly\LaravelShop\Controllers\Front\StatusController@blocked')->name('blocked');
+
+    Route::get('/eyeglasses/index', 'Aphly\LaravelShop\Controllers\Front\Product\GlassesController@index');
+    Route::get('/eyeglasses/detail', 'Aphly\LaravelShop\Controllers\Front\Product\GlassesController@detail');
+    Route::get('/eyeglasses/lens', 'Aphly\LaravelShop\Controllers\Front\Product\GlassesController@lens');
+
+    Route::prefix('account')->group(function () {
+        Route::match(['get'],'autologin/{token}','Aphly\LaravelShop\Controllers\Front\AccountController@autoLogin');
+        Route::match(['get'],'blocked','Aphly\LaravelShop\Controllers\Front\AccountController@blocked')->name('accountBlocked');
+        Route::match(['get'],'email-verify','Aphly\LaravelShop\Controllers\Front\AccountController@emailVerify')->name('emailVerify');
+        Route::match(['get'],'email-verify/send','Aphly\LaravelShop\Controllers\Front\AccountController@emailVerifySend');
+        Route::get('email-verify/{token}','Aphly\LaravelShop\Controllers\Front\AccountController@emailVerifyCheck');
+
+        Route::match(['get', 'post'],'forget','Aphly\LaravelShop\Controllers\Front\AccountController@forget');
+        Route::match(['get'],'forget/confirmation','Aphly\LaravelShop\Controllers\Front\AccountController@forgetConfirmation');
+        Route::match(['get', 'post'],'forget-password/{token}','Aphly\LaravelShop\Controllers\Front\AccountController@forgetPassword');
+
+        Route::get('logout','Aphly\LaravelShop\Controllers\Front\AccountController@logout');
+
+        Route::middleware(['userAuth'])->group(function () {
+            Route::match(['get', 'post'],'register','Aphly\LaravelShop\Controllers\Front\AccountController@register')->name('register');
+            Route::match(['get', 'post'],'login','Aphly\LaravelShop\Controllers\Front\AccountController@login')->name('login');
+            Route::match(['get', 'post'],'index','Aphly\LaravelShop\Controllers\Front\AccountController@index');
+        });
+    });
 
     //currency
     Route::get('currency/{id}', 'Aphly\LaravelShop\Controllers\Front\Common\CurrencyController@ajax')->where('id', '[0-9]+');
@@ -29,6 +59,7 @@ Route::middleware(['web'])->group(function () {
     Route::middleware(['userAuth'])->group(function () {
         //account
         Route::prefix('account_ext')->group(function () {
+            Route::match(['get', 'post'],'subscribe', 'Aphly\LaravelShop\Controllers\Front\AccountExt\SubscribeController@index');
 
             Route::get('address', 'Aphly\LaravelShop\Controllers\Front\AccountExt\AddressController@index');
             Route::match(['get', 'post'],'address/save', 'Aphly\LaravelShop\Controllers\Front\AccountExt\AddressController@save');
@@ -76,7 +107,7 @@ Route::middleware(['web'])->group(function () {
     });
 
     Route::middleware(['guest'])->group(function () {
-        Route::get('index', 'Aphly\LaravelShop\Controllers\Front\Common\HomeController@index');
+        Route::get('/', 'Aphly\LaravelShop\Controllers\Front\Common\HomeController@index');
         Route::match(['post'],'contact_us', 'Aphly\LaravelShop\Controllers\Front\Common\ContactUsController@index');
         Route::match(['get'],'information/{id}', 'Aphly\LaravelShop\Controllers\Front\Common\InformationController@detail');
 
@@ -112,7 +143,7 @@ Route::middleware(['web'])->group(function () {
                 ['country','\Setting\CountryController'],['geo','\Setting\GeoController'],['zone','\Setting\ZoneController'],
                 ['currency','\Setting\CurrencyController'],
                 ['group','\Account\GroupController'],['user_address','\Account\UserAddressController'],
-                ['review','\Account\ReviewController'],['wishlist','\Account\WishlistController'],
+                ['review','\Account\ReviewController'],['wishlist','\Account\WishlistController'],['subscribe','\Account\SubscribeController']
             ];
 
 

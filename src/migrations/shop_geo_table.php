@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('shop_geo', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('country_id')->index();
-            $table->unsignedInteger('zone_id')->nullable()->default(0)->index();
+            $table->unsignedInteger('zone_id')->default(0)->index();
             $table->unsignedInteger('geo_group_id')->index();
         });
     }

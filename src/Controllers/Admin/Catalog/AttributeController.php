@@ -13,7 +13,7 @@ class AttributeController extends Controller
 {
     public $index_url='/shop_admin/attribute/index';
 
-    private $currArr = ['name'=>'属性','key'=>'attribute'];
+    public $currArr = ['name'=>'属性','key'=>'attribute','admin'=>'shop_admin'];
 
     public function index(Request $request)
     {

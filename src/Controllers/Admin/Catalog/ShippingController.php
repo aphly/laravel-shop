@@ -13,7 +13,7 @@ class ShippingController extends Controller
 {
     public $index_url='/shop_admin/shipping/index';
 
-    private $currArr = ['name'=>'物流','key'=>'shipping'];
+    public $currArr = ['name'=>'物流','key'=>'shipping','admin'=>'shop_admin'];
 
     public function index(Request $request)
     {
@@ -41,7 +41,7 @@ class ShippingController extends Controller
         $id = $request->query('id',0);
         $input = $request->all();
         if($input['default']==1){
-            Shipping::whereRaw('1')->update(['default'=>2]);
+            Shipping::whereRaw('1')->update(['default'=>0]);
         }
         $input['cost'] = floatval($input['cost']);
         $input['free_cost'] = floatval($input['free_cost']);

@@ -13,7 +13,7 @@ class ZoneController extends Controller
 {
     public $index_url='/shop_admin/zone/index';
 
-    private $currArr = ['name'=>'地区','key'=>'zone'];
+    public $currArr = ['name'=>'地区','key'=>'zone','admin'=>'shop_admin'];
 
     public function index(Request $request)
     {

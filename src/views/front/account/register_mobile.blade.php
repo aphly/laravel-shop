@@ -123,7 +123,7 @@
                             }else if(res.code===11000){
                                 form_err_11000(res,form_id);
                             }else{
-                                alert_msg(res,true);
+                                alert_msg(res.msg);
                             }
                         },
                         complete:function(XMLHttpRequest,textStatus){

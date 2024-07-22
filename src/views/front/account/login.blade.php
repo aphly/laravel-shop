@@ -130,9 +130,9 @@
             form_err_11000(res,_this);
         }else if(res.code===2){
             $('#code_img').show()
-            alert_msg(res);
+            alert_msg(res.msg);
         }else{
-            alert_msg(res);
+            alert_msg(res.msg);
         }
     }
 </script>

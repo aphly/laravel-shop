@@ -97,7 +97,7 @@
 <script>
     function save_form_file_res(res, that) {
         //console.log(res,that)
-        alert_msg(res);
+        alert_msg(res.msg);
         $('#shipped').modal('hide');
     }
 </script>

@@ -14,7 +14,7 @@ class ProductOption extends Model
     protected $fillable = [
         'product_id',
         'option_id',
-        'value','required'
+        'value','required','price'
     ];
 
     function value_arr(){

@@ -24,8 +24,8 @@ return new class extends Migration
             $table->string('image',255)->nullable();
             $table->tinyInteger('remote')->default(0);
             $table->decimal('price',15,2)->nullable();
-            $table->tinyInteger('is_shipping')->nullable()->default(1);
-            $table->unsignedInteger('tax_class_id')->nullable()->default(1);
+            $table->tinyInteger('is_shipping')->default(1);
+            $table->unsignedInteger('tax_class_id')->default(1);
             $table->tinyInteger('stock_status_id');
             $table->float('weight')->nullable();
             $table->tinyInteger('weight_class_id');
@@ -33,9 +33,9 @@ return new class extends Migration
             $table->float('width')->nullable();
             $table->float('height')->nullable();
             $table->tinyInteger('length_class_id');
-            $table->tinyInteger('subtract')->nullable()->default(1);
-            $table->tinyInteger('one_get_one')->nullable()->default(0);
-            $table->tinyInteger('is_color_group')->nullable()->default(0);
+            $table->tinyInteger('subtract')->default(1);
+            $table->tinyInteger('one_get_one')->default(0);
+            $table->tinyInteger('is_color_group')->default(0);
             //$table->tinyInteger('minimum')->nullable()->default(1);
             $table->tinyInteger('status')->default(1)->index();
             $table->unsignedInteger('date_available')->nullable();

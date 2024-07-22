@@ -185,13 +185,13 @@
 </style>
 <script>
     function service_del_res(res,that) {
-        alert_msg(res,true)
+        alert_msg(res.msg)
     }
     function return_exchange3_res(res,that) {
-        alert_msg(res,true)
+        alert_msg(res.msg)
     }
     function return_exchange4_res(res,that) {
-        alert_msg(res,true)
+        alert_msg(res.msg)
     }
 </script>
 @include(config('base.view_namespace_front_blade').'::common.footer')

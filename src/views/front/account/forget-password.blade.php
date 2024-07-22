@@ -36,7 +36,7 @@
         }else if(res.code===11000){
             form_err_11000(res,_this);
         }else{
-            alert_msg(res);
+            alert_msg(res.msg);
         }
     }
 </script>

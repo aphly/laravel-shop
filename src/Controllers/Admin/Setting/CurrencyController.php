@@ -13,7 +13,7 @@ class CurrencyController extends Controller
 {
     public $index_url='/shop_admin/currency/index';
 
-    private $currArr = ['name'=>'货币','key'=>'currency'];
+    public $currArr = ['name'=>'货币','key'=>'currency','admin'=>'shop_admin'];
 
     public function index(Request $request)
     {

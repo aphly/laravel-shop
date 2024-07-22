@@ -75,7 +75,7 @@
 
 <script>
     function close_res(res,_this) {
-        alert_msg(res,true)
+        alert_msg(res.msg)
     }
     $(function () {
 

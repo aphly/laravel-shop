@@ -19,6 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('option_id')->index();
             $table->text('value')->nullable();
             $table->tinyInteger('required');
+            $table->decimal('price',15,2)->nullable();
         });
     }
 

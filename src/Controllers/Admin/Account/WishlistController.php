@@ -12,7 +12,7 @@ class WishlistController extends Controller
 {
     public $index_url='/shop_admin/wishlist/index';
 
-    private $currArr = ['name'=>'心愿','key'=>'wishlist'];
+    public $currArr = ['name'=>'心愿','key'=>'wishlist','admin'=>'shop_admin'];
 
     public function index(Request $request)
     {

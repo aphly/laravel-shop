@@ -22,7 +22,9 @@
                         <div class="d-flex justify-content-between">
                             <div class="address_info">
                                 <p><i>Name:</i> <span>{{$val['firstname']}} {{$val['lastname']}}</span></p>
-                                <p><i>Address:</i> <span>{{$val['address_1']}} , {{$val['city']}} , {{$res['zone'][$val['zone_id']]['name']}} , {{$res['country'][$val['country_id']]['name']}}</span></p>
+                                <p><i>Address:</i> <span>{{$val['address_1']}} , {{$val['city']}} ,
+                                        {{$val['zone_id']?$res['zone'][$val['zone_id']]['name']:''}} ,
+                                        {{$res['country'][$val['country_id']]['name']}}</span></p>
                                 <p><i>Postcode:</i> <span>{{$val['postcode']}}</span></p>
                                 <p><i>Telephone:</i> <span>{{$val['telephone']}}</span></p>
                             </div>
@@ -63,7 +65,7 @@ $(function () {
                         if(!res.code) {
                             location.href = res.data.redirect
                         }else{
-                            alert_msg(res)
+                            alert_msg(res.msg)
                         }
                     }
                 })

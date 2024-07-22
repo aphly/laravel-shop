@@ -15,7 +15,7 @@ class GeoController extends Controller
 {
     public $index_url='/shop_admin/geo/index';
 
-    private $currArr = ['name'=>'geo','key'=>'geo'];
+    public $currArr = ['name'=>'geo','key'=>'geo','admin'=>'shop_admin'];
 
     public function index(Request $request)
     {

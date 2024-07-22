@@ -19,7 +19,7 @@ class OrderController extends Controller
 {
     public $index_url='/shop_admin/order/index';
 
-    private $currArr = ['name'=>'订单','key'=>'order'];
+    public $currArr = ['name'=>'订单','key'=>'order','admin'=>'shop_admin'];
 
     public function index(Request $request)
     {

@@ -12,7 +12,7 @@ class GroupController extends Controller
 {
     public $index_url='/shop_admin/group/index';
 
-    private $currArr = ['name'=>'用户组','key'=>'group'];
+    public $currArr = ['name'=>'用户组','key'=>'group','admin'=>'shop_admin'];
 
     public function index(Request $request)
     {

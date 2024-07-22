@@ -56,7 +56,7 @@
 </style>
 <script>
     function del_res(res,_this) {
-        alert_msg(res,true)
+        alert_msg(res.msg)
     }
 $(function () {
 

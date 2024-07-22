@@ -96,9 +96,8 @@ class Cart extends Model
                                         }
                                         $option_value[$k]['product_option_value'] = $option_value[$k]['product_option_value'][$v];
                                     }
-                                } else if ($option_value[$k]['option']['type'] == 'text' || $option_value[$k]['option']['type'] == 'textarea' || $option_value[$k]['option']['type'] == 'file'
-                                    || $option_value[$k]['option']['type'] == 'date' || $option_value[$k]['option']['type'] == 'datetime' || $option_value[$k]['option']['type'] == 'time') {
-                                    $option_value[$k]['product_option_value'] = $v;
+//                                } else if ($option_value[$k]['option']['type'] == 'text' || $option_value[$k]['option']['type'] == 'textarea' || $option_value[$k]['option']['type'] == 'file'
+//                                    || $option_value[$k]['option']['type'] == 'date' || $option_value[$k]['option']['type'] == 'datetime' || $option_value[$k]['option']['type'] == 'time') {
                                 } else if ($option_value[$k]['option']['type'] == 'checkbox' && is_array($v)) {
                                     $arr = [];
                                     foreach ($v as $v1) {
@@ -113,6 +112,10 @@ class Cart extends Model
                                         }
                                     }
                                     $option_value[$k]['product_option_value'] = $arr;
+                                } else {
+                                    $option_price = Math::add($option_price,$option_value[$k]['price']);
+                                    $option_value_arr[] = $v;
+                                    $option_value[$k]['product_option_value'] = $v;
                                 }
                             }
                         }
@@ -157,7 +160,7 @@ class Cart extends Model
                     $cart['product']['image_src'] = UploadFile::getPath($cart['product']['image'],$cart['product']['remote']);
                     $list[$cart['id']] = $cart;
                     $list[$cart['id']]['option'] = $option_value;
-                    $list[$cart['id']]['option_value_str'] = implode(' / ',$option_value_arr);
+                    $list[$cart['id']]['option_value_arr'] = $option_value_arr;
                     $list[$cart['id']]['stock'] = $stock;
                     $list[$cart['id']]['price'] = $price;
                     $list[$cart['id']]['price_format'] = $price_format;

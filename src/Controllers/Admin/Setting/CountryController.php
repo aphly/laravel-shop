@@ -12,7 +12,7 @@ class CountryController extends Controller
 {
     public $index_url='/shop_admin/country/index';
 
-    private $currArr = ['name'=>'国家','key'=>'country'];
+    public $currArr = ['name'=>'国家','key'=>'country','admin'=>'shop_admin'];
 
     public function index(Request $request)
     {

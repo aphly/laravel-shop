@@ -13,13 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('shop_product_special', function (Blueprint $table) {
+        Schema::create('shop_subscribe', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('product_id')->index();
-            $table->unsignedInteger('priority')->default(1);
-            $table->decimal('price',15,2)->nullable();
-            $table->unsignedInteger('date_start')->nullable();
-            $table->unsignedInteger('date_end')->nullable();
+            $table->string('email',255);
+            $table->tinyInteger('status')->default(1);
+            $table->unsignedBigInteger('created_at');
+            $table->unsignedBigInteger('updated_at');
         });
     }
 
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shop_product_special');
+        Schema::dropIfExists('shop_subscribe');
     }
 };

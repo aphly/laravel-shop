@@ -24,7 +24,7 @@ return new class extends Migration
             $table->char('decimal_place',1)->nullable();
             $table->decimal('value',15,8);
             $table->tinyInteger('status');
-            $table->tinyInteger('default')->nullable()->default(0);
+            $table->tinyInteger('default')->default(0);
         });
     }
 

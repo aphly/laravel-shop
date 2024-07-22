@@ -69,7 +69,7 @@ $(function () {
                         if (!res.code) {
                             location.reload()
                         } else {
-                            alert_msg(res)
+                            alert_msg(res.msg)
                         }
                     }
                 })

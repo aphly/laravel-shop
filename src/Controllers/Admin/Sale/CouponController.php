@@ -17,7 +17,7 @@ class CouponController extends Controller
 {
     public $index_url='/shop_admin/coupon/index';
 
-    private $currArr = ['name'=>'优惠券','key'=>'coupon'];
+    public $currArr = ['name'=>'优惠券','key'=>'coupon','admin'=>'shop_admin'];
 
     public function index(Request $request)
     {

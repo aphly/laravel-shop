@@ -113,7 +113,6 @@
                 processData: false,
                 dataType: "json",
                 success: function(res){
-                    alert_msg(res)
                     if(!res.code) {
                         $("#iload").load(res.data.redirect);
                     }
@@ -133,7 +132,7 @@
             url,
             dataType: "json",
             success: function(res){
-                alert_msg(res)
+                alert_msg(res.msg)
                 if(!res.code) {
                     $(_this).parent().parent().remove();
                 }

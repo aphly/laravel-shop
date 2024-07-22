@@ -113,7 +113,7 @@ class CheckoutController extends Controller
 
     public function payment(Request $request)
     {
-        $res['title'] = 'Checkout Pay';
+        $res['title'] = 'Checkout Payment';
         $res['breadcrumb'] = Breadcrumb::render([
             ['name'=>'Home','href'=>'/'],
             ['name'=>'Cart','href'=>'/cart'],

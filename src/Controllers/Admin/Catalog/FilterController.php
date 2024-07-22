@@ -13,7 +13,7 @@ class FilterController extends Controller
 {
     public $index_url='/shop_admin/filter/index';
 
-    private $currArr = ['name'=>'筛选','key'=>'filter'];
+    public $currArr = ['name'=>'筛选','key'=>'filter','admin'=>'shop_admin'];
 
     public function index(Request $request)
     {

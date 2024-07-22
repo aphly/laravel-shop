@@ -9,7 +9,7 @@
 
     .cart-product-name{font-size: 18px;font-weight: 700;}
     .shopping-info .cart-product-info{display: flex;justify-content: space-between;padding: 5px 0;}
-    .cart-product-info-x{color: #999;}
+    .cart-product-info-x{color: #999; margin:8px 0;}
     .qtyInfo {border-bottom: 1px solid #dadada; padding-bottom: 15px; padding-top: 5px;display: flex;justify-content: space-between;}
     .subtotalInfo{display: flex;justify-content: space-between;margin-top: 25px;font-weight: 600}
 
@@ -53,6 +53,7 @@
     .cart-empty img{max-width: 100%;}
     .cart-empty{text-align: center;}
     .discount_code{font-weight: 600;}
+
     @media (max-width: 1200px) {
         .myChart{width: 100%;margin-right: 0;}
         .cart-pay{width: 100%;}
@@ -91,9 +92,13 @@
                                                     <span class="cart-product-name">{{$val['product']['name']}}</span>
                                                 </a>
                                             </li>
-                                            @if($val['option_value_str'])
+                                            @if($val['option_value_arr'])
                                                 <li class="cart-product-info-x">
-                                                    <span class="">{{$val['option_value_str']}}</span>
+                                                    <dl class="option_value_arr">
+                                                        @foreach($val['option_value_arr'] as $v)
+                                                        <dd>{{$v}}</dd>
+                                                        @endforeach
+                                                    </dl>
                                                 </li>
                                             @endif
                                             <li class="cart-product-info">

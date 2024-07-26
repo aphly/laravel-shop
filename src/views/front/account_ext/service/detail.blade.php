@@ -107,7 +107,7 @@
                                 <div class="my_step2">
                                     <div class="my_step22">
                                         <div class="my_step221 d-flex justify-content-between">
-                                            <div>{{$val->amount_format}}</div>
+                                            <div>Refund : {{$val->amount_format}}</div>
                                             <div class="">
                                                 @if($val->cred_status)
                                                     {{$val->cred_status}}
@@ -116,7 +116,6 @@
                                                 @endif
                                             </div>
                                         </div>
-
                                         <div class="my_step222">{{$val->reason}}</div>
                                     </div>
                                 </div>
@@ -131,7 +130,7 @@
                     @if($res['info']->service_action_id==1)
                         @if($res['info']->service_status_id==1)
                             <div class="">
-                                If the merchant has not operated for more than 48 hours, the system will automatically refund
+                                If the merchant has not operated for more than 48 hours, the system will automatically refund.
                             </div>
                         @elseif($res['info']->service_status_id==2)
                             <div class="">

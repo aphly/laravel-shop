@@ -41,6 +41,9 @@
                     <div class="checkout_title">
                         Payment Method
                     </div>
+                    @php
+                        $card_status = false;
+                    @endphp
                     <ul class="checkout_ul checkout_ul_payment">
                         @foreach($res['paymentMethod'] as $val)
                             @if($val['id']==3)
@@ -73,7 +76,7 @@
                 </div>
                 <div class="checkout_btn">
                     <div class="checkout_btn_l"><a href="javascript:;" onclick="self.location=document.referrer;"><i class="common-iconfont icon-xiangl"></i>Return to shipping</a></div>
-                    <button type="submit" id="submit">Pay now</button>
+                    <button type="submit" id="submit" disabled>Pay now</button>
                 </div>
             </form>
         </div>
@@ -84,7 +87,7 @@
 
 </div>
 <style>
-
+#submit[disabled]{background: #999;}
 </style>
 <script>
     function checkout_pay(res) {
@@ -108,6 +111,7 @@
             $(this).closest('li').addClass('active')
         })
         $('.checkout_ul li:first label').click()
+        $('#submit').removeAttr('disabled')
     })
 </script>
 

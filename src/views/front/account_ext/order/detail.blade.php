@@ -124,7 +124,7 @@
                                         <div class="orderHistory22">
                                             <div class="orderHistory221 d-flex justify-content-between">
                                                 <div class="orderRefund1a">
-                                                    {{$val->amount_format}}
+                                                    Refund : {{$val->amount_format}}
                                                 </div>
                                                 <div class="orderRefund1b">
                                                     @if($val->cred_status)
@@ -176,7 +176,7 @@
             </div>
             <div class="modal-body">
                 <div class="cancel1">
-                    <p>Please note that the cancellation of the order will be charged with management fee,processing fee and transaction fee</p>
+                    <p>Please note that the cancellation of the order will be charged with management fee,processing fee and transaction fee.</p>
                     <p>1.Orders cancelled within 24 hours after payment confirmation will receive a partial refund of {{100-$shop_config['order_cancel_24']}}% of the total order amount.</p>
                     <p>2.Orders cancelled within 24-48 hours after payment confirmation will receive a partial refund of {{100-$shop_config['order_cancel_24_48']}}% of the total order amount.</p>
                     <p>3.Orders cancelled more than 48 hours after payment confirmation will receive a partial refund of {{100-$shop_config['order_cancel_48']}}%% of the total order amount.</p>
@@ -188,7 +188,7 @@
                 <form action="/account_ext/order/cancel?id={{$res['info']->id}}" method="post" data-fn="cancel_res" class="form_request cancel3">
                     @csrf
                     <div class="d-flex flex-row-reverse">
-                        <button type="submit" class="cancel_btn btn" style="">Cancel</button>
+                        <button type="submit" class="cancel_btn btn" style="">OK</button>
                     </div>
                 </form>
             </div>

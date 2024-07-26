@@ -9,6 +9,5 @@ return [
         'shipping'=>'/information/6',
         'payment'=>'/information/7',
         'faq'=>'/information/8',
-    ],
-
+    ]
 ];

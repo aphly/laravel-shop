@@ -69,7 +69,7 @@ class Service extends Model
                 $info->c_shipping_no = $input['c_shipping_no']??'';
             }else if($service_status_id==5){
             }else if($service_status_id==6){
-                if($info->refund_amount>0 && $info->service_status_id==5){
+                if($info->amount>0 && $info->service_status_id==5){
                     $fee = intval($input['fee']);
                     if($fee>=0 && $fee<=100){
                         list($refund_amount,$refund_amount_format) = Currency::codeFormat((100 - $fee) / 100 * $info->amount, $info->currency_code);

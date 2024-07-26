@@ -37,7 +37,7 @@ class OrderController extends Controller
         $res['title'] = 'OrderId#'.$res['info']->id;
         $res['orderProduct'] = OrderProduct::where('order_id',$res['info']->id)->with('orderOption')->get();
         $res['orderHistory'] = OrderHistory::where('order_id',$res['info']->id)->with('orderStatus')->orderBy('created_at','asc')->get();
-        $res['orderRefund'] = PaymentRefund::where('payment_id',$res['info']->payment_id)->get();
+        $res['orderRefund'] = PaymentRefund::where(['payment_id'=>$res['info']->payment_id,'status'=>1])->get();
         $cancel_fee = self::$_G['shop_config']['order_cancel_48'];
         $now = time();
         foreach ($res['orderHistory'] as $val){

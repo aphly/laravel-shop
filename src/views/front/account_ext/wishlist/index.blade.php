@@ -41,7 +41,7 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <a href="javascript:;" data-id="{{$val['id']}}" class="delete">
+                                    <a href="javascript:;" data-id="{{$val['id']}}" class="delete my_btn">
                                         <i class="common-iconfont icon-shanchu" ></i>Remove
                                     </a>
                                 </div>

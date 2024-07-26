@@ -31,11 +31,12 @@ class ServiceController extends Controller
     public function detail(Request $request){
         $res['info'] = Service::where(['uuid'=>User::uuid(),'id'=>$request->query('id',0)])->where('delete_at',0)->with('order')->with('img')->firstOr404();
         $res['title'] = 'Service Detail';
+        $this->autoRefund($res['info']->id);
         $res['serviceHistory'] = ServiceHistory::where('service_id',$res['info']->id)->orderBy('created_at','asc')->get();
         $res['serviceProduct'] = ServiceProduct::where('service_id',$res['info']->id)->with(['orderProduct'=>function ($query){
             return $query->with(['orderOption']);
         }])->get();
-        $res['orderRefund'] = PaymentRefund::where(['payment_id'=>$res['info']->order->payment_id,'status'=>2])->get();
+        $res['orderRefund'] = PaymentRefund::where(['payment_id'=>$res['info']->order->payment_id,'status'=>1])->get();
         foreach ($res['info']->img as $val){
             $val->image_src = UploadFile::getPath($val->image,$val->remote);
         }
@@ -46,6 +47,16 @@ class ServiceController extends Controller
         $res['orderInfo'] = Order::where(['uuid'=>User::uuid(),'id'=>$request->query('order_id',0)])->where('delete_at',0)->firstOr404();
         $res['orderProduct'] = OrderProduct::where('order_id',$res['orderInfo']->id)->with('orderOption')->get()->keyBy('id');
         return $res;
+    }
+
+    function autoRefund($service_id)
+    {
+        $res['info'] = Service::where(['id'=>$service_id,'uuid'=>User::uuid()])->with('order')->firstOrError();
+        if($res['info']->service_action_id==1 && $res['info']->service_status_id==1 && ($res['info']->created_at->timestamp+48*3600)<time()){
+            $res['info']->addServiceHistory($res['info'], 3,['comment'=>'Automatic refund by the system']);
+            $res['info']->addServiceHistory($res['info'], 4,['comment'=>'Automatic refund by the system']);
+            throw new ApiException(['code'=>0,'msg'=>'reload','data'=>['redirect'=>'/account_ext/service/detail?id='.$res['info']->id]]);
+        }
     }
 
     public function form(Request $request){
@@ -66,12 +77,12 @@ class ServiceController extends Controller
         $res = $this->service_pre($request);
         $info = Service::where(['uuid'=>User::uuid(),'order_id'=>$request->query('order_id',0)])->where('delete_at',0)->first();
         if(!empty($info)){
-            throw new ApiException(['code'=>0,'msg'=>'Orders have been requested for after-sales','data'=>['redirect'=>'/account_ext/service']]);
+            throw new ApiException(['code'=>0,'msg'=>'Orders have been requested for after-sales']);
         }
         if($res['orderInfo']->order_status_id==3){
             $orderHistory = OrderHistory::where(['order_status_id'=>2,'order_id'=>$res['orderInfo']->id])->firstOrError();
             if($orderHistory->created_at->timestamp+180*24*3600<time()){
-                throw new ApiException(['code'=>2,'msg'=>'After-sales time has expired'.$orderHistory->created_at,'data'=>['redirect'=>'/account_ext/service']]);
+                throw new ApiException(['code'=>2,'msg'=>'After-sales time has expired ']);
             }
             $insertData = $file_paths =  [];
             $UploadFile = new UploadFile(1);

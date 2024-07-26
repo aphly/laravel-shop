@@ -14,7 +14,7 @@
             <div class="">
                 <div class="top-desc d-flex justify-content-between">
                     <h2>Shipping Address</h2>
-                    <a href="/account_ext/address/save">Add</a>
+                    <a href="/account_ext/address/save" class="my_btn">Add</a>
                 </div>
                 <ul class="list_index">
                     @foreach($res['list'] as $val)
@@ -34,11 +34,11 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="address_infox">
-                            <a href="/account_ext/address/save?address_id={{$val['id']}}" >
+                        <div class="address_infox d-flex">
+                            <a href="/account_ext/address/save?address_id={{$val['id']}}" class="my_btn">
                                 <i class="common-iconfont icon-bianjishuru"></i>Edit
                             </a>
-                            <a href="javascript:;" data-address_id="{{$val['id']}}" class="delete">
+                            <a href="javascript:;" data-address_id="{{$val['id']}}" class="delete my_btn">
                                 <i class="common-iconfont icon-shanchu"></i>Remove
                             </a>
                         </div>

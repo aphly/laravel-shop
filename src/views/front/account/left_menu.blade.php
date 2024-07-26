@@ -27,7 +27,7 @@
         <div class="sidebar-menu-content" style="">
             <span>Need help? We're here to help you:</span>
             <div class="phone">
-                <b>{{ config('common.email') }}</b> <br>
+                <b>{{ $shop_config['service_email'] }}</b> <br>
                 <span>9:00 AM to 6:00 PM Mon to Fri. (EST)</span>
             </div>
         </div>
@@ -53,6 +53,8 @@
     .form_request .form-group p{margin-bottom: 10px;}
     .form_request .form-group p b{color: darkred;}
     .sidebar-menu-title i{display: none;}
+
+    .my_btn{ display: block; padding: 0 10px; border-radius: 4px;border: 1px solid #333;line-height: 34px;}
     @media (max-width: 1199.98px) {
         .account_info{flex-wrap: wrap;}
         .sidebar-menu,.account-main-section{width: 100%;margin-left: 0;margin-bottom: 20px;    padding: 0px;}

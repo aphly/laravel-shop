@@ -15,8 +15,6 @@
     @media (max-width: 1200px) {
         .video_box{width: 100%;}
     }
-</style>
-<style>
     .add_cart_btn{background: #e7a1a2;border: none;color: #fff}
     .add_cart_btn:hover{background: #e59798;}
     .buy_btn{background: #de8080;color: #fff}
@@ -168,7 +166,7 @@
                             <div class="quantity-up">+</div>
                         </div>
                     </div>
-                    <button class="add_cart_btn " id="add_cart_btn" type="submit">Add To Cart</button>
+                    <button class="add_cart_btn " id="add_cart_btn" type="submit"><i class="common-iconfont icon-31gouwuche"></i> Add To Cart</button>
                 </form>
                 <button class="buy_btn " id="buy_btn" type="button" onclick="buyNow(this)" style="margin-top: 10px;">Buy Now</button>
             </div>

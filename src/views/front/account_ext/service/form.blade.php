@@ -185,11 +185,11 @@
 <script>
 
     function refund_res(res,_this) {
-        alert_msg(res.msg)
+        alert_res(res)
     }
 
     function return_res(res,_this) {
-        alert_msg(res.msg)
+        alert_res(res)
     }
 
     function return_price() {

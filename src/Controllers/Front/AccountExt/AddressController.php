@@ -4,6 +4,7 @@ namespace Aphly\LaravelShop\Controllers\Front\AccountExt;
 
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Controllers\Front\Controller;
+use Aphly\Laravel\Requests\FormRequest;
 use Aphly\LaravelShop\Models\Setting\Country;
 use Aphly\Laravel\Models\User;
 use Aphly\LaravelShop\Models\Account\UserAddress;
@@ -27,7 +28,7 @@ class AddressController extends Controller
         return $this->makeView('laravel-front::account_ext.address.index',['res'=>$res]);
     }
 
-    public function save(Request $request){
+    public function save(FormRequest $request){
         $address_id = $request->query('address_id',0);
         if($request->isMethod('post')){
             $count = UserAddress::where(['uuid'=>User::uuid()])->count();
@@ -35,18 +36,31 @@ class AddressController extends Controller
                 throw new ApiException(['code'=>0,'msg'=>'limit 5','data'=>['redirect'=>'/account_ext/address']]);
             }
             $input = $request->all();
+            $request->validate($input,[
+                'firstname' => 'required|between:2,32',
+                'lastname' => 'required|between:2,32',
+                'address_1' => 'required|between:2,255',
+                'city' => 'required|between:2,128',
+                'postcode' => 'required|numeric',
+                'telephone' => 'required|numeric',
+                'country_id' => 'required|numeric',
+                'zone_id' => 'required|numeric',
+            ]);
             if(!$address_id){
                 $input['uuid'] = User::uuid();
             }
-            $address = UserAddress::updateOrCreate(['uuid'=>User::uuid(),'id'=>$address_id],$input);
-            $default = $request->input('default',0);
-            if($default){
-                $this->user->update(['address_id'=>$address->id]);
-            }else{
-                if($address_id == $address->id){
-                    $this->user->update(['address_id'=>0]);
-                }
+            $input['default'] = isset($input['default'])?1:0;
+            if($input['default']){
+                UserAddress::where('uuid',User::uuid())->update(['default'=>0]);
             }
+            UserAddress::updateOrCreate(['uuid'=>User::uuid(),'id'=>$address_id],$input);
+//            if($default){
+//                $this->user->update(['address_id'=>$address->id]);
+//            }else{
+//                if($address_id == $address->id){
+//                    $this->user->update(['address_id'=>0]);
+//                }
+//            }
             $checkout = $request->query('checkout',0);
             if($checkout){
                 throw new ApiException(['code'=>0,'msg'=>'success','data'=>['list'=>(new UserAddress)->getAddresses()]]);

@@ -141,7 +141,6 @@ Route::middleware(['web'])->group(function () {
                 ['shipping','\Catalog\ShippingController'],['coupon','\Sale\CouponController'],['order','\Sale\OrderController'],['service','\Sale\ServiceController'],
                 ['information','\Common\InformationController'],['contact_us','\Common\ContactUsController'],
                 ['country','\Setting\CountryController'],['geo','\Setting\GeoController'],['zone','\Setting\ZoneController'],
-                ['currency','\Setting\CurrencyController'],
                 ['group','\Account\GroupController'],['user_address','\Account\UserAddressController'],
                 ['review','\Account\ReviewController'],['wishlist','\Account\WishlistController'],['subscribe','\Account\SubscribeController']
             ];

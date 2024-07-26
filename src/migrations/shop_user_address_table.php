@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('telephone',32)->nullable();
             $table->integer('country_id');
             $table->integer('zone_id');
+            $table->tinyInteger('default')->default(0);
             $table->unsignedBigInteger('created_at');
             $table->unsignedBigInteger('updated_at');
         });

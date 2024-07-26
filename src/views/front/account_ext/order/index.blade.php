@@ -59,7 +59,7 @@
 </section>
 
 <style>
-    .order_list11{margin-bottom: 5px;}
+    .order_list11{margin-bottom: 5px; flex-wrap: wrap;}
     .order_list{}
     .order_list li{margin-bottom: 10px;background: #fff;padding: 15px;border-radius: 4px;border-bottom: 1px solid #f1f1f1;}
     .order_status{color:#ffc107}
@@ -75,7 +75,7 @@
 
 <script>
     function close_res(res,_this) {
-        alert_msg(res.msg)
+        alert_res(res)
     }
     $(function () {
 

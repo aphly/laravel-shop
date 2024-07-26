@@ -4,7 +4,7 @@ namespace Aphly\LaravelShop\Models\Catalog;
 
 use Aphly\Laravel\Libs\Math;
 use Aphly\Laravel\Models\Model;
-use Aphly\LaravelShop\Models\Setting\Currency;
+use Aphly\LaravelPayment\Models\Currency;
 use Aphly\Laravel\Models\User;
 use Aphly\LaravelShop\Models\Checkout\Cart;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

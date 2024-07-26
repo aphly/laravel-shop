@@ -33,7 +33,7 @@
                                 </a>
                             <div class="service_list_btn">
                                 @if($val->service_status_id==1)
-                                    <a href="/account_ext/service/del?id={{$val->id}}" class="btn a_request del_style" data-confirm="true" data-fn="del_res" data-_token="{{csrf_token()}}">Delete</a>
+                                    <a href="/account_ext/service/del?id={{$val->id}}" class="btn a_request del_style" data-confirm="Are you really sure you want to delete it?" data-fn="del_res" >Delete</a>
                                 @endif
                                     <a href="/account_ext/service/detail?id={{$val->id}}" class="btn">Detail</a>
                             </div>
@@ -56,7 +56,7 @@
 </style>
 <script>
     function del_res(res,_this) {
-        alert_msg(res.msg)
+        alert_res(res)
     }
 $(function () {
 

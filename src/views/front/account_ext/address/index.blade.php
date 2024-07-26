@@ -1,20 +1,20 @@
 @include(config('base.view_namespace_front_blade').'::common.header')
+<style>
+    .address_info{margin-bottom: 0px;}
+    .address_info span{font-weight: 600;margin-left: 10px;}
+    .address_info p{margin-bottom: 5px;}
+    .address_info i{font-style: normal;width: 100px;display: inline-block}
+    .address_infox i{margin-right: 5px;}
+    .address_infox a{margin-right: 20px;}
+</style>
 <div class="container">
-    <style>
-        .address_info{margin-bottom: 0px;}
-        .address_info span{font-weight: 600;margin-left: 10px;}
-        .address_info p{margin-bottom: 5px;}
-        .address_info i{font-style: normal;width: 100px;display: inline-block}
-        .address_infox i{margin-right: 5px;}
-        .address_infox a{color:#06b4d1;margin-right: 20px;}
-    </style>
     <div class="d-flex justify-content-between account_info">
         @include(config('base.view_namespace_front_blade').'::account.left_menu')
         <div class="account-main-section">
             <div class="">
                 <div class="top-desc d-flex justify-content-between">
                     <h2>Shipping Address</h2>
-                    <a href="/account_ext/address/save">+ Add Address</a>
+                    <a href="/account_ext/address/save">Add</a>
                 </div>
                 <ul class="list_index">
                     @foreach($res['list'] as $val)
@@ -62,11 +62,7 @@ $(function () {
                     url:'/account_ext/address/'+id+'/remove',
                     dataType:'json',
                     success:function (res) {
-                        if(!res.code) {
-                            location.href = res.data.redirect
-                        }else{
-                            alert_msg(res.msg)
-                        }
+                        alert_res(res)
                     }
                 })
             }

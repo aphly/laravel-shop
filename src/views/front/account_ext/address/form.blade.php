@@ -17,29 +17,33 @@
                         <div class="form-group">
                             <p>First Name: <b>*</b></p>
                             <input type="text" name="firstname" required value="{{$res['info']->firstname}}" placeholder="First Name" class="form-control" >
+                            <div class="invalid-feedback"></div>
                         </div>
                         <div class="form-group">
                             <p>Last Name: <b>*</b></p>
                             <input type="text" name="lastname" required value="{{$res['info']->lastname}}" placeholder="Last Name" class="form-control">
+                            <div class="invalid-feedback"></div>
                         </div>
 
                         <div class="form-group">
                             <p>Address Line1: <b>*</b></p>
                             <input required name="address_1" type="text" class="form-control address1" value="{{$res['info']->address_1}}" placeholder="Address 1" >
+                            <div class="invalid-feedback"></div>
                         </div>
                         <div class="form-group">
-                            <div class=" ">
                                 <p>Address Line2: </p>
                                 <input name="address_2" type="text" class="form-control address2" value="{{$res['info']->address_2}}" placeholder="Address 2">
-                            </div>
+                            <div class="invalid-feedback"></div>
                         </div>
                         <div class="form-group">
                             <p>City: <b>*</b></p>
                             <input required name="city" type="text" class="form-control city" value="{{$res['info']->city}}" placeholder="City" >
+                            <div class="invalid-feedback"></div>
                         </div>
                         <div class="form-group">
                             <p>Post Code: <b>*</b></p>
                             <input required name="postcode" value="{{$res['info']->postcode}}" placeholder="Post Code" type="text" class="form-control postcode">
+                            <div class="invalid-feedback"></div>
                         </div>
                         <div class="form-group">
                             <p>Country: <b>*</b></p>
@@ -49,6 +53,7 @@
                                     <option value="{{$val['id']}}" @if($val['id']==$res['info']->country_id) selected @endif>{{$val['name']}}</option>
                                 @endforeach
                             </select>
+                            <div class="invalid-feedback"></div>
                         </div>
                         <div class="form-group is-valid">
                             <p>State / Province: <b>*</b></p>
@@ -67,14 +72,15 @@
                         <div class="form-group">
                             <p>Telephone:</p>
                             <input name="telephone" type="text" class="form-control" placeholder="Telephone" value="{{$res['info']->telephone}}">
+                            <div class="invalid-feedback"></div>
                         </div>
                         <div class="form-group">
-                            <input type="checkbox" name="default" value="1" @if($user->address_id == $res['info']->id) checked="checked" @endif>
+                            <input type="checkbox" name="default" value="1" @if($res['info']->default) checked="checked" @endif>
                             <span>Set as primary address</span>
                         </div>
                         <div class="form-group d-flex addr_form">
-                            <button class="btn-default  save-address br4" type="submit">Save</button>
-                            <a href="/account_ext/address" class="btn-cancel br4">Cancel</a>
+                            <button class="btn btn-primary" style="margin-right: 20px;" type="submit">Save</button>
+                            <a href="/account_ext/address" class="btn btn-light">Cancel</a>
                         </div>
                     </form>
                 </div>
@@ -90,23 +96,14 @@
     }
 </style>
 <script>
-    function saveAddress(res) {
-        if(!res.code) {
-            location.href = res.data.redirect
-        }else if(res.code===11000){
-            for(var item in res.data){
-                let str = ''
-                res.data[item].forEach((elem, index)=>{
-                    str = str+elem+'<br>'
-                })
-                let obj = $('#login input[name="'+item+'"]');
-                obj.removeClass('is-valid').addClass('is-invalid');
-                obj.next('.invalid-feedback').html(str);
-            }
+    function saveAddress(res,that) {
+        if(res.code===11000){
+            form_err_11000(res,that)
         }else{
-            alert_msg(res.msg)
+            alert_res(res)
         }
     }
+
     let country_zone = {};
     $(function () {
         $('#input-country').change(function () {

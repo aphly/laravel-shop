@@ -4,7 +4,7 @@ namespace Aphly\LaravelShop\Models\Checkout;
 
 use Aphly\Laravel\Libs\Math;
 use Aphly\Laravel\Models\UploadFile;
-use Aphly\LaravelShop\Models\Setting\Currency;
+use Aphly\LaravelPayment\Models\Currency;
 use Aphly\Laravel\Models\User;
 use Aphly\LaravelShop\Models\Catalog\Coupon;
 use Aphly\LaravelShop\Models\Catalog\Product;

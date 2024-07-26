@@ -3,7 +3,7 @@
 namespace Aphly\LaravelShop\Controllers\Front\AccountExt;
 
 use Aphly\Laravel\Exceptions\ApiException;
-use Aphly\LaravelShop\Models\Setting\Currency;
+use Aphly\LaravelPayment\Models\Currency;
 use Aphly\Laravel\Models\User;
 use Aphly\LaravelPayment\Models\Payment;
 use Aphly\LaravelPayment\Models\PaymentRefund;
@@ -20,8 +20,9 @@ class OrderController extends Controller
         $res['title'] = 'My Orders';
         $res['list'] = Order::where(['uuid'=>User::uuid()])->where('delete_at',0)->with('orderStatus')->with('orderProduct')
             ->orderBy('created_at','desc')->Paginate(config('base.perPage'))->withQueryString();
-        $res['cancel_fee_24'] = self::$_G['shop_config']['order_cancel_fee_24'];
-        $res['cancel_fee'] = self::$_G['shop_config']['order_cancel_fee'];
+        $res['order_cancel_24'] = self::$_G['shop_config']['order_cancel_24'];
+        $res['order_cancel_24_48'] = self::$_G['shop_config']['order_cancel_24_48'];
+        $res['order_cancel_48'] = self::$_G['shop_config']['order_cancel_48'];
 //        foreach ($res['list'] as $val){
 //            list($val->cancelAmount,$val->cancelAmountFormat) = Currency::codeFormat((100 - $cancel_fee)/100*$val->total,$val->currency_code);
 //        }
@@ -37,10 +38,15 @@ class OrderController extends Controller
         $res['orderProduct'] = OrderProduct::where('order_id',$res['info']->id)->with('orderOption')->get();
         $res['orderHistory'] = OrderHistory::where('order_id',$res['info']->id)->with('orderStatus')->orderBy('created_at','asc')->get();
         $res['orderRefund'] = PaymentRefund::where('payment_id',$res['info']->payment_id)->get();
-        $cancel_fee = self::$_G['shop_config']['order_cancel_fee'];
+        $cancel_fee = self::$_G['shop_config']['order_cancel_48'];
+        $now = time();
         foreach ($res['orderHistory'] as $val){
-            if($val->order_status_id==2 && $val->created_at->timestamp+24*3600>time()){
-                $cancel_fee = self::$_G['shop_config']['order_cancel_fee_24'];
+            if($val->order_status_id==2 ){
+                if($val->created_at->timestamp+24*3600>$now){
+                    $cancel_fee = self::$_G['shop_config']['order_cancel_24'];
+                }else if($val->created_at->timestamp+24*3600<$now && $val->created_at->timestamp+48*3600>$now){
+                    $cancel_fee = self::$_G['shop_config']['order_cancel_24_48'];
+                }
             }
         }
         list($res['cancelAmount'],$res['cancelAmountFormat']) = Currency::codeFormat((100 - $cancel_fee)/100*$res['info']->total,$res['info']->currency_code);
@@ -74,9 +80,11 @@ class OrderController extends Controller
         $orderHistory = OrderHistory::where(['order_id'=>$res['info']->id,'order_status_id'=>2])->first();
         if($res['info']->order_status_id==2 && !empty($orderHistory)){
             if(now()->between($orderHistory->created_at,$orderHistory->created_at->addDay())){
-                $cancel_fee = self::$_G['shop_config']['order_cancel_fee'];
+                $cancel_fee = self::$_G['shop_config']['order_cancel_24'];
+            }else if(now()->between($orderHistory->created_at->addDay(1),$orderHistory->created_at->addDay(2))){
+                $cancel_fee = self::$_G['shop_config']['order_cancel_24_48'];
             }else{
-                $cancel_fee = self::$_G['shop_config']['order_cancel_fee_24'];
+                $cancel_fee = self::$_G['shop_config']['order_cancel_48'];
             }
             list($amount,$amount_format) = Currency::codeFormat((100 - $cancel_fee)/100*$res['info']->total,$res['info']->currency_code);
             (new Payment)->refund_api($res['info']->payment_id,$amount,'Customer cancel -'.$cancel_fee.'% fee');

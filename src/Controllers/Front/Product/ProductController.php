@@ -14,7 +14,7 @@ use Aphly\LaravelShop\Models\Catalog\Option;
 use Aphly\LaravelShop\Models\Catalog\Product;
 use Aphly\LaravelShop\Models\Checkout\Cart;
 use Aphly\LaravelShop\Models\Sale\OrderProduct;
-use Aphly\LaravelShop\Models\Setting\Currency;
+use Aphly\LaravelPayment\Models\Currency;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller

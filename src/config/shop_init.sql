@@ -1,7 +1,3 @@
-INSERT INTO `shop_currency` (`id`, `name`,`timezone`, `code`, `symbol_left`, `symbol_right`, `decimal_place`, `value`, `status`, `default`) VALUES
-	(1, "Pound Sterling","Europe/London", "GBP", "£", "", "2", 0.8044, 1,0),
-	(2, "US Dollar","America/New_York", "USD", "$", "", "2", 1.00000000, 1,1),
-	(3, "Euro","Europe/Berlin", "EUR", "€", "", "2", 0.9362, 1,0);
 
 INSERT INTO `shop_zone` (`id`, `country_id`, `name`, `code`, `status`) VALUES
 	(1, 1, "Badakhshan", "BDS", 1),

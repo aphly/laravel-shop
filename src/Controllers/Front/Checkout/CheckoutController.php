@@ -8,7 +8,7 @@ use Aphly\Laravel\Libs\Snowflake;
 use Aphly\Laravel\Models\Breadcrumb;
 use Aphly\Laravel\Requests\FormRequest;
 use Aphly\LaravelShop\Models\Setting\Country;
-use Aphly\LaravelShop\Models\Setting\Currency;
+use Aphly\LaravelPayment\Models\Currency;
 use Aphly\Laravel\Models\User;
 use Aphly\LaravelPayment\Models\Payment;
 use Aphly\LaravelPayment\Models\PaymentMethod;

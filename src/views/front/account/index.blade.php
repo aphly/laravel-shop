@@ -40,7 +40,7 @@
                         <div class="invalid-feedback"></div>
                     </div>
                 @endforeach
-                <button class="btn btn-primary" type="submit">save</button>
+                <button class="btn btn-primary" type="submit">Save</button>
             </form>
         </div>
     </div>

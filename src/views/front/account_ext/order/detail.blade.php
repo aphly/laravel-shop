@@ -176,9 +176,11 @@
             </div>
             <div class="modal-body">
                 <div class="cancel1">
-                    <p>Please note that the cancellation of the order will be charged with management fee,
-                        processing fee and transaction fee, {{$shop_config['order_cancel_fee_24']}}% of the transaction fee will be charged within 24 hours,
-                        and {{$shop_config['order_cancel_fee']}}% of the transaction fee will be charged over 24 hours</p>
+                    <p>Please note that the cancellation of the order will be charged with management fee,processing fee and transaction fee</p>
+                    <p>1.Orders cancelled within 24 hours after payment confirmation will receive a partial refund of {{100-$shop_config['order_cancel_24']}}% of the total order amount.</p>
+                    <p>2.Orders cancelled within 24-48 hours after payment confirmation will receive a partial refund of {{100-$shop_config['order_cancel_24_48']}}% of the total order amount.</p>
+                    <p>3.Orders cancelled more than 48 hours after payment confirmation will receive a partial refund of {{100-$shop_config['order_cancel_48']}}%% of the total order amount.</p>
+                    <p>Once your order is shipped, it cannot be cancelled again.</p>
                 </div>
                 <div class="cancel2">
                     Refund <span class="cancelAmountFormat">0</span>
@@ -196,11 +198,11 @@
 
 <script>
     function close_res(res,_this) {
-        alert_msg(res.msg)
+        alert_res(res)
     }
 
     function cancel_res(res,_this) {
-        alert_msg(res.msg)
+        alert_res(res)
     }
 
     function cancel(cancelAmountFormat,order_id) {

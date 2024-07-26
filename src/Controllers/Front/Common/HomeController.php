@@ -4,7 +4,7 @@ namespace Aphly\LaravelShop\Controllers\Front\Common;
 
 
 use Aphly\Laravel\Models\UploadFile;
-use Aphly\LaravelShop\Models\Setting\Currency;
+use Aphly\LaravelPayment\Models\Currency;
 use Aphly\LaravelShop\Controllers\Front\Controller;
 use Aphly\LaravelShop\Models\Catalog\Product;
 

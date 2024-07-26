@@ -3,7 +3,7 @@
 namespace Aphly\LaravelShop\Controllers\Front\Common;
 
 use Aphly\Laravel\Exceptions\ApiException;
-use Aphly\LaravelShop\Models\Setting\Currency;
+use Aphly\LaravelPayment\Models\Currency;
 use Illuminate\Http\Request;
 use Aphly\LaravelShop\Controllers\Front\Controller;
 

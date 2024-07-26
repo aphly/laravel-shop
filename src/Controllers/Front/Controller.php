@@ -3,7 +3,7 @@
 namespace Aphly\LaravelShop\Controllers\Front;
 
 use Aphly\Laravel\Models\User;
-use Aphly\LaravelShop\Models\Setting\Currency;
+use Aphly\LaravelPayment\Models\Currency;
 use Aphly\LaravelShop\Models\Account\Wishlist;
 use Aphly\LaravelShop\Models\Checkout\Cart;
 use Aphly\LaravelShop\Models\Setting\Config;

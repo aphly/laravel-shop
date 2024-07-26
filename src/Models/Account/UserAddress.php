@@ -14,7 +14,7 @@ class UserAddress extends Model
     protected $table = 'shop_user_address';
 
     protected $fillable = [
-        'uuid','firstname','lastname','address_1','address_2','city','postcode','country_id','zone_id','telephone'
+        'uuid','firstname','lastname','address_1','address_2','city','postcode','country_id','zone_id','telephone','default'
     ];
 
 
@@ -40,7 +40,8 @@ class UserAddress extends Model
                 'iso_code_2'     => $country[$info['country_id']]['iso_code_2']??'',
                 'iso_code_3'     => $country[$info['country_id']]['iso_code_3']??'',
                 'address_format' => $country[$info['country_id']]['address_format']??'',
-                'telephone'      => $info['telephone']??''
+                'telephone'      => $info['telephone']??'',
+                'default'        => $info['default']??0,
             ];
         }else{
             return [];
@@ -48,7 +49,7 @@ class UserAddress extends Model
     }
 
     public function getAddresses($uuid = false) {
-        $uuid = $uuid?$uuid:User::uuid();
+        $uuid = $uuid?:User::uuid();
         $address_data = [];
         $data = self::where(['uuid'=>$uuid])->get()->toArray();
         $country = (new Country)->findAll();
@@ -70,7 +71,8 @@ class UserAddress extends Model
                 'iso_code_2'     => $country[$v['country_id']]['iso_code_2']??'',
                 'iso_code_3'     => $country[$v['country_id']]['iso_code_3']??'',
                 'address_format' => $country[$v['country_id']]['address_format']??'',
-                'telephone'      => $v['telephone']??''
+                'telephone'      => $v['telephone']??'',
+                'default'        => $v['default']??0,
             ];
         }
         return $address_data;

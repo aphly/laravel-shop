@@ -4,7 +4,7 @@ namespace Aphly\LaravelShop\Models\Sale;
 
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Models\Model;
-use Aphly\LaravelShop\Models\Setting\Currency;
+use Aphly\LaravelPayment\Models\Currency;
 use Aphly\Laravel\Models\RemoteEmail;
 use Aphly\LaravelPayment\Models\Payment;
 //use Aphly\LaravelShop\Jobs\Service\Refund;

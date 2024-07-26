@@ -5,7 +5,7 @@ namespace Aphly\LaravelShop\Controllers\Admin\Setting;
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Models\Breadcrumb;
 use Aphly\LaravelShop\Models\Setting\Country;
-use Aphly\LaravelShop\Models\Setting\Currency;
+use Aphly\LaravelPayment\Models\Currency;
 use Aphly\LaravelShop\Controllers\Admin\Controller;
 use Aphly\LaravelShop\Models\Setting\Config;
 use Illuminate\Http\Request;

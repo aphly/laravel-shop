@@ -1,10 +1,13 @@
 @include(config('base.view_namespace_front_blade').'::common.header')
 <section class="container">
     <style>
-        .wishlist_img{width: 80px;height: 80px;margin-right: 20px;}
+        .wishlist_img{width: 60px;height: 60px;margin-right: 20px;flex-shrink: 0}
         .wishlist_img img{width: 100%;height: 100%;border-radius: 4px;}
         .wishlist_name{margin-bottom: 10px;}
         .delete i{margin-right: 5px;}
+        @media (max-width: 1200px) {
+            .wishlist_img{width: 50px;height: 50px;}
+        }
     </style>
     <div class="account_info">
         @include(config('base.view_namespace_front_blade').'::account.left_menu')
@@ -20,18 +23,17 @@
                                 <div class="wishlist_img">
                                     <a href="/product/{{$val['product_id']}}"><img src="{{$res['productData'][$val['product_id']]->image_src}}" alt=""></a>
                                 </div>
-                                <div style="margin-right: auto;">
-                                    <a href="/product/{{$val['product_id']}}"><div class="wishlist_name">{{$res['productData'][$val['product_id']]->name}}</div></a>
-                                    <div class="d-flex price">
+                                <div style="margin-right: auto; width: 50%;">
+                                    <a href="/product/{{$val['product_id']}}">
+                                        <div class="wishlist_name wenzi">{{$res['productData'][$val['product_id']]->name}}</div></a>
+                                    <div class="d-flex align-items-baseline">
                                         @if($res['productData'][$val['product_id']]->special)
-                                            <span class="normal">{{$res['productData'][$val['product_id']]->special}}</span>
+                                            <span class="normal" style="margin-right: 10px;">{{$res['productData'][$val['product_id']]->special}}</span>
                                             <span class="special_price">{{$res['productData'][$val['product_id']]->price}}</span>
-                                            <span class="price_sale">Sale</span>
                                         @else
                                             @if($res['productData'][$val['product_id']]->discount)
-                                                <span class="normal">{{$res['productData'][$val['product_id']]->discount}}</span>
+                                                <span class="normal" style="margin-right: 10px;">{{$res['productData'][$val['product_id']]->discount}}</span>
                                                 <span class="special_price">{{$res['productData'][$val['product_id']]->price}}</span>
-                                                <span class="price_sale">Sale</span>
                                             @else
                                                 <span class="normal">{{$res['productData'][$val['product_id']]->price}}</span>
                                             @endif

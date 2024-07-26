@@ -97,12 +97,17 @@
                 <div class="tab-pane fade" id="nav-order" role="tabpanel" aria-labelledby="nav-order-tab">
                     <div class="form-group">
                         <label for="">cancel within 24h (fee 10%)</label>
-                        <input type="text" name="setting[order_cancel_fee_24]" class="form-control " value="{{$res['setting']['order_cancel_fee']['value']??10}}">
+                        <input type="text" name="setting[order_cancel_24]" class="form-control " value="{{$res['setting']['order_cancel_24']['value']??10}}">
                         <div class="invalid-feedback"></div>
                     </div>
                     <div class="form-group">
-                        <label for="">cancel over 24h (fee 20%)</label>
-                        <input type="text" name="setting[order_cancel_fee]" class="form-control " value="{{$res['setting']['order_cancel_fee_24']['value']??20}}">
+                        <label for="">Cancel within 24 to 48 hours (fee 20%)</label>
+                        <input type="text" name="setting[order_cancel_24_48]" class="form-control " value="{{$res['setting']['order_cancel_24_48']['value']??20}}">
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="">cancel over 48h (fee 40%)</label>
+                        <input type="text" name="setting[order_cancel_48]" class="form-control " value="{{$res['setting']['order_cancel_48']['value']??40}}">
                         <div class="invalid-feedback"></div>
                     </div>
 

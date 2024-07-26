@@ -53,7 +53,7 @@ class AccountController extends Controller
                     if($image){
                         (new UploadFile)->del($oldImage,$oldRemote);
                     }
-                    throw new ApiException(['code'=>0,'msg'=>'success']);
+                    throw new ApiException(['code'=>0,'msg'=>'success','data'=>['reload'=>1]]);
                 } else {
                     throw new ApiException(['code'=>1,'msg'=>'upload error']);
                 }

@@ -4,7 +4,9 @@
         @php
         $uri = request()->path()
         @endphp
-        <div class="sidebar-menu-title">My Account Information</div>
+        <div class="sidebar-menu-title">My Account Information
+            <i class="uni app-xiangxiajiantou"></i>
+        </div>
         <ul class="sidebar-menu-content">
             <li><a href="/account/index" @if('account/index'==$uri) class="active" @endif>Dashboard</a></li>
             <li><a href="/account_ext/wishlist" @if('account_ext/wishlist'==$uri) class="active" @endif>My Wishlist</a></li>
@@ -41,17 +43,36 @@
 
     .account-main-section{width: calc(100% - 300px);margin-left: 20px;background: #fff;border-radius: 4px;padding: 20px}
     .account_info{margin-top: 10px;display: flex;justify-content: space-between;}
-    .top-desc{margin-bottom: 10px;}
-    .top-desc a{color:#06b4d1;font-size: 16px;}
+    .top-desc{margin-bottom: 10px;align-items: baseline;}
+    .top-desc h2{margin-bottom: 0;}
+    .top-desc a{font-size: 16px;}
     .list_index{}
     .list_index li{margin-bottom: 20px;}
 
     .form_request .form-group{margin-bottom: 20px;}
     .form_request .form-group p{margin-bottom: 10px;}
     .form_request .form-group p b{color: darkred;}
-
+    .sidebar-menu-title i{display: none;}
     @media (max-width: 1199.98px) {
         .account_info{flex-wrap: wrap;}
-        .sidebar-menu,.account-main-section{width: 100%;margin-left: 0;margin-bottom: 20px;}
+        .sidebar-menu,.account-main-section{width: 100%;margin-left: 0;margin-bottom: 20px;    padding: 0px;}
+        .sidebar-menu-title i{display: block;}
+        .sidebar-menu-title{display: flex;justify-content: space-between;}
+        .sidebar-menu-list{height: 40px;}
     }
 </style>
+<script>
+    $(function () {
+        $('.sidebar-menu-title').click(function () {
+            if($(window).width() < 1200){
+                if($('.sidebar-menu-title i.uni').hasClass('app-xiangxiajiantou')){
+                    $('.sidebar-menu-list').css('height','auto')
+                    $('.sidebar-menu-title i.uni').removeClass('app-xiangxiajiantou').addClass('app-xiangshangjiantou')
+                }else{
+                    $('.sidebar-menu-list').css('height','40px')
+                    $('.sidebar-menu-title i.uni').addClass('app-xiangxiajiantou').removeClass('app-xiangshangjiantou')
+                }
+            }
+        })
+    })
+</script>

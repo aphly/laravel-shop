@@ -22,7 +22,7 @@
                         </label>
                     @endif
                     </div>
-                    <div class="form-group d-flex" style="margin-top: 50px;">
+                    <div class="form-group d-flex" style="margin-top: 30px;">
                         <button class="btn btn-primary" type="submit">Save</button>
                     </div>
 

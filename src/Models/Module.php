@@ -59,7 +59,6 @@ class Module extends Module_base
                 $data[] =['name' => '配置','route' =>'shop_admin/config/index','pid'=>$menu23->id,'uuid'=>$manager->uuid,'type'=>2,'module_id'=>$module_id,'sort'=>0];
                 $data[] =['name' => '国家','route' =>'shop_admin/country/index','pid'=>$menu23->id,'uuid'=>$manager->uuid,'type'=>2,'module_id'=>$module_id,'sort'=>0];
                 $data[] =['name' => '地区','route' =>'shop_admin/zone/index','pid'=>$menu23->id,'uuid'=>$manager->uuid,'type'=>2,'module_id'=>$module_id,'sort'=>0];
-                $data[] =['name' => '货币','route' =>'shop_admin/currency/index','pid'=>$menu23->id,'uuid'=>$manager->uuid,'type'=>2,'module_id'=>$module_id,'sort'=>0];
                 $data[] =['name' => 'Geo','route' =>'shop_admin/geo/index','pid'=>$menu23->id,'uuid'=>$manager->uuid,'type'=>2,'module_id'=>$module_id,'sort'=>0];
                 DB::table('admin_menu')->insert($data);
             }
@@ -127,7 +126,7 @@ class Module extends Module_base
 
         $data=[];
 		$data[] =['id'=>'1','name'=>'Pending payment','cn_name'=>'待支付'];
-		$data[] =['id'=>'2','name'=>'Paid','cn_name'=>'买家已支付'];
+		$data[] =['id'=>'2','name'=>'Paid and awaiting shipment','cn_name'=>'买家已支付，等待发货'];
 		$data[] =['id'=>'3','name'=>'Shipped','cn_name'=>'已寄送'];
         $data[] =['id'=>'4','name'=>'Service','cn_name'=>'售后'];
         $data[] =['id'=>'5','name'=>'Closed','cn_name'=>'已关闭'];
@@ -171,7 +170,6 @@ class Module extends Module_base
         Schema::dropIfExists('shop_group');
         Schema::dropIfExists('shop_country');
         Schema::dropIfExists('shop_zone');
-        Schema::dropIfExists('shop_currency');
         return 'uninstall_ok';
     }
 

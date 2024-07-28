@@ -24,7 +24,7 @@
     .product_detail_info .price .normal{color: #E36254;}
 
     .info_option .flag_radio .my_radio[data-image_src="true"] label{padding:0;border: none !important;margin-right: 10px;}
-    .info_option .flag_radio .my_radio[data-image_src="true"] label span{display: none;}
+    .info_option .flag_radio .my_radio[data-image_src="true"] label span{display: block;}
     .info_option .flag_radio .my_radio[data-image_src="true"] label img{border-radius: 50%;margin-right: 0;padding: 3px;}
     .info_option .flag_radio .my_radio[data-image_src="true"] label:hover{border: none !important;}
     .info_option .flag_radio .my_radio[data-image_src="true"] label.active img{border:2px solid #e59798 !important;padding: 1px;}
@@ -489,6 +489,8 @@
         }else{
             $('.info_img_big li').removeClass('on')
             $('.info_img_big li[data-image_id="'+image_id+'"]').addClass('on')
+            $('.flag_radio .div_ul .my_radio[data-image_src="true"] label').removeClass('active')
+            $('.flag_radio .div_ul input[data-image_id="'+image_id+'"]').next('label').addClass('active')
         }
     }
 

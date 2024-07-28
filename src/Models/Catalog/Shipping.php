@@ -25,10 +25,10 @@ class Shipping extends Model
     static public function findAll($cache=true) {
         if($cache){
             return Cache::rememberForever('shop_shipping', function () {
-                return self::where('status',1)->get()->keyBy('id')->toArray();
+                return self::where('status',1)->orderBy('sort','desc')->get()->keyBy('id')->toArray();
             });
         }else{
-            return self::where('status',1)->get()->keyBy('id')->toArray();
+            return self::where('status',1)->orderBy('sort','desc')->get()->keyBy('id')->toArray();
         }
     }
 
@@ -51,6 +51,11 @@ class Shipping extends Model
                             $val['free']=true;
                         }else{
                             $val['free']=false;
+                        }
+                        if($val['cost']==0 && !$val['free']){
+                            $val['disabled']=true;
+                        }else{
+                            $val['disabled']=false;
                         }
                         list($val['cost'],$val['cost_format']) = Currency::format($val['cost'],2);
                         list($val['free_cost'],$val['free_cost_format']) = Currency::format($val['free_cost'],2);
@@ -97,7 +102,7 @@ class Shipping extends Model
                     $total_data['totals']['shipping'] = [
                         'title'      => 'Shipping',
                         'value'      => 0,
-                        'value_format'      => 'Free',
+                        'value_format'      => 'Free ('.$shipping[$shop_shipping_id]['name'].')',
                         'sort' => 3,
                         'ext'=>$shop_shipping_id
                     ];

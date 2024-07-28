@@ -92,7 +92,6 @@ class ServiceController extends Controller
             $input = $request->all();
             $input['uuid'] = User::uuid();
             $info = Service::create($input);
-
             $service_product_arr = [];
             $total_all = 0;
             if(!empty($input['order_product'])){

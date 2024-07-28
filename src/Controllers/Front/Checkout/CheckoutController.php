@@ -96,6 +96,9 @@ class CheckoutController extends Controller
 			if ($shipping_method_all) {
 				foreach ($shipping_method_all as $key => $val) {
 					if ($key == $request->input('shipping_id')) {
+                        if($val['disabled']){
+                            throw new ApiException(['code'=>14,'msg'=>'shipping error']);
+                        }
 						session(['shop_shipping_id'=> $key]);
 						$payment_method = (new PaymentMethod)->findAll();
 						throw new ApiException(['code' => 0, 'msg' => 'shipping method success', 'data' => ['redirect'=>'/checkout/payment','list' => $payment_method]]);

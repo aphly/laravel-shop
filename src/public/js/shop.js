@@ -10,12 +10,10 @@ $(function () {
 })
 
 function wishlist_one(product_id,_this) {
-    let csrf = $(_this).data('csrf')
-    if(product_id && csrf){
+    if(product_id){
         $.ajax({
             url:'/wishlist/product/'+product_id,
             type:'post',
-            data:{'_token':csrf},
             dataType: "json",
             success:function (res) {
                 if(!res.code){

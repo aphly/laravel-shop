@@ -39,7 +39,7 @@
 
 .service_upload {display: flex;}
 .service_upload img{border-radius: 4px;}
-.my_step{padding: 15px 0;}
+.my_step{padding: 0;}
 .my_step dd{margin-bottom: 5px;}
 .my_step1{display: flex;line-height: 30px;color: #999;align-items: center;}
 .my_step11{background: #999;border-radius: 50%;width: 10px;height: 10px;margin: 5px;}
@@ -278,7 +278,7 @@ img{border-radius: 6px;}
 .items-subtotal span.discount{position: absolute;bottom: 10px;color: #999;font-size: 12px;}
 .price_qty{font-size: 12px;color: #999;}
 .price_qty span{margin-right: 10px;}
-.items-lists li{height: 22px;line-height: 22px;}
+.items-lists li{line-height: 22px;}
 
 .btn-apply-code,.cart-code-input{border-radius:5px;height:45px;outline:none}
 .cart-code-input{border:1px solid #ccc;padding-left:10px;width:calc(100% - 120px)}
@@ -286,7 +286,9 @@ img{border-radius: 6px;}
 .btn-apply-code:hover{color:#fff;}
 .summarytip{border-bottom:1px solid #f1f1f1;padding:10px 0 15px;position:relative}
 .coupon-remove {color: #0da9c4;cursor: pointer}
-
+.option_value_arr{display: flex;flex-wrap: wrap;}
+.option_value_arr dd{margin-right: 10px;background: #f1f1f1;padding:0 8px;border-radius: 4px;margin-bottom: 5px; }
+.info_option input,.info_option select{height: 40px;}
 @media (max-width: 1199.98px) {
     .checkout{}
     .checkout_l,.checkout_r{width: 100%;margin-right: 0;}

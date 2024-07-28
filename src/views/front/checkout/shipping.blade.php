@@ -33,9 +33,9 @@
                     </div>
                     <ul class="checkout_ul">
                         @foreach($res['shipping'] as $val)
-                            <li class="@if($res['shipping_default_id']==$val['id']) active @endif" data-id="{{$val['id']}}">
+                            <li class="@if($val['disabled']) disabled @endif" data-id="{{$val['id']}}">
                                 <label>
-                                    <input type="radio" name="shipping_id" value="{{$val['id']}}" @if($res['shipping_default_id']==$val['id']) checked @endif >
+                                    <input type="radio" name="shipping_id" value="{{$val['id']}}" @if($val['disabled']) disabled @endif >
                                     <div class="">
                                         {{$val['name']}}
                                     </div>
@@ -44,10 +44,16 @@
                                     </div>
                                     <div>
                                         @if($res['free_shipping'] || $val['free'])
+                                            @if($val['cost']>0)
                                             <span class="old_price">{{$val['cost_format']}}</span>
+                                            @endif
                                             <span>Free</span>
                                         @else
-                                            {{$val['cost_format']}}
+                                            @if($val['cost']>0)
+                                                {{$val['cost_format']}}
+                                            @else
+                                                Free
+                                            @endif
                                         @endif
                                     </div>
                                 </label>
@@ -73,19 +79,22 @@
     .checkout_ul li{display: flex;justify-content: space-between;}
     .checkout_ul li div:first-child{margin-right: 10px;}
     .checkout_ul li div:nth-child(3){margin-right: auto;margin-left: 10px;}
+    .checkout_ul li.disabled{ background: #f1f1f1;}
 </style>
 <script>
 function checkout_shipping(res) {
-    if(!res.code){
-        location.href = res.data.redirect
-    }
+    alert_res(res)
 }
 $(function () {
     $('.checkout_ul').on('click','li',function () {
-        $('.checkout_ul li').removeClass('active')
-        $(this).addClass('active')
+        if($(this).hasClass('disabled')){
+        }else{
+            $('.checkout_ul li').removeClass('active')
+            $(this).addClass('active')
+        }
         //$('input[name="shipping_id"]').val($(this).data('id'))
     })
+    $('.checkout_ul li:not(.disabled):first').find('label').click()
 })
 </script>
 @include(config('base.view_namespace_front_blade').'::common.footer')

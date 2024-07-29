@@ -32,6 +32,7 @@ class Module extends Module_base
                 $data[] =['name' => '选项管理','route' =>'shop_admin/option/index','pid'=>$menu21->id,'uuid'=>$manager->uuid,'type'=>2,'module_id'=>$module_id,'sort'=>0];
                 $data[] =['name' => '物流管理','route' =>'shop_admin/shipping/index','pid'=>$menu21->id,'uuid'=>$manager->uuid,'type'=>2,'module_id'=>$module_id,'sort'=>0];
                 $data[] =['name' => '文章管理','route' =>'shop_admin/information/index','pid'=>$menu21->id,'uuid'=>$manager->uuid,'type'=>2,'module_id'=>$module_id,'sort'=>0];
+                $data[] =['name' => 'banner','route' =>'shop_admin/banner/index','pid'=>$menu21->id,'uuid'=>$manager->uuid,'type'=>2,'module_id'=>$module_id,'sort'=>0];
                 DB::table('admin_menu')->insert($data);
             }
             $menu22 = Menu::create(['name' => '用户','route' =>'','pid'=>$menu->id,'uuid'=>$manager->uuid,'type'=>1,'module_id'=>$module_id,'sort'=>9]);

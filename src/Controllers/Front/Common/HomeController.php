@@ -7,6 +7,7 @@ use Aphly\Laravel\Models\UploadFile;
 use Aphly\LaravelPayment\Models\Currency;
 use Aphly\LaravelShop\Controllers\Front\Controller;
 use Aphly\LaravelShop\Models\Catalog\Product;
+use Aphly\LaravelShop\Models\Common\Banner;
 
 
 class HomeController extends Controller
@@ -15,14 +16,13 @@ class HomeController extends Controller
     {
         $res['title'] = 'Home';
         $res['data_products'] = [
-            ['title'=>'Best Sellers','product_ids'=>[
-                1,2,3
-            ]],
-            ['title'=>'New Arrivals','product_ids'=>[
-                1,2,3
-            ]],
+            ['title'=>self::$_G['shop_config']['index1_k'],'product_ids'=>explode(',',self::$_G['shop_config']['index1_v'])],
+            ['title'=>self::$_G['shop_config']['index2_k'],'product_ids'=>explode(',',self::$_G['shop_config']['index2_v'])],
+            ['title'=>self::$_G['shop_config']['index3_k'],'product_ids'=>explode(',',self::$_G['shop_config']['index3_v'])],
+            ['title'=>self::$_G['shop_config']['index4_k'],'product_ids'=>explode(',',self::$_G['shop_config']['index4_v'])],
         ];
 
+        $res['banner'] = Banner::findAll();
         $product_ids = [];
         foreach ($res['data_products'] as $val){
             foreach ($val['product_ids'] as $v){

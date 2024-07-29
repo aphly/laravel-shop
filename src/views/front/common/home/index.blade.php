@@ -1,27 +1,27 @@
 @include(config('base.view_namespace_front_blade').'::common.header')
 <div>
+    @if(!empty($res['banner']['home']))
     <div class="home_carousel">
-        <div id="carouselCaptionsHome" class="carousel slide" data-ride="carousel">
+        <div id="carouselCaptionsHome" class="carousel slide carousel-fade" data-ride="carousel">
             <ol class="carousel-indicators">
-                <li data-target="#carouselCaptionsHome" data-slide-to="0" class="active"></li>
-                <li data-target="#carouselCaptionsHome" data-slide-to="1"></li>
+                @foreach($res['banner']['home'] as $key=>$val)
+                <li data-target="#carouselCaptionsHome" data-slide-to="{{$key}}" class="@if(!$key) active @endif" ></li>
+                @endforeach
             </ol>
             <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img src="{{ URL::asset('image/banner1.jpg') }}" class="d-block w-100">
+                @foreach($res['banner']['home'] as $key=>$val)
+                <div class="carousel-item @if(!$key) active @endif">
+                    <img src="{{ $val['img'] }}" class="w-100 carousel_pc">
+                    <img src="{{ $val['img_m'] }}" class="w-100 carousel_m">
+                    @if(0)
                     <div class="carousel-caption d-none d-md-block">
-                        <h5>First slide label</h5>
-                        <p>Some representative placeholder content for the first slide.</p>
+                        <h5>{{$val['title']}}</h5>
                     </div>
+                    @endif
                 </div>
-                <div class="carousel-item">
-                    <img src="{{ URL::asset('image/banner2.jpg') }}" class="d-block w-100">
-                    <div class="carousel-caption d-none d-md-block">
-                        <h5>Second slide label</h5>
-                        <p>Some representative placeholder content for the second slide.</p>
-                    </div>
-                </div>
+                @endforeach
             </div>
+            @if(0)
             <button class="carousel-control-prev" type="button" data-target="#carouselCaptionsHome" data-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="sr-only">Previous</span>
@@ -30,17 +30,24 @@
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="sr-only">Next</span>
             </button>
+            @endif
         </div>
     </div>
+    @endif
 </div>
 <style>
-    .home_carousel .carousel-item img{ height: 600px;}
+    .home_carousel .carousel-item img{ height: 600px;border-radius: 0}
     .product-category li .product_image img{height: 100%;width: 100%;}
+    .carousel-indicators li{height: 8px;border-radius: 4px;background-clip:inherit;border-top:none;border-bottom: none;}
+    .carousel_pc{display: block}
+    .carousel_m{display: none}
     @media (max-width: 1499.98px) {
         .home_carousel .carousel-item img{height: 450px; }
     }
     @media (max-width: 1199.98px) {
         .home_carousel .carousel-item img{height: 300px; }
+        .carousel_pc{display: none}
+        .carousel_m{display: block}
     }
 </style>
 <div>

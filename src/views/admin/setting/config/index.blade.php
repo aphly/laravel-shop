@@ -8,14 +8,42 @@
         <div class="">
             <nav style="margin-bottom: 20px;">
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                    <a class="nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">shop</a>
+                    <a class="nav-link active" id="nav-index-tab" data-toggle="tab" href="#nav-index" role="tab" aria-controls="nav-index" aria-selected="true">首页</a>
+                    <a class="nav-link " id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">shop</a>
                     <a class="nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">params</a>
                     <a class="nav-link" id="nav-order-tab" data-toggle="tab" href="#nav-order" role="tab" aria-controls="nav-order" aria-selected="false">order</a>
                     <a class="nav-link" id="nav-service-tab" data-toggle="tab" href="#nav-service" role="tab" aria-controls="nav-service" aria-selected="false">service</a>
                 </div>
             </nav>
             <div class="tab-content" id="nav-tabContent">
-                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                <div class="tab-pane fade show active" id="nav-index" role="tabpanel" aria-labelledby="nav-index-tab">
+                    <div class="form-group">
+                        <label for="">首页商品ids</label>
+                        <input type="text" name="setting[index1_k]" class="form-control " value="{{$res['setting']['index1_k']['value']??'Best Sellers'}}">
+                        <textarea name="setting[index1_v]" class="form-control " >{{$res['setting']['index1_v']['value']??'1,2,3'}}</textarea>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="">首页商品ids</label>
+                        <input type="text" name="setting[index2_k]" class="form-control " value="{{$res['setting']['index2_k']['value']??'New Arrivals'}}">
+                        <textarea name="setting[index2_v]" class="form-control " >{{$res['setting']['index2_v']['value']??'1,2,3'}}</textarea>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="">首页商品ids</label>
+                        <input type="text" name="setting[index3_k]" class="form-control " value="{{$res['setting']['index3_k']['value']??'New Arrivals'}}">
+                        <textarea name="setting[index3_v]" class="form-control " >{{$res['setting']['index3_v']['value']??'1,2,3'}}</textarea>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="">首页商品ids</label>
+                        <input type="text" name="setting[index4_k]" class="form-control " value="{{$res['setting']['index4_k']['value']??'New Arrivals'}}">
+                        <textarea name="setting[index4_v]" class="form-control " >{{$res['setting']['index4_v']['value']??'1,2,3'}}</textarea>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade " id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                     <div class="form-group">
                         <label for="">review (是否打开)</label>
                         <select name="setting[review]" class="form-control" >

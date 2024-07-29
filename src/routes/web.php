@@ -142,7 +142,8 @@ Route::middleware(['web'])->group(function () {
                 ['information','\Common\InformationController'],['contact_us','\Common\ContactUsController'],
                 ['country','\Setting\CountryController'],['geo','\Setting\GeoController'],['zone','\Setting\ZoneController'],
                 ['group','\Account\GroupController'],['user_address','\Account\UserAddressController'],
-                ['review','\Account\ReviewController'],['wishlist','\Account\WishlistController'],['subscribe','\Account\SubscribeController']
+                ['review','\Account\ReviewController'],['wishlist','\Account\WishlistController'],['subscribe','\Account\SubscribeController'],
+                ['banner','\Common\BannerController'],
             ];
 
 

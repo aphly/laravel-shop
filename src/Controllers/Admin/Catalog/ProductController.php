@@ -44,7 +44,7 @@ class ProductController extends Controller
                 if($search['status']!==''){
                     $query->where('status', $search['status']);
                 }
-            })
+            })->orderBy('id','desc')
             ->Paginate(config('base.perPage'))->withQueryString();
         $res['list']->transform(function ($item){
             $item->image_src = UploadFile::getPath($item->image,$item->remote);

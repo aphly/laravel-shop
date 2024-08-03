@@ -68,15 +68,15 @@ class AccountController extends Controller
     {
         try {
             $decrypted = Crypt::decryptString($request->token);
-            $user = User::where('token',$decrypted)->first();
-            if(!empty($user)){
-                Auth::guard('user')->login($user);
-                return redirect('/');
-            }else{
-                throw new ApiException(['code'=>2,'msg'=>'No user']);
-            }
         } catch (DecryptException $e) {
             throw new ApiException(['code'=>1,'msg'=>'Token_error']);
+        }
+        $user = User::where('web_token',$decrypted)->first();
+        if(!empty($user)){
+            Auth::guard('user')->login($user);
+            return redirect('/');
+        }else{
+            throw new ApiException(['code'=>2,'msg'=>'No user']);
         }
     }
 

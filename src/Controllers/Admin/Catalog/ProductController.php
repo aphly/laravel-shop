@@ -153,7 +153,7 @@ class ProductController extends Controller
         if($request->isMethod('post')) {
             $input = $request->all();
             ProductDesc::updateOrCreate(['product_id'=>$res['product']->id],$input);
-            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
+            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->listHref('desc').'?product_id='.$res['product']->id]]);
         }else{
             $res['product'] = Product::where('id',$res['product']->id)->first();
             if(!empty($res['product'])){
@@ -162,7 +162,7 @@ class ProductController extends Controller
             $res['breadcrumb'] = Breadcrumb::render([
                 ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
                 ['name'=>$res['product']->name],
-                ['name'=>'描述','href'=>'/shop_admin/'.$this->currArr['key'].'/desc?product_id='.$res['product']->id]
+                ['name'=>'描述','href'=>$this->listHref('desc').'?product_id='.$res['product']->id]
             ]);
             return $this->makeView('laravel-shop::admin.catalog.product.desc',['res'=>$res]);
         }
@@ -186,7 +186,7 @@ class ProductController extends Controller
                     ProductImage::insert($insertData);
                     $this->updateImg($res['product']->id);
                     throw new ApiException(['code' => 0, 'msg' => '上传成功',
-                        'data' => ['redirect' => '/shop_admin/product/img?product_id='.$res['product']->id,'imgs'=>$img_src]]);
+                        'data' => ['redirect' => $this->listHref('img').'?product_id='.$res['product']->id,'imgs'=>$img_src]]);
                 }
             }
             throw new ApiException(['code'=>2,'data'=>'','msg'=>'上传错误']);
@@ -225,7 +225,7 @@ class ProductController extends Controller
             }
         }
         $this->updateImg($res['product']->id);
-        throw new ApiException(['code' => 0, 'msg' => '更新成功', 'data' => ['redirect' =>  '/shop_admin/product/img?product_id='.$res['product']->id]]);
+        throw new ApiException(['code' => 0, 'msg' => '更新成功', 'data' => ['redirect' =>  $this->listHref('img').'?product_id='.$res['product']->id]]);
     }
 
     public function imgDel(Request $request)
@@ -264,7 +264,7 @@ class ProductController extends Controller
                 }
                 if ($insertData) {
                     ProductVideo::insert($insertData);
-                    throw new ApiException(['code' => 0, 'msg' => '上传成功', 'data' => ['redirect' => '/shop_admin/product/video?product_id='.$res['product']->id,'video'=>$video_src]]);
+                    throw new ApiException(['code' => 0, 'msg' => '上传成功', 'data' => ['redirect' => $this->listHref('video').'?product_id='.$res['product']->id ,'video'=>$video_src]]);
                 }
             }
             throw new ApiException(['code'=>2,'data'=>'','msg'=>'上传错误']);
@@ -292,7 +292,7 @@ class ProductController extends Controller
         foreach ($post['type'] as $k=>$v){
             ProductVideo::find($k)->update(['type'=>$v]);
         }
-        throw new ApiException(['code' => 0, 'msg' => '更新成功', 'data' => ['redirect' =>  '/shop_admin/product/video?product_id='.$res['product']->id]]);
+        throw new ApiException(['code' => 0, 'msg' => '更新成功', 'data' => ['redirect' => $this->listHref('video').'?product_id='.$res['product']->id ]]);
     }
 
     public function videoDel(Request $request)
@@ -317,13 +317,13 @@ class ProductController extends Controller
                 $update_arr[] = ['attribute_id'=>$key,'text'=>$val,'product_id'=>$product_id];
             }
             ProductAttribute::insert($update_arr);
-            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
+            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=> $this->listHref('attribute').'?product_id='.$res['product']->id ]]);
         }else{
             $res['product_attribute'] = ProductAttribute::where('product_id',$product_id)->with('attribute')->get()->toArray();
             $res['breadcrumb'] = Breadcrumb::render([
                 ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
                 ['name'=>$res['product']->name],
-                ['name'=>'属性','href'=>'/shop_admin/'.$this->currArr['key'].'/attribute?product_id='.$res['product']->id]
+                ['name'=>'属性','href'=>$this->listHref('attribute').'?product_id='.$res['product']->id]
             ]);
             return $this->makeView('laravel-shop::admin.catalog.product.attribute',['res'=>$res]);
         }
@@ -370,7 +370,7 @@ class ProductController extends Controller
                     ProductOptionValue::upsert($product_option_value_update,['id'],['product_option_id','product_id','option_id','option_value_id','product_image_id','quantity','subtract','price','sort']);
                 }
             }
-            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
+            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->listHref('option').'?product_id='.$res['product']->id]]);
         }else{
             $res['product_option'] = ProductOption::where('product_id',$product_id)->with('value_arr')->orderBy('id','desc')->get()->toArray();
             $res['option'] = Option::with('value')->get()->keyBy('id')->toArray();
@@ -383,7 +383,7 @@ class ProductController extends Controller
             $res['breadcrumb'] = Breadcrumb::render([
                 ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
                 ['name'=>$res['product']->name],
-                ['name'=>'选项','href'=>'/shop_admin/'.$this->currArr['key'].'/option?product_id='.$res['product']->id]
+                ['name'=>'选项','href'=>$this->listHref('option').'?product_id='.$res['product']->id]
             ]);
             return $this->makeView('laravel-shop::admin.catalog.product.option',['res'=>$res]);
         }
@@ -411,7 +411,7 @@ class ProductController extends Controller
                 }
                 ProductFilter::insert($update_arr);
             }
-            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
+            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->listHref('links').'?product_id='.$res['product']->id]]);
         }else{
             $res['product_category'] = ProductCategory::where('product_id',$product_id)->get()->toArray();
             $category_ids = array_column($res['product_category'],'category_id');
@@ -426,7 +426,7 @@ class ProductController extends Controller
             $res['breadcrumb'] = Breadcrumb::render([
                 ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
                 ['name'=>$res['product']->name],
-                ['name'=>'链接','href'=>'/shop_admin/'.$this->currArr['key'].'/links?product_id='.$res['product']->id]
+                ['name'=>'链接','href'=>$this->listHref('links').'?product_id='.$res['product']->id]
             ]);
             return $this->makeView('laravel-shop::admin.catalog.product.links',['res'=>$res]);
         }
@@ -473,14 +473,14 @@ class ProductController extends Controller
                 $update[] = $arr_v;
             }
             ProductSpecial::upsert($update,['id'],['product_id','price','date_start','date_end']);
-            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
+            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->listHref('special').'?product_id='.$res['product']->id]]);
         }else{
             //$res['group'] = Group::get()->keyBy('id')->toArray();
             $res['product_special'] = ProductSpecial::where('product_id',$product_id)->get()->toArray();
             $res['breadcrumb'] = Breadcrumb::render([
                 ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
                 ['name'=>$res['product']->name],
-                ['name'=>'特价','href'=>'/shop_admin/'.$this->currArr['key'].'/special?product_id='.$res['product']->id]
+                ['name'=>'特价','href'=>$this->listHref('special').'?product_id='.$res['product']->id]
             ]);
             return $this->makeView('laravel-shop::admin.catalog.product.special',['res'=>$res]);
         }
@@ -504,14 +504,14 @@ class ProductController extends Controller
                 $update[] = $arr_v;
             }
             ProductDiscount::upsert($update,['id'],['product_id','price','quantity']);
-            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
+            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->listHref('discount').'?product_id='.$res['product']->id]]);
         }else{
             //$res['group'] = Group::get()->keyBy('id')->toArray();
             $res['product_discount'] = ProductDiscount::where('product_id',$product_id)->get()->toArray();
             $res['breadcrumb'] = Breadcrumb::render([
                 ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
                 ['name'=>$res['product']->name],
-                ['name'=>'批发价','href'=>'/shop_admin/'.$this->currArr['key'].'/discount?product_id='.$res['product']->id]
+                ['name'=>'批发价','href'=>$this->listHref('discount').'?product_id='.$res['product']->id]
             ]);
             return $this->makeView('laravel-shop::admin.catalog.product.discount',['res'=>$res]);
         }

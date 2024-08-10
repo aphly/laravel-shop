@@ -37,6 +37,7 @@ class ProductController extends Controller
             return $item;
         });
         $res['product_option'] = $product->optionValueColor($product_ids);
+
         //dd($res['product_option']);
         //$res['product_image'] = $product->imgByIds($product_ids);
         $res['product_option_value_image'] = [];

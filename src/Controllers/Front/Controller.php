@@ -7,7 +7,7 @@ use Aphly\LaravelPayment\Models\Currency;
 use Aphly\LaravelShop\Models\Account\Wishlist;
 use Aphly\LaravelShop\Models\Checkout\Cart;
 use Aphly\LaravelShop\Models\Setting\Config;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth; 
 use Illuminate\Support\Facades\View;
 
 class Controller extends \Aphly\Laravel\Controllers\Front\Controller

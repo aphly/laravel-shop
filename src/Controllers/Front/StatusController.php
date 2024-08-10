@@ -2,8 +2,6 @@
 
 namespace Aphly\LaravelShop\Controllers\Front;
 
-use Aphly\Laravel\Controllers\Front\Controller;
-
 class StatusController extends Controller
 {
 

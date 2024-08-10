@@ -13,7 +13,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+
 Route::middleware(['web'])->group(function () {
+
+
+
     //Subscribe
     Route::post('subscribe/ajax', 'Aphly\LaravelShop\Controllers\Front\AccountExt\SubscribeController@ajax');
 
@@ -42,6 +47,8 @@ Route::middleware(['web'])->group(function () {
             Route::match(['get', 'post'],'register','Aphly\LaravelShop\Controllers\Front\AccountController@register')->name('register');
             Route::match(['get', 'post'],'login','Aphly\LaravelShop\Controllers\Front\AccountController@login')->name('login');
             Route::match(['get', 'post'],'index','Aphly\LaravelShop\Controllers\Front\AccountController@index');
+            Route::get('oauth/google', 'Aphly\LaravelShop\Controllers\Front\AuthController@redirectToGoogle')->name('google');
+            Route::get('oauth/google/callback', 'Aphly\LaravelShop\Controllers\Front\AuthController@handleGoogleCallback')->name('googleCallback');
         });
     });
 

@@ -2,7 +2,6 @@
 
 namespace Aphly\LaravelShop\Controllers\Front;
 
-use Aphly\Laravel\Controllers\Front\Controller;
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Libs\Helper;
 use Aphly\Laravel\Libs\Seccode;

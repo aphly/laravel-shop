@@ -18,8 +18,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['web'])->group(function () {
 
     Route::middleware(['userAuth'])->group(function () {
-        Route::get('oauth/google', 'Aphly\LaravelShop\Controllers\Front\AuthController@redirectToGoogle')->name('google');
-        Route::get('oauth/google/callback', 'Aphly\LaravelShop\Controllers\Front\AuthController@handleGoogleCallback')->name('googleCallback');
+        Route::get('oauth/{driver}', 'Aphly\LaravelShop\Controllers\Front\OauthController@redirect')->name('oauth');
+        Route::get('oauth/{driver}/callback', 'Aphly\LaravelShop\Controllers\Front\OauthController@handleCallback')->name('oauthCallback');
     });
 
     //Subscribe

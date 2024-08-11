@@ -15,31 +15,49 @@ use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Http\Request;
 
-class AuthController extends Controller
+class OauthController extends Controller
 {
+    public $driver = ['facebook','google'];
 
-    public function redirectToGoogle()
+    public function redirect(Request $request)
     {
-        return Socialite::driver('google')->redirect();
+        if(in_array($request->driver,$this->driver)){
+            return Socialite::driver($request->driver)->redirect();
+        }else{
+            throw new ApiException(['code'=>1,'msg'=>'Oauth Type Error ']);
+        }
     }
 
-    public function handleGoogleCallback(Request $request)
+    public function handleCallback(Request $request)
     {
+        if(!in_array($request->driver,$this->driver)){
+            throw new ApiException(['code'=>1,'msg'=>'Oauth Type Error ']);
+        }
         try {
             $user = Socialite::driver('google')->user();
         } catch (\Exception $e) {
-            throw new ApiException(['code'=>1,'msg'=>'Google Login Error ']);
+            throw new ApiException(['code'=>1,'msg'=>'Oauth Login Error ']);
         }
         $this->findOrCreateUserLogin($user,$request);
     }
 
-    protected function findOrCreateUserLogin($googleUser,$request)
+    protected function findOrCreateUserLogin($oauthUser,$request)
     {
-        $post['id'] = $googleUser->getEmail();
-        if(!$post['id']){
-            throw new ApiException(['code'=>1,'msg'=>'Fail']);
+        if($request->driver=='google'){
+            $post['id'] = $oauthUser->getEmail();
+            if(!$post['id']){
+                throw new ApiException(['code'=>1,'msg'=>'Fail']);
+            }
+            $post['id_type'] = 'email';
+        }else{
+            $post['id_type'] = 'email';
+            $post['id'] = $oauthUser->getEmail();
+            if(!$post['id']){
+                $post['id'] = $oauthUser->getId();
+                $post['id_type'] = 'oauth';
+            }
         }
-        $post['id_type'] = 'email';
+
         $userAuthModel = UserAuth::where($post);
         $userAuth = $userAuthModel->first();
         if(!empty($userAuth)){

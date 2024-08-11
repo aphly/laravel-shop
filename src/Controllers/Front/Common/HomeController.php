@@ -3,11 +3,14 @@
 namespace Aphly\LaravelShop\Controllers\Front\Common;
 
 
+use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Models\UploadFile;
 use Aphly\LaravelPayment\Models\Currency;
 use Aphly\LaravelShop\Controllers\Front\Controller;
 use Aphly\LaravelShop\Models\Catalog\Product;
 use Aphly\LaravelShop\Models\Common\Banner;
+use Aphly\LaravelShop\Models\Sale\Order;
+use Illuminate\Http\Request;
 
 
 class HomeController extends Controller
@@ -49,6 +52,19 @@ class HomeController extends Controller
         }
         //$res['product_image'] = $product->imgByIds($product_ids);
         return $this->makeView('laravel-front::common.home.index',['res'=>$res]);
+    }
+
+    function tracking(Request $request)
+    {
+        if($request->isMethod('post')) {
+            $input = $request->all();
+            $orderInfo = Order::where('id',$input['order_id'])->firstOrError();
+
+            throw new ApiException(['code'=>0,'msg'=>'success']);
+        }else{
+            $res['title'] = 'Contact Us';
+            return $this->makeView('laravel-front::common.contact_us.index',['res'=>$res]);
+        }
     }
 
 }

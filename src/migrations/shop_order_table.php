@@ -37,7 +37,8 @@ return new class extends Migration
             $table->decimal('shipping_cost',15,2);
             $table->decimal('shipping_free_cost',15,2)->nullable();
             $table->unsignedBigInteger('shipping_geo_group_id')->nullable();
-            $table->string('shipping_no',255)->nullable();
+            $table->string('express_name',255)->nullable();
+            $table->string('express_no',255)->nullable();
 
             $table->unsignedBigInteger('payment_method_id');
             $table->string('payment_method_name',32)->nullable();

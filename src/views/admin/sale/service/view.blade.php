@@ -69,6 +69,14 @@
                         <li><div>退款总额:</div><div>{{$res['info']->amount_format}}</div></li>
                         <li><div>退款金额(扣除{{$res['info']->refund_fee}}%手续费后):</div><div>{{$res['info']->refund_amount_format}}</div></li>
                         <li><div>原因:</div><div>{{$res['info']->reason}}</div></li>
+
+                        <li><div>退货姓名:</div><div>{{$res['info']->service_name}}</div></li>
+                        <li><div>退货地址:</div><div>{{$res['info']->service_address}}</div></li>
+                        <li><div>退货邮编:</div><div>{{$res['info']->service_postcode}}</div></li>
+                        <li><div>退货电话:</div><div>{{$res['info']->service_phone}}</div></li>
+
+                        <li><div>客户快递名称:</div><div>{{$res['info']->c_express_name}}</div></li>
+                        <li><div>客户快递号码:</div><div>{{$res['info']->c_express_no}}</div></li>
                     </ul>
                 </div>
                 @if($res['info']->img->count())

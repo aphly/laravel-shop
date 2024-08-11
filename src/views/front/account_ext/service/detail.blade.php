@@ -51,14 +51,14 @@
                         @endif
                         @if($res['info']->service_action_id==2)
                             @if($res['info']->service_status_id>=3)
-                                <li><div>Name </div><div>{{$res['info']->service_name}}</div></li>
-                                <li><div>Address </div><div>{{$res['info']->service_address}}</div></li>
-                                <li><div>Postcode </div><div>{{$res['info']->service_postcode}}</div></li>
-                                <li><div>Phone </div><div>{{$res['info']->service_phone}}</div></li>
+                                <li><div>Return Name </div><div>{{$res['info']->service_name}}</div></li>
+                                <li><div>Return Address </div><div>{{$res['info']->service_address}}</div></li>
+                                <li><div>Return Postcode </div><div>{{$res['info']->service_postcode}}</div></li>
+                                <li><div>Return Phone </div><div>{{$res['info']->service_phone}}</div></li>
                             @endif
                             @if($res['info']->service_status_id>=4)
-                                <li><div>Express delivery name </div><div>{{$res['info']->c_shipping}}</div></li>
-                                <li><div>Tracking number </div><div>{{$res['info']->c_shipping_no}}</div></li>
+                                <li><div>Express delivery name </div><div>{{$res['info']->c_express_name}}</div></li>
+                                <li><div>Express Tracking number </div><div>{{$res['info']->c_express_no}}</div></li>
                             @endif
                         @endif
                     </ul>
@@ -150,8 +150,8 @@
                                     <div>Express delivery information</div>
                                     <input type="hidden" name="service_id" value="{{$res['info']->id}}">
                                     <input type="hidden" name="service_action_id" value="{{$res['info']->service_action_id}}">
-                                    <input type="text" name="c_shipping" class="form-control " placeholder="Express delivery name">
-                                    <input type="text" name="c_shipping_no" class="form-control " placeholder="Tracking number">
+                                    <input type="text" name="c_express_name" class="form-control " placeholder="Express delivery name">
+                                    <input type="text" name="c_express_no" class="form-control " placeholder="Tracking number">
                                     <button type="submit" class="account_btn">Shipped</button>
                                 </form>
                             </div>
@@ -161,8 +161,8 @@
                                     @csrf
                                     <div>Express delivery information</div>
                                     <input type="hidden" name="service_id" value="{{$res['info']->id}}">
-                                    <input type="text" name="c_shipping" class="form-control " value="{{$res['info']->c_shipping}}">
-                                    <input type="text" name="c_shipping_no" class="form-control " value="{{$res['info']->c_shipping_no}}">
+                                    <input type="text" name="c_express_name" class="form-control " value="{{$res['info']->c_express_name}}">
+                                    <input type="text" name="c_express_no" class="form-control " value="{{$res['info']->c_express_no}}">
                                     <button type="submit" class="account_btn">Shipped</button>
                                 </form>
                             </div>

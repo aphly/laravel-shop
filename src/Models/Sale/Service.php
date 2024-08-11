@@ -65,8 +65,8 @@ class Service extends Model
                 $info->service_phone = $input['service_phone'];
             }else if($service_status_id==4){
                 $notify = $shop_config['service_awaiting_notify'];
-                $info->c_shipping = $input['c_shipping']??'';
-                $info->c_shipping_no = $input['c_shipping_no']??'';
+                $info->c_express_name = $input['c_express_name']??'';
+                $info->c_express_no = $input['c_express_no']??'';
             }else if($service_status_id==5){
             }else if($service_status_id==6){
                 if($info->amount>0 && $info->service_status_id==5){

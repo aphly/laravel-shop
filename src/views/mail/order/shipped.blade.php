@@ -4,7 +4,7 @@
     </div>
     <div style="padding: 10px;">
         <div style="margin-bottom: 5px;">We are happy to tell you we have dispatched your order! </div>
-        <div > You can track its progress with the following tracking number:{{$order->shipping_no}}.</div>
+        <div > You can track its progress with the following tracking number:{{$order->express_no}}.</div>
     </div>
     <div style="margin-bottom: 10px;font-size: 12px;padding: 10px;background: #f9f9f9;border-radius: 10px;">
         <div class="detail">
@@ -27,8 +27,8 @@
                         {{$order->address_postcode}}, {{$order->address_telephone}}
                     </div>
                 </li>
-                <li style=" display: flex;justify-content: space-between;margin-bottom: 5px;"><div style="width: 46%;flex-shrink: 0;color: #666;">Shipping Method:</div><div>{{$order->shipping_name}}</div></li>
-                <li style=" display: flex;justify-content: space-between;margin-bottom: 5px;"><div style="width: 46%;flex-shrink: 0;color: #666;">Shipping Tracking:</div><div>{{$order->shipping_no}}</div></li>
+                <li style=" display: flex;justify-content: space-between;margin-bottom: 5px;"><div style="width: 46%;flex-shrink: 0;color: #666;">Express Name:</div><div>{{$order->express_name}}</div></li>
+                <li style=" display: flex;justify-content: space-between;margin-bottom: 5px;"><div style="width: 46%;flex-shrink: 0;color: #666;">Express Tracking Number:</div><div>{{$order->express_no}}</div></li>
             </ul>
         </div>
         <ul class="order_product" style="padding-left: 0;">

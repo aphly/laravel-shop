@@ -179,7 +179,8 @@ class OrderController extends Controller
                     if ($row[0]) {
                         $input['notify']=1;
                         $input['override']=1;
-                        $input['shipping_no'] = $row[7];
+                        $input['express_name'] = $row[7];
+                        $input['express_no'] = $row[8];
                         $res['info'] = Order::where(['id'=>$row[0]])->whereIn('order_status_id',[2,3])->first();
                         if(!empty($res['info'])){
                             $res['info']->addOrderHistory($res['info'], 3,$input);

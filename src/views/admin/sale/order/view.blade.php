@@ -52,7 +52,8 @@
                                 {{$res['info']->address_postcode}}, {{$res['info']->address_telephone}}
                             </div></li>
                         <li><div>物流方式:</div><div>{{$res['info']->shipping_name}}</div></li>
-                        <li><div>物流单号:</div><div>{{$res['info']->shipping_no??'-'}}</div></li>
+                        <li><div>物流名称:</div><div>{{$res['info']->express_name??'-'}}</div></li>
+                        <li><div>物流单号:</div><div>{{$res['info']->express_no??'-'}}</div></li>
                     </ul>
                 </div>
                 <div class="info">
@@ -175,9 +176,14 @@
                             <input type="number" name="fee" class="form-control" value="5">
                             <div class="invalid-feedback"></div>
                         </div>
-                        <div class="form-group d-none" id="shipping_no">
+                        <div class="form-group d-none" id="express_name">
+                            <label for="">运单名称</label>
+                            <input type="text" name="express_name" class="form-control" value="">
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group d-none" id="express_no">
                             <label for="">运单</label>
-                            <input type="text" name="shipping_no" class="form-control" value="">
+                            <input type="text" name="express_no" class="form-control" value="">
                             <div class="invalid-feedback"></div>
                         </div>
                         <div class="form-group">
@@ -201,12 +207,15 @@ $(function () {
     $('#order_status_id').change(function () {
         if($(this).val()==='3') {
             $('#fee').addClass('d-none')
-            $('#shipping_no').removeClass('d-none')
+            $('#express_name').removeClass('d-none')
+            $('#express_no').removeClass('d-none')
         }else if($(this).val()==='7'){
-            $('#shipping_no').addClass('d-none')
+            $('#express_name').addClass('d-none')
+            $('#express_no').addClass('d-none')
             $('#fee').removeClass('d-none')
         }else{
-            $('#shipping_no').addClass('d-none')
+            $('#express_name').addClass('d-none')
+            $('#express_no').addClass('d-none')
             $('#fee').addClass('d-none')
         }
     })

@@ -26,8 +26,8 @@
                     <li><div>Phone </div><div>{{$service->service_phone}}</div></li>
                 @endif
                 @if($service->service_status_id>=4)
-                    <li><div>Express delivery name </div><div>{{$service->c_shipping}}</div></li>
-                    <li><div>Tracking number </div><div>{{$service->c_shipping_no}}</div></li>
+                    <li><div>Express delivery name </div><div>{{$service->c_express_name}}</div></li>
+                    <li><div>Tracking number </div><div>{{$service->c_express_no}}</div></li>
                 @endif
             @endif
         </ul>

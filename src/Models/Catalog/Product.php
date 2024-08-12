@@ -193,8 +193,14 @@ class Product extends Model
             }
         }
 
+        if($data['sku']){
+            $data['sku'] = trim($data['sku']);
+            $sql->where('p.sku',$data['sku']);
+        }
+
         $sql->groupBy('p.id')
-            ->select('p.id','p.sale','p.viewed','p.date_available','p.price','p.name','p.quantity','p.image','p.spu','p.remote','p.is_color_group');
+            ->select('p.id','p.sale','p.viewed','p.date_available','p.price','p.name','p.quantity','p.image',
+                'p.spu','p.sku','p.remote','p.is_color_group');
         $sql->addSelect([
             'reviews'=>Review::whereColumn('product_id','p.id')->where('status',1)
                 ->groupBy('product_id')

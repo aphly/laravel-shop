@@ -10,6 +10,7 @@
         <form method="get" action="/shop_admin/product/index" class="select_form">
         <div class="search_box ">
             <input type="search" name="name" placeholder="商品名称" value="{{$res['search']['name']}}">
+            <input type="search" name="sku" placeholder="商品sku" value="{{$res['search']['sku']}}">
             <select name="status" >
                 @if(isset($dict['product_status']))
                     <option value="" @if(!$res['search']['status']) selected @endif>全部</option>

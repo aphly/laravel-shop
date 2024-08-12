@@ -26,6 +26,9 @@
     .wishlist_one i{color: var(--btn_bg);}
     .sidebar-menu ul li a.active{color:var(--btn_bg) !important;}
     .checkout_ul input[type='radio']{accent-color:var(--btn_bg)}
+    .pagination{ margin-top: 20px;justify-content: center;}
+    .page-link{padding: 8px 16px;}
+    .page-item.active .page-link{border-color:var(--btn_bg);background-color:var(--btn_bg);}
 </style>
 <header>
     <div class="header1">

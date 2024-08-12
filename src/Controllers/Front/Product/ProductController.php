@@ -63,6 +63,7 @@ class ProductController extends Controller
         ],false);
         $res['filter_data'] = $filter_data = [
             'name'      => $request->query('name',false),
+            'sku'      => $request->query('sku',false),
             'category_id' => $request->query('category_id',false),
             'filter'      => $request->query('filter',false),
             'sort'      => $request->query('sort',false),

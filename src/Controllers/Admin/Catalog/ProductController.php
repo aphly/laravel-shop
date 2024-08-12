@@ -34,6 +34,7 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $res['search']['name'] = $request->query('name','');
+        $res['search']['sku'] = $request->query('sku','');
         $res['search']['status'] = $request->query('status','');
         $res['search']['string'] = http_build_query($request->query());
         $res['list'] = Product::when($res['search'],
@@ -43,6 +44,9 @@ class ProductController extends Controller
                 }
                 if($search['status']!==''){
                     $query->where('status', $search['status']);
+                }
+                if($search['sku']!==''){
+                    $query->where('sku', $search['sku']);
                 }
             })->orderBy('id','desc')
             ->Paginate(config('base.perPage'))->withQueryString();

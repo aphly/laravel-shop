@@ -30,12 +30,12 @@
                     <ul class="table_tbody">
                         <li><input type="checkbox" class="delete_box" name="delete[]" value="{{$v['id']}}">{{$v['id']}}</li>
                         <li class="wenzi">{{$v['email']}}</li>
-                        <li >
+                        <li  style="text-align: center">
                             @if($dict['yes_no'])
                                 {{$dict['yes_no'][$v->is_view]}}
                             @endif
                         </li>
-                        <li >
+                        <li style="text-align: center">
                             @if($dict['yes_no'])
                                 {{$dict['yes_no'][$v->is_reply]}}
                             @endif

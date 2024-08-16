@@ -8,13 +8,13 @@
             <a href="{{url('/information/'.$res['info']->id)}}"><span>{{$res['info']->title}}</span></a>
         </div>
         <div class="d-flex ">
-            @include('laravel-front::common.information_left')
+            @include('laravel-front::common.information.left')
             <div class="information_right">
                 <h2 class="">{{$res['info']->title}}</h2>
                 <div class="content">
                     {!! $res['info']->content !!}
                 </div>
-                @if($res['info']->id===4)
+                @if('/information/'.$res['info']->id===config('shop.menu.contact_us.url'))
                 <div class="contact_us">
                     <form action="/contact_us" method="post" class="form_request" data-fn="contact_us">
                         @csrf
@@ -46,7 +46,7 @@
 
 <script>
     function contact_us(res) {
-        alert_msg(res,false,3000)
+        alert_res(res)
     }
 </script>
 @include(config('base.view_namespace_front_blade').'::common.footer')

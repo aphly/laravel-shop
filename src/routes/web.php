@@ -119,6 +119,7 @@ Route::middleware(['web'])->group(function () {
         Route::get('/', 'Aphly\LaravelShop\Controllers\Front\Common\HomeController@index');
         Route::match(['post'],'contact_us', 'Aphly\LaravelShop\Controllers\Front\Common\ContactUsController@index');
         Route::match(['get'],'information/{id}', 'Aphly\LaravelShop\Controllers\Front\Common\InformationController@detail');
+        Route::match(['get'],'size_guide', 'Aphly\LaravelShop\Controllers\Front\Product\AphlyController@sizeGuide');
 
         //common
         Route::get('coupon/{code}', 'Aphly\LaravelShop\Controllers\Front\Common\CouponController@ajax');

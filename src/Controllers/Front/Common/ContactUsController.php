@@ -17,9 +17,6 @@ class ContactUsController extends Controller
             $input['uuid'] = User::uuid();
             ContactUs::create($input);
             throw new ApiException(['code'=>0,'msg'=>'success']);
-        }else{
-            $res['title'] = 'Contact Us';
-            return $this->makeView('laravel-front::common.contact_us.index',['res'=>$res]);
         }
 
     }

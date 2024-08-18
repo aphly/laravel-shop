@@ -38,7 +38,7 @@ class Paid extends Mailable
     public function build()
     {
 
-        return $this->subject('Order Paid')
+        return $this->subject('Order paid')
             ->view('laravel-shop::mail.order.paid');
     }
 }

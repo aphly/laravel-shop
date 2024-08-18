@@ -34,7 +34,7 @@ class Refusal extends Mailable
      */
     public function build()
     {
-        return $this->subject('Service Refusal')
+        return $this->subject('Your after-sales request has been rejected')
             ->view('laravel-shop::mail.service.refusal');
     }
 }

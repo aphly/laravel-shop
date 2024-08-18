@@ -31,7 +31,7 @@ class Request extends Mailable
      */
     public function build()
     {
-        return $this->subject('Service Request')
+        return $this->subject('After sales request')
             ->view('laravel-shop::mail.service.request');
     }
 }

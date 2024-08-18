@@ -1,6 +1,6 @@
-@include('laravel::mail.header')
+@include('laravel-shop::mail.header')
     <div style="font-size: 28px;line-height: 40px;margin-bottom: 10px;">
-        Order Paid
+        Order paid
     </div>
 
     <div style="padding: 10px">
@@ -8,7 +8,6 @@
 
         <div style="margin-bottom: 10px;">This is to confirm that we have received your order.</div>
         <div style="margin-bottom: 10px;">Please check the information below to confirm that it is correct.</div>
-        <div style="margin-bottom: 10px;">We will be dispatching these items within the next 3 days.</div>
         <div style="margin-bottom: 10px;">We will send you an email confirmation when your order has shipped.</div>
     </div>
 
@@ -73,4 +72,4 @@
             @endif
         </div>
     </div>
-@include('laravel::mail.footer')
+@include('laravel-shop::mail.footer')

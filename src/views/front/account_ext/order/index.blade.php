@@ -71,6 +71,9 @@
     .order_list122{width: calc(100% - 100px);}
     .order_list12 dd{margin-bottom: 5px;}
     .order_list12b{font-weight: 500;margin-bottom: 5px;margin-top: 5px;}
+    @media (max-width: 1200px) {
+        .order_list li{ padding: 15px 0;}
+    }
 </style>
 
 <script>

@@ -31,7 +31,7 @@ class Awaiting extends Mailable
      */
     public function build()
     {
-        return $this->subject('Service Waiting for delivery')
+        return $this->subject('The product has been shipped.')
             ->view('laravel-shop::mail.service.awaiting');
     }
 }

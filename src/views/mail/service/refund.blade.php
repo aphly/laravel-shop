@@ -1,17 +1,17 @@
-@include('laravel-front::mail.header')
+@include('laravel-shop::mail.header')
     <div style="font-size: 28px;line-height: 40px;margin-bottom: 10px;">
-        Service Refunded
+        The order has been refunded
     </div>
     <div style="padding: 10px;">
-        <div style="margin-bottom: 10px;">Our Service #{{$service->id}}</div>
+        <div style="margin-bottom: 10px;">Your Service #{{$service->id}}</div>
 
         <div style="margin-bottom: 5px;">
-            We have received the product and refunded it, and the final refund amount is {{$service->refund_amount_format}}.
-            The Service has been successfully refunded.
+            The order has been refunded, and the final refund amount is {{$service->refund_amount_format}}.
         </div>
         <div style="margin-bottom: 5px;">
-            Please check if you have received the refund within 48 hours. If not, please contact customer service
+            Please check if you have received the refund within 48 hours. If not, please contact customer service.
         </div>
+
     </div>
 
-@include('laravel::mail.footer')
+@include('laravel-shop::mail.footer')

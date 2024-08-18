@@ -72,10 +72,7 @@ class ContactUsController extends Controller
             (new RemoteEmail())->send([
                 'email'=>$input['email'],
                 'title'=>$input['title'],
-                'content'=>$input['content'],
-                'type'=>config('base.email_type'),
-                'queue_priority'=>0,
-                'is_cc'=>0
+                'content'=>$input['content']
             ]);
         }
         ContactUs::where('id',$input['id'])->update([

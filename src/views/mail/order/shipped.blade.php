@@ -1,6 +1,6 @@
-@include('laravel::mail.header')
+@include('laravel-shop::mail.header')
     <div style="font-size: 28px;line-height: 40px;margin-bottom: 10px;">
-        Order Shipped
+        The order has been shipped
     </div>
     <div style="padding: 10px;">
         <div style="margin-bottom: 5px;">We are happy to tell you we have dispatched your order! </div>
@@ -70,4 +70,4 @@
         </div>
     </div>
 
-@include('laravel::mail.footer')
+@include('laravel-shop::mail.footer')

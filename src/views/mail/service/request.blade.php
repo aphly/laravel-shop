@@ -1,6 +1,6 @@
-@include('laravel::mail.header')
+@include('laravel-shop::mail.header')
     <div style="font-size: 28px;line-height: 40px;margin-bottom: 10px;">
-        Service Request
+        After sales request
     </div>
     <div style="margin-bottom: 10px;">From {{$service->order->email}}</div>
 
@@ -27,7 +27,7 @@
                 @endif
                 @if($service->service_status_id>=4)
                     <li><div>Express delivery name </div><div>{{$service->c_express_name}}</div></li>
-                    <li><div>Tracking number </div><div>{{$service->c_express_no}}</div></li>
+                    <li><div>Express Tracking number </div><div>{{$service->c_express_no}}</div></li>
                 @endif
             @endif
         </ul>
@@ -42,4 +42,4 @@
         @endif
     </div>
 
-@include('laravel::mail.footer')
+@include('laravel-shop::mail.footer')

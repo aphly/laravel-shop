@@ -74,7 +74,11 @@ class Service extends Model
                     if($fee>=0 && $fee<=100){
                         list($refund_amount,$refund_amount_format) = Currency::codeFormat((100 - $fee) / 100 * $info->amount, $info->currency_code);
                         if ($refund_amount > 0) {
-                            (new Payment)->refund_api($info->order->payment_id,$refund_amount,'System refund -' . $fee . '% handling fee');
+                            if($fee){
+                                (new Payment)->refund_api($info->order->payment_id,$refund_amount,'System refund -' . $fee . '% handling fee');
+                            }else{
+                                (new Payment)->refund_api($info->order->payment_id,$refund_amount,'System refund');
+                            }
                             $info->refund_fee = $fee;
                             $info->refund_amount = $refund_amount;
                             $info->refund_amount_format = $refund_amount_format;
@@ -113,30 +117,21 @@ class Service extends Model
                             (new RemoteEmail())->send([
                                 'email'=>$shop_config['service_email'],
                                 'title'=>'Service Request',
-                                'content'=>(new Request($info))->render(),
-                                'type'=>config('base.email_type'),
-                                'queue_priority'=>0,
-                                'is_cc'=>0
+                                'content'=>(new Request($info))->render()
                             ]);
                         }
                     }else if($service_status_id==2){
                         (new RemoteEmail())->send([
                             'email'=>$info->order->email,
                             'title'=>'Service Refusal',
-                            'content'=>(new Refusal($info,$serviceHistory))->render(),
-                            'type'=>config('base.email_type'),
-                            'queue_priority'=>0,
-                            'is_cc'=>0
+                            'content'=>(new Refusal($info,$serviceHistory))->render()
                         ]);
                     }else if($service_status_id==3){
                     }else if($service_status_id==4){
                         (new RemoteEmail())->send([
                             'email'=>$info->order->email,
                             'title'=>'Service Refund',
-                            'content'=>(new Refund($info))->render(),
-                            'type'=>config('base.email_type'),
-                            'queue_priority'=>0,
-                            'is_cc'=>0
+                            'content'=>(new Refund($info))->render()
                         ]);
                     }
                 }else if($info->service_action_id==2){
@@ -145,39 +140,27 @@ class Service extends Model
                             (new RemoteEmail())->send([
                                 'email'=>$shop_config['service_email'],
                                 'title'=>'Service Request',
-                                'content'=>(new Request($info))->render(),
-                                'type'=>config('base.email_type'),
-                                'queue_priority'=>0,
-                                'is_cc'=>0
+                                'content'=>(new Request($info))->render()
                             ]);
                         }
                     }else if($service_status_id==2){
                         (new RemoteEmail())->send([
                             'email'=>$info->order->email,
                             'title'=>'Service Refusal',
-                            'content'=>(new Refusal($info,$serviceHistory))->render(),
-                            'type'=>config('base.email_type'),
-                            'queue_priority'=>0,
-                            'is_cc'=>0
+                            'content'=>(new Refusal($info,$serviceHistory))->render()
                         ]);
                     }else if($service_status_id==3){
                         (new RemoteEmail())->send([
                             'email'=>$info->order->email,
                             'title'=>'Service Agree',
-                            'content'=>(new Agree($info,$serviceHistory))->render(),
-                            'type'=>config('base.email_type'),
-                            'queue_priority'=>0,
-                            'is_cc'=>0
+                            'content'=>(new Agree($info,$serviceHistory))->render()
                         ]);
                     }else if($service_status_id==4){
                         if($shop_config['service_email']) {
                             (new RemoteEmail())->send([
                                 'email' => $shop_config['service_email'],
                                 'title' => 'Service Awaiting',
-                                'content' => (new Awaiting($info))->render(),
-                                'type' => config('base.email_type'),
-                                'queue_priority' => 0,
-                                'is_cc' => 0
+                                'content' => (new Awaiting($info))->render()
                             ]);
                         }
                     }else if($service_status_id==5){
@@ -185,10 +168,7 @@ class Service extends Model
                         (new RemoteEmail())->send([
                             'email'=>$info->order->email,
                             'title'=>'Service Refund',
-                            'content'=>(new Refund($info))->render(),
-                            'type'=>config('base.email_type'),
-                            'queue_priority'=>0,
-                            'is_cc'=>0
+                            'content'=>(new Refund($info))->render()
                         ]);
                     }
                 }

@@ -1,6 +1,6 @@
-@include('laravel::mail.header')
+@include('laravel-shop::mail.header')
     <div style="font-size: 28px;line-height: 40px;margin-bottom: 10px;">
-        Order Cancel
+        Order cancelled
     </div>
     <div style="padding: 10px;">
         <div style="margin-bottom: 10px;">Our Order #{{$order->id}}</div>
@@ -21,7 +21,7 @@
         </div>
     </div>
 
-    <div style="margin-bottom: 10px;padding: 10px;font-size: 12px;background: #f9f9f9;padding: 10px;border-radius: 10px;">
+    <div style="margin-bottom: 10px;padding: 10px;font-size: 12px;background: #f9f9f9;border-radius: 10px;">
         <div class="detail">
             <ul class="order_info" style="padding-left: 0;">
                 <li style=" display: flex;justify-content: space-between;margin-bottom: 5px;">
@@ -82,4 +82,4 @@
             @endif
         </div>
     </div>
-@include('laravel::mail.footer')
+@include('laravel-shop::mail.footer')

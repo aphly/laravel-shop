@@ -1,16 +1,21 @@
-@include('laravel::mail.header')
+@include('laravel-shop::mail.header')
     <div style="font-size: 28px;line-height: 40px;margin-bottom: 10px;">
-        Order Refunded
+        Order refunded
     </div>
     <div style="padding: 10px;">
-        <div style="margin-bottom: 10px;">Our Order #{{$order->id}}</div>
+        <div style="margin-bottom: 10px;">Your order number #{{$order->id}}</div>
         <div style="margin-bottom: 10px;">
             {{$orderHistory->comment??'We are very sorry, but due to the current shortage of goods, we are unable to ship. We will cancel the order and issue a refund.'}}
         </div>
+
         <div style="margin-bottom: 5px;">
-            This transaction deducts a {{$order->email_refund_fee}}% transaction tax, and the final refund amount is {{$order->email_refund_amount}}.
+            @if($order->email_refund_fee>0)
+            This transaction deducts a {{$order->email_refund_fee}}% transaction tax.
+            @endif
+            The final refund amount is {{$order->email_refund_amount}}.
             The order has been successfully refunded.
         </div>
+
         <div style="margin-bottom: 5px;">
             Please check if you have received the refund within 48 hours. If not, please contact customer service
         </div>
@@ -77,4 +82,4 @@
             @endif
         </div>
     </div>
-@include('laravel::mail.footer')
+@include('laravel-shop::mail.footer')

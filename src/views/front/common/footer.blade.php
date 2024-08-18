@@ -5,17 +5,17 @@
             <div class="footer11">
                 <ul>
                     <li>Information</li>
-                    <li><a href="{{config('common.menu.about_us')}}">About Us</a></li>
-                    <li><a href="{{config('common.menu.terms_of_service')}}">Terms of Service</a></li>
-                    <li><a href="{{config('common.menu.privacy_policy')}}">Privacy Policy</a></li>
-                    <li><a href="{{config('common.menu.faq')}}">FAQ</a></li>
+                    <li><a href="{{config('shop.menu.about_us.url')}}">{{config('shop.menu.about_us.name')}}</a></li>
+                    <li><a href="{{config('shop.menu.terms_of_service.url')}}">{{config('shop.menu.terms_of_service.name')}}</a></li>
+                    <li><a href="{{config('shop.menu.privacy_policy.url')}}">{{config('shop.menu.privacy_policy.name')}}</a></li>
+                    <li><a href="{{config('shop.menu.faq.url')}}">{{config('shop.menu.faq.name')}}</a></li>
                 </ul>
                 <ul style="margin-right: auto">
                     <li>Support</li>
-                    <li><a href="{{config('common.menu.contact_us')}}">Contact Us</a></li>
-                    <li><a href="{{config('common.menu.payment')}}">Payment</a></li>
-                    <li><a href="{{config('common.menu.shipping')}}">Shipping</a></li>
-                    <li><a href="{{config('common.menu.refund_policy')}}">Refund Policy</a></li>
+                    <li><a href="{{config('shop.menu.contact_us.url')}}">{{config('shop.menu.contact_us.name')}}</a></li>
+                    <li><a href="{{config('shop.menu.shipping_policy.url')}}">{{config('shop.menu.shipping_policy.name')}}</a></li>
+                    <li><a href="{{config('shop.menu.returns_refunds.url')}}">{{config('shop.menu.returns_refunds.name')}}</a></li>
+                    <li><a href="{{config('shop.menu.size_guide.url')}}">{{config('shop.menu.size_guide.name')}}</a></li>
                 </ul>
                 <ul>
                     <li>Subscribe to our newsletter</li>
@@ -75,7 +75,7 @@
                     @endif
                 </div>
                 <div class="footer21b">
-                    © {{date('Y')}} <a href="{{url('')}}">{{config('common.hostname')}}</a> All Rights Reserved.
+                    © {{date('Y')}} <a href="{{url('')}}">{{config('base.title')}}</a> All Rights Reserved.
                 </div>
             </div>
         </div>

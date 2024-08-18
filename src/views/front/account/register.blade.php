@@ -45,7 +45,7 @@
                     <div class="">
                         <label class="d-flex">
                             <input type="checkbox" name="agree" value="1" onclick="return false;" checked="checked">
-                            <span class="agree">I have read and agree to <a class="underline" target="_blank" href="{{config('base.menu.privacy_policy')}}">Privacy Policy</a> .</span>
+                            <span class="agree">I have read and agree to <a class="underline" target="_blank" href="{{config('shop.menu.privacy_policy.url')}}">Privacy Policy</a> .</span>
                         </label>
                     </div>
                     <div id="msg_check" class="d-none"></div>

@@ -1,11 +1,11 @@
-@include('laravel::mail.header')
+@include('laravel-shop::mail.header')
     <div style="font-size: 28px;line-height: 40px;margin-bottom: 10px;">
-        Service Refusal
+        Your after-sales request has been rejected
     </div>
-    <div style="margin-bottom: 10px;">Our service #{{$service->id}}</div>
+    <div style="margin-bottom: 10px;">Your service #{{$service->id}}</div>
 
     <div>
-        {{$serviceHistory->comment??'Your request has been rejected'}}
+        {{$serviceHistory->comment??'Your after-sales request has been rejected'}}
     </div>
 
-@include('laravel::mail.footer')
+@include('laravel-shop::mail.footer')

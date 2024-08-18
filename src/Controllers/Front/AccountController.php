@@ -167,10 +167,7 @@ class AccountController extends Controller
                         (new RemoteEmail())->send([
                             'email'=>$userAuth->id,
                             'title'=>'Account Email Verify',
-                            'content'=>(new Verify($userAuth))->render(),
-                            'type'=>config('base.email_type'),
-                            'queue_priority'=>1,
-                            'is_cc'=>0
+                            'content'=>(new Verify($userAuth))->render()
                         ]);
                     }
                     $this->limiterIncrement($key,15*60);
@@ -212,10 +209,7 @@ class AccountController extends Controller
                     (new RemoteEmail)->send([
                         'email'=>$userauth->id,
                         'title'=>'Account Email Verify',
-                        'content'=>(new Verify($userauth))->render(),
-                        'type'=>config('base.email_type'),
-                        'queue_priority'=>1,
-                        'is_cc'=>0
+                        'content'=>(new Verify($userauth))->render()
                     ]);
                     $this->limiterIncrement($key,2*60);
                     throw new ApiException(['code' => 0, 'msg' => 'Email has been sent', 'data' => ['redirect' => '/']]);
@@ -270,10 +264,7 @@ class AccountController extends Controller
                 (new RemoteEmail())->send([
                     'email'=>$userauth->id,
                     'title'=>'Password Reset',
-                    'content'=>(new Forget($userauth))->render(),
-                    'type'=>config('base.email_type'),
-                    'queue_priority'=>1,
-                    'is_cc'=>0
+                    'content'=>(new Forget($userauth))->render()
                 ]);
                 throw new ApiException(['code'=>0,'msg'=>'Email has been sent','data'=>['redirect'=>'/account/forget/confirmation']]);
             }else{

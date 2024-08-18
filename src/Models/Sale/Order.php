@@ -3,7 +3,6 @@
 namespace Aphly\LaravelShop\Models\Sale;
 
 use Aphly\Laravel\Exceptions\ApiException;
-use Aphly\Laravel\Mail\MailSend;
 use Aphly\Laravel\Models\Model;
 use Aphly\LaravelPayment\Models\Currency;
 use Aphly\Laravel\Models\RemoteEmail;
@@ -113,7 +112,11 @@ class Order extends Model
                 if($fee>=0 && $fee<=100) {
                     list($amount, $amount_format) = Currency::codeFormat((100 - $fee) / 100 * $info->total, $info->currency_code);
                     if ($amount > 0) {
-                        (new Payment)->refund_api($info->payment_id, $amount, 'System refund -' . $fee . '% transaction fee');
+                        if($fee){
+                            (new Payment)->refund_api($info->payment_id, $amount, 'System refund -' . $fee . '% transaction fee');
+                        }else{
+                            (new Payment)->refund_api($info->payment_id, $amount, 'System refund');
+                        }
                     }
                     if ($info->order_status_id != 6) {
                         $this->rollback($info);
@@ -149,20 +152,14 @@ class Order extends Model
                     (new RemoteEmail())->send([
                         'email'=>$info->email,
                         'title'=>'Order Paid',
-                        'content'=>(new Paid($info))->render(),
-                        'type'=>config('base.email_type'),
-                        'queue_priority'=>0,
-                        'is_cc'=>1
+                        'content'=>(new Paid($info))->render()
                     ]);
                 }else if($order_status_id==3){
                     //Shipped
                     (new RemoteEmail())->send([
                         'email'=>$info->email,
                         'title'=>'Order Shipped',
-                        'content'=>(new Shipped($info))->render(),
-                        'type'=>config('base.email_type'),
-                        'queue_priority'=>0,
-                        'is_cc'=>0
+                        'content'=>(new Shipped($info))->render()
                     ]);
                 }else if($order_status_id==6){
                     //Canceled
@@ -171,10 +168,7 @@ class Order extends Model
                     (new RemoteEmail())->send([
                         'email'=>$info->email,
                         'title'=>'Order cancel',
-                        'content'=>(new Cancel($info))->render(),
-                        'type'=>config('base.email_type'),
-                        'queue_priority'=>0,
-                        'is_cc'=>1
+                        'content'=>(new Cancel($info))->render()
                     ]);
                 }else if($order_status_id==7 && $amount > 0){
                     //Refunded
@@ -183,10 +177,7 @@ class Order extends Model
                     (new RemoteEmail())->send([
                         'email'=>$info->email,
                         'title'=>'Order Refunded',
-                        'content'=>(new Refunded($info,$orderHistory))->render(),
-                        'type'=>config('base.email_type'),
-                        'queue_priority'=>0,
-                        'is_cc'=>0
+                        'content'=>(new Refunded($info,$orderHistory))->render()
                     ]);
                 }
             }

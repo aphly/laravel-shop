@@ -25,7 +25,7 @@
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">折扣</label>
+                <label for="">减去</label>
                 <input type="text" name="discount" required class="form-control " value="{{$res['coupon']->discount}}">
                 <div class="invalid-feedback"></div>
             </div>

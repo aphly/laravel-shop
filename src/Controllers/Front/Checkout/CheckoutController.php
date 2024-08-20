@@ -3,10 +3,17 @@
 namespace Aphly\LaravelShop\Controllers\Front\Checkout;
 
 use Aphly\Laravel\Exceptions\ApiException;
+use Aphly\Laravel\Libs\Form;
 use Aphly\Laravel\Libs\Func;
+use Aphly\Laravel\Libs\Helper;
 use Aphly\Laravel\Libs\Snowflake;
+use Aphly\Laravel\Mail\Verify;
 use Aphly\Laravel\Models\Breadcrumb;
+use Aphly\Laravel\Models\Comm;
+use Aphly\Laravel\Models\RemoteEmail;
+use Aphly\Laravel\Models\UserAuth;
 use Aphly\Laravel\Requests\FormRequest;
+use Aphly\LaravelShop\Models\Account\Wishlist;
 use Aphly\LaravelShop\Models\Setting\Country;
 use Aphly\LaravelPayment\Models\Currency;
 use Aphly\Laravel\Models\User;
@@ -23,10 +30,105 @@ use Aphly\LaravelShop\Models\Sale\OrderOption;
 use Aphly\LaravelShop\Models\Sale\OrderProduct;
 use Aphly\LaravelShop\Models\Sale\OrderTotal;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 
 class CheckoutController extends Controller
 {
+    public function guestEmail(FormRequest $request)
+    {
+        $input = $request->all();
+        $request->validate($input, [
+            'email' => 'required|email',
+        ]);
+        $UserAuth = UserAuth::where(['id_type'=>'email','id'=>$input['email']])->first();
+        if(!empty($UserAuth)){
+            Form::throwErr('email','This email has been registered, please use this email to log in.');
+        }else{
+            throw new ApiException(['code' => 0, 'msg' => 'Success']);
+        }
+    }
+
+    public function guest(FormRequest $request)
+    {
+        if($this->user){
+            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>'/checkout/address']]);
+        }
+        $key = 'guest_register_'.$request->ip();
+        $cart = new Cart;
+        if($cart->hasShipping()) {
+            list($res['count'], $res['list'], $res['total_data']) = $cart->totalData();
+            if (!$res['count']) {
+                throw new ApiException(['code' => 11, 'msg' => 'no cart', 'data' => ['redirect' => '/cart']]);
+            }
+            if ($request->isMethod('post')) {
+                $input = $request->all();
+                $request->validate($input, [
+                    'email' => 'required|email',
+                    'firstname' => 'required|between:2,32',
+                    'lastname' => 'required|between:2,32',
+                    'address_1' => 'required|between:2,255',
+                    'city' => 'required|between:2,128',
+                    'postcode' => 'required|numeric',
+                    'telephone' => 'required|numeric',
+                    'country_id' => 'required|numeric',
+                    'zone_id' => 'required|numeric',
+                ]);
+                $comm = Comm::where('host',config('base.local_host'))->firstOrError();
+                $post['id_type'] = 'email';
+                $post['id'] = $input['email'];
+                $UserAuth = UserAuth::where($post)->first();
+                if(!empty($UserAuth)){
+                    Form::throwErr('email','This email has been registered, please use this email to log in.');
+                }
+                if($this->limiter($key,5)) {
+                    $post['uuid'] = Helper::uuid();
+                    $post['password'] = Hash::make(str::random(8));
+                    $post['last_ip'] = $request->ip();
+                    $post['last_time'] = time();
+                    $post['user_agent'] = $request->header('user-agent');
+                    $post['accept_language'] = $request->header('accept-language');
+                    $userAuth = UserAuth::create($post);
+                    if ($userAuth->uuid) {
+                        $user = User::create([
+                            'nickname' => str::random(8),
+                            'uuid' => $userAuth->uuid,
+                            'web_token' => Str::random(64),
+                            'web_token_expire' => time() + 120 * 60,
+                            'comm_id' => $comm->id
+                        ]);
+                        Auth::guard('user')->login($user);
+                        (new Wishlist)->afterRegister();
+                        (new Cart)->afterRegister();
+                        $user->id = $userAuth->id;
+                        $this->limiterIncrement($key, 15 * 60);
+                        $input['uuid'] = $userAuth->uuid;
+                        $userAddress = UserAddress::updateOrCreate(['id' => 0], $input);
+                        session(['shop_address_id' => $userAddress->id]);
+                        $shipping_method = (new Shipping)->getList($userAddress->id);
+                        throw new ApiException(['code' => 0, 'msg' => 'shipping address success', 'data' => ['redirect' => '/checkout/shipping', 'list' => $shipping_method]]);
+                    }else{
+                        throw new ApiException(['code' => 3, 'msg' => 'UserAuth Error']);
+                    }
+                }else{
+                    throw new ApiException(['code' => 2, 'msg' => 'Changing email too frequently, please wait 15 minutes']);
+                }
+            } else {
+                $res['title'] = 'Checkout Address';
+                $res['breadcrumb'] = Breadcrumb::render([
+                    ['name' => 'Home', 'href' => '/'],
+                    ['name' => 'Cart', 'href' => '/cart'],
+                    ['name' => 'Address', 'href' => '']
+                ], false);
+                $res['country'] = (new Country)->findAll();
+                return $this->makeView('laravel-front::checkout.guest', ['res' => $res]);
+            }
+        }else{
+            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>'/checkout/payment']]);
+        }
+    }
 
     public function address(FormRequest $request)
     {

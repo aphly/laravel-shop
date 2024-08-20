@@ -255,7 +255,7 @@
 <script>
     $(function () {
         $('.proceed-to-checkout').click(function () {
-            location.href = '/checkout/address?redirect='+urlencode('{{url('/cart')}}')
+            location.href = '/checkout/guest?redirect='+urlencode('{{url('/cart')}}')
         })
 
         $('.quantity-wrapper').on('click','.quantity-down', function () {

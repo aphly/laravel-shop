@@ -65,6 +65,9 @@ Route::middleware(['web'])->group(function () {
     //wishlist
     Route::post('wishlist/product/{id}', 'Aphly\LaravelShop\Controllers\Front\AccountExt\WishlistController@product')->where('id', '[0-9]+');
 
+    Route::match(['get', 'post'],'checkout/guest', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@guest');
+    Route::match(['get'],'checkout/guest_email', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@guestEmail');
+
     Route::middleware(['userAuth'])->group(function () {
         //account
         Route::prefix('account_ext')->group(function () {

@@ -9,8 +9,8 @@ use Aphly\Laravel\Models\Comm;
 use Aphly\Laravel\Models\UploadFile;
 
 use Aphly\Laravel\Models\RemoteEmail;
-use Aphly\Laravel\Mail\Forget;
-use Aphly\Laravel\Mail\Verify;
+use Aphly\LaravelShop\Mail\Account\Forget;
+use Aphly\LaravelShop\Mail\Account\Verify;
 use Aphly\Laravel\Models\User;
 use Aphly\Laravel\Models\UserAuth;
 use Aphly\Laravel\Requests\AccountRequest;
@@ -138,7 +138,7 @@ class AccountController extends Controller
                     throw new ApiException(['code' => 11000, 'msg' => 'Incorrect Code', 'data' => ['code' => ['Incorrect Code']]]);
                 }
             }
-            if($this->limiter($key,1)) {
+            if($this->limiter($key,5)) {
                 $post = $request->all();
                 if(!in_array($post['id_type'],UserAuth::$id_type)){
                     throw new ApiException(['code'=>1,'msg'=>'Id_type Err','data'=>['code'=>['Id_type Err']]]);

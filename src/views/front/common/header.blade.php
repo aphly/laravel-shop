@@ -29,6 +29,7 @@
     .pagination{ margin-top: 20px;justify-content: center;}
     .page-link{padding: 8px 16px;}
     .page-item.active .page-link{border-color:var(--btn_bg);background-color:var(--btn_bg);}
+    .form-control{color:#000}
 </style>
 <header>
     <div class="header1">

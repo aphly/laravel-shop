@@ -12,7 +12,7 @@
                 <div class="checkout_box">
                     <div class="checkout_title" style="display: flex;justify-content: space-between;align-items: baseline;">
                         <div>
-                            Contact information
+                            Contact
                         </div>
                         <div style="font-size: 14px;">
                             Have an account? <a href="{{route('login')}}" style="color:var(--btn_bg)">Log in</a>

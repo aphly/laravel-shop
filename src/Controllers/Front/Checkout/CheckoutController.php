@@ -7,12 +7,12 @@ use Aphly\Laravel\Libs\Form;
 use Aphly\Laravel\Libs\Func;
 use Aphly\Laravel\Libs\Helper;
 use Aphly\Laravel\Libs\Snowflake;
-use Aphly\Laravel\Mail\Verify;
 use Aphly\Laravel\Models\Breadcrumb;
 use Aphly\Laravel\Models\Comm;
 use Aphly\Laravel\Models\RemoteEmail;
 use Aphly\Laravel\Models\UserAuth;
 use Aphly\Laravel\Requests\FormRequest;
+use Aphly\LaravelShop\Mail\Account\GuestPassword;
 use Aphly\LaravelShop\Models\Account\Wishlist;
 use Aphly\LaravelShop\Models\Setting\Country;
 use Aphly\LaravelPayment\Models\Currency;
@@ -85,7 +85,8 @@ class CheckoutController extends Controller
                 }
                 if($this->limiter($key,5)) {
                     $post['uuid'] = Helper::uuid();
-                    $post['password'] = Hash::make(str::random(8));
+                    $password = str::random(8);
+                    $post['password'] = Hash::make($password);
                     $post['last_ip'] = $request->ip();
                     $post['last_time'] = time();
                     $post['user_agent'] = $request->header('user-agent');
@@ -95,8 +96,10 @@ class CheckoutController extends Controller
                         $user = User::create([
                             'nickname' => str::random(8),
                             'uuid' => $userAuth->uuid,
-                            'web_token' => Str::random(64),
-                            'web_token_expire' => time() + 120 * 60,
+                            'access_token' => Str::random(64),
+                            'access_token_expire' => time() + 86400,
+                            'refresh_token' => Str::random(64),
+                            'refresh_token_expire' => time() + 86400 * 365,
                             'comm_id' => $comm->id
                         ]);
                         Auth::guard('user')->login($user);
@@ -108,6 +111,13 @@ class CheckoutController extends Controller
                         $userAddress = UserAddress::updateOrCreate(['id' => 0], $input);
                         session(['shop_address_id' => $userAddress->id]);
                         $shipping_method = (new Shipping)->getList($userAddress->id);
+                        if ($userAuth->id_type == 'email') {
+                            (new RemoteEmail())->send([
+                                'email'=>$userAuth->id,
+                                'title'=>'Account Password',
+                                'content'=>(new GuestPassword($userAuth->id,$password))->render()
+                            ]);
+                        }
                         throw new ApiException(['code' => 0, 'msg' => 'shipping address success', 'data' => ['redirect' => '/checkout/shipping', 'list' => $shipping_method]]);
                     }else{
                         throw new ApiException(['code' => 3, 'msg' => 'UserAuth Error']);

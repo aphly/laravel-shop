@@ -70,7 +70,7 @@ class AccountController extends Controller
         } catch (DecryptException $e) {
             throw new ApiException(['code'=>1,'msg'=>'Token_error']);
         }
-        $user = User::where('web_token',$decrypted)->first();
+        $user = User::where('access_token',$decrypted)->first();
         if(!empty($user)){
             Auth::guard('user')->login($user);
             return redirect('/');
@@ -103,7 +103,7 @@ class AccountController extends Controller
                     if(Hash::check($request->input('password',''),$userAuth->password)){
                         $user = User::where(['uuid'=>$userAuth->uuid])->firstOrError();
                         $userAuthModel->update(['last_time'=>time(),'last_ip'=>$request->ip(),'user_agent' => $request->header('user-agent'),'accept_language' => $request->header('accept-language')]);
-                        $user->generateWebToken();
+                        $user->generateToken();
                         Auth::guard('user')->login($user);
                         (new Wishlist)->afterLogin();
                         (new Cart)->afterLogin();
@@ -154,8 +154,10 @@ class AccountController extends Controller
                     $user = User::create([
                         'nickname' => str::random(8),
                         'uuid' => $userAuth->uuid,
-                        'web_token' => Str::random(64),
-                        'web_token_expire' => time() + 120 * 60,
+                        'access_token' => Str::random(64),
+                        'access_token_expire' => time() + 86400,
+                        'refresh_token' => Str::random(64),
+                        'refresh_token_expire' => time() + 86400 * 365,
                         'comm_id'=>$comm->id
                     ]);
                     Auth::guard('user')->login($user);

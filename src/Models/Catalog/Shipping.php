@@ -47,7 +47,7 @@ class Shipping extends Model
                     $subTotal = $cart->getSubTotal();
                     $shipping = (new Shipping())->findAll();
                     foreach ($shipping as $val) {
-                        if($val['free_cost']>0?($subTotal>=$val['free_cost']):false){
+                        if(($val['free_cost']>0?($subTotal>=$val['free_cost']):false) || ($val['cost']==0 && Cart::$free_shipping)){
                             $val['free']=true;
                         }else{
                             $val['free']=false;
@@ -86,7 +86,7 @@ class Shipping extends Model
     }
 
     public function getTotal($total_data) {
-        if(Cart::$free_shipping){
+        if(Cart::$free_shipping && 0){
             $total_data['totals']['shipping'] = [
                 'title'      => 'Shipping',
                 'value'      => 0,

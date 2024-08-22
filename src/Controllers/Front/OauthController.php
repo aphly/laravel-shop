@@ -63,7 +63,7 @@ class OauthController extends Controller
         if(!empty($userAuth)){
             $user = User::where(['uuid'=>$userAuth->uuid])->firstOrError();
             $userAuthModel->update(['last_time'=>time(),'last_ip'=>$request->ip(),'user_agent' => $request->header('user-agent'),'accept_language' => $request->header('accept-language')]);
-            $user->generateWebToken();
+            $user->generateToken();
             (new Wishlist)->afterLogin();
             (new Cart)->afterLogin();
             Auth::guard('user')->login($user);
@@ -79,10 +79,12 @@ class OauthController extends Controller
             $userAuth = UserAuth::create($post);
             if ($userAuth->uuid) {
                 $user = User::create([
-                    'nickname' => $googleUser->getName(),
+                    'nickname' => $oauthUser->getName(),
                     'uuid' => $userAuth->uuid,
-                    'web_token' => Str::random(64),
-                    'web_token_expire' => time() + 120 * 60,
+                    'access_token' => Str::random(64),
+                    'access_token_expire' => time() + 86400,
+                    'refresh_token' => Str::random(64),
+                    'refresh_token_expire' => time() + 86400 * 365,
                     'comm_id'=>$comm->id
                 ]);
                 (new Wishlist)->afterRegister();

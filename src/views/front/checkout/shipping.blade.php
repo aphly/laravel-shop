@@ -43,7 +43,7 @@
                                         {{$val['desc']}}
                                     </div>
                                     <div>
-                                        @if($res['free_shipping'] || $val['free'])
+                                        @if($val['free'])
                                             @if($val['cost']>0)
                                             <span class="old_price">{{$val['cost_format']}}</span>
                                             @endif

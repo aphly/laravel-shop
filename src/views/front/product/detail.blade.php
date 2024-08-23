@@ -98,16 +98,17 @@
                         <div class="small_img">
                             <div class="swiper" style="overflow: hidden;">
                                 <div class="swiper-button-prev" ></div>
-                                <div class="swiper-wrapper">
+                                <div class="swiper-wrapper  aphly_viewer_js_box aphly_viewer_js">
                                     @foreach($res['info_img'][0] as $v)
                                             <div class="swiper-slide " data-image_id="{{$v['id']}}"
                                                  data-src="{{$v['image_src']}}"
                                                  onclick="changepic(this)">
-                                                <img src="{{$v['image_src']}}">
+                                                <img src="{{$v['image_src']}}" class="aphly_viewer">
                                             </div>
                                     @endforeach
                                 </div>
                                 <div class="swiper-button-next" ></div>
+                                <div class="swiper-pagination"></div>
                             </div>
                         </div>
                     @endif
@@ -461,14 +462,42 @@
 </script>
 
 <script src="{{ URL::asset('static/shop/js/swiper-bundle.min.js') }}" type="text/javascript"></script>
-
+<style>
+    .swiper-button-next, .swiper-button-prev{display: flex;}
+    .swiper-pagination{display: none}
+    @media (max-width: 1200px) {
+        .info_img_big{display: none}
+        .product_detail_img .small_img .swiper-slide img{
+            width: 100%;
+            height: 100%;
+        }
+        .product_detail_img .small_img .swiper{
+            height: 100vw;
+        }
+        .swiper-button-next, .swiper-button-prev{display: none;}
+        .swiper-pagination{display: block}
+        .swiper-pagination span{padding:0 5px;width: 20px;  border-radius: 4px;background: var(--btn_bg);}
+    }
+</style>
 <script>
+    function getScreenWidth() {
+        return window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    }
+    $(function () {
+        if(getScreenWidth()>1200){
+            $('.aphly_viewer_js_box').find('img').removeClass('aphly_viewer')
+        }
+    })
     var detailSwiper = new Swiper('.swiper', {
         direction: "horizontal",
-        slidesPerView: 4,
+        slidesPerView: 1,
         navigation: {
             prevEl: '.swiper-button-prev',
             nextEl: '.swiper-button-next',
+        },
+        pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
         },
         breakpoints: {
             1200: {

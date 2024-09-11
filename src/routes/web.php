@@ -124,9 +124,6 @@ Route::middleware(['web'])->group(function () {
         Route::match(['get'],'information/{id}', 'Aphly\LaravelShop\Controllers\Front\Common\InformationController@detail');
         Route::match(['get'],'size_guide', 'Aphly\LaravelShop\Controllers\Front\Product\AphlyController@sizeGuide');
 
-        //common
-        Route::get('coupon/{code}', 'Aphly\LaravelShop\Controllers\Front\Common\CouponController@ajax');
-
         //product
         Route::get('product', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@index');
         Route::get('product/{id}', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@detail')->where('id', '[0-9]+');

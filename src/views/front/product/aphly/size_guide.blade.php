@@ -1,4 +1,4 @@
-@include(config('base.view_namespace_front_blade').'::common.header')
+@include('laravel-shop::front.common.header')
 
 <div class="container " style="margin-top: 20px;">
     <div style="line-height: 50px;text-align: center;font-size: 22px;margin-bottom: 20px;font-weight: 600;">Size Guide</div>
@@ -497,4 +497,4 @@
         });
     });
 </script>
-@include(config('base.view_namespace_front_blade').'::common.footer')
+@include('laravel-shop::front.common.footer')

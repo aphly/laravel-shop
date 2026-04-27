@@ -10,32 +10,32 @@
         @csrf
         <div class="">
             <div class="form-group">
-                <label for="">商品名称 <i>*</i></label>
+                <label >商品名称 <i>*</i></label>
                 <input type="text" name="name" class="form-control " value="{{$res['product']->name}}" required>
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">采购地址</label>
+                <label >采购地址</label>
                 <input type="text" name="url" class="form-control " value="{{$res['product']->url}}" >
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">sku</label>
+                <label >sku</label>
                 <input type="text" name="sku" class="form-control " value="{{$res['product']->sku}}" >
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">spu</label>
+                <label >spu</label>
                 <input type="text" name="spu" class="form-control " value="{{$res['product']->spu}}" >
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">库存</label>
+                <label >库存</label>
                 <input type="number" name="quantity" class="form-control " value="{{$res['product']->quantity??999}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">是否使用库存</label>
+                <label >是否使用库存</label>
                 <select name="subtract" class="form-control">
                     @if(isset($dict['yes_no']))
                         @foreach($dict['yes_no'] as $key=>$val)
@@ -46,12 +46,12 @@
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">价格</label>
+                <label >价格</label>
                 <input type="text" name="price" class="form-control"  value="{{$res['product']->price??0}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">是否需要配送</label>
+                <label >是否需要配送</label>
                 <select name="is_shipping"  class="form-control">
                     @if(isset($dict['yes_no']))
                         @foreach($dict['yes_no'] as $key=>$val)
@@ -62,7 +62,7 @@
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">图片是否颜色分组</label>
+                <label >图片是否颜色分组</label>
                 <select name="is_color_group" class="form-control">
                     @if(isset($dict['yes_no']))
                         @foreach($dict['yes_no'] as $key=>$val)
@@ -73,7 +73,7 @@
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">缺货时状态</label>
+                <label >缺货时状态</label>
                 <select name="stock_status_id"  class="form-control">
                     @if(isset($dict['stock_status']))
                         @foreach($dict['stock_status'] as $key=>$val)
@@ -85,7 +85,7 @@
             </div>
 
             <div class="form-group">
-                <label for="">重量</label>
+                <label >重量</label>
                 <input type="text" name="weight" class="form-control " value="{{$res['product']->weight??0}}">
 
                 <select name="weight_class_id"  class="form-control">
@@ -100,15 +100,15 @@
             <div class="form-group">
                 <div class="d-flex justify-content-between">
                     <div class="form-group">
-                        <label for="">长</label>
+                        <label >长</label>
                         <input type="text" name="length" class="form-control " value="{{$res['product']->length??0}}">
                     </div>
                     <div class="form-group">
-                        <label for="">宽</label>
+                        <label >宽</label>
                         <input type="text" name="width" class="form-control " value="{{$res['product']->width??0}}">
                     </div>
                     <div class="form-group">
-                        <label for="">高</label>
+                        <label >高</label>
                         <input type="text" name="height" class="form-control " value="{{$res['product']->height??0}}">
                     </div>
                 </div>
@@ -122,12 +122,12 @@
             </div>
 
             <div class="form-group">
-                <label for="">上架时间</label>
+                <label >上架时间</label>
                 <input type="datetime-local" name="date_available" class="form-control " value="{{$res['product']->date_available?date('Y-m-d',$res['product']->date_available)."T".date('H:i',$res['product']->date_available):0}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">状态</label>
+                <label >状态</label>
                 <select name="status"  class="form-control">
                     @if(isset($dict['product_status']))
                         @foreach($dict['product_status'] as $key=>$val)
@@ -138,7 +138,7 @@
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">排序</label>
+                <label >排序</label>
                 <input type="number" name="sort"  class="form-control " value="{{$res['product']->sort??0}}">
                 <div class="invalid-feedback"></div>
             </div>

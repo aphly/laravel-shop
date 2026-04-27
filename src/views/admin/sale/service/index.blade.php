@@ -42,7 +42,7 @@
             <div class="table">
                 <ul class="table_header">
                     <li >ID</li>
-                    <li >Uuid</li>
+                    <li >uid</li>
                     <li >order_id</li>
                     <li >action</li>
                     <li >状态</li>
@@ -53,7 +53,7 @@
                     @foreach($res['list'] as $v)
                     <ul class="table_tbody">
                         <li><input type="checkbox" class="delete_box" name="delete[]" value="{{$v['id']}}">{{$v['id']}}</li>
-                        <li>{{ $v['uuid'] }}</li>
+                        <li>{{ $v['uid'] }}</li>
                         <li>{{ $v['order_id'] }}</li>
                         <li>{{ $dict['service_action'][$v->service_action_id] }}</li>
                         <li>{{$dict[$dict['service_action'][$v->service_action_id].'_status'][$v->service_status_id]}}</li>

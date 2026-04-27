@@ -1,4 +1,4 @@
-@include(config('base.view_namespace_front_blade').'::common.header')
+@include('laravel-shop::front.common.header')
 <section class="container">
     <style>
         .order ul li{display: flex;margin-bottom: 5px;}
@@ -13,7 +13,7 @@
         .total_data li:last-child{font-weight: 600}
     </style>
     <div class="account_info">
-        @include(config('base.view_namespace_front_blade').'::account.left_menu')
+        @include('laravel-shop::front.account.left_menu')
         <div class="account-main-section">
             <div class="order">
                 <div class="top-desc d-flex justify-content-between">
@@ -24,11 +24,18 @@
                     <div class="title">The review details</div>
                     <ul>
                         <li><div>ID:</div><div>{{$res['info']->id}}</div></li>
-                        <li><div>Date Added:</div><div>{{$res['info']->created_at}}</div></li>
+                        <li><div>Date Added:</div><div class="utc_time" data-utc_time="{{$res['info']->created_at->timestamp}}"></div></li>
                         <li><div>Author:</div><div>{{$res['info']->author}}</div></li>
                         <li><div>Product:</div><div><a href="/product/{{$res['info']->product->id}}">{{$res['info']->product->name}}</a></div></li>
                         <li><div>Rank:</div><div>{{$res['info']->rating}}</div></li>
                         <li><div>Content:</div><div>{{$res['info']->text}}</div></li>
+                        <li><div>Status:</div><div>
+                                @if($res['info']->status)
+                                    <span class="badge badge-success">Reviewed</span>
+                                @else
+                                    <span class="badge badge-secondary">Under Review</span>
+                                @endif
+                            </div></li>
                     </ul>
                 </div>
 
@@ -54,4 +61,4 @@ $(function () {
 
 })
 </script>
-@include(config('base.view_namespace_front_blade').'::common.footer')
+@include('laravel-shop::front.common.footer')

@@ -1,7 +1,7 @@
-@include(config('base.view_namespace_front_blade').'::common.header')
+@include('laravel-shop::front.common.header')
 <section class="container">
     <div class="account_info">
-        @include(config('base.view_namespace_front_blade').'::account.left_menu')
+        @include('laravel-shop::front.account.left_menu')
         <div class="account-main-section" style="background: transparent;">
             <div class="">
                 <div class="top-desc d-flex justify-content-between">
@@ -32,7 +32,7 @@
                                 @endforeach
                             </dl>
                             <div style="" class="order_list13">
-                                <div style="color:#999;">{{$val->created_at}}</div>
+                                <div style="color:#999;" class="utc_time" data-utc_time="{{$val->created_at->timestamp}}"></div>
                                 <div>Payment: {{$val->total_format}}</div>
                             </div>
                             </a>
@@ -84,4 +84,4 @@
 
     })
 </script>
-@include(config('base.view_namespace_front_blade').'::common.footer')
+@include('laravel-shop::front.common.footer')

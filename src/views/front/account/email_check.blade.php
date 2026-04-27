@@ -1,4 +1,4 @@
-@include(config('base.view_namespace_front_blade').'::common.header')
+@include('laravel-shop::front.common.header')
 <link rel="stylesheet" href="{{ URL::asset('static/base/front/css/account.css') }}">
 
 <div class=" container">
@@ -8,4 +8,4 @@
 </div>
 
 
-@include(config('base.view_namespace_front_blade').'::common.footer')
+@include('laravel-shop::front.common.footer')

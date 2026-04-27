@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('address_format',255)->nullable();
             $table->tinyInteger('postcode_required');
             $table->tinyInteger('status')->default(1);
+            $table->integer('sort')->unsigned()->default(100);
+            $table->string('currency',5)->nullable();
         });
     }
 

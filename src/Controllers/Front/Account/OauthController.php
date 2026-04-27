@@ -1,12 +1,11 @@
 <?php
 
-namespace Aphly\LaravelShop\Controllers\Front;
+namespace Aphly\LaravelShop\Controllers\Front\Account;
 
 use Aphly\Laravel\Exceptions\ApiException;
-use Aphly\Laravel\Libs\Helper;
-use Aphly\Laravel\Models\Comm;
-use Aphly\Laravel\Models\User;
-use Aphly\Laravel\Models\UserAuth;
+use Aphly\Laravel\Models\CommonUser;
+use Aphly\Laravel\Models\CommonUserAuth;
+use Aphly\LaravelShop\Controllers\Front\Controller;
 use Aphly\LaravelShop\Models\Account\Wishlist;
 use Aphly\LaravelShop\Models\Checkout\Cart;
 use Illuminate\Support\Facades\Auth;
@@ -34,65 +33,61 @@ class OauthController extends Controller
             throw new ApiException(['code'=>1,'msg'=>'Oauth Type Error ']);
         }
         try {
-            $user = Socialite::driver('google')->user();
+            $Socialiteuser = Socialite::driver($request->driver)->user();
         } catch (\Exception $e) {
             throw new ApiException(['code'=>1,'msg'=>'Oauth Login Error ']);
         }
-        $this->findOrCreateUserLogin($user,$request);
+        $this->findOrCreateUserLogin($Socialiteuser,$request);
     }
 
-    protected function findOrCreateUserLogin($oauthUser,$request)
+    protected function findOrCreateUserLogin($Socialiteuser,$request)
     {
-        if($request->driver=='google'){
-            $post['id'] = $oauthUser->getEmail();
-            if(!$post['id']){
-                throw new ApiException(['code'=>1,'msg'=>'Fail']);
+        if($request->driver=='google') {
+            $post['id'] = $Socialiteuser->getEmail();
+            if (!$post['id']) {
+                throw new ApiException(['code' => 1, 'msg' => 'Fail']);
             }
             $post['id_type'] = 'email';
-        }else{
+        }else if($request->driver=='facebook'){
             $post['id_type'] = 'email';
-            $post['id'] = $oauthUser->getEmail();
+            $post['id'] = $Socialiteuser->getEmail();
             if(!$post['id']){
-                $post['id'] = $oauthUser->getId();
-                $post['id_type'] = 'oauth';
+                $post['id'] = $Socialiteuser->getId();
+                $post['id_type'] = 'facebook';
             }
         }
 
-        $userAuthModel = UserAuth::where($post);
+        $userAuthModel = CommonUserAuth::where($post);
         $userAuth = $userAuthModel->first();
         if(!empty($userAuth)){
-            $user = User::where(['uuid'=>$userAuth->uuid])->firstOrError();
-            $userAuthModel->update(['last_time'=>time(),'last_ip'=>$request->ip(),'user_agent' => $request->header('user-agent'),'accept_language' => $request->header('accept-language')]);
-            $user->generateToken();
+            $user = CommonUser::where(['uid'=>$userAuth->uid])->firstOrError();
+            $userAuthModel->update(['last_time'=>time(),'last_ip'=>$request->ip(),
+                'user_agent' => $request->header('user-agent'),'accept_language' => $request->header('accept-language')]);
             (new Wishlist)->afterLogin();
             (new Cart)->afterLogin();
             Auth::guard('user')->login($user);
             throw new ApiException(['code'=>0,'msg'=>'login success','data'=>['redirect'=>$user->redirect()]]);
         }else{
-            $comm = Comm::where('host',config('base.local_host'))->firstOrError();
-            $post['uuid'] = Helper::uuid();
+            $post['uid'] = app('Snowflake')->nextId();
             $post['password'] = Hash::make(str::random(8));
             $post['last_ip'] = $request->ip();
             $post['last_time'] = time();
             $post['user_agent'] = $request->header('user-agent');
             $post['accept_language'] = $request->header('accept-language');
-            $userAuth = UserAuth::create($post);
-            if ($userAuth->uuid) {
-                $user = User::create([
-                    'nickname' => $oauthUser->getName(),
-                    'uuid' => $userAuth->uuid,
-                    'access_token' => Str::random(64),
-                    'access_token_expire' => time() + 86400,
-                    'refresh_token' => Str::random(64),
-                    'refresh_token_expire' => time() + 86400 * 365,
-                    'comm_id'=>$comm->id
+            $userAuth = CommonUserAuth::create($post);
+            if ($userAuth->uid) {
+                $user = CommonUser::create([
+                    'nickname' => $Socialiteuser->getName(),
+                    'uid' => $userAuth->uid,
+                    'token' => Str::random(64),
+                    'token_expire' => time() + 86400
                 ]);
                 (new Wishlist)->afterRegister();
                 (new Cart)->afterRegister();
                 Auth::guard('user')->login($user);
-                throw new ApiException(['code' => 0, 'msg' => 'Register success', 'data' => ['redirect' => $user->redirect()]]);
+                throw new ApiException(['code' => 0, 'msg' => 'Login Success']);
             } else {
-                throw new ApiException(['code' => 1, 'msg' => 'Register fail']);
+                throw new ApiException(['code' => 1, 'msg' => 'Login Fail']);
             }
         }
     }

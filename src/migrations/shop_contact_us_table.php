@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('shop_contact_us', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('uuid')->index()->nullable();
+            $table->unsignedBigInteger('uid')->index()->nullable();
             $table->string('email',128)->index();
             $table->tinyInteger('is_view')->default(0);
             $table->tinyInteger('is_reply')->default(0);

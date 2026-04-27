@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('shop_user_wishlist', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('uuid')->index();
+            $table->unsignedBigInteger('uid')->index();
             $table->unsignedBigInteger('product_id')->index();
             $table->unsignedBigInteger('created_at');
             $table->unsignedBigInteger('updated_at');

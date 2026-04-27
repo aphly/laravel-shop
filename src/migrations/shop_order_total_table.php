@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('title',255);
             $table->decimal('value',15,2);
             $table->string('value_format',255);
+            $table->decimal('value_old',15,2);
+            $table->string('value_old_format',255);
             $table->integer('sort')->nullable();
             $table->string('ext',32)->nullable();
         });

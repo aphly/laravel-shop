@@ -10,13 +10,13 @@
         <div class="">
 
             <div class="form-group d-none" >
-                <label for="">商品描述</label>
+                <label >商品描述</label>
                 <textarea name="description" id="content" class="form-control ">{{$res['product_desc']->description}}</textarea>
                 <div class="invalid-feedback"></div>
             </div>
 
             <div class="form-group ">
-                <label for="">商品描述</label>
+                <label >商品描述</label>
                 <div id="editor—wrapper" style="z-index: 10">
                     <div id="editor-toolbar"></div>
                     <div id="editor-container"></div>
@@ -24,7 +24,7 @@
             </div>
 
             <div class="form-group">
-                <label for="">meta_description</label>
+                <label >meta_description</label>
                 <input type="text" name="meta_description" class="form-control " value="{{$res['product_desc']->meta_description}}">
                 <div class="invalid-feedback"></div>
             </div>

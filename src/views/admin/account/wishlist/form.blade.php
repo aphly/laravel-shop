@@ -7,28 +7,28 @@
         @csrf
         <div class="">
             <div class="form-group">
-                <label for="">id</label>
+                <label >id</label>
                 <input type="text" readonly class="form-control " value="{{$res['info']->id??0}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">uuid</label>
-                <input type="text" name="uuid" readonly class="form-control " value="{{$res['info']->uuid??0}}">
+                <label >uid</label>
+                <input type="text" name="uid" readonly class="form-control " value="{{$res['info']->uid??0}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">product_id</label>
+                <label >product_id</label>
                 <input type="text" name="product_id" readonly class="form-control " value="{{$res['info']->product_id??''}}">
                 <div class="invalid-feedback"><a href="/product/{{$res['info']->product_id}}">{{$res['info']->product->name}}</a></div>
             </div>
 
             <div class="form-group">
-                <label for="">created_at</label>
+                <label >created_at</label>
                 <input type="text" readonly class="form-control " value="{{$res['info']->created_at??0}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">updated_at</label>
+                <label >updated_at</label>
                 <input type="text" readonly class="form-control " value="{{$res['info']->updated_at??0}}">
                 <div class="invalid-feedback"></div>
             </div>

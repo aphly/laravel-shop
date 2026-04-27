@@ -2,7 +2,7 @@
 
 namespace Aphly\LaravelShop\Mail\Order;
 
-use Aphly\Laravel\Models\User;
+use Aphly\Laravel\Models\CommonUser;
 use Aphly\LaravelShop\Models\Sale\Order;
 use Aphly\LaravelShop\Models\Sale\OrderProduct;
 use Aphly\LaravelShop\Models\Sale\OrderTotal;
@@ -38,7 +38,6 @@ class Paid extends Mailable
     public function build()
     {
 
-        return $this->subject('Order paid')
-            ->view('laravel-shop::mail.order.paid');
+        return $this->view('laravel-shop::mail.order.paid');
     }
 }

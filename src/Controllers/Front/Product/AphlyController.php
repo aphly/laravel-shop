@@ -11,7 +11,7 @@ class AphlyController extends Controller
     public function sizeGuide(Request $request)
     {
         $res['title'] = 'Size Guide';
-        return $this->makeView('laravel-front::product.aphly.size_guide',['res'=>$res]);
+        return $this->makeView('laravel-shop::front.product.aphly.size_guide',['res'=>$res]);
     }
 
 

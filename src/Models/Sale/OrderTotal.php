@@ -12,7 +12,7 @@ class OrderTotal extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'order_id','title','value','sort'
+        'order_id','title','value','value_format','value_old','value_old_format','sort','ext'
     ];
 
 }

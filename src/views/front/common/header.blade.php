@@ -1,4 +1,4 @@
-@include(config('base.view_namespace_front_blade').'::common.header_common')
+@include('laravel-shop::front.common.header_common')
 <link rel="stylesheet" href="{{ URL::asset('static/base/front/css/iconfont.css') }}">
 <link rel="stylesheet" href="{{ URL::asset('static/base/front/css/common.css') }}">
 <link rel="stylesheet" href="{{ URL::asset('static/base/front/css/font.css') }}">
@@ -30,6 +30,10 @@
     .page-link{padding: 8px 16px;}
     .page-item.active .page-link{border-color:var(--btn_bg);background-color:var(--btn_bg);}
     .form-control{color:#000}
+    .price_format{color: #E36254;}
+    .price_old_format{color: #787a7c;text-decoration: line-through;opacity: 0.8;font-size: 13px;margin-left: 2px;}
+    input,select{border-radius:8px;}
+    .menu .active{color:var(--btn_bg);}
 </style>
 <header>
     <div class="header1">
@@ -74,7 +78,7 @@
 
                                         </div>
                                     @else
-                                        <a href="{{$val['url']}}" class="pc_menu_lv1_a wenzi {{request()->is($val['url'])?'active':''}}">{{$val['name']}}</a>
+                                        <a href="{{$val['url']}}" class="pc_menu_lv1_a wenzi {{request()->getRequestUri()==$val['url']?'active':''}}">{{$val['name']}}</a>
                                     @endif
                                 </li>
                             @endforeach
@@ -88,14 +92,17 @@
                     </div>
                 </div>
                 <div class="d-flex header13">
-                    <a class="wishlist" href="/account_ext/wishlist?redirect={{urlencode(request()->url())}}">
-                        <i class="common-iconfont icon-aixin" ></i><span class="wishlist_num" id="wishlist_num">{{$wishlist_num}}</span></a>
-                    <a href="/cart"><i class="common-iconfont icon-31gouwuche"></i><span class="cart_num" id="cart_num">{{$cart_num}}</span></a>
                     @if($user)
-                        <a href="/account/index?redirect={{urlencode(request()->url())}}"><i class="uni app-login"></i></a>
+                        <a href="/account/index?redirect={{urlencode(request()->url())}}" class="pc"><i class="uni app-login"></i></a>
+                        <a href="javascript:;" class="mobile" onclick="$('.account_menu').show()"><i class="uni app-login"></i></a>
                     @else
-                        <a href="/account/index?redirect={{urlencode(request()->url())}}"><i class="uni app-touxiang"></i></a>
+                        <a href="/account/index?redirect={{urlencode(request()->url())}}" class="pc"><i class="uni app-touxiang"></i></a>
+                        <a href="/account/login" class="mobile"><i class="uni app-touxiang"></i></a>
                     @endif
+                    <a href="/cart"><i class="common-iconfont icon-31gouwuche"></i><span class="cart_num" id="cart_num">{{$cart_num}}</span></a>
+                    <a class="wishlist" href="/account_ext/wishlist?redirect={{urlencode(request()->url())}}">
+                        <i class="common-iconfont icon-aixin" ></i><span class="wishlist_num" id="wishlist_num">{{$wishlist_num}}</span>
+                    </a>
                 </div>
             </div>
         </div>
@@ -180,9 +187,17 @@
             </div>
         </div>
     </div>
-
+    <div class="account_menu">
+        @include('laravel-shop::front.account.left_menu')
+    </div>
 </header>
-
+<style>
+    .account_menu{display: none}
+    @media (max-width: 1199.98px) {
+        .account_menu{ position: fixed;left: 0;right: 0;width: 100%; top: 0;bottom: 0; z-index: 2000;display: none;}
+        .account_menu .sidebar-menu{display: block;width: 100%;height: 100%;}
+    }
+</style>
 <script>
     $(function () {
         $('header').on('click','.search_btn',function () {

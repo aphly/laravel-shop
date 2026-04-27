@@ -18,7 +18,7 @@
                         <input type="hidden" name="pid" class="form-control" value="0" >
                         <div class="">
                             <div class="form-group">
-                                <label for="">类型</label>
+                                <label >类型</label>
                                 <select name="type" class="form-control">
                                     <option value="1">目录</option>
                                     <option value="2">分类</option>
@@ -26,22 +26,22 @@
                                 <div class="invalid-feedback"></div>
                             </div>
                             <div class="form-group">
-                                <label for="">名称</label>
+                                <label >名称</label>
                                 <input type="text" name="name" class="form-control " value="">
                                 <div class="invalid-feedback"></div>
                             </div>
                             <div class="form-group">
-                                <label for="">图标 class</label>
+                                <label >图标 class</label>
                                 <input type="text" name="icon" class="form-control " value="">
                                 <div class="invalid-feedback"></div>
                             </div>
                             <div class="form-group">
-                                <label for="">地址</label>
+                                <label >地址</label>
                                 <input type="text" name="url" class="form-control " value="">
                                 <div class="invalid-feedback"></div>
                             </div>
                             <div class="form-group">
-                                <label for="">状态</label>
+                                <label >状态</label>
                                 <select name="status" class="form-control">
                                     @foreach($dict['status'] as $key=>$val)
                                         <option value="{{$key}}" >{{$val}}</option>
@@ -50,17 +50,17 @@
                                 <div class="invalid-feedback"></div>
                             </div>
                             <div class="form-group">
-                                <label for="">排序</label>
+                                <label >排序</label>
                                 <input type="text" name="sort" class="form-control " value="0">
                                 <div class="invalid-feedback"></div>
                             </div>
                             <div class="form-group">
-                                <label for="">meta_title</label>
+                                <label >meta_title</label>
                                 <input type="text" name="meta_title" class="form-control " value="">
                                 <div class="invalid-feedback"></div>
                             </div>
                             <div class="form-group">
-                                <label for="">meta_description</label>
+                                <label >meta_description</label>
                                 <textarea name="meta_description" rows="4" class="form-control "></textarea>
                                 <div class="invalid-feedback"></div>
                             </div>

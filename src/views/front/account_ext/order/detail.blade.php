@@ -1,4 +1,4 @@
-@include(config('base.view_namespace_front_blade').'::common.header')
+@include('laravel-shop::front.common.header')
 <section class="container">
     <style>
         .order_product .option{display: flex;align-items: center;flex-wrap: wrap;width: 100%}
@@ -28,7 +28,7 @@
         .order_detail_title{font-weight: 500;border-top: 1px solid #f1f1f1; padding-top: 15px;}
     </style>
     <div class="account_info">
-        @include(config('base.view_namespace_front_blade').'::account.left_menu')
+        @include('laravel-shop::front.account.left_menu')
         <div class="account-main-section">
             <div class="order">
                 <div class="top-desc d-flex justify-content-between">
@@ -78,18 +78,18 @@
                 <div class="detail">
                     <ul class="order_info">
                         <li><div class="info_left">Order ID:</div><div>{{$res['info']->id}}</div></li>
-                        <li><div class="info_left">Date Added:</div><div>{{$res['info']->created_at}}</div></li>
+                        <li><div class="info_left">Date Added:</div><div class="utc_time" data-utc_time="{{$res['info']->created_at->timestamp}}"></div></li>
                         <li><div class="info_left">Payment Method:</div><div>{{$res['info']->payment_method_name}}</div></li>
                         <li>
-                            <div class="info_left">Shipping Address:</div><div>{{$res['info']->address_firstname}} {{$res['info']->address_lastname}},
-                                {{$res['info']->address_address_1}} {{$res['info']->address_address_2}},
-                                {{$res['info']->address_city}}, {{$res['info']->address_zone}}, {{$res['info']->address_country}},
-                                {{$res['info']->address_postcode}}, {{$res['info']->address_telephone}}
+                            <div class="info_left">Delivery Address:</div><div>{{$res['info']->delivery_firstname}} {{$res['info']->delivery_lastname}},
+                                {{$res['info']->delivery_address_1}} {{$res['info']->delivery_address_2}},
+                                {{$res['info']->delivery_city}}, {{$res['info']->delivery_zone}}, {{$res['info']->delivery_country}},
+                                {{$res['info']->delivery_postcode}}, {{$res['info']->delivery_telephone}}
                             </div>
                         </li>
                         <li><div class="info_left">Shipping Method:</div><div>{{$res['info']->shipping_name}}</div></li>
                         <li><div class="info_left">Express Name:</div><div>{{$res['info']->express_name??'-'}}</div></li>
-                        <li><div class="info_left">Express Tracking Number:</div><div>{{$res['info']->express_no??'-'}}</div></li>
+                        <li><div class="info_left">Tracking Number:</div><div>{{$res['info']->express_no??'-'}}</div></li>
                     </ul>
                 </div>
 
@@ -103,7 +103,7 @@
                                 <li class=" ">
                                     <div class="orderHistory1">
                                         <div class="orderHistory11"></div>
-                                        <div class="orderHistory12">{{$val->created_at}}</div>
+                                        <div class="orderHistory12 utc_time" data-utc_time="{{$val->created_at->timestamp}}"></div>
                                     </div>
                                     <div class="orderHistory2">
                                         <div class="orderHistory22">
@@ -119,7 +119,7 @@
                                 <li class="">
                                     <div class="orderHistory1">
                                         <div class="orderHistory11"></div>
-                                        <div class="orderHistory12">{{$val->created_at}}</div>
+                                        <div class="orderHistory12 utc_time" data-utc_time="{{$val->created_at->timestamp}}"></div>
                                     </div>
                                     <div class="orderHistory2">
                                         <div class="orderHistory22">
@@ -158,7 +158,7 @@
                     @elseif($res['info']->order_status_id==2)
                         <a href="javascript:void(0)" onclick="cancel('{{$res['cancelAmountFormat']}}',{{$res['info']->id}})" class="account_btn">Cancel</a>
                     @elseif($res['info']->order_status_id==3)
-                        <a href="/account_ext/service/form?order_id={{$val->order_id}}" class="account_btn">Service</a>
+                        <a href="/account_ext/after_sales/form?order_id={{$val->order_id}}" class="account_btn" >After Sales</a>
                     @endif
                 </div>
             </div>
@@ -177,11 +177,11 @@
             </div>
             <div class="modal-body">
                 <div class="cancel1">
-                    <p>Please note that the cancellation of the order will be charged with management fee,processing fee and transaction fee.</p>
-                    <p>1.Orders cancelled within 24 hours after payment confirmation will receive a partial refund of {{100-$shop_config['order_cancel_24']}}% of the total order amount.</p>
-                    <p>2.Orders cancelled within 24-48 hours after payment confirmation will receive a partial refund of {{100-$shop_config['order_cancel_24_48']}}% of the total order amount.</p>
-                    <p>3.Orders cancelled more than 48 hours after payment confirmation will receive a partial refund of {{100-$shop_config['order_cancel_48']}}%% of the total order amount.</p>
-                    <p>Once your order is shipped, it cannot be cancelled again.</p>
+                    <p>Please note that order cancellations are subject to management, processing and transaction fees.</p>
+                    <p>1.Cancellation within 24 hours of payment confirmation: {{100-$shop_config['order_cancel_24']}}% refund</p>
+                    <p>2.Cancellation 24–48 hours after payment confirmation: {{100-$shop_config['order_cancel_24_48']}}% refund</p>
+                    <p>3.Cancellation over 48 hours after payment confirmation: {{100-$shop_config['order_cancel_48']}}% refund</p>
+                    <p>Orders that have already been shipped cannot be cancelled.</p>
                 </div>
                 <div class="cancel2">
                     Refund <span class="cancelAmountFormat">0</span>
@@ -216,4 +216,4 @@ $(function () {
 
 })
 </script>
-@include(config('base.view_namespace_front_blade').'::common.footer')
+@include('laravel-shop::front.common.footer')

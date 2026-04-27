@@ -12,7 +12,7 @@ class CouponHistory extends Model
     //public $timestamps = false;
 
     protected $fillable = [
-        'coupon_id','order_id','uuid','amount'
+        'coupon_id','order_id','uid','amount'
     ];
 
 

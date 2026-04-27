@@ -6,12 +6,12 @@
         @csrf
         <div class="review">
             <div class="form-group">
-                <label for="">作者</label>
+                <label >作者</label>
                 <input type="text" name="author" class="form-control " value="{{$res['review']->author}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">商品</label>
+                <label >商品</label>
                 <input type="hidden" name="product_id" id="product_id" value="{{$res['review']->product_id}}">
                 <div class="search" >
                     <input class="search_input search_input_product form-control "
@@ -23,22 +23,22 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="">内容</label>
+                <label >内容</label>
                 <textarea name="text" rows="10" class="form-control ">{{$res['review']->text}}</textarea>
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">评级 (1-5)</label>
+                <label >评级 (1-5)</label>
                 <input type="text" name="rating" class="form-control " value="{{$res['review']->rating}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">添加日期</label>
+                <label >添加日期</label>
                 <input type="datetime-local" class="form-control " readonly value="{{$res['review']->created_at}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">状态</label>
+                <label >状态</label>
                 <select name="status" class="form-control">
                     @if(isset($dict['status']))
                         @foreach($dict['status'] as $key=>$val)

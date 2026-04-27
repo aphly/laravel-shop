@@ -1,4 +1,4 @@
-@include(config('base.view_namespace_front_blade').'::common.header')
+@include('laravel-shop::front.common.header')
 <section class="container">
     <style>
         .wishlist_img{width: 60px;height: 60px;margin-right: 20px;flex-shrink: 0}
@@ -10,7 +10,7 @@
         }
     </style>
     <div class="account_info">
-        @include(config('base.view_namespace_front_blade').'::account.left_menu')
+        @include('laravel-shop::front.account.left_menu')
         <div class="account-main-section">
             <div class="">
                 <div class="top-desc d-flex justify-content-between">
@@ -80,4 +80,4 @@ $(function () {
     })
 })
 </script>
-@include(config('base.view_namespace_front_blade').'::common.footer')
+@include('laravel-shop::front.common.footer')

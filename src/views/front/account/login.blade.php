@@ -1,4 +1,4 @@
-@include(config('base.view_namespace_front_blade').'::common.header')
+@include('laravel-shop::front.common.header')
 <link rel="stylesheet" href="{{ URL::asset('static/base/front/css/account.css') }}">
 <section class="">
     <div class="container">
@@ -89,8 +89,8 @@
             </div>
             <div class="ext_login">
                 <a class="google" href="/oauth/google">
-                    <div class="d-flex justify-content-between">
-                        <div class="ext_icon">
+                    <div class="d-flex justify-content-center">
+                        <div class="" style="margin-right: 10px;position: relative;top: -2px;">
                             <svg width="22" height="22" xmlns="http://www.w3.org/2000/svg">
                                 <g fill="none" fill-rule="evenodd">
                                     <path d="M20.6 11.227c0-.709-.064-1.39-.182-2.045H11v3.868h5.382a4.6 4.6 0 0 1-1.996 3.018v2.51h3.232c1.891-1.742 2.982-4.305 2.982-7.35z" fill="#4285F4"></path>
@@ -100,7 +100,7 @@
                                 </g>
                             </svg>
                         </div>
-                        <div class="">Continue with Google</div>
+                        <div class="">Sign in with Google</div>
                         <div></div>
                     </div>
                 </a>
@@ -110,10 +110,12 @@
     </div>
 </section>
 <style>
-
+    .ext_login{display: flex;justify-content: center}
+    .ext_login a{background: #000; color: #fff; border-radius: 8px;width: 100%;}
 </style>
 <script>
     function login_res(res,_this) {
+        console.log(res)
         if(!res.code) {
             location.href = res.data.redirect
         }else if(res.code===11000){
@@ -126,4 +128,4 @@
         }
     }
 </script>
-@include(config('base.view_namespace_front_blade').'::common.footer')
+@include('laravel-shop::front.common.footer')

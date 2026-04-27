@@ -3,7 +3,7 @@
 namespace Aphly\LaravelShop\Models\Account;
 
 use Aphly\LaravelShop\Models\Setting\Country;
-use Aphly\Laravel\Models\User;
+use Aphly\Laravel\Models\CommonUser;
 use Aphly\LaravelShop\Models\Setting\Zone;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;
@@ -14,12 +14,12 @@ class UserAddress extends Model
     protected $table = 'shop_user_address';
 
     protected $fillable = [
-        'uuid','firstname','lastname','address_1','address_2','city','postcode','country_id','zone_id','telephone','default'
+        'uid','firstname','lastname','address_1','address_2','city','postcode','country_id','zone_id','telephone','default'
     ];
 
 
     public function getAddress($address_id) {
-        $info = self::where(['id'=>$address_id,'uuid'=>User::uuid()])->first();
+        $info = self::where(['id'=>$address_id,'uid'=>CommonUser::uid()])->first();
         if(!empty($info)){
             $country = (new Country)->findAll();
             $zone = (new Zone)->findAll();
@@ -48,10 +48,14 @@ class UserAddress extends Model
         }
     }
 
-    public function getAddresses($uuid = false) {
-        $uuid = $uuid?:User::uuid();
+    public function getAddresses($uid = false,$limit=0) {
+        $uid = $uid?:CommonUser::uid();
         $address_data = [];
-        $data = self::where(['uuid'=>$uuid])->get()->toArray();
+        if($limit){
+            $data = self::where(['uid'=>$uid])->orderBy('default','desc')->limit($limit)->get()->toArray();
+        }else{
+            $data = self::where(['uid'=>$uid])->orderBy('default','desc')->get()->toArray();
+        }
         $country = (new Country)->findAll();
         $zone = (new Zone)->findAll();
         foreach ($data as $v){

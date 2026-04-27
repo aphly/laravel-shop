@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('shop_user_address', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('uuid')->index();
+            $table->unsignedBigInteger('uid')->index();
             $table->string('firstname',32);
             $table->string('lastname',32);
             $table->string('address_1',255);

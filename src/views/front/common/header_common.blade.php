@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html style="font-size: 14px;">
 <head>
+    <script>var c_language = 'US'</script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
     <title>{{$res['title']??''}} {{config('base.title')}}</title>
@@ -21,8 +22,10 @@
 <style>
 </style>
 <script>
-    c_language = 'US'
     $(function () {
         $('input.form-control').attr("autocomplete","off")
+        $('input').change(function () {
+            $(this).removeClass('is-invalid')
+        })
     })
 </script>

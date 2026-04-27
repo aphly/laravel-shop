@@ -4,8 +4,8 @@
         @php
         $uri = request()->path()
         @endphp
-        <div class="sidebar-menu-title">My Account Information
-            <i class="uni app-xiangxiajiantou"></i>
+        <div class="sidebar-menu-title">My Account
+            <i class="uni app-guanbi" onclick="$('.sidebar-menu').hide()"></i>
         </div>
         <ul class="sidebar-menu-content">
             <li><a href="/account/index" @if('account/index'==$uri) class="active" @endif>Dashboard</a></li>
@@ -18,16 +18,16 @@
         <ul class="sidebar-menu-content">
             <li><a href="/account_ext/order" @if('account_ext/order'==$uri || 'account_ext/order/detail'==$uri) class="active" @endif>My Orders</a></li>
             <li><a href="/account_ext/review" @if('account_ext/review'==$uri || 'account_ext/review/detail'==$uri) class="active" @endif>My Reviews</a></li>
+            <li ><a href="/account_ext/after_sales" @if('account_ext/after_sales'==$uri || 'account_ext/after_sales/form'==$uri || 'account_ext/after_sales/detail'==$uri) class="active" @endif>After Sales</a></li>
         </ul>
-        <div class="sidebar-menu-title">Customer Service</div>
+        <div class="sidebar-menu-title">Service</div>
         <ul class="sidebar-menu-content">
-            <li><a href="/account_ext/service" @if('account_ext/service'==$uri || 'account_ext/service/form'==$uri || 'account_ext/service/detail'==$uri) class="active" @endif>My Service</a></li>
-            <li><a href="/account/logout" @if('account/logout'==$uri) class="active" @endif>Logout</a></li>
+            <li><a href="/account/logout" @if('account/logout'==$uri) class="active" @endif style="color:#a13838;">Logout</a></li>
         </ul>
         <div class="sidebar-menu-content" style="">
             <span>Need help? We're here to help you:</span>
             <div class="phone">
-                <b>{{ $shop_config['service_email'] }}</b> <br>
+                <b>{{ config('base.email') }}</b> <br>
                 <span>9:00 AM to 6:00 PM Mon to Fri. (EST)</span>
             </div>
         </div>
@@ -53,28 +53,14 @@
     .form_request .form-group p{margin-bottom: 10px;}
     .form_request .form-group p b{color: darkred;}
     .sidebar-menu-title i{display: none;}
-
     .my_btn{ display: block; padding: 0 10px; border-radius: 4px;border: 1px solid #333;line-height: 34px;}
     @media (max-width: 1199.98px) {
         .account_info{flex-wrap: wrap;}
-        .sidebar-menu,.account-main-section{width: 100%;margin-left: 0;margin-bottom: 20px;    padding: 0px;}
-        .sidebar-menu-title i{display: block;}
+        .account-main-section{width: 100%;margin-left: 0;margin-bottom: 20px; padding: 0px;}
+        .sidebar-menu-title i{display: block;padding:0 10px;cursor: pointer}
         .sidebar-menu-title{display: flex;justify-content: space-between;}
         .sidebar-menu-list{height: 40px;}
+        .sidebar-menu{display: none}
     }
 </style>
-<script>
-    $(function () {
-        $('.sidebar-menu-title').click(function () {
-            if($(window).width() < 1200){
-                if($('.sidebar-menu-title i.uni').hasClass('app-xiangxiajiantou')){
-                    $('.sidebar-menu-list').css('height','auto')
-                    $('.sidebar-menu-title i.uni').removeClass('app-xiangxiajiantou').addClass('app-xiangshangjiantou')
-                }else{
-                    $('.sidebar-menu-list').css('height','40px')
-                    $('.sidebar-menu-title i.uni').addClass('app-xiangxiajiantou').removeClass('app-xiangshangjiantou')
-                }
-            }
-        })
-    })
-</script>
+

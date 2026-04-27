@@ -4,7 +4,7 @@ namespace Aphly\LaravelShop\Controllers\Admin\Catalog;
 
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Models\Breadcrumb;
-use Aphly\Laravel\Models\UploadFile;
+use Aphly\Laravel\Models\CommonUploadFile;
 use Aphly\LaravelShop\Controllers\Admin\Controller;
 use Aphly\LaravelShop\Models\Catalog\Option;
 use Aphly\LaravelShop\Models\Catalog\OptionValue;
@@ -40,7 +40,7 @@ class OptionController extends Controller
         $res['option'] = Option::where('id',$request->query('id',0))->firstOrNew();
         if($res['option']->id){
             $res['optionValue'] = OptionValue::where('option_id',$res['option']->id)->orderBy('sort','desc')->get()->transform(function ($item){
-                $item->image_src = UploadFile::getPath($item->image,$item->remote);
+                $item->image_src = CommonUploadFile::getPath($item->image,$item->disk);
                 return $item;
             });
         }
@@ -62,29 +62,29 @@ class OptionController extends Controller
                 foreach ($optionValue as $val){
                     if(!in_array($val['id'],$val_arr_keys)){
                         $delete_arr[] = $val['id'];
-                        UploadFile::del($val['image'],$val['remote']);
+                        CommonUploadFile::del($val['image'],$val['disk']);
                     }
                 }
                 OptionValue::whereIn('id',$delete_arr)->delete();
                 $files = $request->file('value');
-                $UploadFile = new UploadFile;
+                $UploadFile = new CommonUploadFile;
                 foreach ($val_arr as $key=>$val){
                     foreach ($val as $k=>$v){
                         $update_arr[$key][$k]=$v;
                     }
                     $update_arr[$key]['id'] = intval($key);
                     $update_arr[$key]['option_id'] = $option->id;
-                    $update_arr[$key]['remote'] = $UploadFile->isRemote();
+                    $update_arr[$key]['disk'] = $UploadFile->disk();
                     if($key_i = intval($key)){
                         if(isset($val['image'])) {
                             if($val['image'] == 'undefined'){
-                                UploadFile::del($optionValue[$key_i]['image'],$optionValue[$key_i]['remote']);
+                                CommonUploadFile::del($optionValue[$key_i]['image'],$optionValue[$key_i]['disk']);
                                 $update_arr[$key]['image'] = '';
                             }
                         }else{
                             $update_arr[$key]['image'] = isset($files[$key]['image'])?$UploadFile->upload($files[$key]['image'], 'public/shop/option'):'';
                             if($update_arr[$key]['image']){
-                                UploadFile::del($optionValue[$key_i]['image'],$optionValue[$key_i]['remote']);
+                                CommonUploadFile::del($optionValue[$key_i]['image'],$optionValue[$key_i]['disk']);
                             }
                         }
                     }else{
@@ -109,7 +109,7 @@ class OptionController extends Controller
             $data = OptionValue::whereIn('option_id',$post)->get();
             foreach ($data as $v){
                 if($v->delete()){
-                    UploadFile::del($v->image,$v->remote);
+                    CommonUploadFile::del($v->image,$v->disk);
                 }
             }
             throw new ApiException(['code'=>0,'msg'=>'操作成功','data'=>['redirect'=>$redirect]]);

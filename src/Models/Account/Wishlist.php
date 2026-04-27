@@ -2,7 +2,7 @@
 
 namespace Aphly\LaravelShop\Models\Account;
 
-use Aphly\Laravel\Models\User;
+use Aphly\Laravel\Models\CommonUser;
 use Aphly\LaravelShop\Models\Catalog\Product;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;
@@ -15,7 +15,7 @@ class Wishlist extends Model
     //public $timestamps = false;
 
     protected $fillable = [
-        'uuid','product_id'
+        'uid','product_id'
     ];
 
     static $product_ids = [];
@@ -34,7 +34,7 @@ class Wishlist extends Model
             $shop_wishlist_arr = json_decode($shop_wishlist,true);
             $count = count($shop_wishlist_arr);
             if($count){
-                $wishlist = self::where('uuid',User::uuid())->get('product_id')->toArray();
+                $wishlist = self::where('uid',CommonUser::uid())->get('product_id')->toArray();
                 $wishlist_product_ids = array_column($wishlist,'product_id');
                 $product_ids = [];
                 foreach ($shop_wishlist_arr as $val){
@@ -45,7 +45,7 @@ class Wishlist extends Model
                 $time = time();
                 $data = [];
                 foreach ($product_ids as $val){
-                    $data[] = ['uuid'=>User::uuid(),'product_id'=>$val,'created_at'=>$time,'updated_at'=>$time];
+                    $data[] = ['uid'=>CommonUser::uid(),'product_id'=>$val,'created_at'=>$time,'updated_at'=>$time];
                 }
                 self::insert($data);
             }

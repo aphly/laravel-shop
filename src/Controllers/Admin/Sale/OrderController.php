@@ -4,7 +4,7 @@ namespace Aphly\LaravelShop\Controllers\Admin\Sale;
 
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Models\Breadcrumb;
-use Aphly\Laravel\Models\UploadFile;
+use Aphly\Laravel\Models\CommonUploadFile;
 use Aphly\LaravelPayment\Models\Payment;
 use Aphly\LaravelShop\Controllers\Admin\Controller;
 use Aphly\LaravelShop\Models\Sale\Order;
@@ -163,7 +163,7 @@ class OrderController extends Controller
 
     public function shipped(Request $request)
     {
-        $file_path = (new UploadFile(5,['xlsx']))->upload($request->file('file'), 'private/order/shipped');
+        $file_path = (new CommonUploadFile(5,['xlsx']))->upload($request->file('file'), 'private/order/shipped');
         $path = storage_path().'\\app\\'.$file_path;
         if(file_exists($path)){
             $arr = pathinfo($path);

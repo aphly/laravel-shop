@@ -12,7 +12,9 @@ class OrderProduct extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'order_id','product_id','name','image','sku','quantity','price','price_format','total','total_format','discount','discount_format','real_total','real_total_format'
+        'order_id','product_id','name','image','sku','quantity','price','price_format','price_old','price_old_format',
+        'total','total_format','total_old','total_old_format','discount','discount_format'
+
     ];
 
     function orderOption(){

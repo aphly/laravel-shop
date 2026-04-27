@@ -4,7 +4,7 @@ namespace Aphly\LaravelShop\Controllers\Admin\Catalog;
 
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Models\Breadcrumb;
-use Aphly\Laravel\Models\UploadFile;
+use Aphly\Laravel\Models\CommonUploadFile;
 use Aphly\LaravelShop\Controllers\Admin\Controller;
 use Aphly\LaravelShop\Models\Account\ReviewImage;
 use Aphly\LaravelShop\Models\Catalog\CategoryPath;
@@ -51,7 +51,7 @@ class ProductController extends Controller
             })->orderBy('id','desc')
             ->Paginate(config('base.perPage'))->withQueryString();
         $res['list']->transform(function ($item){
-            $item->image_src = UploadFile::getPath($item->image,$item->remote);
+            $item->image_src = CommonUploadFile::getPath($item->image,$item->disk);
             return $item;
         });
         $res['breadcrumb'] = Breadcrumb::render([
@@ -77,7 +77,8 @@ class ProductController extends Controller
     {
         if($request->isMethod('post')){
             $input = $request->all();
-            $input['uuid'] = $this->manager->uuid;
+            $input['id'] = app('Snowflake')->nextId();
+            $input['uid'] = $this->manager->uid;
             $input['date_available'] = $input['date_available']?strtotime($input['date_available']):time();
             Product::create($input);
             throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
@@ -120,7 +121,7 @@ class ProductController extends Controller
 
     public function save(Request $request){
         $input = $request->all();
-        $input['uuid'] = $this->manager->uuid;
+        $input['uid'] = $this->manager->uid;
         $input['date_available'] = $input['date_available']?strtotime($input['date_available']):time();
         Product::updateOrCreate(['id'=>$request->query('id',0)],$input);
         throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
@@ -141,7 +142,7 @@ class ProductController extends Controller
             $imgs = ProductImage::whereIn('product_id',$post)->get();
             foreach ($imgs as $img){
                 if($img->delete()){
-                    UploadFile::del($img->image,$img->remote);
+                    CommonUploadFile::del($img->image,$img->disk);
                 }
             }
             ProductOption::whereIn('product_id',$post)->delete();
@@ -178,13 +179,13 @@ class ProductController extends Controller
         $res['info_img'] = ProductImage::where('product_id',$res['product']->id)->orderBy('sort','desc')->get();
         if($request->isMethod('post')) {
             if($request->hasFile('file')) {
-                $UploadFile = new UploadFile(5);
-                $remote = $UploadFile->isRemote();
+                $UploadFile = new CommonUploadFile(5);
+                $disk = $UploadFile->disk();
                 $file_path = $UploadFile->uploads(20,$request->file('file'), 'public/shop/product/image');
                 $img_src = $insertData = [];
                 foreach ($file_path as $key=>$val) {
-                    $img_src[] = UploadFile::getPath($val,$remote);
-                    $insertData[] = ['product_id'=>$res['product']->id,'image'=>$val,'sort'=>-1,'remote'=>$remote];
+                    $img_src[] = CommonUploadFile::getPath($val,$disk);
+                    $insertData[] = ['product_id'=>$res['product']->id,'image'=>$val,'sort'=>-1,'disk'=>$disk];
                 }
                 if ($insertData) {
                     ProductImage::insert($insertData);
@@ -201,7 +202,7 @@ class ProductController extends Controller
                 ['name'=>'图片','href'=>'/shop_admin/'.$this->currArr['key'].'/img?product_id='.$res['product']->id]
             ]);
             $res['info_img']->transform(function ($item){
-                $item->image_src = UploadFile::getPath($item->image,$item->remote);
+                $item->image_src = CommonUploadFile::getPath($item->image,$item->disk);
                 return $item;
             });
             if($res['product']->is_color_group){
@@ -237,7 +238,7 @@ class ProductController extends Controller
         $info_obj = ProductImage::where('id',$request->id);
         $info = $info_obj->first();
         if($info_obj->delete()){
-            UploadFile::del($info->image,$info->remote);
+            CommonUploadFile::del($info->image,$info->disk);
         }
         $this->updateImg($info->product_id);
         throw new ApiException(['code'=>0,'msg'=>'操作成功']);
@@ -246,9 +247,9 @@ class ProductController extends Controller
     public function updateImg($product_id){
         $productImg = ProductImage::where('product_id',$product_id)->orderBy('sort','desc')->first();
         if(!empty($productImg)){
-            Product::find($productImg->product_id)->update(['image'=>$productImg->image,'remote'=>$productImg->remote]);
+            Product::find($productImg->product_id)->update(['image'=>$productImg->image,'disk'=>$productImg->disk]);
         }else{
-            Product::where(['id'=>$product_id])->update(['image'=>'','remote'=>0]);
+            Product::where(['id'=>$product_id])->update(['image'=>'','disk'=>'']);
         }
     }
 
@@ -258,13 +259,13 @@ class ProductController extends Controller
         $res['info_video'] = ProductVideo::where('product_id',$res['product']->id)->orderBy('sort','desc')->get();
         if($request->isMethod('post')) {
             if($request->hasFile('file')) {
-                $UploadFile = new UploadFile(10,['mp4']);
-                $remote = $UploadFile->isRemote();
+                $UploadFile = new CommonUploadFile(10,['mp4']);
+                $disk = $UploadFile->disk();
                 $file_path = $UploadFile->uploads(1,$request->file('file'), 'public/shop/product/video');
                 $video_src = $insertData = [];
                 foreach ($file_path as $key=>$val) {
-                    $video_src[] = UploadFile::getPath($val,$remote);
-                    $insertData[] = ['product_id'=>$res['product']->id,'video'=>$val,'sort'=>-1,'remote'=>$remote];
+                    $video_src[] = CommonUploadFile::getPath($val,$disk);
+                    $insertData[] = ['product_id'=>$res['product']->id,'video'=>$val,'sort'=>-1,'disk'=>$disk];
                 }
                 if ($insertData) {
                     ProductVideo::insert($insertData);
@@ -279,7 +280,7 @@ class ProductController extends Controller
                 ['name'=>'视频','href'=>'/shop_admin/'.$this->currArr['key'].'/video?product_id='.$res['product']->id]
             ]);
             $res['info_video']->transform(function ($item){
-                $item->video_src = UploadFile::getPath($item->video,$item->remote);
+                $item->video_src = CommonUploadFile::getPath($item->video,$item->disk);
                 return $item;
             });
             return $this->makeView('laravel-shop::admin.catalog.product.video',['res'=>$res]);
@@ -304,7 +305,7 @@ class ProductController extends Controller
         $info_obj = ProductVideo::where('id',$request->id);
         $info = $info_obj->first();
         if($info_obj->delete()){
-            UploadFile::del($info->video,$info->remote);
+            CommonUploadFile::del($info->video,$info->disk);
         }
         throw new ApiException(['code'=>0,'msg'=>'操作成功']);
     }
@@ -380,7 +381,7 @@ class ProductController extends Controller
             $res['option'] = Option::with('value')->get()->keyBy('id')->toArray();
             $res['product_image'] = ProductImage::where('product_id',$product_id)->whereNot('type',1)->get()->keyBy('id');
             $res['product_image'] = $res['product_image']->map(function ($item){
-                $item->image_src = UploadFile::getPath($item->image,$item->remote);
+                $item->image_src = CommonUploadFile::getPath($item->image,$item->disk);
                 return $item;
             });
             $res['product_image'] = $res['product_image']->toArray();
@@ -546,14 +547,14 @@ class ProductController extends Controller
         if($request->isMethod('post')) {
             $type = $request->input('type',[]);
             if (in_array('product',$type)) {
-                Product::query()->update(['remote' => 1]);
-                ProductImage::query()->update(['remote' => 1]);
+                Product::query()->update(['disk' => 1]);
+                ProductImage::query()->update(['disk' => 1]);
             }else if(in_array('review',$type)){
-                ReviewImage::query()->update(['remote' => 1]);
+                ReviewImage::query()->update(['disk' => 1]);
             }else if(in_array('service',$type)){
-                ServiceImage::query()->update(['remote' => 1]);
+                ServiceImage::query()->update(['disk' => 1]);
             }else if(in_array('option',$type)){
-                OptionValue::query()->update(['remote' => 1]);
+                OptionValue::query()->update(['disk' => 1]);
             }
             throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
         }else{

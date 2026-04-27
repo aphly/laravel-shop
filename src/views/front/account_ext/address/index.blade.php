@@ -1,4 +1,4 @@
-@include(config('base.view_namespace_front_blade').'::common.header')
+@include('laravel-shop::front.common.header')
 <style>
     .address_info{margin-bottom: 0px;}
     .address_info span{font-weight: 600;margin-left: 10px;}
@@ -6,15 +6,16 @@
     .address_info i{font-style: normal;width: 100px;display: inline-block}
     .address_infox i{margin-right: 5px;}
     .address_infox a{margin-right: 20px;}
+    .my_btn_add_f{text-align: center}
+    .my_btn_add{border-radius: 8px;padding: 10px 20px;width: 100%; display: block;background: var(--btn_bg); color: #fff;text-align: center;}
 </style>
 <div class="container">
     <div class="d-flex justify-content-between account_info">
-        @include(config('base.view_namespace_front_blade').'::account.left_menu')
+        @include('laravel-shop::front.account.left_menu')
         <div class="account-main-section">
             <div class="">
                 <div class="top-desc d-flex justify-content-between">
-                    <h2>Shipping Address</h2>
-                    <a href="/account_ext/address/save" class="my_btn">Add</a>
+                    <h2>Delivery Address</h2>
                 </div>
                 <ul class="list_index">
                     @foreach($res['list'] as $val)
@@ -45,6 +46,12 @@
                     </li>
                     @endforeach
                 </ul>
+                <div class="my_btn_f">
+                    <a href="/account_ext/address/save" class="my_btn_add">
+                        <i class="uni app-jia1"></i>
+                    </a>
+                </div>
+
                 <div>
                     {{$res['list']->links()}}
                 </div>
@@ -70,4 +77,4 @@ $(function () {
     })
 })
 </script>
-@include(config('base.view_namespace_front_blade').'::common.footer')
+@include('laravel-shop::front.common.footer')

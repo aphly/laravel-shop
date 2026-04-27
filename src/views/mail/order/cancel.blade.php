@@ -1,23 +1,24 @@
 @include('laravel-shop::mail.header')
-    <div style="font-size: 28px;line-height: 40px;margin-bottom: 10px;">
-        Order cancelled
-    </div>
+
     <div style="padding: 10px;">
-        <div style="margin-bottom: 10px;">Our Order #{{$order->id}}</div>
+        <div style="margin-top: 10px;font-size: 20px;margin-bottom: 20px;">Dear Customer,</div>
+        <div style="margin-bottom: 10px;">We have processed your cancellation request for Order #{{$order->id}}</div>
+
         <div style="margin-bottom: 10px;">
-            You have canceled the order.
-        </div>
-        <div style="margin-bottom: 10px;">
-            The order has been successfully refunded, with a {{$order->cancel_fee}}% handling fee deducted,
-            resulting in a final refund of {{$order->cancel_amount}}.
+            Your order has been successfully cancelled and refunded.
+            A {{$order->cancel_fee}}% handling fee has been deducted, resulting in a final refund amount of {{$order->cancel_amount}}.
         </div>
 
         <div style="margin-bottom: 10px;">
-            Please check if you have received the refund within 48 hours. If not, please contact customer service
+            Please allow up to 48 hours for the refund to reflect in your account.
         </div>
 
         <div style="margin-bottom: 10px;">
-            Welcome to purchase next time.
+            If you do not receive it within this period, please contact our customer service team for assistance.
+        </div>
+
+        <div style="margin-bottom: 10px;">
+            We hope to serve you again soon.
         </div>
     </div>
 
@@ -28,18 +29,18 @@
                     <div style="width: 46%;flex-shrink: 0;color: #666;">Order ID:</div><div>{{$order->id}}</div>
                 </li>
                 <li style=" display: flex;justify-content: space-between;margin-bottom: 5px;">
-                    <div style="width: 46%;flex-shrink: 0;color: #666;">Date Added:</div><div>{{$order->created_at}}</div>
+                    <div style="width: 46%;flex-shrink: 0;color: #666;">Date Added:</div><div>{{$order->created_at->timezone('America/New_York')->format('Y-m-d h:i A (ET)')}}</div>
                 </li>
                 <li style=" display: flex;justify-content: space-between;margin-bottom: 5px;">
                     <div style="width: 46%;flex-shrink: 0;color: #666;">Payment Method:</div>
                     <div>{{$order->payment_method_name}}</div>
                 </li>
                 <li style=" display: flex;justify-content: space-between;margin-bottom: 5px;">
-                    <div style="width: 46%;flex-shrink: 0;color: #666;">Shipping Address:</div>
-                    <div>{{$order->address_firstname}} {{$order->address_lastname}},
-                        {{$order->address_address_1}} {{$order->address_address_2}},
-                        {{$order->address_city}}, {{$order->address_zone}}, {{$order->address_country}},
-                        {{$order->address_postcode}}, {{$order->address_telephone}}
+                    <div style="width: 46%;flex-shrink: 0;color: #666;">Delivery Address:</div>
+                    <div>{{$order->delivery_firstname}} {{$order->delivery_lastname}},
+                        {{$order->delivery_address_1}} {{$order->delivery_address_2}},
+                        {{$order->delivery_city}}, {{$order->delivery_zone}}, {{$order->delivery_country}},
+                        {{$order->delivery_postcode}}, {{$order->delivery_telephone}}
                     </div>
                 </li>
             </ul>

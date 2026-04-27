@@ -4,7 +4,7 @@ namespace Aphly\LaravelShop\Controllers\Front\Checkout;
 
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Models\Breadcrumb;
-use Aphly\Laravel\Models\User;
+use Aphly\Laravel\Models\CommonUser;
 use Aphly\LaravelShop\Controllers\Front\Controller;
 use Aphly\LaravelShop\Models\Account\Wishlist;
 use Aphly\LaravelShop\Models\Catalog\Coupon;
@@ -25,7 +25,7 @@ class CartController extends Controller
         $cart = new Cart;
         $cart->initCart();
         list($res['count'],$res['list'],$res['total_data']) = $cart->totalData();
-        return $this->makeView('laravel-front::checkout.cart',['res'=>$res]);
+        return $this->makeView('laravel-shop::front.checkout.cart',['res'=>$res]);
     }
 
     public function add(Request $request)
@@ -75,9 +75,9 @@ class CartController extends Controller
     public function addWishlist(Request $request)
     {
         $cartInfo = Cart::where(['id'=>$request->id])->firstOrError();
-        $info = Wishlist::where(['uuid'=>User::uuid(),'product_id'=>$cartInfo->product_id])->first();
+        $info = Wishlist::where(['uid'=>CommonUser::uid(),'product_id'=>$cartInfo->product_id])->first();
         if(empty($info)){
-            Wishlist::create(['product_id'=>$cartInfo->product_id,'uuid'=>User::uuid()]);
+            Wishlist::create(['product_id'=>$cartInfo->product_id,'uid'=>CommonUser::uid()]);
         }
         $cartInfo->delete();
         throw new ApiException(['code'=>0,'msg'=>'success']);

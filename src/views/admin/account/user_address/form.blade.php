@@ -7,52 +7,52 @@
         @csrf
         <div class="">
             <div class="form-group">
-                <label for="">id</label>
+                <label >id</label>
                 <input type="text" readonly class="form-control " value="{{$res['info']->id??0}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">uuid</label>
-                <input type="text" name="uuid" required class="form-control " value="{{$res['info']->uuid??0}}">
+                <label >uid</label>
+                <input type="text" name="uid" required class="form-control " value="{{$res['info']->uid??0}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">firstname</label>
+                <label >firstname</label>
                 <input type="text" name="firstname" class="form-control " value="{{$res['info']->firstname??''}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">lastname</label>
+                <label >lastname</label>
                 <input type="text" name="lastname" class="form-control " value="{{$res['info']->lastname??''}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">address_1</label>
+                <label >address_1</label>
                 <input type="text" name="address_1" required class="form-control " value="{{$res['info']->address_1??''}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">address_2</label>
+                <label >address_2</label>
                 <input type="text" name="address_2" class="form-control " value="{{$res['info']->address_2??''}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">city</label>
+                <label >city</label>
                 <input type="text" name="city" class="form-control " value="{{$res['info']->city??''}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">postcode</label>
+                <label >postcode</label>
                 <input type="text" name="postcode" class="form-control " value="{{$res['info']->postcode??''}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">telephone</label>
+                <label >telephone</label>
                 <input type="text" name="telephone" class="form-control " value="{{$res['info']->telephone??''}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">country</label>
+                <label >country</label>
                 <select name="country_id" required id="input-country" class="form-control">
                     <option value=""> --- Please Select --- </option>
                     @foreach($res['country'] as $val)
@@ -62,7 +62,7 @@
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">zone</label>
+                <label >zone</label>
                 <select name="zone_id" required id="input-zone" class="form-control">
                     @if($res['zone'])
                         <option value=""> --- Please Select --- </option>
@@ -76,12 +76,12 @@
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">created_at</label>
+                <label >created_at</label>
                 <input type="text" readonly class="form-control " value="{{$res['info']->created_at??0}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">updated_at</label>
+                <label >updated_at</label>
                 <input type="text" readonly class="form-control " value="{{$res['info']->updated_at??0}}">
                 <div class="invalid-feedback"></div>
             </div>

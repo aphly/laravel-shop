@@ -7,12 +7,12 @@
         @csrf
         <div class="">
             <div class="form-group">
-                <label for="">Email</label>
+                <label >Email</label>
                 <input type="text" name="email" class="form-control " value="{{$res['info']->email}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">状态</label>
+                <label >状态</label>
                 <select name="status" class="form-control">
                     @if(isset($dict['status']))
                         @foreach($dict['status'] as $key=>$val)

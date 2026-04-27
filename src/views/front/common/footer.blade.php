@@ -35,44 +35,47 @@
         <div class="container">
             <div class="footer21">
                 <div class="footer21a">
-                    <div>
+                    <div class="footer21a1" style="">
                         <i class="uni app-world"></i>
-                    </div>
-                    @if($currency[0] && $currency[1] && $currency[2])
-                        <div class="currency_box">
-                            <div class="currency_curr">
-                                <div class="baCountry baCountry-{{$currency[2]['code']}}" style="display: none;"></div>
-                                <span class="ba-chosen ">{{$currency[2]['code']}}</span>
+                        @if($currency[0] && $currency[1] && $currency[2])
+                            <div class="currency_box">
+                                <div class="currency_curr">
+                                    <div class="baCountry baCountry-{{$currency[2]['code']}}" style="display: none;"></div>
+                                    <span class="ba-chosen ">{{$currency[2]['code']}}</span>
+                                </div>
+                                <ul class="baDropdown">
+                                    @foreach($currency[0] as $val)
+                                        <li class="currMovers @if($currency[2]['code']==$val['code']) active @endif" data-id="{{$val['id']}}">
+                                            <div class="baCountry baCountry-{{$val['code']}}"></div>
+                                            <span class="curChoice wenzi">{{$val['name']}} ({{$val['code']}})</span>
+                                        </li>
+                                    @endforeach
+                                </ul>
                             </div>
-                            <ul class="baDropdown">
-                                @foreach($currency[0] as $val)
-                                    <li class="currMovers @if($currency[2]['code']==$val['code']) active @endif" data-id="{{$val['id']}}">
-                                        <div class="baCountry baCountry-{{$val['code']}}"></div>
-                                        <span class="curChoice wenzi">{{$val['name']}} ({{$val['code']}})</span>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </div>
 
-                        <script>
-                            let currency_data = @json($currency[0]);
-                            $(function () {
-                                $('.currency_box .currency_curr').click(function () {
-                                    $('.baDropdown').toggle();
-                                })
-                                $('.currency_box .baDropdown').on('click','li',function () {
-                                    let id  =$(this).data('id')
-                                    $.ajax({
-                                        url:'/currency/'+id,
-                                        dataType: "json",
-                                        success: function(res){
-                                            location.reload()
-                                        }
+                            <script>
+                                let currency_data = @json($currency[0]);
+                                $(function () {
+                                    $('.currency_box .currency_curr').click(function () {
+                                        $('.baDropdown').toggle();
+                                    })
+                                    $('.currency_box .baDropdown').on('click','li',function () {
+                                        let id  =$(this).data('id')
+                                        $.ajax({
+                                            url:'/currency/'+id,
+                                            dataType: "json",
+                                            success: function(res){
+                                                location.reload()
+                                            }
+                                        })
                                     })
                                 })
-                            })
-                        </script>
-                    @endif
+                            </script>
+                        @endif
+                    </div>
+                    <div class="footer21a2">
+                        <img style="height: 30px;" src="{{ URL::asset('static/shop/img/card.png') }}" alt="">
+                    </div>
                 </div>
                 <div class="footer21b">
                     © {{date('Y')}} <a href="{{url('')}}">{{config('base.title')}}</a> All Rights Reserved.
@@ -82,8 +85,17 @@
     </div>
 </footer>
 <style>
+    .ba-chosen{padding:5px 10px;}
+    .footer21a1{display: flex;align-items: center}
+    .footer2{font-weight: 600;}
+    .footer21a2{}
+    @media (max-width: 1200px) {
+        .footer21a1{width: 100%;justify-content: center}
+        .footer21a{flex-wrap: wrap;text-align: center}
+        .footer21a2 img{width: 80%;}
+    }
 </style>
-@if(in_array('Aphly\LaravelStatistics',$comm_module))
+@if(in_array('Aphly\LaravelStatistics\StatisticsServiceProvider',config('app.providers')))
     <script src="{{ URL::asset('static/statistics/js/statistics.js') }}" data-appid="{{config('base.statistics_appid')}}" id="statistics"></script>
 @endif
 <script src="{{ URL::asset('static/base/admin/js/bootstrap.bundle.min.js') }}"></script>
@@ -111,8 +123,31 @@
     function subscribe_res(res,_this) {
         alert_msg(res.msg)
     }
+
+    function formatLocalTime(timestamp,format=0) {
+        if(!timestamp){
+            return '';
+        }
+        let ts = timestamp.toString().length === 10 ? timestamp * 1000 : timestamp;
+        let d = new Date(Number(ts));
+        let year = d.getFullYear();
+        let month = String(d.getMonth() + 1).padStart(2, '0');
+        let day = String(d.getDate()).padStart(2, '0');
+        let hours = String(d.getHours()).padStart(2, '0');
+        let minutes = String(d.getMinutes()).padStart(2, '0');
+        let seconds = String(d.getSeconds()).padStart(2, '0');
+        if(format===1){
+            return `${month}-${day} , ${year}`;
+        }else{
+            return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        }
+    }
     $(function() {
         $("img.lazy").lazyload({effect : "fadeIn",threshold :50});
+        $('.utc_time').text(function () {
+
+            return formatLocalTime($(this).data('utc_time'),$(this).data('format'))
+        })
     })
 </script>
 </body>

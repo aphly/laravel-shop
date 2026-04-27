@@ -39,4 +39,9 @@ class Zone extends Model
             return self::where('status',1)->get()->keyBy('id')->toArray();
         }
     }
+
+    public function findOne($id) {
+        $zone = $this->findAll();
+        return $zone[$id];
+    }
 }

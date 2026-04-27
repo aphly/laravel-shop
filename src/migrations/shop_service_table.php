@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('shop_service', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('uuid')->index();
+            $table->unsignedBigInteger('uid')->index();
             $table->unsignedBigInteger('order_id')->index();
             $table->tinyInteger('is_received')->default(1);
             $table->tinyInteger('is_opened')->default(0);

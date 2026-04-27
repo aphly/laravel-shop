@@ -23,7 +23,7 @@ class Verify extends Mailable
     {
         $this->userAuth = $userAuth;
         $this->userAuth->siteUrl = url('');
-        $this->userAuth->token = Crypt::encryptString($userAuth->uuid.','.time()+1200);
+        $this->userAuth->token = Crypt::encryptString($userAuth->uid.','.time()+1200);
     }
 
     /**
@@ -33,6 +33,6 @@ class Verify extends Mailable
      */
     public function build()
     {
-        return $this->subject('Account Email Verify')->view('laravel-shop::mail.account.verify');
+        return $this->view('laravel-shop::mail.account.verify');
     }
 }

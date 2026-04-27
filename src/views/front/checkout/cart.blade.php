@@ -1,4 +1,4 @@
-@include(config('base.view_namespace_front_blade').'::common.header')
+@include('laravel-shop::front.common.header')
 
 <style>
     .cart-content{display: flex;flex-wrap: wrap;}
@@ -103,7 +103,12 @@
                                             @endif
                                             <li class="cart-product-info">
                                                 <span class="cart-label">Price:</span>
-                                                <span class="item_price_js">{{$val['price_format']}}</span>
+                                                @if($val['price_old']!=$val['price'])
+                                                    <span class="item_price_js price_format">{{$val['price_format']}}</span>
+                                                    <span class="price_old_format">{{$val['price_old_format']}}</span>
+                                                @else
+                                                    <span class="item_price_js">{{$val['price_format']}}</span>
+                                                @endif
                                             </li>
                                         </ul>
                                         <div class="qtyInfo">
@@ -116,7 +121,14 @@
                                         </div>
                                         <div class="subtotalInfo">
                                             <span>Subtotal:</span>
-                                            <span class="item-total">{{$val['total_format']}}</span>
+                                            <div>
+                                                @if($val['total_old']!=$val['total'])
+                                                    <span class="item-total price_format">{{$val['total_format']}}</span>
+                                                    <span class="total_old_format_js price_old_format">{{$val['total_old_format']}}</span>
+                                                @else
+                                                    <span class="item-total">{{$val['total_format']}}</span>
+                                                @endif
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -194,8 +206,20 @@
                         <div class="cart-total-summary">
                             <div class="total-summary">Summary</div>
                             <dl>
-                                <dd><span>Items:</span> <span class="cart-order-total-items-quantity cart_count_js">{{$res['count']}}</span></dd>
-                                <dd><span>Subtotal:</span> <span class=" cart-order-total-items cart_sub_total_js">{{$res['total_data']['totals']['sub_total']['value_format']}}</span></dd>
+                                <dd>
+                                    <span>Items:</span> <span class="cart-order-total-items-quantity cart_count_js">{{$res['count']}}</span>
+                                </dd>
+                                <dd>
+                                    <span>Subtotal:</span>
+                                    <div>
+                                    @if($res['total_data']['totals']['sub_total']['value_old']!=$res['total_data']['totals']['sub_total']['value'])
+                                        <span class=" cart-order-total-items cart_sub_total_js price_format">{{$res['total_data']['totals']['sub_total']['value_format']}}</span>
+                                        <span class="cart_sub_total_old_js price_old_format">{{$res['total_data']['totals']['sub_total']['value_old_format']}}</span>
+                                    @else
+                                        <span class=" cart-order-total-items cart_sub_total_js">{{$res['total_data']['totals']['sub_total']['value_format']}}</span>
+                                    @endif
+                                    </div>
+                                </dd>
                                 @if(isset($res['total_data']['totals']))
                                     @foreach($res['total_data']['totals'] as $key=>$val)
                                         @if($key=='coupon' || $key=='shipping')
@@ -209,7 +233,14 @@
                         <dl class="cart-total-detail">
                             <dd class="cart-order-total">
                                 <span>Order Total:</span>
-                                <span class="cart-order-grand-total cart_total_js">{{$res['total_data']['total_format']}}</span>
+                                <div>
+                                @if($res['total_data']['totals']['total']['value_old']!=$res['total_data']['totals']['total']['value'])
+                                    <span class="cart-order-grand-total cart_total_js price_format">{{$res['total_data']['totals']['total']['value_format']}}</span>
+                                    <span class="cart-order-grand-total cart_total_old_js price_old_format">{{$res['total_data']['totals']['total']['value_old_format']}}</span>
+                                @else
+                                    <span class="cart-order-grand-total cart_total_js ">{{$res['total_data']['totals']['total']['value_format']}}</span>
+                                @endif
+                                </div>
                             </dd>
                         </dl>
 
@@ -255,7 +286,7 @@
 <script>
     $(function () {
         $('.proceed-to-checkout').click(function () {
-            location.href = '/checkout/guest?redirect='+urlencode('{{url('/cart')}}')
+            location.href = '/checkout/all?redirect='+urlencode('{{url('/cart')}}')
         })
 
         $('.quantity-wrapper').on('click','.quantity-down', function () {
@@ -308,10 +339,12 @@
                             let cart_product_js = $('.cart_product_js[data-cart_id="'+i+'"]');
                             cart_product_js.find('.item-total').text(res.data.list[i].total_format)
                             cart_product_js.find('.item_price_js').text(res.data.list[i].price_format)
+                            cart_product_js.find('.total_old_format_js').text(res.data.list[i].total_old_format)
                         }
                         $('#cart_num').text(res.data.count)
                         $('.cart_count_js').text(res.data.count)
                         $('.cart_sub_total_js').text(res.data.total_data.totals.sub_total.value_format)
+                        $('.cart_sub_total_old_js').text(res.data.total_data.totals.sub_total.value_old_format)
                         if(res.data.total_data.totals.coupon){
                             $('.coupon_js .cart-order-total-items').text(res.data.total_data.totals.coupon.value_format)
                         }
@@ -319,6 +352,7 @@
                             $('.shipping_js .cart-order-total-items').text(res.data.total_data.totals.shipping.value_format)
                         }
                         $('.cart_total_js').text(res.data.total_data.totals.total.value_format)
+                        $('.cart_total_old_js').text(res.data.total_data.totals.total.value_old_format)
                     }
                 }
             })
@@ -343,4 +377,4 @@
     }
 
 </script>
-@include(config('base.view_namespace_front_blade').'::common.footer')
+@include('laravel-shop::front.common.footer')

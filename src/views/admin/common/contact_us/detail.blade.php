@@ -6,23 +6,23 @@
 
     <div class="">
         <div class="form-group">
-            <label for="">uuid</label>
-            <input type="text"  readonly class="form-control " value="{{$res['info']->uuid}}">
+            <label >uid</label>
+            <input type="text"  readonly class="form-control " value="{{$res['info']->uid}}">
             <div class="invalid-feedback"></div>
         </div>
         <div class="form-group">
-            <label for="">Email</label>
+            <label >Email</label>
             <input type="text"  readonly class="form-control " value="{{$res['info']->email}}">
             <div class="invalid-feedback"></div>
         </div>
 
         <div class="form-group " >
-            <label for="">内容</label>
+            <label >内容</label>
             <textarea  readonly class="form-control ">{{$res['info']->content}}</textarea>
             <div class="invalid-feedback"></div>
         </div>
         <div class="form-group d-none" >
-            <label for="">时间</label>
+            <label >时间</label>
             <input type="text"  readonly class="form-control " value="{{$res['info']->created_at}}">
             <div class="invalid-feedback"></div>
         </div>
@@ -37,12 +37,12 @@
             <input type="hidden" name="email" class="form-control " value="{{$res['info']->email}}">
             <input type="hidden" name="id" class="form-control " value="{{$res['info']->id}}">
             <div class="form-group">
-                <label for="">标题</label>
+                <label >标题</label>
                 <input type="text" name="title"  class="form-control " value="">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group " >
-                <label for="">内容</label>
+                <label >内容</label>
                 <textarea name="content"  class="form-control "></textarea>
                 <div class="invalid-feedback"></div>
             </div>

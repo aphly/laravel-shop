@@ -23,7 +23,7 @@ class Service extends Model
     //public $timestamps = false;
 
     protected $fillable = [
-        'order_id','uuid','is_received','is_opened','reason','service_action_id','service_status_id','delete_at',
+        'order_id','uid','is_received','is_opened','reason','service_action_id','service_status_id','delete_at',
         'service_address','service_name','service_postcode','service_phone','refund_fee'
     ];
 

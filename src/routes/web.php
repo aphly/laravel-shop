@@ -13,43 +13,44 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
+Route::get('mail/render', 'Aphly\LaravelShop\Controllers\Front\MailController@render');
 
 Route::middleware(['web'])->group(function () {
 
     Route::middleware(['userAuth'])->group(function () {
-        Route::get('oauth/{driver}', 'Aphly\LaravelShop\Controllers\Front\OauthController@redirect')->name('oauth');
-        Route::get('oauth/{driver}/callback', 'Aphly\LaravelShop\Controllers\Front\OauthController@handleCallback')->name('oauthCallback');
+        Route::get('oauth/{driver}', 'Aphly\LaravelShop\Controllers\Front\Account\OauthController@redirect')->name('oauth');
+        Route::get('oauth/{driver}/callback', 'Aphly\LaravelShop\Controllers\Front\Account\OauthController@handleCallback')->name('oauthCallback');
     });
 
     //Subscribe
     Route::post('subscribe/ajax', 'Aphly\LaravelShop\Controllers\Front\AccountExt\SubscribeController@ajax');
 
     //404
-    Route::get('404', 'Aphly\LaravelShop\Controllers\Front\StatusController@notfound');
-    Route::get('blocked','Aphly\LaravelShop\Controllers\Front\StatusController@blocked')->name('blocked');
+    Route::get('404', 'Aphly\LaravelShop\Controllers\Front\Common\StatusController@notfound');
+    Route::get('blocked','Aphly\LaravelShop\Controllers\Front\Common\StatusController@blocked')->name('blocked');
 
-    Route::get('/eyeglasses/index', 'Aphly\LaravelShop\Controllers\Front\Product\GlassesController@index');
-    Route::get('/eyeglasses/detail', 'Aphly\LaravelShop\Controllers\Front\Product\GlassesController@detail');
-    Route::get('/eyeglasses/lens', 'Aphly\LaravelShop\Controllers\Front\Product\GlassesController@lens');
+//    Route::get('/eyeglasses/index', 'Aphly\LaravelShop\Controllers\Front\Product\GlassesController@index');
+//    Route::get('/eyeglasses/detail', 'Aphly\LaravelShop\Controllers\Front\Product\GlassesController@detail');
+//    Route::get('/eyeglasses/lens', 'Aphly\LaravelShop\Controllers\Front\Product\GlassesController@lens');
 
     Route::prefix('account')->group(function () {
-        Route::match(['get'],'autologin/{token}','Aphly\LaravelShop\Controllers\Front\AccountController@autoLogin');
-        Route::match(['get'],'blocked','Aphly\LaravelShop\Controllers\Front\AccountController@blocked')->name('accountBlocked');
-        Route::match(['get'],'email-verify','Aphly\LaravelShop\Controllers\Front\AccountController@emailVerify')->name('emailVerify');
-        Route::match(['get'],'email-verify/send','Aphly\LaravelShop\Controllers\Front\AccountController@emailVerifySend');
-        Route::get('email-verify/{token}','Aphly\LaravelShop\Controllers\Front\AccountController@emailVerifyCheck');
+        Route::match(['get'],'autologin/{token}','Aphly\LaravelShop\Controllers\Front\Account\AccountController@autoLogin');
+        Route::match(['get'],'blocked','Aphly\LaravelShop\Controllers\Front\Account\AccountController@blocked')->name('accountBlocked');
+        Route::match(['get'],'email-verify','Aphly\LaravelShop\Controllers\Front\Account\AccountController@emailVerify')->name('emailVerify');
+        Route::match(['get'],'email-verify/send','Aphly\LaravelShop\Controllers\Front\Account\AccountController@emailVerifySend');
+        Route::get('email-verify/{token}','Aphly\LaravelShop\Controllers\Front\Account\AccountController@emailVerifyCheck');
 
-        Route::match(['get', 'post'],'forget','Aphly\LaravelShop\Controllers\Front\AccountController@forget');
-        Route::match(['get'],'forget/confirmation','Aphly\LaravelShop\Controllers\Front\AccountController@forgetConfirmation');
-        Route::match(['get', 'post'],'forget-password/{token}','Aphly\LaravelShop\Controllers\Front\AccountController@forgetPassword');
+        Route::match(['get', 'post'],'forget','Aphly\LaravelShop\Controllers\Front\Account\AccountController@forget');
+        Route::match(['get'],'forget/confirmation','Aphly\LaravelShop\Controllers\Front\Account\AccountController@forgetConfirmation');
+        Route::match(['get', 'post'],'forget-password/{token}','Aphly\LaravelShop\Controllers\Front\Account\AccountController@forgetPassword');
 
-        Route::get('logout','Aphly\LaravelShop\Controllers\Front\AccountController@logout');
+        Route::get('logout','Aphly\LaravelShop\Controllers\Front\Account\AccountController@logout');
 
         Route::middleware(['userAuth'])->group(function () {
-            Route::match(['get', 'post'],'register','Aphly\LaravelShop\Controllers\Front\AccountController@register')->name('register');
-            Route::match(['get', 'post'],'login','Aphly\LaravelShop\Controllers\Front\AccountController@login')->name('login');
-            Route::match(['get', 'post'],'index','Aphly\LaravelShop\Controllers\Front\AccountController@index');
+            Route::match(['get', 'post'],'register','Aphly\LaravelShop\Controllers\Front\Account\AccountController@register')->name('register');
+            Route::match(['get', 'post'],'login','Aphly\LaravelShop\Controllers\Front\Account\AccountController@login')->name('login');
+            Route::match(['get', 'post'],'index','Aphly\LaravelShop\Controllers\Front\Account\AccountController@index');
+            Route::post('avatar','Aphly\LaravelShop\Controllers\Front\Account\AccountController@avatar');
 
         });
     });
@@ -65,8 +66,6 @@ Route::middleware(['web'])->group(function () {
     //wishlist
     Route::post('wishlist/product/{id}', 'Aphly\LaravelShop\Controllers\Front\AccountExt\WishlistController@product')->where('id', '[0-9]+');
 
-    Route::match(['get', 'post'],'checkout/guest', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@guest');
-    Route::match(['get'],'checkout/guest_email', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@guestEmail');
 
     Route::middleware(['userAuth'])->group(function () {
         //account
@@ -99,14 +98,22 @@ Route::middleware(['web'])->group(function () {
             Route::post('service/save', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ServiceController@save');
             Route::post('service/del', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ServiceController@del');
 
+            //after sales
+            Route::get('after_sales', 'Aphly\LaravelShop\Controllers\Front\AccountExt\AfterSalesController@index');
+            Route::get('after_sales/detail', 'Aphly\LaravelShop\Controllers\Front\AccountExt\AfterSalesController@detail');
+            Route::get('after_sales/form', 'Aphly\LaravelShop\Controllers\Front\AccountExt\AfterSalesController@form');
+            Route::post('after_sales/save', 'Aphly\LaravelShop\Controllers\Front\AccountExt\AfterSalesController@save');
+            Route::post('after_sales/save_history', 'Aphly\LaravelShop\Controllers\Front\AccountExt\AfterSalesController@saveHistory');
+            Route::post('after_sales/del', 'Aphly\LaravelShop\Controllers\Front\AccountExt\AfterSalesController@del');
+
             Route::post('service/return_exchange3', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ServiceController@returnExchange3');
             Route::post('service/return_exchange4', 'Aphly\LaravelShop\Controllers\Front\AccountExt\ServiceController@returnExchange4');
         });
 
         //Checkout
-        Route::match(['get', 'post'],'checkout/address', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@address');
-        Route::match(['get', 'post'],'checkout/shipping', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@shipping');
-        Route::match(['get', 'post'],'checkout/payment', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@payment');
+//        Route::match(['get', 'post'],'checkout/address', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@address');
+//        Route::match(['get', 'post'],'checkout/shipping', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@shipping');
+//        Route::match(['get', 'post'],'checkout/payment', 'Aphly\LaravelShop\Controllers\Front\Checkout\CheckoutController@payment');
 
         //review
         Route::post('product/{id}/review/add', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@reviewAdd')->where('id', '[0-9]+');
@@ -126,7 +133,7 @@ Route::middleware(['web'])->group(function () {
 
         //product
         Route::get('product', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@index');
-        Route::get('product/{id}', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@detail')->where('id', '[0-9]+');
+        Route::get('product/{id}', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@detail');
         Route::redirect('product/new', '/product?sort=sale');
         Route::redirect('product/best', '/product?sort=new');
 
@@ -138,6 +145,17 @@ Route::middleware(['web'])->group(function () {
         Route::post('cart/coupon', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@coupon');
         Route::get('cart/coupon_remove', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@couponRemove');
 
+        //all
+        //shipping
+        Route::post('checkout/shipping', 'Aphly\LaravelShop\Controllers\Front\Checkout\AllController@shipping');
+        Route::post('checkout/coupon', 'Aphly\LaravelShop\Controllers\Front\Checkout\AllController@coupon');
+        Route::post('checkout/coupon_remove', 'Aphly\LaravelShop\Controllers\Front\Checkout\AllController@couponRemove');
+
+        //payment
+        Route::get('checkout/all', 'Aphly\LaravelShop\Controllers\Front\Checkout\AllController@index');
+        Route::post('checkout/payment', 'Aphly\LaravelShop\Controllers\Front\Checkout\AllController@payment');
+        Route::get('checkout/email', 'Aphly\LaravelShop\Controllers\Front\Checkout\AllController@email');
+
     });
 });
 
@@ -148,14 +166,13 @@ Route::middleware(['web'])->group(function () {
 
             $route_arr = [
                 ['attribute','\Catalog\AttributeController'],['option','\Catalog\OptionController'],['filter','\Catalog\FilterController'],
-                ['shipping','\Catalog\ShippingController'],['coupon','\Sale\CouponController'],['order','\Sale\OrderController'],['service','\Sale\ServiceController'],
+                ['shipping','\Catalog\ShippingController'],['coupon','\Sale\CouponController'],['order','\Sale\OrderController'],['service','\Sale\ServiceController'],['after_sales','\Sale\AfterSalesController'],
                 ['information','\Common\InformationController'],['contact_us','\Common\ContactUsController'],
                 ['country','\Setting\CountryController'],['geo','\Setting\GeoController'],['zone','\Setting\ZoneController'],
                 ['group','\Account\GroupController'],['user_address','\Account\UserAddressController'],
                 ['review','\Account\ReviewController'],['wishlist','\Account\WishlistController'],['subscribe','\Account\SubscribeController'],
                 ['banner','\Common\BannerController'],
             ];
-
 
             foreach ($route_arr as $val){
                 Route::get($val[0].'/index', 'Aphly\LaravelShop\Controllers\Admin'.$val[1].'@index');
@@ -219,6 +236,9 @@ Route::middleware(['web'])->group(function () {
 
             Route::get('service/view', 'Aphly\LaravelShop\Controllers\Admin\Sale\ServiceController@view');
             Route::post('service/history_save', 'Aphly\LaravelShop\Controllers\Admin\Sale\ServiceController@historySave');
+
+            Route::get('after_sales/view', 'Aphly\LaravelShop\Controllers\Admin\Sale\AfterSalesController@view');
+            Route::post('after_sales/history_save', 'Aphly\LaravelShop\Controllers\Admin\Sale\AfterSalesController@historySave');
 
             Route::match(['get', 'post'],'product/sync', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@sync');
 

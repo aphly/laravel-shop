@@ -44,8 +44,8 @@
                         <li><input type="checkbox" class="delete_box" name="delete[]" value="{{$v['id']}}">{{$v['id']}}</li>
                         <li>{{ $v['email'] }}</li>
                         <li>{{ $v['total_format'] }}</li>
-                        <li>{{ $v['address_country'] }}</li>
-                        <li>{{ $v['created_at'] }}</li>
+                        <li>{{ $v['delivery_country'] }}</li>
+                        <li >{{ $v->created_at->timezone('Asia/Shanghai') }}</li>
                         <li>{{ $v->orderStatus->name }}</li>
                         <li>
                             <a class="badge badge-info ajax_html" data-href="/shop_admin/order/view?id={{$v['id']}}">查看</a>
@@ -83,7 +83,7 @@
                     @csrf
                     <div class="">
                         <div class="form-group">
-                            <label for="">选择</label>
+                            <label >选择</label>
                             <input type="file" class="form-control-file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
                         </div>
                         <button class="btn btn-primary" type="submit">保存</button>

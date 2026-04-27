@@ -1,4 +1,4 @@
-@include(config('base.view_namespace_front_blade').'::common.header')
+@include('laravel-shop::front.common.header')
 <style>
     .checkout_ul .desc{color:#36970e}
 </style>
@@ -69,7 +69,7 @@
             </form>
         </div>
         <div class="checkout_r">
-            @include('laravel-front::checkout.right')
+            @include('laravel-shop::front.checkout.right')
         </div>
     </div>
 
@@ -97,4 +97,4 @@ $(function () {
     $('.checkout_ul li:not(.disabled):first').find('label').click()
 })
 </script>
-@include(config('base.view_namespace_front_blade').'::common.footer')
+@include('laravel-shop::front.common.footer')

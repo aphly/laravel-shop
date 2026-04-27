@@ -14,9 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('shop_review', function (Blueprint $table) {
-            $table->id();
+            $table->unsignedBigInteger('id')->primary();
             $table->unsignedBigInteger('product_id')->index();
-            $table->unsignedBigInteger('uuid')->index();
+            $table->unsignedBigInteger('uid')->index();
             $table->string('author',64);
             $table->text('text');
             $table->tinyInteger('rating');

@@ -13,7 +13,7 @@
         <div class="links ajaxData">
             <input type="hidden" name="product_id" value="{{$res['product']->id}}">
             <div class="form-group">
-                <label for="">分类</label>
+                <label >分类</label>
                 <div class="search">
                     <input class="search_input search_input_cate" >
                     <div class="search_res"></div>
@@ -28,7 +28,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="">筛选</label>
+                <label >筛选</label>
                 <div class="search">
                     <input class="search_input search_input_filter" >
                     <div class="search_res"></div>

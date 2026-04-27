@@ -14,15 +14,15 @@ return new class extends Migration
     public function up()
     {
         Schema::create('shop_product', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('uuid')->index();
+            $table->unsignedBigInteger('id')->primary();
+            $table->unsignedBigInteger('uid')->index();
             $table->string('sku',64)->nullable();
             $table->string('spu',64)->nullable()->index();
             $table->string('name',255)->nullable();
             $table->string('url',255)->nullable();
             $table->integer('quantity')->nullable();
             $table->string('image',255)->nullable();
-            $table->tinyInteger('remote')->default(0);
+            $table->string('disk',16)->nullable();
             $table->decimal('price',15,2)->nullable();
             $table->tinyInteger('is_shipping')->default(1);
             $table->unsignedInteger('tax_class_id')->default(1);

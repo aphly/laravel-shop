@@ -28,12 +28,13 @@ class ConfigController extends Controller
     }
 
     public function save(Request $request){
+        Config::truncate();
         $setting = $request->input('setting',[]);
         $update = [];
         foreach ($setting as $key=>$val){
             $update[] = ['key'=>$key,'value'=>$val];
         }
-        Config::upsert($update,['key'],['value']);
+        Config::insert($update);
         throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
     }
 

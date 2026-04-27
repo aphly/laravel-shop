@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('shop_review_image', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('review_id')->index();
-            $table->tinyInteger('remote')->default(0);
+            $table->string('disk',16)->nullable();
             $table->string('image',255);
         });
     }

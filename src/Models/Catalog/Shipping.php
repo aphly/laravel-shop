@@ -6,7 +6,7 @@ use Aphly\Laravel\Libs\Math;
 use Aphly\LaravelShop\Models\Account\UserAddress;
 use Aphly\LaravelPayment\Models\Currency;
 use Aphly\LaravelShop\Models\Setting\GeoGroup;
-use Aphly\Laravel\Models\User;
+use Aphly\Laravel\Models\CommonUser;
 use Aphly\LaravelShop\Models\Checkout\Cart;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;
@@ -21,6 +21,7 @@ class Shipping extends Model
     protected $fillable = [
         'name','desc','cost','free_cost','geo_group_id','sort','status','default'
     ];
+
 
     static public function findAll($cache=true) {
         if($cache){
@@ -42,7 +43,7 @@ class Shipping extends Model
         if($cart->hasShipping()){
             $shop_address = $address_id?:(session('shop_address_id'));
             if($shop_address){
-                $addrInfo = UserAddress::where('id',$shop_address)->where('uuid',User::uuid())->first();
+                $addrInfo = UserAddress::where('id',$shop_address)->where('uid',CommonUser::uid())->first();
                 if(!empty($addrInfo)) {
                     $subTotal = $cart->getSubTotal();
                     $shipping = (new Shipping())->findAll();
@@ -85,39 +86,75 @@ class Shipping extends Model
         return $res;
     }
 
+    public function getListGuest($shipping_id=0) {
+        $res = [];
+        $cart = new Cart;
+        if($cart->hasShipping()){
+            $subTotal = $cart->getSubTotal();
+            $shipping = (new Shipping())->findAll();
+            foreach ($shipping as $val) {
+                if(($val['free_cost']>0?($subTotal>=$val['free_cost']):false) || ($val['cost']==0 && Cart::$free_shipping)){
+                    $val['free']=true;
+                }else{
+                    $val['free']=false;
+                }
+                $val['cost_format'] = Currency::format($val['cost']);
+                $val['free_cost_format'] = Currency::format($val['free_cost']);
+                if($shipping_id && $val['id']==$shipping_id){
+                    return $val;
+                }
+                $res[$val['id']] = $val;
+            }
+        }
+        return $res;
+    }
+
+
     public function getTotal($total_data) {
         if(Cart::$free_shipping && 0){
             $total_data['totals']['shipping'] = [
                 'title'      => 'Shipping',
                 'value'      => 0,
                 'value_format'      => 'Free (Coupon)',
+                'value_old'      => 0,
+                'value_old_format' => '',
                 'sort' => 3,
                 'ext'=>''
             ];
         }else{
+            $shipping = $this->getListGuest();
             $shop_shipping_id = session('shop_shipping_id');
-            $shipping = $this->getList();
+            if(!$shop_shipping_id){
+                foreach ($shipping as $k=>$v){
+                    $shop_shipping_id = $k;
+                    break;
+                }
+            }
             if(!empty($shipping[$shop_shipping_id])){
                 if($shipping[$shop_shipping_id]['free']){
                     $total_data['totals']['shipping'] = [
-                        'title'      => 'Shipping',
+                        'title'      => $shipping[$shop_shipping_id]['name'],
                         'value'      => 0,
-                        'value_format'      => 'Free ('.$shipping[$shop_shipping_id]['name'].')',
+                        'value_format'      => 'Free',
+                        'value_old'      => 0,
+                        'value_old_format' => '',
                         'sort' => 3,
                         'ext'=>$shop_shipping_id
                     ];
                 }else{
                     $price = $shipping[$shop_shipping_id]['cost'];
-                    list($value,$value_format) = Currency::format($price,2);
                     $total_data['totals']['shipping'] = [
-                        'title'      => 'Shipping',
-                        'value'      => $value,
-                        'value_format'      => $value?$value_format:'Free',
+                        'title'      => $shipping[$shop_shipping_id]['name'],
+                        'value'      => $price,
+                        'value_format'      => $price?Currency::format($price):'Free',
+                        'value_old'      => 0,
+                        'value_old_format' => '',
                         'sort' => 3,
                         'ext'=>$shop_shipping_id
                     ];
                     //$total_data['total'] += $value;
-                    $total_data['total'] = Math::add($total_data['total'],$value);
+                    $total_data['total'] = Math::add($total_data['total'],$price);
+                    $total_data['total_old'] = Math::add($total_data['total_old'],$price);
                 }
             }
         }

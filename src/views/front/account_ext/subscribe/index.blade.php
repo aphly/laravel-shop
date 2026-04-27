@@ -1,7 +1,7 @@
-@include(config('base.view_namespace_front_blade').'::common.header')
+@include('laravel-shop::front.common.header')
 <section class="container">
     <div class="account_info">
-        @include(config('base.view_namespace_front_blade').'::account.left_menu')
+        @include('laravel-shop::front.account.left_menu')
         <div class="account-main-section" style="background: transparent;">
             <div class="order">
                 <div class="top-desc d-flex justify-content-between">
@@ -44,4 +44,4 @@ $(function () {
 })
 </script>
 
-@include(config('base.view_namespace_front_blade').'::common.footer')
+@include('laravel-shop::front.common.footer')

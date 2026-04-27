@@ -5,7 +5,7 @@ namespace Aphly\LaravelShop\Models\Catalog;
 use Aphly\Laravel\Libs\Math;
 use Aphly\Laravel\Models\Model;
 use Aphly\LaravelPayment\Models\Currency;
-use Aphly\Laravel\Models\User;
+use Aphly\Laravel\Models\CommonUser;
 use Aphly\LaravelShop\Models\Checkout\Cart;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -39,8 +39,8 @@ class Coupon extends Model
                 $status = false;
             }
 
-            if(User::uuid()){
-                $customer_total = $this->getCouponHistoriesByUuId($code, User::uuid());
+            if(CommonUser::uid()){
+                $customer_total = $this->getCouponHistoriesByuid($code, CommonUser::uid());
                 if ($info['uses_customer'] > 0 && ($customer_total >= $info['uses_customer'])) {
                     $status = false;
                 }
@@ -95,12 +95,13 @@ class Coupon extends Model
 				if($info['free_shipping']==1){
                     Cart::$free_shipping = true;
                 }
+                $cartList = $cart->getList();
                 $discount_total = 0;
                 if (!$info['product']) {
                     $sub_total = $cart->getSubTotal();
                 } else {
                     $sub_total = 0;
-                    foreach ($cart->getList() as $product) {
+                    foreach ($cartList as $product) {
                         if (in_array($product['product_id'], $info['product'])) {
                             //$sub_total += $product['total'];
                             $sub_total = Math::add($sub_total,$product['total']);
@@ -109,10 +110,9 @@ class Coupon extends Model
                 }
                 if ($info['type'] == 2) {
                     $info['discount'] = min($info['discount'], $sub_total);
-                    $info['discount'] = Currency::format($info['discount'],1);
                 }
 
-                foreach ($cart->getList() as $key=>$product) {
+                foreach ($cartList as $key=>$product) {
                     $discount = 0;
                     if (!$info['product']) {
                         $status = true;
@@ -131,21 +131,16 @@ class Coupon extends Model
                     //$discount = Currency::numberFormat($discount);
                     //$discount_total += $discount;
                     $discount_total = Math::add($discount_total,$discount);
+
                     $cart_ext[$key]['discount'] = $discount;
-                    $cart_ext[$key]['discount_format'] = Currency::_format($discount);
-                    //$real_total = $product['total'] - $discount;
-                    $real_total = Math::sub($product['total'],$discount);
-                    $cart_ext[$key]['real_total'] = $real_total;
-                    $cart_ext[$key]['real_total_format'] = Currency::_format($real_total);
+                    $cart_ext[$key]['discount_format'] = Currency::format($discount);
                 }
 
                 if ($discount_total > $total_data['total']) {
                     $discount_total = $total_data['total'];
-                    foreach ($cart->getList() as $key=>$product) {
+                    foreach ($cartList as $key=>$product) {
                         $cart_ext[$key]['discount'] = $product['total'];
-                        $cart_ext[$key]['discount_format'] = Currency::_format($product['total']);
-                        $cart_ext[$key]['real_total'] = 0;
-                        $cart_ext[$key]['real_total_format'] = Currency::_format(0);
+                        $cart_ext[$key]['discount_format'] = Currency::format($product['total']);
                     }
                 }
 
@@ -153,7 +148,9 @@ class Coupon extends Model
                     $total_data['totals']['coupon'] = array(
                         'title'      => 'Coupon',
                         'value'      => $discount_total,
-                        'value_format' => '-'.Currency::_format($discount_total),
+                        'value_format' => '-'.Currency::format($discount_total),
+                        'value_old'      => 0,
+                        'value_old_format' => '',
                         'sort_order' => 2,
                         'ext' => $coupon
                     );
@@ -169,9 +166,9 @@ class Coupon extends Model
         return CouponHistory::leftJoin('shop_coupon','shop_coupon.id','=','shop_coupon_history.coupon_id')->where('shop_coupon.code',$coupon)->count();
     }
 
-    public function getCouponHistoriesByUuId($coupon,$uuid) {
+    public function getCouponHistoriesByuid($coupon,$uid) {
         return CouponHistory::leftJoin('shop_coupon','shop_coupon.id','=','shop_coupon_history.coupon_id')->where('shop_coupon.code',$coupon)
-            ->where('shop_coupon_history.uuid',$uuid)->count();
+            ->where('shop_coupon_history.uid',$uid)->count();
     }
 
 

@@ -33,6 +33,6 @@ class GuestPassword extends Mailable
      */
     public function build()
     {
-        return $this->subject('Aphly Account Password')->view('laravel-shop::mail.account.guest_password');
+        return $this->view('laravel-shop::mail.account.guest_password');
     }
 }

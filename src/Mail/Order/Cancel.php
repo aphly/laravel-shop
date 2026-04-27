@@ -31,7 +31,6 @@ class Cancel extends Mailable
      */
     public function build()
     {
-        return $this->subject('Order cancelled')
-            ->view('laravel-shop::mail.order.cancel');
+        return $this->view('laravel-shop::mail.order.cancel');
     }
 }

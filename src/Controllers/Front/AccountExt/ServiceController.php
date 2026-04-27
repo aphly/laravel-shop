@@ -3,9 +3,9 @@
 namespace Aphly\LaravelShop\Controllers\Front\AccountExt;
 
 use Aphly\Laravel\Exceptions\ApiException;
-use Aphly\Laravel\Models\UploadFile;
+use Aphly\Laravel\Models\CommonUploadFile;
 use Aphly\LaravelPayment\Models\Currency;
-use Aphly\Laravel\Models\User;
+use Aphly\Laravel\Models\CommonUser;
 use Aphly\LaravelPayment\Models\PaymentRefund;
 use Aphly\LaravelShop\Controllers\Front\Controller;
 
@@ -22,14 +22,14 @@ class ServiceController extends Controller
 {
     public function index()
     {
-        $res['list'] = Service::where(['uuid'=>User::uuid()])->where('delete_at',0)->with('product')->with('order')
+        $res['list'] = Service::where(['uid'=>CommonUser::uid()])->where('delete_at',0)->with('product')->with('order')
             ->orderBy('created_at','desc')->Paginate(config('base.perPage'))->withQueryString();
         $res['title'] = 'My Service';
-        return $this->makeView('laravel-front::account_ext.service.index',['res'=>$res]);
+        return $this->makeView('laravel-shop::front.account_ext.service.index',['res'=>$res]);
     }
 
     public function detail(Request $request){
-        $res['info'] = Service::where(['uuid'=>User::uuid(),'id'=>$request->query('id',0)])->where('delete_at',0)->with('order')->with('img')->firstOr404();
+        $res['info'] = Service::where(['uid'=>CommonUser::uid(),'id'=>$request->query('id',0)])->where('delete_at',0)->with('order')->with('img')->firstOr404();
         $res['title'] = 'Service Detail';
         $this->autoRefund($res['info']->id);
         $res['serviceHistory'] = ServiceHistory::where('service_id',$res['info']->id)->orderBy('created_at','asc')->get();
@@ -38,20 +38,20 @@ class ServiceController extends Controller
         }])->get();
         $res['orderRefund'] = PaymentRefund::where(['payment_id'=>$res['info']->order->payment_id,'status'=>1])->get();
         foreach ($res['info']->img as $val){
-            $val->image_src = UploadFile::getPath($val->image,$val->remote);
+            $val->image_src = CommonUploadFile::getPath($val->image,$val->disk);
         }
-        return $this->makeView('laravel-front::account_ext.service.detail',['res'=>$res]);
+        return $this->makeView('laravel-shop::front.account_ext.service.detail',['res'=>$res]);
     }
 
     public function service_pre($request){
-        $res['orderInfo'] = Order::where(['uuid'=>User::uuid(),'id'=>$request->query('order_id',0)])->where('delete_at',0)->firstOr404();
+        $res['orderInfo'] = Order::where(['uid'=>CommonUser::uid(),'id'=>$request->query('order_id',0)])->where('delete_at',0)->firstOr404();
         $res['orderProduct'] = OrderProduct::where('order_id',$res['orderInfo']->id)->with('orderOption')->get()->keyBy('id');
         return $res;
     }
 
     function autoRefund($service_id)
     {
-        $res['info'] = Service::where(['id'=>$service_id,'uuid'=>User::uuid()])->with('order')->firstOrError();
+        $res['info'] = Service::where(['id'=>$service_id,'uid'=>CommonUser::uid()])->with('order')->firstOrError();
         if($res['info']->service_action_id==1 && $res['info']->service_status_id==1 && ($res['info']->created_at->timestamp+48*3600)<time()){
             $res['info']->addServiceHistory($res['info'], 3,['comment'=>'Automatic refund by the system']);
             $res['info']->addServiceHistory($res['info'], 4,['comment'=>'Automatic refund by the system']);
@@ -62,7 +62,7 @@ class ServiceController extends Controller
     public function form(Request $request){
         $res = $this->service_pre($request);
         $res['title'] = 'Service Form';
-        $service_refund_fee = intval(self::$_G['shop_config']['service_refund_fee']);
+        $service_refund_fee = intval($this->shop_config['service_refund_fee']);
         if($service_refund_fee>=0 && $service_refund_fee<=100){
             $total_all = floatval($res['orderInfo']->total)*(100-$service_refund_fee)/100;
         }else{
@@ -70,12 +70,12 @@ class ServiceController extends Controller
         }
         list($refund_amount,$res['refund_amount_format']) = Currency::codeFormat($total_all,$res['orderInfo']->currency_code);
         $res['info'] = Service::where('id',$request->query('id',0))->with('product')->firstOrNew();
-        return $this->makeView('laravel-front::account_ext.service.form',['res'=>$res]);
+        return $this->makeView('laravel-shop::front.account_ext.service.form',['res'=>$res]);
     }
 
     public function save(Request $request){
         $res = $this->service_pre($request);
-        $info = Service::where(['uuid'=>User::uuid(),'order_id'=>$request->query('order_id',0)])->where('delete_at',0)->first();
+        $info = Service::where(['uid'=>CommonUser::uid(),'order_id'=>$request->query('order_id',0)])->where('delete_at',0)->first();
         if(!empty($info)){
             throw new ApiException(['code'=>0,'msg'=>'Orders have been requested for after-sales']);
         }
@@ -85,12 +85,12 @@ class ServiceController extends Controller
                 throw new ApiException(['code'=>2,'msg'=>'After-sales time has expired ']);
             }
             $insertData = $file_paths =  [];
-            $UploadFile = new UploadFile(1);
+            $UploadFile = new CommonUploadFile(1);
             if($request->hasFile("files")){
                 $file_paths = $UploadFile->uploads(4,$request->file("files"), 'public/shop/service');
             }
             $input = $request->all();
-            $input['uuid'] = User::uuid();
+            $input['uid'] = CommonUser::uid();
             $info = Service::create($input);
             $service_product_arr = [];
             $total_all = 0;
@@ -128,7 +128,7 @@ class ServiceController extends Controller
             }
 
             if($info->service_action_id==1){
-                $service_refund_fee = intval(self::$_G['shop_config']['service_refund_fee']);
+                $service_refund_fee = intval($this->shop_config['service_refund_fee']);
                 if($service_refund_fee<=100 && $service_refund_fee>=0){
                     $total_all = $res['orderInfo']->total*(100-$service_refund_fee)/100;
                     $info->refund_fee = $service_refund_fee;
@@ -150,7 +150,7 @@ class ServiceController extends Controller
                 $info->addServiceHistory($info,1);
             }
             foreach ($file_paths as $v){
-                $insertData[] = ['service_id'=>$info->id,'image'=>$v,'remote'=>$UploadFile->isRemote()];
+                $insertData[] = ['service_id'=>$info->id,'image'=>$v,'disk'=>$UploadFile->disk()];
             }
             if ($insertData) {
                 ServiceImage::insert($insertData);
@@ -163,7 +163,7 @@ class ServiceController extends Controller
     }
 
     public function del(Request $request){
-        $info = Service::where(['uuid'=>User::uuid(),'id'=>$request->query('id',0)])->whereIN('service_status_id',[1,2])->first();
+        $info = Service::where(['uid'=>CommonUser::uid(),'id'=>$request->query('id',0)])->whereIN('service_status_id',[1,2])->first();
         if(!empty($info)){
             $info->update(['delete_at'=>time()]);
             throw new ApiException(['code'=>0,'msg'=>'Delete success','data'=>['redirect'=>'/account_ext/service']]);
@@ -173,14 +173,14 @@ class ServiceController extends Controller
 
     public function returnExchange3(Request $request){
         $input = $request->all();
-        $info = Service::where(['uuid'=>User::uuid(),'id'=>$input['service_id']])->firstOrError();
+        $info = Service::where(['uid'=>CommonUser::uid(),'id'=>$input['service_id']])->firstOrError();
         $info->addServiceHistory($info,4,$input);
         throw new ApiException(['code'=>0,'msg'=>'Request success','data'=>['redirect'=>'/account_ext/service/detail?id='.$info->id]]);
     }
 
     public function returnExchange4(Request $request){
         $input = $request->all();
-        $info = Service::where(['uuid'=>User::uuid(),'id'=>$input['service_id']])->firstOrError();
+        $info = Service::where(['uid'=>CommonUser::uid(),'id'=>$input['service_id']])->firstOrError();
         $info->c_express_name = $input['c_express_name'];
         $info->c_express_no = $input['c_express_no'];
         $info->save();

@@ -1,4 +1,4 @@
-@include(config('base.view_namespace_front_blade').'::common.header')
+@include('laravel-shop::front.common.header')
 <style>
 </style>
 <div class="container shop_main">
@@ -45,7 +45,7 @@
 
                 <div class="shipping_address">
                     <div class="checkout_title">
-                        Shipping address
+                        Delivery Address
                     </div>
                     <div>
                         <div class="form-group checkout_address_group">
@@ -111,7 +111,7 @@
             </form>
         </div>
         <div class="checkout_r">
-            @include('laravel-front::checkout.right')
+            @include('laravel-shop::front.checkout.right')
         </div>
     </div>
 
@@ -234,4 +234,4 @@
         }
     }
 </script>
-@include(config('base.view_namespace_front_blade').'::common.footer')
+@include('laravel-shop::front.common.footer')

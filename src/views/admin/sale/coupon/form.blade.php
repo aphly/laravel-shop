@@ -7,17 +7,17 @@
         @csrf
         <div class="coupon ajaxData">
             <div class="form-group">
-                <label for="">名称</label>
+                <label >名称</label>
                 <input type="text" name="name" required class="form-control " value="{{$res['coupon']->name}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">折扣券代码</label>
+                <label >折扣券代码</label>
                 <input type="text" name="code" required class="form-control " value="{{$res['coupon']->code}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">类型</label>
+                <label >类型</label>
                 <select name="type" class="form-control " required>
                     <option value="1">百分比</option>
                     <option value="2">固定金额</option>
@@ -25,17 +25,17 @@
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">减去</label>
+                <label >减去</label>
                 <input type="text" name="discount" required class="form-control " value="{{$res['coupon']->discount}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">最低订单金额</label>
+                <label >最低订单金额</label>
                 <input type="text" name="total" class="form-control " value="{{$res['coupon']->total??0}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">是否免邮</label>
+                <label >是否免邮</label>
                 <select name="free_shipping"  class="form-control">
                     @if(isset($dict['yes_no']))
                         @foreach($dict['yes_no'] as $key=>$val)
@@ -46,7 +46,7 @@
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">商品</label>
+                <label >商品</label>
                 <div class="search">
                     <input class="search_input search_input_product" >
                     <div class="search_res"></div>
@@ -61,7 +61,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="">分类</label>
+                <label >分类</label>
                 <div class="search">
                     <input class="search_input search_input_category" >
                     <div class="search_res"></div>
@@ -77,30 +77,30 @@
             </div>
 
             <div class="form-group">
-                <label for="">开始日期</label>
+                <label >开始日期</label>
                 <input type="datetime-local" class="form-control " name="date_start" value="{{$res['coupon']->date_start?date('Y-m-d',$res['coupon']->date_start)."T".date('H:i',$res['coupon']->date_start):0}}">
                 <div class="invalid-feedback"></div>
             </div>
 
             <div class="form-group">
-                <label for="">结束日期</label>
+                <label >结束日期</label>
                 <input type="datetime-local" class="form-control " name="date_end" value="{{$res['coupon']->date_end?date('Y-m-d',$res['coupon']->date_end)."T".date('H:i',$res['coupon']->date_end):0}}">
                 <div class="invalid-feedback"></div>
             </div>
 
             <div class="form-group">
-                <label for="">每张折扣券可以使用次数</label>
+                <label >每张折扣券可以使用次数</label>
                 <input type="number" name="uses_total" class="form-control " value="{{$res['coupon']->uses_total??0}}">
                 <div class="invalid-feedback"></div>
             </div>
 
             <div class="form-group">
-                <label for="">每个会员可以使用次数</label>
+                <label >每个会员可以使用次数</label>
                 <input type="number" name="uses_customer" class="form-control " value="{{$res['coupon']->uses_customer??0}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">状态</label>
+                <label >状态</label>
                 <select name="status"  class="form-control">
                     @if(isset($dict['status']))
                         @foreach($dict['status'] as $key=>$val)

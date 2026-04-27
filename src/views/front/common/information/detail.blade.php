@@ -1,4 +1,4 @@
-@include(config('base.view_namespace_front_blade').'::common.header')
+@include('laravel-shop::front.common.header')
 
 <section class="information">
     <div class=" container">
@@ -8,7 +8,7 @@
             <a href="{{url('/information/'.$res['info']->id)}}"><span>{{$res['info']->title}}</span></a>
         </div>
         <div class="d-flex ">
-            @include('laravel-front::common.information.left')
+            @include('laravel-shop::front.common.information.left')
             <div class="information_right">
                 <h2 class="">{{$res['info']->title}}</h2>
                 <div class="content">
@@ -20,11 +20,11 @@
                         @csrf
                         <div class="">
                             <div class="form-group">
-                                <label for="">Email</label>
+                                <label >Email</label>
                                 <input type="text" name="email" class="form-control" required placeholder="Email" autocomplete="off">
                             </div>
                             <div class="form-group">
-                                <label for="">Content</label>
+                                <label >Content</label>
                                 <textarea name="content" class="form-control" required style="height: 200px;"></textarea>
                             </div>
                             <button class="btn btn-primary text-brand" type="submit">Send Message</button>
@@ -49,4 +49,4 @@
         alert_res(res)
     }
 </script>
-@include(config('base.view_namespace_front_blade').'::common.footer')
+@include('laravel-shop::front.common.footer')

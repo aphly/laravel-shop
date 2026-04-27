@@ -1,4 +1,4 @@
-@include(config('base.view_namespace_front_blade').'::common.header')
+@include('laravel-shop::front.common.header')
 <link rel="stylesheet" href="{{ URL::asset('static/shop/css/swiper-bundle.min.css') }}"/>
 <link rel="stylesheet" href="{{ URL::asset('static/base/admin/css/video-js.min.css') }}">
 <script src='{{ URL::asset('static/base/admin/js/video.min.js') }}' type='text/javascript'></script>
@@ -246,6 +246,19 @@
                 </div>
             @endif
         </div>
+
+        <div style="font-size: 12px;color: #999;padding: 10px;">
+            Note: The dimensions are manually measured and may have slight errors. Please refer to the actual product for accuracy
+        </div>
+        <div>
+            <div style="text-align: center;  padding: 20px 0;">
+                <p>Aphly Jewelry Customized Service</p>
+                <p>Customized service of this item is available, please contact our customer service to place orders.
+                    Please notice that: the change of the stone color and plating color is available while the material of gemstones and metal cannot be accepted.</p>
+                <p>Aphly Jewelry Making Process</p>
+            </div>
+            <img style="width: 100%;" src="/aphly/img/processings-destop.jpg" alt="">
+        </div>
     </div>
 
     <input type="hidden" id="quantityInCart" value="{{$res['quantityInCart']}}">
@@ -309,7 +322,7 @@
                                 <input type="file" style="display: none" accept="image/gif,image/jpeg,image/jpg,image/png" data-img_list="file_img"
                                        class="input_file_img add_photo_file" multiple="multiple">
                                 <div class="file_img"></div>
-                                <button class="">Submit Review</button>
+                                <button class="" type="submit">Submit Review</button>
                             </div>
                         </form>
                     </div>
@@ -320,14 +333,19 @@
             <ul class="review_list">
                 @foreach($res['review'] as $val)
                     <li>
-                        <div class="review_left">
-                            <div>{{$val->author}}</div>
-                            <div class="created_at">{{$val->created_at->format('m-d , Y')}}</div>
+                        <div class="review_left" style="text-align: center;">
+                            @if($val->avatar_src)
+                                <div style="width: 50px;height: 50px;align-items: center;justify-content: center;display: inline-flex;"><img style="width: 100%;height:100%;border-radius: 50%;" src="{{$val->avatar_src}}" alt=""></div>
+                            @else
+                                <div class="css_avatar" data-text="{{$val->avatar_css}}" style="width: 50px;height: 50px;"></div>
+                            @endif
+                            <div class="wenzi" style="margin-top: 5px;">{{$val->author}}</div>
+                            <div class="created_at utc_time" data-utc_time="{{$val->created_at->timestamp}}" data-format="1"></div>
                         </div>
                         <div class="review_right">
                             <div>
-                                <div class="review_content">{{$val->text}}</div>
-                                <div class="grade-star-bg">
+                                <div class="review_content" style="min-height: 66px;">{{$val->text}}</div>
+                                <div class="grade-star-bg" style="margin-bottom: 0">
                                     <div class="star-progress" style="width: {{$val->rating*20}}%;">
                                         <i class="common-iconfont icon-xingxing"></i>
                                         <i class="common-iconfont icon-xingxing"></i>
@@ -344,7 +362,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="review_list_img aphly_viewer_js">
+                            <div class="review_list_img aphly_viewer_js" style="margin-top: 10px;">
                                 @foreach($val->img as $v)
                                     <img src="{{$v->image_src}}"  class="aphly_viewer">
                                 @endforeach
@@ -445,7 +463,7 @@
     function detail_res(res) {
         if(!res.code){
             if(buy_now){
-                location.href = '/checkout/address?redirect={{urlencode(url('/checkout/address'))}}'
+                location.href = '/checkout/all'
             }else{
                 div_fly($('#add_cart_btn'),$('#cart_num'),function () {
                     $('#cart_num').text(res.data.count);
@@ -472,7 +490,7 @@
             height: 100%;
         }
         .product_detail_img .small_img .swiper{
-            height: 100vw;
+            height: calc(100vw - 30px);
         }
         .swiper-button-next, .swiper-button-prev{display: none;}
         .swiper-pagination{display: block}
@@ -572,7 +590,7 @@
         });
 
         function price() {
-            let price_js = $('.price_js').data('price')
+            let price = $('.price_js').data('price')
             let discount_js = $('.discount_js')
             if(discount_js.length>0){
                 let quantity_js = parseInt($('.quantity_js').val())+parseInt($('#quantityInCart').val())
@@ -586,7 +604,8 @@
                 let max = Math.max.apply(null, arr);
                 for(let i in arr){
                     if(discount_js_arr[i].quantity===max){
-                        price_js=discount_js_arr[i].price
+                        //price_js=discount_js_arr[i].price
+                        price = discount_js_arr[i].price
                     }
                 }
             }
@@ -594,18 +613,21 @@
             $('.flag_radio').each(function () {
                 radio_price += Number($(this).find('input[type="radio"]:checked').data('price'))
             })
+            price = calc.add(price,radio_price)
             let checkbox_price = 0;
             $('.flag_checkbox').each(function () {
                 $(this).find('input[type="checkbox"]:checked').each(function () {
                     checkbox_price += Number($(this).data('price'))
                 })
             })
+            price = calc.add(price,checkbox_price)
             let select_price = 0;
             $('.flag_select').each(function () {
                 $(this).find('select option:selected').each(function () {
                     select_price+=$(this).data('price')
                 })
             })
+            price = calc.add(price,select_price)
             let text_price = 0;
             $('.flag_text').each(function () {
                 let input = $(this).find('input')
@@ -613,7 +635,7 @@
                     text_price = input.data('price');
                 }
             })
-
+            price = calc.add(price,text_price)
             let textarea_price = 0;
             $('.flag_textarea').each(function () {
                 let textarea = $(this).find('textarea')
@@ -621,7 +643,7 @@
                     textarea_price = textarea.data('price');
                 }
             })
-
+            price = calc.add(price,textarea_price)
             let date_price = 0;
             $('.flag_date').each(function () {
                 let input = $(this).find('input')
@@ -629,9 +651,9 @@
                     date_price = input.data('price');
                 }
             })
-            let price = new Decimal(price_js).plus(radio_price).plus(checkbox_price).plus(select_price).plus(text_price).plus(textarea_price).plus(date_price).toNumber();
-
-            $('.price_js').html(currency._format(price,'{{$currency[2]['symbol_left']}}','{{$currency[2]['symbol_right']}}'))
+            price = calc.add(price,date_price)
+            //let price = new Decimal(price_js).plus(radio_price).plus(checkbox_price).plus(select_price).plus(text_price).plus(textarea_price).plus(date_price).toNumber();
+            $('.price_js').html(currency.format(price,'{{$currency[2]['code']}}'))
         }
 
         $('.quantity-wrapper').on('click','.quantity-down', function (e) {
@@ -674,4 +696,4 @@
 
 </script>
 
-@include(config('base.view_namespace_front_blade').'::common.footer')
+@include('laravel-shop::front.common.footer')

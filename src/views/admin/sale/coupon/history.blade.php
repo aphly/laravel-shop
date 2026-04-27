@@ -17,7 +17,7 @@
                 @foreach($res['list'] as $v)
                 <ul class="table_tbody">
                     <li>{{$v['order_id']}}</li>
-                    <li>{{ $v['uuid'] }}</li>
+                    <li>{{ $v['uid'] }}</li>
                     <li>
                         {{$v->amount}}
                     </li>

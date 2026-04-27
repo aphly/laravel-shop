@@ -1,10 +1,9 @@
 @include('laravel-shop::mail.header')
-    <div style="font-size: 28px;line-height: 40px;margin-bottom: 10px;">
-        The order has been shipped
-    </div>
+
     <div style="padding: 10px;">
-        <div style="margin-bottom: 5px;">We are happy to tell you we have dispatched your order! </div>
-        <div > You can track its progress with the following tracking number:{{$order->express_no}}.</div>
+        <div style="margin-top: 10px;font-size: 20px;margin-bottom: 20px;">Dear Customer,</div>
+        <div style="margin-bottom: 5px;">We are pleased to inform you that your order has been dispatched.</div>
+        <div >You may track your shipment using the following tracking number:{{$order->express_no}}.</div>
     </div>
     <div style="margin-bottom: 10px;font-size: 12px;padding: 10px;background: #f9f9f9;border-radius: 10px;">
         <div class="detail">
@@ -13,22 +12,21 @@
                     <div style="width: 46%;flex-shrink: 0;color: #666;">Order ID:</div><div>{{$order->id}}</div>
                 </li>
                 <li style=" display: flex;justify-content: space-between;margin-bottom: 5px;">
-                    <div style="width: 46%;flex-shrink: 0;color: #666;">Date Added:</div><div>{{$order->created_at}}</div>
+                    <div style="width: 46%;flex-shrink: 0;color: #666;">Date Added:</div><div>{{$order->created_at->timezone('America/New_York')->format('Y-m-d h:i A (ET)')}}</div>
                 </li>
                 <li style=" display: flex;justify-content: space-between;margin-bottom: 5px;">
                     <div style="width: 46%;flex-shrink: 0;color: #666;">Payment Method:</div>
                     <div>{{$order->payment_method_name}}</div>
                 </li>
                 <li style=" display: flex;justify-content: space-between;margin-bottom: 5px;">
-                    <div style="width: 46%;flex-shrink: 0;color: #666;">Shipping Address:</div>
-                    <div>{{$order->address_firstname}} {{$order->address_lastname}},
-                        {{$order->address_address_1}} {{$order->address_address_2}},
-                        {{$order->address_city}}, {{$order->address_zone}}, {{$order->address_country}},
-                        {{$order->address_postcode}}, {{$order->address_telephone}}
+                    <div style="width: 46%;flex-shrink: 0;color: #666;">Delivery Address:</div>
+                    <div>{{$order->delivery_firstname}} {{$order->delivery_lastname}},
+                        {{$order->delivery_address_1}} {{$order->delivery_address_2}},
+                        {{$order->delivery_city}}, {{$order->delivery_zone}}, {{$order->delivery_country}},
+                        {{$order->delivery_postcode}}, {{$order->delivery_telephone}}
                     </div>
                 </li>
-                <li style=" display: flex;justify-content: space-between;margin-bottom: 5px;"><div style="width: 46%;flex-shrink: 0;color: #666;">Express Name:</div><div>{{$order->express_name}}</div></li>
-                <li style=" display: flex;justify-content: space-between;margin-bottom: 5px;"><div style="width: 46%;flex-shrink: 0;color: #666;">Express Tracking Number:</div><div>{{$order->express_no}}</div></li>
+
             </ul>
         </div>
         <ul class="order_product" style="padding-left: 0;">
@@ -68,6 +66,11 @@
                 </ul>
             @endif
         </div>
+        <ul style="padding-left: 0;">
+            <li style=" display: flex;justify-content: space-between;margin-bottom: 5px;"><div style="width: 46%;flex-shrink: 0;color: #666;">Express Name:</div><div>{{$order->express_name}}</div></li>
+            <li style=" display: flex;justify-content: space-between;margin-bottom: 5px;"><div style="width: 46%;flex-shrink: 0;color: #666;">Tracking Number:</div><div>{{$order->express_no}}</div></li>
+            <li style=" display: flex;justify-content: space-between;margin-bottom: 5px;"><div style="width: 46%;flex-shrink: 0;color: #666;">Shipment Initiated At:</div><div>{{$order->express_at?$order->express_at->timezone('America/New_York')->format('Y-m-d h:i A (ET)'):''}}</div></li>
+        </ul>
     </div>
 
 @include('laravel-shop::mail.footer')

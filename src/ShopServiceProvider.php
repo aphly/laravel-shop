@@ -2,8 +2,8 @@
 
 namespace Aphly\LaravelShop;
 
-use Aphly\Laravel\Models\Comm;
 use Aphly\Laravel\Providers\ServiceProvider;
+use Aphly\LaravelShop\Commands\Init;
 use Aphly\LaravelShop\Middleware\Guest;
 
 class ShopServiceProvider extends ServiceProvider
@@ -28,17 +28,18 @@ class ShopServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $comm_module= (new Comm)->moduleClass();
-        if(in_array('Aphly\LaravelShop',$comm_module)){
-            $this->publishes([
-                __DIR__.'/public' => public_path('static/shop'),
-                __DIR__.'/config/shop_init.sql' => storage_path('app/private/shop_init.sql'),
+        $this->publishes([
+            __DIR__.'/public' => public_path('static/shop'),
+            __DIR__.'/config/shop_init.sql' => storage_path('app/private/shop_init.sql'),
+        ]);
+        $this->loadMigrationsFrom(__DIR__.'/migrations');
+        $this->loadViewsFrom(__DIR__.'/views', 'laravel-shop');
+        $this->loadRoutesFrom(__DIR__.'/routes/web.php');
+        $this->addRouteMiddleware('guest', Guest::class);
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                Init::class,
             ]);
-            //$this->loadMigrationsFrom(__DIR__.'/migrations');
-            $this->loadViewsFrom(__DIR__.'/views', 'laravel-shop');
-            $this->loadViewsFrom(__DIR__.'/views/front', 'laravel-front');
-            $this->loadRoutesFrom(__DIR__.'/routes/web.php');
-            $this->addRouteMiddleware('guest', Guest::class);
         }
     }
 

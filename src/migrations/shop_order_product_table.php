@@ -23,12 +23,14 @@ return new class extends Migration
             $table->unsignedInteger('quantity')->nullable();
             $table->decimal('price',15,2);
             $table->string('price_format',255);
+            $table->decimal('price_old',15,2);
+            $table->string('price_old_format',255);
             $table->decimal('total',15,2);
             $table->string('total_format',255);
+            $table->decimal('total_old',15,2);
+            $table->string('total_old_format',255);
             $table->decimal('discount',15,2);
             $table->string('discount_format',255);
-            $table->decimal('real_total',15,2);
-            $table->string('real_total_format',255);
             $table->engine = 'InnoDB';
         });
     }

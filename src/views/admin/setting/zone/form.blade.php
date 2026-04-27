@@ -7,17 +7,17 @@
         @csrf
         <div class="">
             <div class="form-group">
-                <label for="">名称</label>
+                <label >名称</label>
                 <input type="text" name="name" class="form-control " value="{{$res['info']->name}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">code</label>
+                <label >code</label>
                 <input type="text" name="code" class="form-control " value="{{$res['info']->code}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">country_id</label>
+                <label >country_id</label>
                 <select name="country_id" class="form-control">
                     @foreach($res['country'] as $key=>$val)
                     <option value="{{$key}}" @if($res['info']->country_id==$key) selected @endif>{{$val['name']}}</option>
@@ -26,7 +26,7 @@
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">状态</label>
+                <label >状态</label>
                 <select name="status" class="form-control">
                     @if(isset($dict['status']))
                         @foreach($dict['status'] as $key=>$val)

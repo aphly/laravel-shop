@@ -15,21 +15,35 @@ return new class extends Migration
     {
         Schema::create('shop_order', function (Blueprint $table) {
             $table->unsignedBigInteger('id')->primary();
-            $table->unsignedBigInteger('uuid')->index();
+            $table->unsignedBigInteger('uid')->index();
             $table->string('email',255)->nullable();
             $table->unsignedBigInteger('payment_id')->nullable()->index();
+
             $table->unsignedBigInteger('address_id');
-            $table->string('address_firstname',32);
-            $table->string('address_lastname',32);
-            $table->string('address_address_1',128);
-            $table->string('address_address_2',128)->nullable();
-            $table->string('address_city',128);
-            $table->string('address_postcode',10);
-            $table->string('address_country',128);
-            $table->unsignedBigInteger('address_country_id');
-            $table->string('address_zone',128);
-            $table->unsignedBigInteger('address_zone_id');
-            $table->string('address_telephone',255);
+            $table->string('delivery_firstname',32);
+            $table->string('delivery_lastname',32);
+            $table->string('delivery_address_1',128);
+            $table->string('delivery_address_2',128)->nullable();
+            $table->string('delivery_city',128);
+            $table->string('delivery_postcode',10);
+            $table->string('delivery_country',128);
+            $table->unsignedBigInteger('delivery_country_id');
+            $table->string('delivery_zone',128);
+            $table->unsignedBigInteger('delivery_zone_id');
+            $table->string('delivery_telephone',255);
+
+            $table->unsignedTinyInteger('same')->default(1);
+
+            $table->string('billing_firstname',32);
+            $table->string('billing_lastname',32);
+            $table->string('billing_address_1',128);
+            $table->string('billing_address_2',128)->nullable();
+            $table->string('billing_city',128);
+            $table->string('billing_postcode',10);
+            $table->string('billing_country',128);
+            $table->unsignedBigInteger('billing_country_id');
+            $table->string('billing_zone',128);
+            $table->unsignedBigInteger('billing_zone_id');
 
             $table->unsignedBigInteger('shipping_id');
             $table->string('shipping_name',32);
@@ -40,16 +54,13 @@ return new class extends Migration
             $table->string('express_name',255)->nullable();
             $table->string('express_no',255)->nullable();
 
-            $table->unsignedBigInteger('payment_method_id');
+            $table->unsignedBigInteger('payment_method_id')->nullable();
             $table->string('payment_method_name',32)->nullable();
             $table->unsignedBigInteger('items');
             $table->decimal('total',15,2);
+            $table->string('currency_code',8);
             $table->string('total_format',255);
             $table->text('comment')->nullable();
-
-            $table->unsignedBigInteger('currency_id');
-            $table->string('currency_code',8);
-            $table->decimal('currency_value',15,8);
 
             $table->unsignedBigInteger('order_status_id')->default(1)->index();
 

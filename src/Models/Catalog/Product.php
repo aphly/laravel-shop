@@ -3,7 +3,7 @@
 namespace Aphly\LaravelShop\Models\Catalog;
 
 use Aphly\Laravel\Models\Model;
-use Aphly\Laravel\Models\UploadFile;
+use Aphly\Laravel\Models\CommonUploadFile;
 use Aphly\LaravelShop\Models\Account\Review;
 use Aphly\LaravelPayment\Models\Currency;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,10 +17,10 @@ class Product extends Model
     //public $timestamps = false;
 
     protected $fillable = [
-        'sku','name','quantity','image','price','uuid','spu',
+        'sku','name','quantity','image','price','uid','spu','id',
         'is_shipping','stock_status_id','weight','weight_class_id',
         'length','width','height','length_class_id','subtract',
-        'status','viewed','sale','sort','date_available','url','remote','is_color_group'
+        'status','viewed','sale','sort','date_available','url','disk','is_color_group'
     ];
 
     function desc(){
@@ -35,7 +35,7 @@ class Product extends Model
         $productImage = ProductImage::where('product_id',$product_id)->orderBy('sort','desc')->get()->toArray();
         $res = [];
         foreach($productImage as $val){
-            $val['image_src'] = UploadFile::getPath($val['image'],$val['remote']);
+            $val['image_src'] = CommonUploadFile::getPath($val['image'],$val['disk']);
             if($is_color_group){
                 $res[$val['type']][$val['option_value_id']][] = $val;
             }else{
@@ -49,7 +49,7 @@ class Product extends Model
         $productImage = ProductVideo::where('product_id',$product_id)->orderBy('sort','desc')->get()->toArray();
         $res = [];
         foreach($productImage as $val){
-            $val['video_src'] = UploadFile::getPath($val['video'],$val['remote']);
+            $val['video_src'] = CommonUploadFile::getPath($val['video'],$val['disk']);
             $res[$val['type']][] = $val;
         }
         return $res;
@@ -59,7 +59,7 @@ class Product extends Model
         $productImage = ProductImage::whereIN('product_id',$product_ids)->orderBy('sort','desc')->get()->toArray();
         $res = [];
         foreach($productImage as $val){
-            $val['image_src'] = UploadFile::getPath($val['image'],$val['remote']);
+            $val['image_src'] = CommonUploadFile::getPath($val['image'],$val['disk']);
             $res[$val['product_id']][$val['type']][$val['option_value_id']][] = $val;
         }
         return $res;
@@ -200,7 +200,7 @@ class Product extends Model
 
         $sql->groupBy('p.id')
             ->select('p.id','p.sale','p.viewed','p.date_available','p.price','p.name','p.quantity','p.image',
-                'p.spu','p.sku','p.remote','p.is_color_group');
+                'p.spu','p.sku','p.disk','p.is_color_group');
         $sql->addSelect([
             'reviews'=>Review::whereColumn('product_id','p.id')->where('status',1)
                 ->groupBy('product_id')
@@ -290,7 +290,7 @@ class Product extends Model
     function getByids($product_ids){
         $time = time();
         $sql = DB::table('shop_product as p')->where('p.status',1)->where('p.date_available','<=',$time)->whereIn('p.id',$product_ids);
-        $sql->select('p.id','p.sale','p.image','p.viewed','p.date_available','p.price','p.name','p.quantity','p.remote','p.spu');
+        $sql->select('p.id','p.sale','p.image','p.viewed','p.date_available','p.price','p.name','p.quantity','p.disk','p.spu');
         $sql->addSelect([
             'reviews'=>Review::whereColumn('product_id','p.id')->where('status',1)
                 ->groupBy('product_id')
@@ -324,7 +324,7 @@ class Product extends Model
             $query->where('date_end',0)->orWhere('date_end','>',$time);
         })->orderBy('priority','desc')->select('price')->firstToArray();
         if($special){
-            return Currency::format($special['price'],2);
+            return [$special['price'],Currency::format($special['price'])];
         }
         return [0,''];
     }
@@ -336,7 +336,7 @@ class Product extends Model
     function findDiscount($id){
         $arr = ProductDiscount::where('product_id',$id)->get()->toArray();
         foreach ($arr as $key=>$val){
-            list($arr[$key]['price'],$arr[$key]['price_format']) = Currency::format($val['price'],2);
+            $arr[$key]['price_format'] = Currency::format($val['price']);
         }
         return $arr;
     }
@@ -386,16 +386,16 @@ class Product extends Model
         $productOptionValue = ProductOptionValue::whereIn('product_option_id',$product_option_ids)->with('option_value')->with('productImage')->orderBy('sort','desc')->get()->keyBy('id')->toArray();
         $productOptionValueGroup = [] ;
         foreach ($productOptionValue as $key=>$val){
-            list($val['price'],$val['price_format']) = Currency::format($val['price'],2);
-            $val['option_value']['image_src'] = UploadFile::getPath($val['option_value']['image'],$val['option_value']['remote']);
+            $val['price_format'] = Currency::format($val['price']);
+            $val['option_value']['image_src'] = CommonUploadFile::getPath($val['option_value']['image'],$val['option_value']['disk']);
             if($val['product_image']){
-                $val['product_image']['image_src'] = UploadFile::getPath($val['product_image']['image'],$val['product_image']['remote']);
+                $val['product_image']['image_src'] = CommonUploadFile::getPath($val['product_image']['image'],$val['product_image']['disk']);
             }
             $productOptionValueGroup[$val['product_option_id']][$key] = $val;
         }
         $res = [];
         foreach ($productOption as $key=>$val){
-            list($val['price'],$val['price_format']) = Currency::format($val['price'],2);
+            $val['price_format'] = Currency::format($val['price']);
             $res[$key] = $val;
             $res[$key]['product_option_value'] = $productOptionValueGroup[$val['id']]??[];
         }
@@ -463,5 +463,25 @@ class Product extends Model
 
         }
         return $html;
+    }
+
+    function idToStr($num) {
+        $result = '';
+        while ($num > 0) {
+            $num--; // 由于我们是从0开始计数，所以要减去1
+            $result = chr($num % 26 + ord('a')) . $result;
+            $num = intdiv($num, 26); // 使用intdiv进行整数除法
+        }
+        return $result;
+    }
+
+    function strToId($str) {
+        $num = 0;
+        $len = strlen($str);
+        for ($i = 0; $i < $len; $i++) {
+            $num *= 26;
+            $num += (ord($str[$i]) - ord('a')); // 从字母转换回数字，并加上当前位置的数值
+        }
+        return $num + 1; // 由于我们在转换时减去了1，所以这里加回来
     }
 }

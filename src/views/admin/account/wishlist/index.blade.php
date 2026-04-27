@@ -8,11 +8,11 @@
     <div class="itop ">
         <form method="get" action="/shop_admin/Wishlist/index" class="select_form">
         <div class="search_box ">
-            <input type="search" name="uuid" placeholder="uuid" value="{{$res['search']['uuid']}}">
+            <input type="search" name="uid" placeholder="uid" value="{{$res['search']['uid']}}">
             <button class="" type="submit">搜索</button>
         </div>
         </form>
-        
+
     </div>
 
     <form method="post"  @if($res['search']['string']) action="/shop_admin/Wishlist/del?{{$res['search']['string']}}" @else action="/shop_admin/Wishlist/del" @endif  class="del_form">
@@ -21,7 +21,7 @@
             <div class="table">
                 <ul class="table_header">
                     <li >ID</li>
-                    <li >uuid</li>
+                    <li >uid</li>
                     <li >产品</li>
                     <li >操作</li>
                 </ul>
@@ -29,7 +29,7 @@
                     @foreach($res['list'] as $v)
                     <ul class="table_tbody">
                         <li><input type="checkbox" class="delete_box" name="delete[]" value="{{$v['id']}}">{{$v['id']}}</li>
-                        <li>{{ $v->uuid }}</li>
+                        <li>{{ $v->uid }}</li>
                         <li>
                             <a href="/product/{{$v->product_id}}">{{$v->product->name}}</a>
                         </li>

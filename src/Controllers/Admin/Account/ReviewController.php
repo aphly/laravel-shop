@@ -4,7 +4,7 @@ namespace Aphly\LaravelShop\Controllers\Admin\Account;
 
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Models\Breadcrumb;
-use Aphly\Laravel\Models\UploadFile;
+use Aphly\Laravel\Models\CommonUploadFile;
 use Aphly\LaravelShop\Controllers\Admin\Controller;
 use Aphly\LaravelShop\Models\Account\Review;
 use Aphly\LaravelShop\Models\Account\ReviewImage;
@@ -29,7 +29,7 @@ class ReviewController extends Controller
         }
         $reviewImage = ReviewImage::whereIn('review_id',$review_ids)->get();
         foreach ($reviewImage as $val){
-            $res['reviewImage'][$val->review_id][] = UploadFile::getPath($val->image,$val->remote);
+            $res['reviewImage'][$val->review_id][] = CommonUploadFile::getPath($val->image,$val->disk);
         }
         $res['breadcrumb'] = Breadcrumb::render([
             ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url]
@@ -43,7 +43,7 @@ class ReviewController extends Controller
         if($res['review']->id){
             $res['product'] = Product::where('id',$res['review']->product_id)->select('name','id')->first();
             $res['reviewImage'] = ReviewImage::where('review_id',$res['review']->id)->get()->transform(function ($item){
-                $item->image_src = UploadFile::getPath($item->image,$item->remote);
+                $item->image_src = CommonUploadFile::getPath($item->image,$item->disk);
                 return $item;
             });
         }else{
@@ -72,7 +72,7 @@ class ReviewController extends Controller
             $reviewImageObj = ReviewImage::whereIn('review_id',$post);
             $reviewImage = $reviewImageObj->get();
             foreach ($reviewImage as $val){
-                UploadFile::del($val->image,$val->remote);
+                CommonUploadFile::del($val->image,$val->disk);
             }
             $reviewImageObj->delete();
             throw new ApiException(['code'=>0,'msg'=>'操作成功','data'=>['redirect'=>$redirect]]);

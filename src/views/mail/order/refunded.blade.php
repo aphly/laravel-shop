@@ -1,23 +1,25 @@
 @include('laravel-shop::mail.header')
-    <div style="font-size: 28px;line-height: 40px;margin-bottom: 10px;">
-        Order refunded
-    </div>
+
     <div style="padding: 10px;">
+        <div style="margin-top: 10px;font-size: 20px;margin-bottom: 20px;">Dear Customer,</div>
         <div style="margin-bottom: 10px;">Your order number #{{$order->id}}</div>
         <div style="margin-bottom: 10px;">
-            {{$orderHistory->comment??'We are very sorry, but due to the current shortage of goods, we are unable to ship. We will cancel the order and issue a refund.'}}
+            {{$order->email_comment??'We sincerely apologize for the inconvenience.Due to unexpected inventory shortages, we are unable to fulfill your order at this time.We have cancelled your order and processed your refund.'}}
         </div>
 
         <div style="margin-bottom: 5px;">
             @if($order->email_refund_fee>0)
-            This transaction deducts a {{$order->email_refund_fee}}% transaction tax.
+                A {{$order->email_refund_fee}}% handling fee will be deducted from this transaction.
             @endif
-            The final refund amount is {{$order->email_refund_amount}}.
-            The order has been successfully refunded.
+                The final refund amount is {{$order->email_refund_amount}}.
+                Your order has been successfully refunded.
         </div>
 
         <div style="margin-bottom: 5px;">
-            Please check if you have received the refund within 48 hours. If not, please contact customer service
+            Please allow up to 48 hours for the refund to process.
+        </div>
+        <div style="margin-bottom: 5px;">
+            If you have not received it by then, kindly contact our customer service team for assistance.
         </div>
     </div>
 
@@ -28,18 +30,18 @@
                     <div style="width: 46%;flex-shrink: 0;color: #666;">Order ID:</div><div>{{$order->id}}</div>
                 </li>
                 <li style=" display: flex;justify-content: space-between;margin-bottom: 5px;">
-                    <div style="width: 46%;flex-shrink: 0;color: #666;">Date Added:</div><div>{{$order->created_at}}</div>
+                    <div style="width: 46%;flex-shrink: 0;color: #666;">Date Added:</div><div>{{$order->created_at->timezone('America/New_York')->format('Y-m-d h:i A (ET)')}}</div>
                 </li>
                 <li style=" display: flex;justify-content: space-between;margin-bottom: 5px;">
                     <div style="width: 46%;flex-shrink: 0;color: #666;">Payment Method:</div>
                     <div>{{$order->payment_method_name}}</div>
                 </li>
                 <li style=" display: flex;justify-content: space-between;margin-bottom: 5px;">
-                    <div style="width: 46%;flex-shrink: 0;color: #666;">Shipping Address:</div>
-                    <div>{{$order->address_firstname}} {{$order->address_lastname}},
-                        {{$order->address_address_1}} {{$order->address_address_2}},
-                        {{$order->address_city}}, {{$order->address_zone}}, {{$order->address_country}},
-                        {{$order->address_postcode}}, {{$order->address_telephone}}
+                    <div style="width: 46%;flex-shrink: 0;color: #666;">Delivery Address:</div>
+                    <div>{{$order->delivery_firstname}} {{$order->delivery_lastname}},
+                        {{$order->delivery_address_1}} {{$order->delivery_address_2}},
+                        {{$order->delivery_city}}, {{$order->delivery_zone}}, {{$order->delivery_country}},
+                        {{$order->delivery_postcode}}, {{$order->delivery_telephone}}
                     </div>
                 </li>
             </ul>

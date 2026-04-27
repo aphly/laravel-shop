@@ -1,5 +1,5 @@
 
-.special_price{opacity: 0.5;text-decoration: line-through;font-size: 12px;color:#787a7c;}
+.special_price{opacity: 0.8;text-decoration: line-through;font-size: 12px;color:#787a7c;}
 .price_sale{color: #e36254;display: none;}
 .price span{margin-right: 10px;}
 
@@ -250,14 +250,15 @@ img{border-radius: 6px;}
 .checkout_info li:last-child{margin-bottom: 0;padding-bottom: 0;border-bottom: none;flex-shrink: 0;}
 .checkout_info li span:last-child a{color: var(--btn_bg_hover);}
 
-.checkout_ul li{ padding: 0;border-radius: 4px;cursor: pointer;border: 1px solid #ced4da;margin-bottom: 10px;}
+.checkout_ul li{ padding: 0;border-radius: 4px;cursor: pointer;border: 1px solid #dedede;margin-bottom: 10px;}
 .checkout_ul li.active{border:1px solid #333;}
 .checkout_ul li label{padding: 10px 20px;margin-bottom: 0; width: 100%; display: flex;justify-content: space-between;align-items: center;}
 .checkout_ul li label input{margin-right: 10px;}
 
-.checkout_btn{display: flex;justify-content: space-between;align-items: center;}
-.checkout_btn button{background-color: var(--btn_bg);padding: 14px 20px;color: #fff;border: none;border-radius: 4px;}
+.checkout_btn{}
+.checkout_btn button{background-color: var(--btn_bg);padding: 14px 20px;color: #fff;border: none;border-radius: 4px;font-weight: 600;font-size: 16px;cursor: pointer;width: 100%;}
 .checkout_btn_l a{color: var(--btn_bg_hover);}
+.checkout_btn_l{margin-top: 20px;}
 
 .items-info-list-all{padding: 0;}
 .items-info-list{}

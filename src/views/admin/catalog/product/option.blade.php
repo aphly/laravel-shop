@@ -49,7 +49,7 @@
                                     @foreach($val['value_arr'] as $k=>$v)
                                         <li>
                                             <span>
-                                                <select name="product_option[{{$val['id']}}][{{$val['option_id']}}][option_value][{{$v['id']}}][option_value_id]" id="">
+                                                <select name="product_option[{{$val['id']}}][{{$val['option_id']}}][option_value][{{$v['id']}}][option_value_id]" >
                                                     @foreach($res['option'][$v['option_id']]['value'] as $k1=>$v1)
                                                     <option value="{{$v1['id']}}" @if($v1['id']==$v['option_value_id']) selected @endif>{{$v1['name']}}</option>
                                                     @endforeach
@@ -294,7 +294,7 @@
         }
         let li = `<li>
                     <span>
-                    <select name="product_option[${id}][${option_id}][option_value][${vid}][option_value_id]" id="">
+                    <select name="product_option[${id}][${option_id}][option_value][${vid}][option_value_id]" >
                           ${option}
                     </select>
                     </span>

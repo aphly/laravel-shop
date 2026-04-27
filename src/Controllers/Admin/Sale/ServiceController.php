@@ -4,7 +4,7 @@ namespace Aphly\LaravelShop\Controllers\Admin\Sale;
 
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Models\Breadcrumb;
-use Aphly\Laravel\Models\UploadFile;
+use Aphly\Laravel\Models\CommonUploadFile;
 use Aphly\LaravelPayment\Models\Payment;
 use Aphly\LaravelShop\Controllers\Admin\Controller;
 use Aphly\LaravelShop\Models\Sale\OrderProduct;
@@ -65,7 +65,7 @@ class ServiceController extends Controller
         $res['serviceHistory'] = ServiceHistory::where('service_id',$res['info']->id)->orderBy('created_at','asc')->get();
         $res['serviceProduct'] = ServiceProduct::where('service_id',$res['info']->id)->with('orderProduct')->get();
         foreach ($res['info']->img as $val){
-            $val->image_src = UploadFile::getPath($val->image,$val->remote);
+            $val->image_src = CommonUploadFile::getPath($val->image,$val->disk);
         }
         //$res['shipping_method'] = Shipping::get();
         $res['breadcrumb'] = Breadcrumb::render([

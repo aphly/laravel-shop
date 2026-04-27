@@ -7,12 +7,12 @@
         @csrf
         <div class="">
             <div class="form-group">
-                <label for="">名称</label>
+                <label >名称</label>
                 <input type="text" name="name" class="form-control " value="{{$res['filterGroup']->name}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">状态</label>
+                <label >状态</label>
                 <select name="status" class="form-control">
                     @if(isset($dict['status']))
                         @foreach($dict['status'] as $key=>$val)
@@ -23,7 +23,7 @@
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">排序</label>
+                <label >排序</label>
                 <input type="number" name="sort" class="form-control " value="{{$res['filterGroup']->sort??0}}">
                 <div class="invalid-feedback"></div>
             </div>

@@ -3,9 +3,9 @@
 namespace Aphly\LaravelShop\Models\Checkout;
 
 use Aphly\Laravel\Libs\Math;
-use Aphly\Laravel\Models\UploadFile;
+use Aphly\Laravel\Models\CommonUploadFile;
 use Aphly\LaravelPayment\Models\Currency;
-use Aphly\Laravel\Models\User;
+use Aphly\Laravel\Models\CommonUser;
 use Aphly\LaravelShop\Models\Catalog\Coupon;
 use Aphly\LaravelShop\Models\Catalog\Product;
 use Aphly\LaravelShop\Models\Catalog\ProductDiscount;
@@ -14,6 +14,7 @@ use Aphly\LaravelShop\Models\Catalog\Shipping;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Aphly\Laravel\Models\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class Cart extends Model
 {
@@ -23,7 +24,7 @@ class Cart extends Model
     //public $timestamps = false;
 
     protected $fillable = [
-        'uuid','product_id','guest','quantity','option'
+        'uid','product_id','guest','quantity','option'
     ];
 
     static public $list=false;
@@ -40,7 +41,7 @@ class Cart extends Model
         $guest = session('guest');
         if($guest){
             $cart = self::where('guest',$guest);
-            self::where('uuid',User::uuid())->update(['guest'=>$guest]);
+            self::where('uid',CommonUser::uid())->update(['guest'=>$guest]);
             $data = $cart->get()->toArray();
             $cart->delete();
             foreach ($data as $val){
@@ -51,7 +52,7 @@ class Cart extends Model
 
     public function add($product_id, $quantity = 1, $option = []) {
         $option = json_encode($option);
-        $where = ['uuid'=>User::uuid(),'guest'=>session('guest'),'product_id'=>$product_id,'option'=>$option];
+        $where = ['uid'=>CommonUser::uid(),'guest'=>session('guest'),'product_id'=>$product_id,'option'=>$option];
         $info = self::where($where)->first();
         if(!empty($info)){
             $info->increment('quantity',$quantity);
@@ -71,9 +72,9 @@ class Cart extends Model
     public function getList($refresh=false){
         if(self::$list===false || $refresh) {
             $list = [];
-            $uuid = User::uuid();
-            $cart_data = self::when($uuid, function ($query, $uuid) {
-                return $query->where('uuid', $uuid);
+            $uid = CommonUser::uid();
+            $cart_data = self::when($uid, function ($query, $uid) {
+                return $query->where('uid', $uid);
             })->where(['guest' => session('guest')])->with('product')->get()->toArray();
 
             foreach ($cart_data as $cart) {
@@ -145,7 +146,7 @@ class Cart extends Model
                         })->where(function ($query) use ($time){
                             $query->where('date_end',0)->orWhere('date_end','>',$time);
                         })->orderBy('priority','desc')->first();
-
+                    $price_old = $price;
                     if (!empty($product_special)) {
                         $price = $product_special['price'];
                     }
@@ -153,23 +154,31 @@ class Cart extends Model
                     if ($cart['product']['subtract'] == 1 && ($cart['product']['quantity'] < 1 || $cart['product']['quantity'] < $cart['quantity'])) {
                         $stock = false;
                     }
+                    //dd($price,$option_price);
+                    $price = $price + $option_price;
+                    $price = $price>0?$price:0;
 
-                    list($price,$price_format) = Currency::format($price + $option_price,2);
+                    $price_old = $price_old + $option_price;
                     //$total = $price * $cart['quantity'];
+
                     $total = Math::mul($price,$cart['quantity']);
-                    $cart['product']['image_src'] = UploadFile::getPath($cart['product']['image'],$cart['product']['remote']);
+                    $total_old = Math::mul($price_old,$cart['quantity']);
+
+                    $cart['product']['image_src'] = CommonUploadFile::getPath($cart['product']['image'],$cart['product']['disk']);
                     $list[$cart['id']] = $cart;
                     $list[$cart['id']]['option'] = $option_value;
                     $list[$cart['id']]['option_value_arr'] = $option_value_arr;
                     $list[$cart['id']]['stock'] = $stock;
                     $list[$cart['id']]['price'] = $price;
-                    $list[$cart['id']]['price_format'] = $price_format;
+                    $list[$cart['id']]['price_format'] = Currency::format($price);
+                    $list[$cart['id']]['price_old'] = $price_old;
+                    $list[$cart['id']]['price_old_format'] = Currency::format($price_old);
                     $list[$cart['id']]['total'] = $total;
-                    $list[$cart['id']]['total_format'] = Currency::_format($total);
+                    $list[$cart['id']]['total_format'] = Currency::format($total);
+                    $list[$cart['id']]['total_old'] = $total_old;
+                    $list[$cart['id']]['total_old_format'] = Currency::format($total_old);
                     $list[$cart['id']]['discount'] = 0;
-                    $list[$cart['id']]['discount_format'] = Currency::_format(0);
-                    $list[$cart['id']]['real_total'] = $total;
-                    $list[$cart['id']]['real_total_format'] = Currency::_format($total);
+                    $list[$cart['id']]['discount_format'] = 0;
                     $list[$cart['id']]['is_shipping'] = $cart['product']['is_shipping'];
                     $list[$cart['id']]['reward'] = 0;
                     $list[$cart['id']]['weight'] = $cart['product']['weight'] * $cart['quantity'];
@@ -213,14 +222,15 @@ class Cart extends Model
     }
 
     public function countListSubTotal($refresh=false) {
-        $count = $sub_total = 0;
+        $count = $sub_total = $sub_total_old = 0;
         $list = $this->getList($refresh);
         foreach ($list as $cart) {
             $count += $cart['quantity'];
             //$sub_total += $cart['total'];
             $sub_total = Math::add($sub_total,$cart['total']);
+            $sub_total_old = Math::add($sub_total_old,$cart['total_old']);
         }
-        return [$count,$list,$sub_total];
+        return [$count,$list,$sub_total,$sub_total_old];
     }
 
     public function quantityInCart($product_id) {
@@ -239,12 +249,12 @@ class Cart extends Model
     }
 
     public function clear(){
-        return self::where(['uuid'=>User::uuid()])->delete();
+        return self::where(['uid'=>CommonUser::uid()])->delete();
     }
 
     public function initCart(){
         session()->forget(['shop_address_id','shop_shipping_id']);
-        self::where('uuid',0)->where('created_at','<',time()-3600*24*2)->delete();
+        self::where('uid',0)->where('created_at','<',time()-3600*24*2)->delete();
     }
 
     public static $total = [
@@ -254,32 +264,38 @@ class Cart extends Model
     public static $free_shipping = false;
 
     public function totalData($refresh=false) {
-        list($count,$list,$sub_total) = $this->countListSubTotal($refresh);
+        list($count,$list,$sub_total,$sub_total_old) = $this->countListSubTotal($refresh);
         $totals = [];
-        $total = 0;
+        $total = $total_old = 0;
         $total_data = [
             'totals' => &$totals,
-            'total'  => &$total
+            'total'  => &$total,
+            'total_old'  => &$total_old,
         ];
 
-        $value_format = Currency::_format($sub_total);
         $total_data['totals']['sub_total'] = [
             'title'      => 'SubTotal',
             'value'      => $sub_total,
-            'value_format'      => $value_format,
+            'value_format'      => Currency::format($sub_total),
+            'value_old'      => $sub_total_old,
+            'value_old_format'      => Currency::format($sub_total_old),
             'sort' => 1,
             'ext'=>$count
         ];
         //$total_data['total'] += $sub_total;
         $total_data['total'] = Math::add($total_data['total'],$sub_total);
+        $total_data['total_old'] = Math::add($total_data['total_old'],$sub_total_old);
+
         $cart_ext = (new Coupon)->getTotal($total_data);
 
 		(new Shipping)->getTotal($total_data);
-        list($total_data['total'],$total_data['total_format']) = Currency::format($total_data['total'],2);
+        list($payment_total,$payment_total_format,$currency_code) = Currency::format($total_data['total'],3);
         $total_data['totals']['total'] = [
             'title'      => 'Total',
             'value'      => $total_data['total'],
-            'value_format'      => $total_data['total_format'],
+            'value_format'      => $payment_total_format,
+            'value_old'      => $total_data['total_old'],
+            'value_old_format'      => Currency::format($total_data['total_old']),
             'sort' => 99,
             'ext'=>''
         ];
@@ -288,6 +304,8 @@ class Cart extends Model
                 $list[$key] = array_merge($val,$cart_ext[$key]);
             }
         }
+        $total_data['payment_total'] = $payment_total;
+        $total_data['payment_currency_code'] = $currency_code;
         return [$count,$list,$total_data];
     }
 }

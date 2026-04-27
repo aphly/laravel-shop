@@ -15,9 +15,8 @@ use Aphly\LaravelShop\Models\Catalog\Product;
 use Aphly\LaravelShop\Models\Catalog\ProductOptionValue;
 use Aphly\LaravelShop\Models\Catalog\Shipping;
 use Aphly\LaravelShop\Models\Setting\Config;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class Order extends Model
 {
@@ -27,11 +26,13 @@ class Order extends Model
     //public $timestamps = false;
 
     protected $fillable = [
-        'id','uuid','email','address_id','address_firstname','address_lastname','address_address_1','address_address_2',
-		'address_city','address_postcode','address_country','address_country_id','address_zone','address_zone_id','address_telephone',
+        'id','uid','email','address_id','delivery_firstname','delivery_lastname','delivery_address_1','delivery_address_2',
+		'delivery_city','delivery_postcode','delivery_country','delivery_country_id','delivery_zone','delivery_zone_id','delivery_telephone',
+        'same','billing_firstname','billing_lastname','billing_address_1','billing_address_2',
+        'billing_city','billing_postcode','billing_country','billing_country_id','billing_zone','billing_zone_id',
 		'shipping_id','shipping_name','shipping_desc','shipping_cost','shipping_free_cost','shipping_geo_group_id','payment_method_id',
-		'payment_method_name','items','total','total_format','comment','currency_id','currency_code','currency_value','order_status_id',
-		'ip','user_agent','accept_language','express_name','express_no'
+		'payment_method_name','items','total','total_format','currency_code','comment','order_status_id',
+		'ip','user_agent','accept_language','express_name','express_no','express_at'
     ];
 
     function orderStatus(){
@@ -68,7 +69,7 @@ class Order extends Model
     public function handle($info){
         $orderProduct = OrderProduct::where('order_id',$info->id)->get()->toArray();
         foreach ($orderProduct as $val){
-            //(new UserCredit)->handle('Reward', $info->uuid, 'point', '+', $val['reward'], 'payment_id#' . $info->payment_id);
+            //(new UserCredit)->handle('Reward', $info->uid, 'point', '+', $val['reward'], 'payment_id#' . $info->payment_id);
             Product::where(['subtract'=>1,'id'=>$val['product_id']])->decrement('quantity',$val['quantity']);
             $orderOption = OrderOption::where(['order_id'=>$info->id,'order_product_id'=>$val['id']])->get()->toArray();
             foreach ($orderOption as $v){
@@ -80,7 +81,7 @@ class Order extends Model
     public function rollback($info){
         $orderProduct = OrderProduct::where('order_id',$info->id)->get()->toArray();
         foreach ($orderProduct as $val){
-            //(new UserCredit)->handle('Reward', $info->uuid, 'point', '-', $val['reward'], 'cancel#' . $info->payment_id);
+            //(new UserCredit)->handle('Reward', $info->uid, 'point', '-', $val['reward'], 'cancel#' . $info->payment_id);
             Product::where(['subtract'=>1,'id'=>$val['product_id']])->increment('quantity',$val['quantity']);
             $orderOption = OrderOption::where(['order_id'=>$info->id,'order_product_id'=>$val['id']])->get()->toArray();
             foreach ($orderOption as $v){
@@ -100,6 +101,7 @@ class Order extends Model
             //Shipped
             $info->express_name = $input['express_name']??'';
             $info->express_no = $input['express_no']??'';
+            $info->express_at = time();
         }else if($order_status_id==6){
             //Canceled
             $notify = $shop_config['order_canceled_notify'];
@@ -113,7 +115,7 @@ class Order extends Model
                     list($amount, $amount_format) = Currency::codeFormat((100 - $fee) / 100 * $info->total, $info->currency_code);
                     if ($amount > 0) {
                         if($fee){
-                            (new Payment)->refund_api($info->payment_id, $amount, 'System refund -' . $fee . '% transaction fee');
+                            (new Payment)->refund_api($info->payment_id, $amount, 'System refund: ' . $fee . '% transaction fee deducted');
                         }else{
                             (new Payment)->refund_api($info->payment_id, $amount, 'System refund');
                         }
@@ -156,6 +158,7 @@ class Order extends Model
                     ]);
                 }else if($order_status_id==3){
                     //Shipped
+                    $info->express_at = Carbon::createFromTimestamp($info->express_at);
                     (new RemoteEmail())->send([
                         'email'=>$info->email,
                         'title'=>'Order Shipped',
@@ -167,17 +170,18 @@ class Order extends Model
                     $info->cancel_fee = $input['cancel_fee'];
                     (new RemoteEmail())->send([
                         'email'=>$info->email,
-                        'title'=>'Order cancel',
+                        'title'=>'Order Canceled',
                         'content'=>(new Cancel($info))->render()
                     ]);
                 }else if($order_status_id==7 && $amount > 0){
                     //Refunded
                     $info->email_refund_amount = $amount_format;
                     $info->email_refund_fee = $fee;
+                    $info->email_comment = $input['comment']??'';
                     (new RemoteEmail())->send([
                         'email'=>$info->email,
                         'title'=>'Order Refunded',
-                        'content'=>(new Refunded($info,$orderHistory))->render()
+                        'content'=>(new Refunded($info))->render()
                     ]);
                 }
             }

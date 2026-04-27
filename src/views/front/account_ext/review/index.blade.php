@@ -1,7 +1,7 @@
-@include(config('base.view_namespace_front_blade').'::common.header')
+@include('laravel-shop::front.common.header')
 <section class="container">
     <div class="account_info">
-        @include(config('base.view_namespace_front_blade').'::account.left_menu')
+        @include('laravel-shop::front.account.left_menu')
         <div class="account-main-section" style="background: transparent;">
             <div class="">
                 <div class="top-desc d-flex justify-content-between">
@@ -13,7 +13,7 @@
                             <div class="my_review2">
                                 <a href="/account_ext/review/detail?id={{$val->id}}">
                                 <div class="my_review21">
-                                    <div style="color:#999;">{{$val->created_at}}</div>
+                                    <div style="color:#999;"  class="utc_time" data-utc_time="{{$val->created_at->timestamp}}"></div>
                                     <div class="my_review211">
                                         <div class="grade-star-bg">
                                             <div class="star-progress" style="width: {{$val->rating*20}}%;">
@@ -30,6 +30,13 @@
                                                 <i class="common-iconfont icon-xingxing"></i>
                                                 <i class="common-iconfont icon-xingxing"></i>
                                             </div>
+                                        </div>
+                                        <div>
+                                            @if($val->status)
+                                                <span class="badge badge-success">Reviewed</span>
+                                            @else
+                                                <span class="badge badge-secondary">Under Review</span>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="my_review212">{{$val->text}}</div>
@@ -69,12 +76,13 @@
     .my_review22 img{width: 60px;height: 60px;border-radius: 4px;margin-right: 5px;}
     .my_review>li{background: #fff;margin-bottom: 10px;border-radius: 4px;padding:15px;}
     .my_review23 a{display:block;padding:5px 10px;border-radius:4px;border:1px solid #f1f1f1;margin-left:20px}
-    .my_review211{margin-top: 10px;}
+    .my_review211{margin-top: 10px;display: flex;justify-content: space-between;margin-bottom: 10px;}
     .my_review212{margin: 10px 0;}
+    .grade-star-bg{margin-bottom: 0}
 </style>
 <script>
 $(function () {
 
 })
 </script>
-@include(config('base.view_namespace_front_blade').'::common.footer')
+@include('laravel-shop::front.common.footer')

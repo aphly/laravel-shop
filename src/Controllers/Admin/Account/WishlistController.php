@@ -16,12 +16,12 @@ class WishlistController extends Controller
 
     public function index(Request $request)
     {
-        $res['search']['uuid'] = $request->query('uuid','');
+        $res['search']['uid'] = $request->query('uid','');
         $res['search']['string'] = http_build_query($request->query());
-        $res['list'] = Wishlist::when($res['search']['uuid'],
+        $res['list'] = Wishlist::when($res['search']['uid'],
             function($query,$search) {
-                if($search['uuid']!==''){
-                    $query->where('uuid', $search['uuid']);
+                if($search['uid']!==''){
+                    $query->where('uid', $search['uid']);
                 }
             })
             ->orderBy('id','desc')->with('product')

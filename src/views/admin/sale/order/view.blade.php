@@ -32,24 +32,24 @@
         @endif
 
         <div class="detail">
-            <div class="title">The order details</div>
+            <div class="title">订单详情</div>
             <div class="detail_info fw50">
                 <div class="info">
                     <div class="ititle">基础</div>
                     <ul>
                         <li><div>订单id:</div><div>{{$res['info']->id}}</div></li>
                         <li><div>邮箱:</div><div>{{$res['info']->email}}</div></li>
-                        <li><div>用户uuid:</div><div>{{$res['info']->uuid}}</div></li>
-                        <li><div>订单时间:</div><div>{{$res['info']->created_at}}</div></li>
+                        <li><div>用户uid:</div><div>{{$res['info']->uid}}</div></li>
+                        <li><div>订单时间:</div><div >{{ $res['info']->created_at->timezone('Asia/Shanghai') }}</div></li>
                     </ul>
                 </div>
                 <div class="info">
                     <div class="ititle">物流</div>
                     <ul>
-                        <li><div>收货地址:</div><div>{{$res['info']->address_firstname}} {{$res['info']->address_lastname}},
-                                {{$res['info']->address_address_1}} {{$res['info']->address_address_2}},
-                                {{$res['info']->address_city}}, {{$res['info']->address_zone}}, {{$res['info']->address_country}},
-                                {{$res['info']->address_postcode}}, {{$res['info']->address_telephone}}
+                        <li><div>收货地址:</div><div>{{$res['info']->delivery_firstname}} {{$res['info']->delivery_lastname}},
+                                {{$res['info']->delivery_address_1}} {{$res['info']->delivery_address_2}},
+                                {{$res['info']->delivery_city}}, {{$res['info']->delivery_zone}}, {{$res['info']->delivery_country}},
+                                {{$res['info']->delivery_postcode}}, {{$res['info']->delivery_telephone}}
                             </div></li>
                         <li><div>物流方式:</div><div>{{$res['info']->shipping_name}}</div></li>
                         <li><div>物流名称:</div><div>{{$res['info']->express_name??'-'}}</div></li>
@@ -76,7 +76,7 @@
             </div>
         </div>
         <div class="detail">
-            <div class="title">The order product</div>
+            <div class="title">商品信息</div>
             <div class="detail_info">
                 <ul class="product">
                     <li>
@@ -135,7 +135,7 @@
                     @if($res['orderHistory'])
                         @foreach($res['orderHistory'] as $val)
                             <li>
-                                <div>{{$val->created_at}}</div>
+                                <div >{{$val->created_at->timezone('Asia/Shanghai')}}</div>
                                 <div>{{$val->orderStatus->name}}</div>
                                 <div>{{$val->comment}}</div>
                             </li>
@@ -153,7 +153,7 @@
                     <div>
                         <input type="hidden" name="order_id" value="{{$res['info']->id}}">
                         <div class="form-group">
-                            <label for="">订单状态</label>
+                            <label >订单状态</label>
                             <select name="order_status_id" class="form-control" id="order_status_id" required>
                                 @foreach($res['orderStatus'] as $val)
                                     <option value="{{$val->id}}">{{$val->name}}({{$val->cn_name}})</option>
@@ -162,32 +162,32 @@
                             <div class="invalid-feedback"></div>
                         </div>
                         <div class="form-group">
-                            <label for="">状态覆盖</label>
+                            <label >状态覆盖</label>
                             <input type="checkbox" name="override" value="1">
                             <div class="invalid-feedback"></div>
                         </div>
                         <div class="form-group">
-                            <label for="">邮件通知</label>
+                            <label >邮件通知</label>
                             <input type="checkbox" name="notify" value="1">
                             <div class="invalid-feedback"></div>
                         </div>
                         <div class="form-group d-none" id="fee">
-                            <label for="">退款手续费（%）；当手续费设置为100，代表不退款</label>
+                            <label >退款手续费（%）；当手续费设置为100，代表不退款</label>
                             <input type="number" name="fee" class="form-control" value="5">
                             <div class="invalid-feedback"></div>
                         </div>
                         <div class="form-group d-none" id="express_name">
-                            <label for="">运单名称</label>
+                            <label >运单名称</label>
                             <input type="text" name="express_name" class="form-control" value="">
                             <div class="invalid-feedback"></div>
                         </div>
                         <div class="form-group d-none" id="express_no">
-                            <label for="">运单</label>
+                            <label >运单</label>
                             <input type="text" name="express_no" class="form-control" value="">
                             <div class="invalid-feedback"></div>
                         </div>
                         <div class="form-group">
-                            <label for="">备注</label>
+                            <label >备注</label>
                             <textarea class="form-control" name="comment"></textarea>
                             <div class="invalid-feedback"></div>
                         </div>

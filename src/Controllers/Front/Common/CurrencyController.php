@@ -15,7 +15,7 @@ class CurrencyController extends Controller
         $res['info'] = Currency::where('id',$request->id)->firstOrError();
         if($res['info']->status==1){
             session(['currency_id'=>$res['info']->id]);
-            throw new ApiException(['code'=>0,'msg'=>'success']);
+            throw new ApiException(['code'=>0,'msg'=>'success','data'=>$res['info']->id]);
         }
     }
 

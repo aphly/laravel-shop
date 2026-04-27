@@ -1,4 +1,4 @@
-@include(config('base.view_namespace_front_blade').'::common.header')
+@include('laravel-shop::front.common.header')
 <link rel="stylesheet" href="{{ URL::asset('static/base/front/css/account.css') }}">
 
 <section class="" >
@@ -11,12 +11,12 @@
                 </h3>
 
                 <div class="form-group">
-                    <label for="">Email</label>
+                    <label >Email</label>
                     <div>{{$res['userAuth']->id}}</div>
                 </div>
 
                 <div class="form-group">
-                    <label for="">Password</label>
+                    <label >Password</label>
                     <input type="password" name="password" class="form-control" required placeholder="new password" autocomplete="off">
                     <div class="invalid-feedback"></div>
                 </div>
@@ -40,4 +40,4 @@
         }
     }
 </script>
-@include(config('base.view_namespace_front_blade').'::common.footer')
+@include('laravel-shop::front.common.footer')

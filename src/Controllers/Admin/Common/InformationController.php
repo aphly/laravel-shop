@@ -5,7 +5,7 @@ namespace Aphly\LaravelShop\Controllers\Admin\Common;
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Libs\Editor;
 use Aphly\Laravel\Models\Breadcrumb;
-use Aphly\Laravel\Models\UploadFile;
+use Aphly\Laravel\Models\CommonUploadFile;
 use Aphly\LaravelShop\Controllers\Admin\Controller;
 use Aphly\LaravelShop\Models\Common\Information;
 use Illuminate\Http\Request;
@@ -79,7 +79,7 @@ class InformationController extends Controller
     public function uploadImg(Request $request){
         $file = $request->file('img');
         if($file){
-            $UploadFile = (new UploadFile($this->imgSize));
+            $UploadFile = (new CommonUploadFile($this->imgSize));
             try{
                 $image = $UploadFile->upload($file,'public/editor_temp/information','local');
             }catch(ApiException $e){

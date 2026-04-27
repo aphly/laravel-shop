@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('option_id');
             $table->string('name',64);
             $table->string('image',255);
-            $table->tinyInteger('remote')->default(0);
+            $table->string('disk',16)->nullable();
             $table->integer('sort')->unsigned();
         });
     }

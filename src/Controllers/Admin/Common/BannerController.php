@@ -5,7 +5,7 @@ namespace Aphly\LaravelShop\Controllers\Admin\Common;
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Libs\Editor;
 use Aphly\Laravel\Models\Breadcrumb;
-use Aphly\Laravel\Models\UploadFile;
+use Aphly\Laravel\Models\CommonUploadFile;
 use Aphly\LaravelShop\Controllers\Admin\Controller;
 use Aphly\LaravelShop\Models\Common\Banner;
 use Illuminate\Http\Request;

@@ -7,17 +7,17 @@
         @csrf
         <div class="">
             <div class="form-group">
-                <label for="">名称</label>
+                <label >名称</label>
                 <input type="text" name="name" required class="form-control " value="{{$res['geoGroup']->name}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">描述</label>
+                <label >描述</label>
                 <input type="text" name="desc" class="form-control " value="{{$res['geoGroup']->desc}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">状态</label>
+                <label >状态</label>
                 <select name="status" class="form-control">
                     @if(isset($dict['status']))
                         @foreach($dict['status'] as $key=>$val)

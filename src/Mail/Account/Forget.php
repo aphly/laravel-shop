@@ -23,7 +23,7 @@ class Forget extends Mailable
     {
         $this->userAuth = $userAuth;
         $this->userAuth->siteUrl = url('');
-        $this->userAuth->token = Crypt::encryptString($userAuth->uuid.','.time()+1200);
+        $this->userAuth->token = Crypt::encryptString($userAuth->uid.','.time()+1200);
     }
 
     /**
@@ -33,6 +33,6 @@ class Forget extends Mailable
      */
     public function build()
     {
-        return $this->subject('Password Reset')->view('laravel-shop::mail.account.forget');
+        return $this->view('laravel-shop::mail.account.forget');
     }
 }

@@ -12,7 +12,7 @@ class ProductVideo extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'product_id','video','sort','remote','type'
+        'product_id','video','sort','disk','type'
     ];
 
 

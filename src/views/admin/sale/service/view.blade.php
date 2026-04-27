@@ -62,7 +62,7 @@
                         <li><div>id:</div><div>{{$res['info']->id}}</div></li>
                         <li><div>订单id:</div><div>{{$res['info']->order->id}}</div></li>
                         <li><div>邮箱:</div><div>{{$res['info']->order->email}}</div></li>
-                        <li><div>用户uuid:</div><div>{{$res['info']->uuid}}</div></li>
+                        <li><div>用户uid:</div><div>{{$res['info']->uid}}</div></li>
                         <li><div>申请时间:</div><div>{{$res['info']->created_at}}</div></li>
                         <li><div>是否收到货:</div><div>{{$dict['yes_no'][$res['info']->is_received]}}</div></li>
                         <li><div>是否打开:</div><div>{{$dict['yes_no'][$res['info']->is_opened]}}</div></li>
@@ -168,7 +168,7 @@
                     <div>
                         <input type="hidden" name="service_id" value="{{$res['info']->id}}">
                         <div class="form-group">
-                            <label for="">售后状态</label>
+                            <label >售后状态</label>
                             <select name="service_status_id" id="service_status_id{{$res['info']->service_action_id}}" class="form-control " required>
                                 @if($res['info']->service_action_id==1)
                                     @foreach($dict['refund_status'] as $key=>$val)
@@ -187,45 +187,45 @@
                             <div class="invalid-feedback"></div>
                         </div>
                         <div class="form-group">
-                            <label for="">状态覆盖</label>
+                            <label >状态覆盖</label>
                             <input type="checkbox" name="override" value="1">
                             <div class="invalid-feedback"></div>
                         </div>
                         <div class="form-group">
-                            <label for="">邮件通知</label>
+                            <label >邮件通知</label>
                             <input type="checkbox" name="notify" value="1">
                             <div class="invalid-feedback"></div>
                         </div>
                         <div class="form-group">
-                            <label for="">备注</label>
+                            <label >备注</label>
                             <textarea class="form-control" name="comment"></textarea>
                             <div class="invalid-feedback"></div>
                         </div>
                         @if($res['info']->service_action_id==2)
                             <div id="shipping_info" style="display: none;">
                                 <div class="form-group">
-                                    <label for="">退货人姓名</label>
+                                    <label >退货人姓名</label>
                                     <input type="text" name="service_name" class="form-control" value="{{$res['info']->service_name??$res['shop_config']['service_name']}}">
                                     <div class="invalid-feedback"></div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="">退货人地址</label>
+                                    <label >退货人地址</label>
                                     <input type="text" name="service_address" class="form-control" value="{{$res['info']->service_address??$res['shop_config']['service_address']}}">
                                     <div class="invalid-feedback"></div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="">退货人邮编</label>
+                                    <label >退货人邮编</label>
                                     <input type="text" name="service_postcode" class="form-control" value="{{$res['info']->service_postcode??$res['shop_config']['service_postcode']}}">
                                     <div class="invalid-feedback"></div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="">退货人电话</label>
+                                    <label >退货人电话</label>
                                     <input type="text" name="service_phone" class="form-control" value="{{$res['info']->service_phone??$res['shop_config']['service_phone']}}">
                                     <div class="invalid-feedback"></div>
                                 </div>
                             </div>
                             <div class="form-group" id="fee" style="display: none;">
-                                <label for="">退货的手续费（%）；当手续费设置为100，代表不退款</label>
+                                <label >退货的手续费（%）；当手续费设置为100，代表不退款</label>
                                 <input type="number" name="fee" class="form-control" value="5">
                                 <div class="invalid-feedback"></div>
                             </div>

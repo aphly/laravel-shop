@@ -4,7 +4,7 @@ namespace Aphly\LaravelShop\Controllers\Front\Product;
 
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Models\Breadcrumb;
-use Aphly\Laravel\Models\UploadFile;
+use Aphly\Laravel\Models\CommonUploadFile;
 use Aphly\LaravelShop\Controllers\Front\Controller;
 use Aphly\LaravelShop\Models\Account\Review;
 use Aphly\LaravelShop\Models\Account\ReviewImage;
@@ -21,7 +21,7 @@ class ProductController extends Controller
 {
     private $review_image_length = 4;
 
-    private $review_image_size = 0.2;
+    private $review_image_size = 1;
 
     public function listData($filter_data,$res,$bySpu=false)
     {
@@ -30,7 +30,7 @@ class ProductController extends Controller
         $product_ids = [];
         $res['list']->transform(function ($item) use (&$product_ids){
             $product_ids[] = $item->id;
-            $item->image_src= UploadFile::getPath($item->image,$item->remote);
+            $item->image_src= CommonUploadFile::getPath($item->image,$item->disk);
             $item->price= Currency::format($item->price);
             $item->special= $item->special?Currency::format($item->special):0;
             $item->discount= $item->discount?Currency::format($item->discount):0;
@@ -50,7 +50,7 @@ class ProductController extends Controller
         }
         $res['wishlist_product_ids'] = Wishlist::$product_ids;
         $res['sort'] = $product->sortArr();
-        $res['price'] = $product->priceArr(self::$_G['currency'][2]['symbol_left']);
+        $res['price'] = $product->priceArr($this->currency[2]['symbol_left']);
         return $res;
     }
 
@@ -79,12 +79,18 @@ class ProductController extends Controller
         }
         $res['filterGroup'] = FilterGroup::where('status',1)->with('filter')->get();
         $res['option'] = Option::where(['status'=>1,'is_filter'=>1])->with('value')->get();
-        return $this->makeView('laravel-front::product.index',['res'=>$res]);
+        return $this->makeView('laravel-shop::front.product.index',['res'=>$res]);
     }
 
     public function detail(Request $request)
     {
-        $res['info'] = Product::where('id',$request->id)->where('status',1)->where('date_available','<',time())->with('desc')->firstOr404();
+        if (is_numeric($request->id)) {
+            $id = $request->id;
+        }else{
+            $id = (new Product)->strToId($request->id);
+        }
+        $res['info'] = Product::where('id', $id)->where('status', 1)->where('date_available', '<', time())->with('desc')->firstOr404();
+
         $res['title'] = $res['info']->name;
         $res['description'] = $res['info']->name;
         $res['breadcrumb'] = Breadcrumb::render([
@@ -92,9 +98,9 @@ class ProductController extends Controller
             ['name'=>$res['info']->name,'href'=>'']
         ],false);
         $res['quantityInCart'] = (new Cart)->quantityInCart($request->id);
-        list($res['info']->price,$res['info']->price_format) = Currency::format($res['info']->price,2);
+        $res['info']->price_format = Currency::format($res['info']->price);
         $res['color'] = $request->query('color',0);
-            //$group_id = User::groupId();
+            //$group_id = CommonUser::groupId();
         $res['info_attr'] = $res['info']->findAttribute($res['info']->id);
         $res['info_option'] = $res['info']->findOption($res['info']->id,true);
         list($res['special_price'],$res['special_price_format']) = $res['info']->findSpecial($res['info']->id);
@@ -105,27 +111,31 @@ class ProductController extends Controller
         //$res['info_reward'] = $res['info']->findReward($res['info']->id,$group_id);
         //$res['shipping'] = Shipping::where('cost',0)->firstToArray();
         $res['wishlist_product_ids'] = Wishlist::$product_ids;
-        $res['review'] = Review::where('product_id',$res['info']->id)->with('img')->orderBy('created_at','desc')
-            ->Paginate(config('base.perPage'))->withQueryString();
+        $res['review'] = Review::where('product_id',$res['info']->id)->where('status',1)->with('img')->with('user')->orderBy('created_at','desc')
+            ->Paginate(10)->withQueryString();
         $res['reviewRatingAvg'] = Review::where('product_id',$res['info']->id)->avg('rating');
         $res['reviewRatingAvg'] = intval($res['reviewRatingAvg']*10)/10;
         $res['reviewRatingAvg_100'] = $res['reviewRatingAvg']/5*100;
         foreach ($res['review'] as $val){
+            $val->avatar_src = CommonUploadFile::getPath($val->avatar,$val->disk,false);
+            if(!$val->avatar_src){
+                $val->avatar_css = substr($val->author, 0, 1);
+            }
             foreach ($val->img as $v){
-                $v->image_src = UploadFile::getPath($v->image,$v->remote);
+                $v->image_src = CommonUploadFile::getPath($v->image,$v->disk);
             }
         }
         $res['review_image_length'] = $this->review_image_length;
         $res['review_image_size'] = $this->review_image_size;
         $res['rand'] = Product::where('status',1)->whereNot('id',$res['info']->id)->where('date_available','<',time())->inRandomOrder()->limit(15)->get();
         $res['rand']->transform(function ($item) use (&$product_ids){
-            $item->image_src= UploadFile::getPath($item->image,$item->remote);
+            $item->image_src= CommonUploadFile::getPath($item->image,$item->disk);
             $item->price= Currency::format($item->price);
             $item->special= $item->special?Currency::format($item->special):0;
             $item->discount= $item->discount?Currency::format($item->discount):0;
             return $item;
         });
-        return $this->makeView('laravel-front::product.detail',['res'=>$res]);
+        return $this->makeView('laravel-shop::front.product.detail',['res'=>$res]);
     }
 
     public function reviewAdd(Request $request)
@@ -135,31 +145,33 @@ class ProductController extends Controller
             throw new ApiException(['code'=>1,'msg'=>'Content cannot be empty']);
         }
 
-        if(self::$_G['shop_config']['review_limit']){
-            $count = Review::where(['uuid'=>$this->user->uuid,'product_id'=>$request->id])->count();
-            if($count>0){
-                throw new ApiException(['code'=>1,'msg'=>'The product can only be reviewed once']);
-            }
-            $orderProductCount = OrderProduct::leftJoin('shop_order','shop_order.id','=','shop_order_product.order_id')->where(['shop_order.uuid'=>$this->user->uuid,'shop_order_product.product_id'=>$request->id])->count();
-            if(!$orderProductCount){
-                throw new ApiException(['code'=>2,'msg'=>'Only after purchasing the product can you comment on it']);
-            }
+        if($this->shop_config['review_limit']){
+//            $count = Review::where(['uid'=>$this->user->uid,'product_id'=>$request->id])->count();
+//            if($count>0){
+//                throw new ApiException(['code'=>1,'msg'=>'The product can only be reviewed once']);
+//            }
+//            $orderProductCount = OrderProduct::leftJoin('shop_order','shop_order.id','=','shop_order_product.order_id')->where(['shop_order.uid'=>$this->user->uid,'shop_order_product.product_id'=>$request->id])->count();
+//            if(!$orderProductCount){
+//                throw new ApiException(['code'=>2,'msg'=>'Only after purchasing the product can you comment on it']);
+//            }
+            $input['status'] = 0;
         }
 
         $insertData = $img_src = $file_paths =  [];
-        $UploadFile = new UploadFile($this->review_image_size);
-        $remote = $UploadFile->isRemote();
+        $UploadFile = new CommonUploadFile($this->review_image_size);
+        $disk = $UploadFile->disk();
         if($request->hasFile("files")){
             $file_paths= $UploadFile->uploads($this->review_image_length,$request->file("files"), 'public/shop/product/review');
         }
+        $input['id'] = app('Snowflake')->nextId();
         $input['author'] = $this->user->nickname;
-        $input['uuid'] = $this->user->uuid;
+        $input['uid'] = $this->user->uid;
         $input['product_id'] = $request->id;
         $review = Review::create($input);
         if($review->id){
             foreach ($file_paths as $v){
-                $img_src[] = UploadFile::getPath($v,$remote);
-                $insertData[] = ['review_id'=>$review->id,'image'=>$v,'remote'=>$remote];
+                $img_src[] = CommonUploadFile::getPath($v,$disk);
+                $insertData[] = ['review_id'=>$review->id,'image'=>$v,'disk'=>$disk];
             }
             if ($insertData) {
                 ReviewImage::insert($insertData);

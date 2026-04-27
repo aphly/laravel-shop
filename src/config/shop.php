@@ -1,5 +1,6 @@
 <?php
 return [
+    'email'=>'service@aphly.com',
     'menu'=>[
         'about_us'=>[
             'name'=>'About Us',

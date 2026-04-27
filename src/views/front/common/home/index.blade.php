@@ -1,38 +1,40 @@
-@include(config('base.view_namespace_front_blade').'::common.header')
+@include('laravel-shop::front.common.header')
 <div>
     @if(!empty($res['banner']['home']))
-    <div class="home_carousel">
-        <div id="carouselCaptionsHome" class="carousel slide carousel-fade" data-ride="carousel">
-            <ol class="carousel-indicators">
-                @foreach($res['banner']['home'] as $key=>$val)
-                <li data-target="#carouselCaptionsHome" data-slide-to="{{$key}}" class="@if(!$key) active @endif" ></li>
-                @endforeach
-            </ol>
-            <div class="carousel-inner">
-                @foreach($res['banner']['home'] as $key=>$val)
-                <div class="carousel-item @if(!$key) active @endif">
-                    <img src="{{ $val['img'] }}" class="w-100 carousel_pc">
-                    <img src="{{ $val['img_m'] }}" class="w-100 carousel_m">
-                    @if(0)
-                    <div class="carousel-caption d-none d-md-block">
-                        <h5>{{$val['title']}}</h5>
-                    </div>
-                    @endif
+        <div class="home_carousel">
+            <div id="carouselCaptionsHome" class="carousel slide carousel-fade" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    @foreach($res['banner']['home'] as $key=>$val)
+                        <li data-target="#carouselCaptionsHome" data-slide-to="{{$key}}" class="@if(!$key) active @endif" ></li>
+                    @endforeach
+                </ol>
+                <div class="carousel-inner">
+                    @foreach($res['banner']['home'] as $key=>$val)
+                        <div class="carousel-item @if(!$key) active @endif">
+                            <a href="{{ $val['url'] }}">
+                                <img src="{{ $val['img'] }}" class="w-100 carousel_pc">
+                                <img src="{{ $val['img_m'] }}" class="w-100 carousel_m">
+                            </a>
+                            @if(0)
+                                <div class="carousel-caption d-none d-md-block">
+                                    <h5>{{$val['title']}}</h5>
+                                </div>
+                            @endif
+                        </div>
+                    @endforeach
                 </div>
-                @endforeach
+                @if(0)
+                    <button class="carousel-control-prev" type="button" data-target="#carouselCaptionsHome" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-target="#carouselCaptionsHome" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </button>
+                @endif
             </div>
-            @if(0)
-            <button class="carousel-control-prev" type="button" data-target="#carouselCaptionsHome" data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-target="#carouselCaptionsHome" data-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-            </button>
-            @endif
         </div>
-    </div>
     @endif
 </div>
 <style>
@@ -65,70 +67,70 @@
             <div>
                 <div class="home_title">{{$val['title']}}</div>
                 <ul class=" product-category">
-                @foreach($val['product_ids'] as $product_id)
-                    @if(!empty($res['products'][$product_id]))
-                    <li>
-                        @if(!empty($res['product_option_value_image'][$product_id]))
-                            <div class="image">
-                                <a href="/product/{{$product_id}}">
-                                    <dl class="product_image">
-                                        @foreach($res['product_option_value_image'][$product_id] as $k=>$v)
-                                            @if(reset($res['product_option_value_image'][$product_id]) ===$v)
-                                                <dd class="active" data-image_id="{{$k}}" >
-                                                    <img src="{{ URL::asset('static/base/admin/img/none.png') }}" data-original="{{$v}}" class="lazy" />
-                                                </dd>
+                    @foreach($val['product_ids'] as $product_id)
+                        @if(!empty($res['products'][$product_id]))
+                            <li>
+                                @if(!empty($res['product_option_value_image'][$product_id]))
+                                    <div class="image">
+                                        <a href="/product/{{$product_id}}">
+                                            <dl class="product_image">
+                                                @foreach($res['product_option_value_image'][$product_id] as $k=>$v)
+                                                    @if(reset($res['product_option_value_image'][$product_id]) ===$v)
+                                                        <dd class="active" data-image_id="{{$k}}" >
+                                                            <img src="{{ URL::asset('static/base/admin/img/none.png') }}" data-original="{{$v}}" class="lazy" />
+                                                        </dd>
+                                                    @else
+                                                        <dd data-image_id="{{$k}}" >
+                                                            <img src="{{ URL::asset('static/base/admin/img/none.png') }}" data-original="{{$v}}" class="lazy" />
+                                                        </dd>
+                                                    @endif
+                                                @endforeach
+                                            </dl>
+                                        </a>
+                                    </div>
+                                @else
+                                    <div class="image">
+                                        <a href="/product/{{$product_id}}">
+                                            <img src="{{ URL::asset('static/base/admin/img/none.png') }}" data-original="{{ $res['products'][$product_id]->image_src }}"  class="img-responsive lazy" >
+                                        </a>
+                                    </div>
+                                @endif
+
+                                <a href="/product/{{$product_id}}"><div class="p_name">{{$res['products'][$product_id]->name}}</div></a>
+                                <div class="p_name_x d-flex justify-content-between ">
+                                    <div class="d-flex price">
+                                        @if($res['products'][$product_id]->special)
+                                            <span class="normal">{{$res['products'][$product_id]->special}}</span>
+                                            <span class="special_price">{{$res['products'][$product_id]->price}}</span>
+                                            <span class="price_sale">Sale</span>
+                                        @else
+                                            @if($res['products'][$product_id]->discount)
+                                                <span class="normal">{{$res['products'][$product_id]->discount}}</span>
+                                                <span class="special_price">{{$res['products'][$product_id]->price}}</span>
+                                                <span class="price_sale">Sale</span>
                                             @else
+                                                <span class="normal">{{$res['products'][$product_id]->price}}</span>
+                                            @endif
+                                        @endif
+                                    </div>
+                                </div>
+                                @if(!empty($res['product_option_value_image'][$product_id]))
+                                    <div class="product_option">
+                                        <dl>
+                                            @foreach($res['product_option_value_image'][$product_id] as $k=>$v)
                                                 <dd data-image_id="{{$k}}" >
                                                     <img src="{{ URL::asset('static/base/admin/img/none.png') }}" data-original="{{$v}}" class="lazy" />
                                                 </dd>
-                                            @endif
-                                        @endforeach
-                                    </dl>
-                                </a>
-                            </div>
-                        @else
-                            <div class="image">
-                                <a href="/product/{{$product_id}}">
-                                    <img src="{{ URL::asset('static/base/admin/img/none.png') }}" data-original="{{ $res['products'][$product_id]->image_src }}"  class="img-responsive lazy" >
-                                </a>
-                            </div>
-                        @endif
-
-                        <a href="/product/{{$product_id}}"><div class="p_name">{{$res['products'][$product_id]->name}}</div></a>
-                        <div class="p_name_x d-flex justify-content-between ">
-                            <div class="d-flex price">
-                                @if($res['products'][$product_id]->special)
-                                    <span class="normal">{{$res['products'][$product_id]->special}}</span>
-                                    <span class="special_price">{{$res['products'][$product_id]->price}}</span>
-                                    <span class="price_sale">Sale</span>
-                                @else
-                                    @if($res['products'][$product_id]->discount)
-                                        <span class="normal">{{$res['products'][$product_id]->discount}}</span>
-                                        <span class="special_price">{{$res['products'][$product_id]->price}}</span>
-                                        <span class="price_sale">Sale</span>
-                                    @else
-                                        <span class="normal">{{$res['products'][$product_id]->price}}</span>
-                                    @endif
+                                            @endforeach
+                                        </dl>
+                                    </div>
                                 @endif
-                            </div>
-                        </div>
-                        @if(!empty($res['product_option_value_image'][$product_id]))
-                            <div class="product_option">
-                                <dl>
-                                    @foreach($res['product_option_value_image'][$product_id] as $k=>$v)
-                                        <dd data-image_id="{{$k}}" >
-                                            <img src="{{ URL::asset('static/base/admin/img/none.png') }}" data-original="{{$v}}" class="lazy" />
-                                        </dd>
-                                    @endforeach
-                                </dl>
-                            </div>
+                                <div class="wt-badge none" >
+                                    <span class="wt-badge--small wt-badge--status-03">Bestseller</span>
+                                </div>
+                            </li>
                         @endif
-                        <div class="wt-badge none" >
-                            <span class="wt-badge--small wt-badge--status-03">Bestseller</span>
-                        </div>
-                    </li>
-                    @endif
-                @endforeach
+                    @endforeach
                 </ul>
             </div>
         @endforeach
@@ -158,4 +160,4 @@
         $('.product_option dd:first-child').click();
     })
 </script>
-@include(config('base.view_namespace_front_blade').'::common.footer')
+@include('laravel-shop::front.common.footer')

@@ -7,12 +7,12 @@
         @csrf
         <div class="">
             <div class="form-group">
-                <label for="">名称</label>
+                <label >名称</label>
                 <input type="text" name="name" class="form-control " value="{{$res['option']->name}}">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">类型</label>
+                <label >类型</label>
                 <select name="type" class="form-control" id="type">
                     <optgroup label="选择">
                         <option value="select" @if($res['option']->type=='select') selected @endif>下拉列表</option>
@@ -35,7 +35,7 @@
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">状态</label>
+                <label >状态</label>
                 <select name="status" class="form-control">
                     @if(isset($dict['status']))
                         @foreach($dict['status'] as $key=>$val)
@@ -46,7 +46,7 @@
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">是否筛选</label>
+                <label >是否筛选</label>
                 <select name="is_filter" class="form-control">
                     @if(isset($dict['yes_no']))
                         @foreach($dict['yes_no'] as $key=>$val)
@@ -57,7 +57,7 @@
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">是否颜色</label>
+                <label >是否颜色</label>
                 <select name="is_color" class="form-control">
                     @if(isset($dict['yes_no']))
                         @foreach($dict['yes_no'] as $key=>$val)
@@ -68,7 +68,7 @@
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label for="">排序</label>
+                <label >排序</label>
                 <input type="number" name="sort" class="form-control " value="{{$res['option']->sort??0}}">
                 <div class="invalid-feedback"></div>
             </div>

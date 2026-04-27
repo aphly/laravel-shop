@@ -20,12 +20,10 @@ class Refunded extends Mailable
      */
 
     public $order;
-    public $orderHistory;
 
-    public function __construct($order,$orderHistory)
+    public function __construct($order)
     {
         $this->order = $order;
-        $this->orderHistory = $orderHistory;
 //        $this->order->orderTotal = OrderTotal::where('order_id',$order->id)->get();
 //        $this->order->orderProduct = OrderProduct::where('order_id',$order->id)->with('orderOption')->get();
     }
@@ -37,7 +35,6 @@ class Refunded extends Mailable
      */
     public function build()
     {
-        return $this->subject('Order refunded')
-            ->view('laravel-shop::mail.order.refunded');
+        return $this->view('laravel-shop::mail.order.refunded');
     }
 }

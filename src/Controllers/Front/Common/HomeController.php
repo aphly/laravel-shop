@@ -4,7 +4,7 @@ namespace Aphly\LaravelShop\Controllers\Front\Common;
 
 
 use Aphly\Laravel\Exceptions\ApiException;
-use Aphly\Laravel\Models\UploadFile;
+use Aphly\Laravel\Models\CommonUploadFile;
 use Aphly\LaravelPayment\Models\Currency;
 use Aphly\LaravelShop\Controllers\Front\Controller;
 use Aphly\LaravelShop\Models\Catalog\Product;
@@ -19,10 +19,10 @@ class HomeController extends Controller
     {
         $res['title'] = 'Home';
         $res['data_products'] = [
-            ['title'=>self::$_G['shop_config']['index1_k'],'product_ids'=>explode(',',self::$_G['shop_config']['index1_v'])],
-            ['title'=>self::$_G['shop_config']['index2_k'],'product_ids'=>explode(',',self::$_G['shop_config']['index2_v'])],
-            ['title'=>self::$_G['shop_config']['index3_k'],'product_ids'=>explode(',',self::$_G['shop_config']['index3_v'])],
-            ['title'=>self::$_G['shop_config']['index4_k'],'product_ids'=>explode(',',self::$_G['shop_config']['index4_v'])],
+            ['title'=>$this->shop_config['index1_k'],'product_ids'=>explode(',',$this->shop_config['index1_v'])],
+            ['title'=>$this->shop_config['index2_k'],'product_ids'=>explode(',',$this->shop_config['index2_v'])],
+            ['title'=>$this->shop_config['index3_k'],'product_ids'=>explode(',',$this->shop_config['index3_v'])],
+            ['title'=>$this->shop_config['index4_k'],'product_ids'=>explode(',',$this->shop_config['index4_v'])],
         ];
 
         $res['banner'] = Banner::findAll();
@@ -36,7 +36,7 @@ class HomeController extends Controller
         $products = $product->getByids($product_ids);
         $res['products'] = $products;
         foreach ($products as $key=>$val){
-            $res['products'][$key]->image_src= UploadFile::getPath($val->image,$val->remote);
+            $res['products'][$key]->image_src= CommonUploadFile::getPath($val->image,$val->disk);
             $res['products'][$key]->price = Currency::format($val->price);
             $res['products'][$key]->special = $val->special?Currency::format($val->special):0;
             $res['products'][$key]->discount =  $val->discount?Currency::format($val->discount):0;
@@ -51,7 +51,7 @@ class HomeController extends Controller
             }
         }
         //$res['product_image'] = $product->imgByIds($product_ids);
-        return $this->makeView('laravel-front::common.home.index',['res'=>$res]);
+        return $this->makeView('laravel-shop::front.common.home.index',['res'=>$res]);
     }
 
     function tracking(Request $request)
@@ -63,7 +63,7 @@ class HomeController extends Controller
             throw new ApiException(['code'=>0,'msg'=>'success']);
         }else{
             $res['title'] = 'Contact Us';
-            return $this->makeView('laravel-front::common.contact_us.index',['res'=>$res]);
+            return $this->makeView('laravel-shop::front.common.contact_us.index',['res'=>$res]);
         }
     }
 

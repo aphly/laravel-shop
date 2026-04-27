@@ -3,9 +3,9 @@
 namespace Aphly\LaravelShop\Controllers\Front\AccountExt;
 
 use Aphly\Laravel\Exceptions\ApiException;
-use Aphly\Laravel\Models\UploadFile;
+use Aphly\Laravel\Models\CommonUploadFile;
 use Aphly\LaravelPayment\Models\Currency;
-use Aphly\Laravel\Models\User;
+use Aphly\Laravel\Models\CommonUser;
 use Aphly\LaravelShop\Controllers\Front\Controller;
 use Aphly\LaravelShop\Models\Account\Wishlist;
 use Aphly\LaravelShop\Models\Catalog\Product;
@@ -15,7 +15,7 @@ class WishlistController extends Controller
 {
     public function index()
     {
-        $res['list'] = Wishlist::where(['uuid'=>User::uuid()])->orderBy('created_at','desc')->Paginate(config('base.perPage'))->withQueryString();
+        $res['list'] = Wishlist::where(['uid'=>CommonUser::uid()])->orderBy('created_at','desc')->Paginate(config('base.perPage'))->withQueryString();
         $res['title'] = 'Wishlist';
         $product_ids = [];
         foreach ($res['list'] as $val){
@@ -23,25 +23,25 @@ class WishlistController extends Controller
         }
         $res['productData'] = (new Product)->getByids($product_ids);
         foreach ($res['productData'] as $val){
-            $val->image_src= UploadFile::getPath($val->image,$val->remote);
+            $val->image_src= CommonUploadFile::getPath($val->image,$val->disk);
             $val->price= Currency::format($val->price);
             $val->special= $val->special?Currency::format($val->special):0;
             $val->discount= $val->discount?Currency::format($val->discount):0;
         }
-        return $this->makeView('laravel-front::account_ext.wishlist.index',['res'=>$res]);
+        return $this->makeView('laravel-shop::front.account_ext.wishlist.index',['res'=>$res]);
     }
 
     public function product(Request $request){
-        $uuid = User::uuid();
-        if($uuid){
-            $info = Wishlist::where(['uuid'=>$uuid,'product_id'=>$request->id])->first();
+        $uid = CommonUser::uid();
+        if($uid){
+            $info = Wishlist::where(['uid'=>$uid,'product_id'=>$request->id])->first();
             if(!empty($info)){
                 $info->delete();
-                $count = Wishlist::where(['uuid'=>$uuid])->count();
+                $count = Wishlist::where(['uid'=>$uid])->count();
                 throw new ApiException(['code'=>0,'msg'=>'remove_success','data'=>['count'=>$count]]);
             }else{
-                Wishlist::create(['product_id'=>$request->id,'uuid'=>$uuid]);
-                $count = Wishlist::where(['uuid'=>$uuid])->count();
+                Wishlist::create(['product_id'=>$request->id,'uid'=>$uid]);
+                $count = Wishlist::where(['uid'=>$uid])->count();
                 throw new ApiException(['code'=>0,'msg'=>'add_success','data'=>['count'=>$count]]);
             }
         }else{
@@ -64,7 +64,7 @@ class WishlistController extends Controller
     }
 
     public function remove(Request $request){
-        $info = Wishlist::where(['uuid'=>User::uuid(),'id'=>$request->id])->first();
+        $info = Wishlist::where(['uid'=>CommonUser::uid(),'id'=>$request->id])->first();
         if(!empty($info)){
             $info->delete();
         }

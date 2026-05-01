@@ -98,15 +98,34 @@ class Shipping extends Model
                 }else{
                     $val['free']=false;
                 }
+                if($val['cost']==0 && !$val['free']){
+                    $val['disabled']=true;
+                }else{
+                    $val['disabled']=false;
+                }
                 $val['cost_format'] = Currency::format($val['cost']);
                 $val['free_cost_format'] = Currency::format($val['free_cost']);
                 if($shipping_id && $val['id']==$shipping_id){
-                    return $val;
+                    if($val['disabled']){
+                        return false;
+                    }else{
+                        return $val;
+                    }
                 }
                 $res[$val['id']] = $val;
             }
         }
         return $res;
+    }
+
+    public function getFree() {
+        $shipping = (new Shipping())->findAll();
+        foreach ($shipping as $val) {
+            if($val['cost']==0){
+                return Currency::format($val['free_cost']);
+            }
+        }
+        return '';
     }
 
 

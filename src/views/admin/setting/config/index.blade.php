@@ -128,45 +128,7 @@
                         <div class="invalid-feedback"></div>
                     </div>
 
-                    <div>
-                        <div>
-                            邮件通知客户
-                        </div>
-                        <div class="form-group">
-                            <label >下单</label>
-                            <select name="setting[order_paid_notify]" class="form-control" >
-                            @if(isset($dict['yes_no']))
-                                @foreach($dict['yes_no'] as $key=>$val)
-                                    <option value="{{$key}}" @if(($res['setting']['order_paid_notify']['value']??0)==$key) selected @endif>{{$val}}</option>
-                                @endforeach
-                            @endif
-                            </select>
-                            <div class="invalid-feedback"></div>
-                        </div>
-                        <div class="form-group">
-                            <label >取消</label>
-                            <select name="setting[order_canceled_notify]" class="form-control" >
-                            @if(isset($dict['yes_no']))
-                                @foreach($dict['yes_no'] as $key=>$val)
-                                    <option value="{{$key}}" @if(($res['setting']['order_canceled_notify']['value']??0)==$key) selected @endif>{{$val}}</option>
-                                @endforeach
-                            @endif
-                            </select>
-                            <div class="invalid-feedback"></div>
-                        </div>
 
-                        <div class="form-group">
-                            <label >退款</label>
-                            <select name="setting[order_refunded_notify]" class="form-control" >
-                                @if(isset($dict['yes_no']))
-                                    @foreach($dict['yes_no'] as $key=>$val)
-                                        <option value="{{$key}}" @if(($res['setting']['order_refunded_notify']['value']??0)==$key) selected @endif>{{$val}}</option>
-                                    @endforeach
-                                @endif
-                            </select>
-                            <div class="invalid-feedback"></div>
-                        </div>
-                    </div>
                 </div>
                 <div class="tab-pane fade" id="nav-service" role="tabpanel" aria-labelledby="nav-service-tab">
                     <div>

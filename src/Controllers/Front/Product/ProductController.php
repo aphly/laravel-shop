@@ -12,6 +12,7 @@ use Aphly\LaravelShop\Models\Account\Wishlist;
 use Aphly\LaravelShop\Models\Catalog\FilterGroup;
 use Aphly\LaravelShop\Models\Catalog\Option;
 use Aphly\LaravelShop\Models\Catalog\Product;
+use Aphly\LaravelShop\Models\Catalog\Shipping;
 use Aphly\LaravelShop\Models\Checkout\Cart;
 use Aphly\LaravelShop\Models\Sale\OrderProduct;
 use Aphly\LaravelPayment\Models\Currency;
@@ -135,6 +136,7 @@ class ProductController extends Controller
             $item->discount= $item->discount?Currency::format($item->discount):0;
             return $item;
         });
+        $res['shippingFreeCost'] = (new Shipping)->getFree();
         return $this->makeView('laravel-shop::front.product.detail',['res'=>$res]);
     }
 

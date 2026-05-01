@@ -7,63 +7,69 @@
                 <div class="top-desc d-flex justify-content-between">
                     <h2>My Reviews</h2>
                 </div>
-                <ul class="my_review">
-                    @foreach($res['list'] as $val)
-                        <li class="">
-                            <div class="my_review2">
-                                <a href="/account_ext/review/detail?id={{$val->id}}">
-                                <div class="my_review21">
-                                    <div style="color:#999;"  class="utc_time" data-utc_time="{{$val->created_at->timestamp}}"></div>
-                                    <div class="my_review211">
-                                        <div class="grade-star-bg">
-                                            <div class="star-progress" style="width: {{$val->rating*20}}%;">
-                                                <i class="common-iconfont icon-xingxing"></i>
-                                                <i class="common-iconfont icon-xingxing"></i>
-                                                <i class="common-iconfont icon-xingxing"></i>
-                                                <i class="common-iconfont icon-xingxing"></i>
-                                                <i class="common-iconfont icon-xingxing"></i>
+                @if($res['list']->count())
+                    <ul class="my_review">
+                        @foreach($res['list'] as $val)
+                            <li class="">
+                                <div class="my_review2">
+                                    <a href="/account_ext/review/detail?id={{$val->id}}">
+                                    <div class="my_review21">
+                                        <div style="color:#999;"  class="utc_time" data-utc_time="{{$val->created_at->timestamp}}"></div>
+                                        <div class="my_review211">
+                                            <div class="grade-star-bg">
+                                                <div class="star-progress" style="width: {{$val->rating*20}}%;">
+                                                    <i class="common-iconfont icon-xingxing"></i>
+                                                    <i class="common-iconfont icon-xingxing"></i>
+                                                    <i class="common-iconfont icon-xingxing"></i>
+                                                    <i class="common-iconfont icon-xingxing"></i>
+                                                    <i class="common-iconfont icon-xingxing"></i>
+                                                </div>
+                                                <div class="star-bg">
+                                                    <i class="common-iconfont icon-xingxing"></i>
+                                                    <i class="common-iconfont icon-xingxing"></i>
+                                                    <i class="common-iconfont icon-xingxing"></i>
+                                                    <i class="common-iconfont icon-xingxing"></i>
+                                                    <i class="common-iconfont icon-xingxing"></i>
+                                                </div>
                                             </div>
-                                            <div class="star-bg">
-                                                <i class="common-iconfont icon-xingxing"></i>
-                                                <i class="common-iconfont icon-xingxing"></i>
-                                                <i class="common-iconfont icon-xingxing"></i>
-                                                <i class="common-iconfont icon-xingxing"></i>
-                                                <i class="common-iconfont icon-xingxing"></i>
+                                            <div>
+                                                @if($val->status)
+                                                    <span class="badge badge-success">Reviewed</span>
+                                                @else
+                                                    <span class="badge badge-secondary">Under Review</span>
+                                                @endif
                                             </div>
                                         </div>
-                                        <div>
-                                            @if($val->status)
-                                                <span class="badge badge-success">Reviewed</span>
-                                            @else
-                                                <span class="badge badge-secondary">Under Review</span>
-                                            @endif
+                                        <div class="my_review212">{{$val->text}}</div>
+                                    </div>
+                                    </a>
+                                    <div class="my_review22">
+                                    @if($val->img->count())
+                                        <ul>
+                                        @foreach($val->img as $v)
+                                            <li><img src="{{$v->image_src}}" alt=""></li>
+                                        @endforeach
+                                        </ul>
+                                    @endif
+                                    </div>
+                                    <a href="/product/{{$val->product->id}}">
+                                        <div class="my_review1">
+                                            <div class="my_review11"><img src="{{$val->product->image_src}}" alt=""></div>
+                                            <div class="my_review12 wenzi">{{$val->product->name}}</div>
                                         </div>
-                                    </div>
-                                    <div class="my_review212">{{$val->text}}</div>
+                                    </a>
                                 </div>
-                                </a>
-                                <div class="my_review22">
-                                @if($val->img->count())
-                                    <ul>
-                                    @foreach($val->img as $v)
-                                        <li><img src="{{$v->image_src}}" alt=""></li>
-                                    @endforeach
-                                    </ul>
-                                @endif
-                                </div>
-                                <a href="/product/{{$val->product->id}}">
-                                    <div class="my_review1">
-                                        <div class="my_review11"><img src="{{$val->product->image_src}}" alt=""></div>
-                                        <div class="my_review12 wenzi">{{$val->product->name}}</div>
-                                    </div>
-                                </a>
-                            </div>
-                        </li>
-                    @endforeach
-                </ul>
-                <div>
-                    {{$res['list']->links()}}
-                </div>
+                            </li>
+                        @endforeach
+                    </ul>
+                    <div>
+                        {{$res['list']->links()}}
+                    </div>
+                @else
+                    <div class="list_nothing" style=" ">
+                        Sorry, returned no results.
+                    </div>
+                @endif
             </div>
         </div>
     </div>

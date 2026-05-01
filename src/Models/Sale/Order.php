@@ -95,7 +95,7 @@ class Order extends Model
         $notify = $amount = 0;
         if($order_status_id==2){
             //Paid
-            $notify = $shop_config['order_paid_notify'];
+            $notify = 1;
             $this->handle($info);
         }else if($order_status_id==3){
             //Shipped
@@ -104,11 +104,11 @@ class Order extends Model
             $info->express_at = time();
         }else if($order_status_id==6){
             //Canceled
-            $notify = $shop_config['order_canceled_notify'];
+            $notify = 1;
             $this->rollback($info);
         }else if($order_status_id==7){
             //Refunded
-            $notify = $shop_config['order_refunded_notify'];
+            $notify = 1;
             if($info->order_status_id>=2) {
                 $fee = intval($input['fee']);
                 if($fee>=0 && $fee<=100) {
@@ -134,7 +134,7 @@ class Order extends Model
             if(!empty($orderHistory)){
                 $orderHistory->update([
                     'comment'=>$input['comment']??'',
-                    'notify'=>$input['notify']??$notify
+                    'notify'=>$notify==1?$notify:($input['notify']??0),
                 ]);
             }
         }else{
@@ -142,7 +142,7 @@ class Order extends Model
                 'order_id'=>$info->id,
                 'order_status_id'=>$order_status_id,
                 'comment'=>$input['comment']??'',
-                'notify'=>$input['notify']??$notify
+                'notify'=>$notify==1?$notify:($input['notify']??0),
             ]);
             $info->order_status_id = $order_status_id;
         }
@@ -154,7 +154,8 @@ class Order extends Model
                     (new RemoteEmail())->send([
                         'email'=>$info->email,
                         'title'=>'Order Paid',
-                        'content'=>(new Paid($info))->render()
+                        'content'=>(new Paid($info))->render(),
+                        'cc'=>$shop_config['after_sales_email']?:'',
                     ]);
                 }else if($order_status_id==3){
                     //Shipped

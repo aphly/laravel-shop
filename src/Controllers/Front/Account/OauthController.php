@@ -21,6 +21,7 @@ class OauthController extends Controller
     public function redirect(Request $request)
     {
         if(in_array($request->driver,$this->driver)){
+            session()->put('url.intended', url()->previous());
             return Socialite::driver($request->driver)->redirect();
         }else{
             throw new ApiException(['code'=>1,'msg'=>'Oauth Type Error ']);
@@ -42,6 +43,7 @@ class OauthController extends Controller
 
     protected function findOrCreateUserLogin($Socialiteuser,$request)
     {
+        $path = session()->pull('url.intended', '/');
         if($request->driver=='google') {
             $post['id'] = $Socialiteuser->getEmail();
             if (!$post['id']) {
@@ -63,10 +65,10 @@ class OauthController extends Controller
             $user = CommonUser::where(['uid'=>$userAuth->uid])->firstOrError();
             $userAuthModel->update(['last_time'=>time(),'last_ip'=>$request->ip(),
                 'user_agent' => $request->header('user-agent'),'accept_language' => $request->header('accept-language')]);
+            Auth::guard('user')->login($user);
             (new Wishlist)->afterLogin();
             (new Cart)->afterLogin();
-            Auth::guard('user')->login($user);
-            throw new ApiException(['code'=>0,'msg'=>'login success','data'=>['redirect'=>$user->redirect()]]);
+            throw new ApiException(['code'=>0,'msg'=>'login success','data'=>['redirect'=>$path]]);
         }else{
             $post['uid'] = app('Snowflake')->nextId();
             $post['password'] = Hash::make(str::random(8));
@@ -82,12 +84,12 @@ class OauthController extends Controller
                     'token' => Str::random(64),
                     'token_expire' => time() + 86400
                 ]);
+                Auth::guard('user')->login($user);
                 (new Wishlist)->afterRegister();
                 (new Cart)->afterRegister();
-                Auth::guard('user')->login($user);
-                throw new ApiException(['code' => 0, 'msg' => 'Login Success']);
+                throw new ApiException(['code' => 0, 'msg' => 'Login Success','data'=>['redirect'=>$path]]);
             } else {
-                throw new ApiException(['code' => 1, 'msg' => 'Login Fail']);
+                throw new ApiException(['code' => 1, 'msg' => 'Login Fail','data'=>['redirect'=>$path]]);
             }
         }
     }

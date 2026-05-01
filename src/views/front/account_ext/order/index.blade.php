@@ -7,6 +7,7 @@
                 <div class="top-desc d-flex justify-content-between">
                     <h2>My Orders</h2>
                 </div>
+                @if($res['list']->count())
                 <ul class="order_list">
                     @foreach($res['list'] as $val)
                         <li class="">
@@ -53,6 +54,11 @@
                 <div>
                     {{$res['list']->links()}}
                 </div>
+                @else
+                    <div class="list_nothing" style=" ">
+                        Sorry, returned no results.
+                    </div>
+                @endif
             </div>
         </div>
     </div>

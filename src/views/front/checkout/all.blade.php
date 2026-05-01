@@ -2,6 +2,8 @@
 <style>
     .ext_login{display: flex;justify-content: center}
     .ext_login a{background: #000; color: #fff; padding: 10px 20px;border-radius: 8px;}
+    .checkout_info,.shipping_method .checkout_ul li,.checkout_ul li{border:none;box-shadow: 0 0 15px 0 #f1f1f1;font-weight: 600;margin-bottom: 10px;border-radius: 8px;}
+    .checkout_ul li[data-disabled="true"]{color: #ccc;cursor: inherit;}
 </style>
 <div class="container shop_main">
     <div class="">
@@ -18,7 +20,7 @@
                         </div>
                         @if(!$email)
                         <div style="font-size: 14px;">
-                            Have an account? <a href="{{route('login')}}" style="color:var(--btn_bg)">Log in</a>
+                            Have an account? <a href="{{route('login')}}?redirect={{urlencode(request()->url())}}" style="color:var(--btn_bg)">Log in</a>
                         </div>
                         @endif
                     </div>
@@ -29,7 +31,7 @@
                             <div class="invalid-feedback"></div>
                         </div>
                         <div class="ext_login">
-                            <a class="google" href="/oauth/google?redirect=">
+                            <a class="google" href="/oauth/google">
                                 <div class="d-flex justify-content-between">
                                     <div class="ext_icon">
                                         <svg width="22" height="22" xmlns="http://www.w3.org/2000/svg">
@@ -251,14 +253,18 @@
 
                     <ul class="checkout_ul ">
                         @foreach($res['shipping'] as $val)
-                            <li data-id="{{$val['id']}}" class="@if($val['id']==$res['shipping_first']['id']) active @endif">
+                            <li data-id="{{$val['id']}}" @if($val['disabled']) data-disabled="true" @endif class="@if($val['id']==$res['shipping_first']['id']) active @endif">
                                 <div class="lix">
                                     <div class="custom-radio_r" >
                                         <div>
                                             {{$val['name']}}
                                         </div>
                                         <div class="desc" style="">
-                                            {{$val['desc']}}
+                                            @if($val['cost']==0)
+                                                FREE On Orders Over {{$val['free_cost_format']}}
+                                            @else
+                                                {{$val['desc']}}
+                                            @endif
                                         </div>
                                         <div>
                                             @if($val['free'])
@@ -338,13 +344,13 @@
     .checkout_group label{position: absolute;top: 0;width: 100%;opacity: 1;z-index: -1;color: #999;transition: opacity 0.5s;line-height: 46px;}
     .checkout_group.form-group_show label{z-index: 1;padding: 0 10px;font-size: 12px;color: #999;line-height: 26px;}
     .checkout_group.form-group_show input{padding-top: 20px;}
-    .checkout_group input:focus{border-color:#0178ff;box-shadow:none;outline: none;border-width: 2px;}
+    .checkout_group input:focus{border-color:#0178ff;outline: none;border-width: 2px;}
     .checkout_group{}
     .checkout_group input{border-radius:8px;background: #fff;}
 
-    .checkout_ul li{display: flex;justify-content: space-between;margin-bottom: 0; border-radius: 0;}
-    .checkout_ul li:first-child{border-top-left-radius: 8px;border-top-right-radius: 8px;}
-    .checkout_ul li:last-child{border-bottom-left-radius: 8px;border-bottom-right-radius: 8px;}
+    .checkout_ul li{display: flex;justify-content: space-between;margin-bottom:10px; border-radius: 8px;}
+    /*.checkout_ul li:first-child{border-top-left-radius: 8px;border-top-right-radius: 8px;}*/
+    /*.checkout_ul li:last-child{border-bottom-left-radius: 8px;border-bottom-right-radius: 8px;}*/
     .checkout_ul li.disabled{ background: #f1f1f1;}
     .checkout_ul .desc{font-size: 10px;color: #666;}
     .checkout_ul li.active .custom-radio{border:1px solid var(--btn_bg)}
@@ -368,7 +374,7 @@
         width: calc((100% - 10px) / 2);
         padding: 10px;
         border-radius:8px;
-        margin-right:10px;
+        margin-right:10px;margin-bottom: 10px;
     }
     .shipping_method .checkout_ul li .lix{height: auto;position: relative}
     .shipping_method .checkout_ul li:nth-child(2n){
@@ -429,8 +435,9 @@
         let shipping_method_flag = false
         $('.shipping_method').on('click','li',function () {
             let id = $(this).data('id')
+            let disabled = $(this).data('disabled')
             let _this = $(this)
-            if(!shipping_method_flag){
+            if(!shipping_method_flag && !disabled){
                 shipping_method_flag = true
                 $.ajax({
                     url:'/checkout/shipping',

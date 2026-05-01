@@ -57,12 +57,12 @@
     @media (max-width: 1200px) {
         .myChart{width: 100%;margin-right: 0;}
         .cart-pay{width: 100%;}
-        .img-product img{height:100px; }
+        .img-product img{height:120px; }
         .cart-shopping{padding:40px 20px 20px;}
         .btn-empty .color-link-white{font-size: 12px;}
 
-        .cart-img{width: calc(40% - 20px);margin-right: 20px;}
-        .cart-img_r{width: 60%;}
+        .cart-img{width: 120px;margin-right: 20px;}
+        .cart-img_r{width: calc(100% - 140px);}
         .cart-product-name{font-size: 16px;font-weight: 500;}
         .subtotalInfo{margin-top: 15px;}
     }
@@ -222,7 +222,7 @@
                                 </dd>
                                 @if(isset($res['total_data']['totals']))
                                     @foreach($res['total_data']['totals'] as $key=>$val)
-                                        @if($key=='coupon' || $key=='shipping')
+                                        @if($key=='coupon')
                                         <dd class="{{$key}}_js"><span>{{$val['title']}}:</span><span class="cart-order-total-items">{{$val['value_format']}}</span> </dd>
                                         @endif
                                     @endforeach

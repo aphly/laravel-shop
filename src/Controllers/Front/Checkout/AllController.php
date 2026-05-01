@@ -172,11 +172,14 @@ class AllController extends Controller
             $input['delivery_zone'] = $userAddress['zone_name'];
             $input['delivery_zone_id'] = $userAddress['zone_id'];
             $input['delivery_telephone'] = $userAddress['telephone'];
-
-            $shipping_id = session('shop_shipping_id');
+            if($input['shipping_id']){
+                $shipping_id = $input['shipping_id'];
+            }else{
+                $shipping_id = session('shop_shipping_id');
+            }
             $res['shipping'] = (new Shipping)->getListGuest($shipping_id);
             if(!$res['shipping']){
-                throw new ApiException(['code'=>13,'msg'=>'no shipping','data'=>['redirect'=>'/checkout/payment']]);
+                throw new ApiException(['code'=>13,'msg'=>'no shipping','data'=>['redirect'=>'/checkout/all']]);
             }
             $input['shipping_id'] = $res['shipping']['id'];
             $input['shipping_name'] = $res['shipping']['name'];
@@ -285,11 +288,13 @@ class AllController extends Controller
         $res['shipping'] = (new Shipping)->getListGuest();
         $res['shipping_first'] = [];
         foreach ($res['shipping'] as $element) {
-            $res['shipping_first'] = $element;
-            session(['shop_shipping_id'=> $element['id']]);
-            break;
+            if(!$element['disabled']){
+                $res['shipping_first'] = $element;
+                session(['shop_shipping_id'=> $element['id']]);
+                break;
+            }
         }
-
+        //dd($res['shipping']);
         list($res['count'], $res['list'], $res['total_data']) = $cart->totalData();
         if (!$res['count']) {
             throw new ApiException(['code' => 11, 'msg' => 'no cart', 'data' => ['redirect' => '/cart']]);
@@ -321,49 +326,6 @@ class AllController extends Controller
         //$res['stripe'] =  new Stripe;
 
         return $this->makeView('laravel-shop::front.checkout.all', ['res' => $res]);
-    }
-
-    public function address(FormRequest $request)
-    {
-        $res['title'] = 'Checkout Address';
-        $res['breadcrumb'] = Breadcrumb::render([
-            ['name'=>'Home','href'=>'/'],
-            ['name'=>'Cart','href'=>'/cart'],
-            ['name'=>'Address','href'=>'']
-        ],false);
-        $cart = new Cart;
-        if($cart->hasShipping()) {
-            list($res['count'], $res['list'], $res['total_data']) = $cart->totalData();
-            if (!$res['count']) {
-                throw new ApiException(['code' => 11, 'msg' => 'no cart', 'data' => ['redirect' => '/cart']]);
-            }
-            if ($request->isMethod('post')) {
-                $input = $request->all();
-                $request->validate($input,[
-                    'firstname' => 'required|between:2,32',
-                    'lastname' => 'required|between:2,32',
-                    'address_1' => 'required|between:2,255',
-                    'city' => 'required|between:2,128',
-                    'postcode' => 'required|numeric',
-                    'telephone' => 'required|numeric',
-                    'country_id' => 'required|numeric',
-                    'zone_id' => 'required|numeric',
-                ]);
-                $input['uid'] = CommonUser::uid();
-                $userAddress = UserAddress::updateOrCreate(['id' => $request->input('address_id', 0)], $input);
-                session(['shop_address_id' => $userAddress->id]);
-                $shipping_method = (new Shipping)->getList($userAddress->id);
-                throw new ApiException(['code' => 0, 'msg' => 'Delivery Address success', 'data' => ['redirect' => '/checkout/shipping', 'list' => $shipping_method]]);
-            } else {
-                $request->session()->forget('shop_shipping_id');
-                $res['curr_address_id'] = session('shop_address_id', 0);
-                $res['my_address'] = (new UserAddress)->getAddresses();
-                $res['country'] = (new Country)->findAll();
-                return $this->makeView('laravel-shop::front.checkout.address', ['res' => $res]);
-            }
-        }else{
-            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>'/checkout/payment']]);
-        }
     }
 
     public function shipping(Request $request)

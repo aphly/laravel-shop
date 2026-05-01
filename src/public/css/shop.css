@@ -220,9 +220,10 @@ img{border-radius: 6px;}
     .write_a_review{width: 100%}
     .review_left{width: 100px;}
     .review_right{width: calc(100% - 110px);margin-left: 10px;}
+    .info_attr li{width: 100%;margin:5px 0;}
 }
 
-.info_option label{padding: 10px 20px; border: 1px solid #f1f1f1;margin-right: 10px; border-radius: 2px;cursor: pointer;background: #fff;}
+.info_option label{padding: 10px 20px;  box-shadow: 0 0 15px 0 #f1f1f1;margin-right: 10px; border-radius: 2px;cursor: pointer;background: #fff;}
 .info_option label img{width:30px;height:30px;margin-right: 10px;}
 .info_option label:hover,.quantity-wrapper div:hover{border: 1px solid #000;}
 .info_option label.active{border: 1px solid #333;}
@@ -234,6 +235,8 @@ img{border-radius: 6px;}
 .buy_btn:hover{background:var(--btn_bg_hover);color:var(--btn_color_hover);}
 .flag_checkbox input{ position: absolute;z-index: -1;}
 .flag_radio input{ position: absolute;z-index: -1;}
+.info_option .flag_radio .my_radio[data-image_src="true"] label{box-shadow:none;}
+.info_option label img{width: 50px;height: 50px;}
 /*product detail*/
 
 /*checkout*/
@@ -280,14 +283,14 @@ img{border-radius: 6px;}
 .items-lists li{line-height: 22px;}
 
 .btn-apply-code,.cart-code-input{border-radius:5px;height:45px;outline:none}
-.cart-code-input{border:1px solid #ccc;padding-left:10px;width:calc(100% - 120px)}
+.cart-code-input{padding-left:10px;width:calc(100% - 120px)}
 .btn-apply-code{background:#f16c00;border:none;color:#fff;font-size:14px;line-height:43px;padding:0;width: 110px;margin-left: 5px;position: relative;top: -1px;}
 .btn-apply-code:hover{color:#fff;}
 .summarytip{border-bottom:1px solid #f1f1f1;padding:10px 0 15px;position:relative}
 .coupon-remove {color: #0da9c4;cursor: pointer}
 .option_value_arr{display: flex;flex-wrap: wrap;}
 .option_value_arr dd{margin-right: 10px;background: #f1f1f1;padding:0 8px;border-radius: 4px;margin-bottom: 5px; }
-.info_option input,.info_option select{height: 40px;}
+.info_option input,.info_option select{height: 40px;display: none;}
 @media (max-width: 1199.98px) {
     .checkout{}
     .checkout_l,.checkout_r{width: 100%;margin-right: 0;}

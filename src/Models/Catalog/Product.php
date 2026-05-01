@@ -280,10 +280,10 @@ class Product extends Model
 
     function priceArr($symbol){
         return [
-            ['0-20','Under '.$symbol.'20'],
-            ['20-50',''.$symbol.'20 to '.$symbol.'50'],
+            ['0-50','Under '.$symbol.'50'],
             ['50-100',''.$symbol.'50 to '.$symbol.'100'],
-            ['100','Over '.$symbol.'100']
+            ['100-200',''.$symbol.'100 to '.$symbol.'200'],
+            ['200',$symbol.'200 & above']
         ];
     }
 

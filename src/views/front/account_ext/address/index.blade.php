@@ -17,43 +17,44 @@
                 <div class="top-desc d-flex justify-content-between">
                     <h2>Delivery Address</h2>
                 </div>
-                <ul class="list_index">
-                    @foreach($res['list'] as $val)
-                    <li class="">
-                        <div class="d-flex justify-content-between">
-                            <div class="address_info">
-                                <p><i>Name:</i> <span>{{$val['firstname']}} {{$val['lastname']}}</span></p>
-                                <p><i>Address:</i> <span>{{$val['address_1']}} , {{$val['city']}} ,
-                                        {{$val['zone_id']?$res['zone'][$val['zone_id']]['name']:''}} ,
-                                        {{$res['country'][$val['country_id']]['name']}}</span></p>
-                                <p><i>Postcode:</i> <span>{{$val['postcode']}}</span></p>
-                                <p><i>Telephone:</i> <span>{{$val['telephone']}}</span></p>
+                @if($res['list']->count())
+                    <ul class="list_index">
+                        @foreach($res['list'] as $val)
+                        <li class="">
+                            <div class="d-flex justify-content-between">
+                                <div class="address_info">
+                                    <p><i>Name:</i> <span>{{$val['firstname']}} {{$val['lastname']}}</span></p>
+                                    <p><i>Address:</i> <span>{{$val['address_1']}} , {{$val['city']}} ,
+                                            {{$val['zone_id']?$res['zone'][$val['zone_id']]['name']:''}} ,
+                                            {{$res['country'][$val['country_id']]['name']}}</span></p>
+                                    <p><i>Postcode:</i> <span>{{$val['postcode']}}</span></p>
+                                    <p><i>Telephone:</i> <span>{{$val['telephone']}}</span></p>
+                                </div>
+                                <div class="">
+                                    @if($user->address_id == $val['id'])
+                                        <span class="badge badge-success">default</span>
+                                    @endif
+                                </div>
                             </div>
-                            <div class="">
-                                @if($user->address_id == $val['id'])
-                                    <span class="badge badge-success">default</span>
-                                @endif
+                            <div class="address_infox d-flex">
+                                <a href="/account_ext/address/save?address_id={{$val['id']}}" class="my_btn">
+                                    <i class="common-iconfont icon-bianjishuru"></i>Edit
+                                </a>
+                                <a href="javascript:;" data-address_id="{{$val['id']}}" class="delete my_btn">
+                                    <i class="common-iconfont icon-shanchu"></i>Remove
+                                </a>
                             </div>
-                        </div>
-                        <div class="address_infox d-flex">
-                            <a href="/account_ext/address/save?address_id={{$val['id']}}" class="my_btn">
-                                <i class="common-iconfont icon-bianjishuru"></i>Edit
-                            </a>
-                            <a href="javascript:;" data-address_id="{{$val['id']}}" class="delete my_btn">
-                                <i class="common-iconfont icon-shanchu"></i>Remove
-                            </a>
-                        </div>
-                    </li>
-                    @endforeach
-                </ul>
+                        </li>
+                        @endforeach
+                    </ul>
+                    <div>
+                        {{$res['list']->links()}}
+                    </div>
+                @endif
                 <div class="my_btn_f">
                     <a href="/account_ext/address/save" class="my_btn_add">
                         <i class="uni app-jia1"></i>
                     </a>
-                </div>
-
-                <div>
-                    {{$res['list']->links()}}
                 </div>
             </div>
         </div>

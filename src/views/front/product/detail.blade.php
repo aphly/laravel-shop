@@ -17,8 +17,8 @@
     }
     .add_cart_btn{background: #e7a1a2;border: none;color: #fff}
     .add_cart_btn:hover{background: #e59798;}
-    .buy_btn{background: #de8080;color: #fff}
-    .buy_btn:hover{background: #d46d6d;}
+    .buy_btn{background: var(--btn_bg);color: #fff}
+    .buy_btn:hover{background: var(--btn_bg_hover);}
     .product_detail_img .small_img .swiper-wrapper .swiper-slide.active img{border: 1px solid #d19595;}
     .price_sale_detail{color: #E36254;font-weight: 600;margin-bottom: 10px;}
     .product_detail_info .price .normal{color: #E36254;}
@@ -28,7 +28,7 @@
     .info_option .flag_radio .my_radio[data-image_src="true"] label img{border-radius: 50%;margin-right: 0;padding: 3px;}
     .info_option .flag_radio .my_radio[data-image_src="true"] label:hover{border: none !important;}
     .info_option .flag_radio .my_radio[data-image_src="true"] label.active img{border:2px solid #e59798 !important;padding: 1px;}
-    .info_option label img{width: 40px;height:40px;}
+
 </style>
 <div class="container shop_main">
     <div>
@@ -170,9 +170,94 @@
                     <button class="add_cart_btn " id="add_cart_btn" type="submit"><i class="common-iconfont icon-31gouwuche"></i> Add To Cart</button>
                 </form>
                 <button class="buy_btn " id="buy_btn" type="button" onclick="buyNow(this)" style="margin-top: 10px;">Buy Now</button>
+
+                <div class="tipBoxF">
+                    <div class="tipBox">
+                        <img src="/static/shop/img/check-square.svg" width="17" height="16">
+                        Free Shipping over {{$res['shippingFreeCost']}}
+                    </div>
+                    <div class="tipBox">
+                        <img src="/static/shop/img/check-square.svg" width="17" height="16">
+                        After-sales Service Guaranteed
+                    </div>
+                    <div class="tipBox">
+                        <img src="/static/shop/img/check-square.svg" width="17" height="16">
+                        Nickel-Free & Hypoallergenic
+                    </div>
+                </div>
+
+                <style>
+                    .tipBoxF{margin-top: 20px;margin-left: 5px;}
+                    .tipBox{margin-top: 10px;font-weight: 500;}
+                    .tipBox img{margin-right: 5px;}
+                </style>
+
+                <div class="shipping_tb">
+                    <div class="shipping_tb_x"></div>
+                    <div class="shipping_tb1">
+                        <div class="shipping_tb1a1">
+                            <div class="shipping_tb1a"><i class="uni app-gouwuche1"></i></div>
+                        </div>
+                        <div class="shipping_tb1b"><span class="js_shipping_tb1"></span></div>
+                        <div class="shipping_tb1c">Ordered</div>
+                    </div>
+                    <div class="shipping_tb1">
+                        <div class="shipping_tb1a1">
+                            <div class="shipping_tb1a"><i class="uni app-huoyun"></i></div>
+                        </div>
+                        <div class="shipping_tb1b"><span class="js_shipping_tb21"></span><span style="margin: 0 5px;">-</span><span class="js_shipping_tb22"></span></div>
+                        <div class="shipping_tb1c">Order Ready</div>
+                    </div>
+                    <div class="shipping_tb1">
+                        <div class="shipping_tb1a1">
+                            <div class="shipping_tb1a"><i class="uni app-liwu"></i></div>
+                        </div>
+                        <div class="shipping_tb1b"><span class="js_shipping_tb31"></span> <span style="margin: 0 5px;">-</span>  <span class="js_shipping_tb32"></span></div>
+                        <div class="shipping_tb1c">Delivered</div>
+                    </div>
+                </div>
+                <div style="margin-top: 20px;">
+                    Every product is checked carefully before shipping.We promise fast delivery and good after-sales service.Your satisfaction is our greatest pursuit.
+                </div>
+                <style>
+                    .shipping_tb_x{position: absolute;width: 70%;height: 2px;background: #000;left: 15%;top: 25px;z-index: -1}
+                    .shipping_tb{display: flex;position: relative;justify-content: space-between;margin-top: 40px;}
+                    .shipping_tb1{width: 30%;display: flex;flex-wrap: wrap;justify-content: center;}
+                    .shipping_tb1a1,.shipping_tb1b,.shipping_tb1c{width: 100%;    display: flex;justify-content: center;}
+                    .shipping_tb1b{margin-top: 10px;}
+                    .shipping_tb1c{margin-top: 5px;}
+                    .shipping_tb1a{width: 50px;height: 50px;background: #000;border-radius: 50%;display: flex;justify-content: center;align-items: center;}
+                    .shipping_tb1a i{color:#fff;font-size: 22px;}
+                    .shipping_tb1b{font-weight: 600;}
+                </style>
             </div>
         </div>
     </div>
+    <script>
+        function formatDateToMonthDay(days = 0) {
+            const now = new Date();
+            const date = new Date(now.setDate(now.getDate() + days));
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const month = months[date.getMonth()];
+            const day = date.getDate();
+            let suffix = 'th';
+            if (day % 10 === 1 && day !== 11) {
+                suffix = 'st';
+            } else if (day % 10 === 2 && day !== 12) {
+                suffix = 'nd';
+            } else if (day % 10 === 3 && day !== 13) {
+                suffix = 'rd';
+            }
+            return `${month} ${day}${suffix}`;
+        }
+        $(function () {
+            $('.js_shipping_tb1').text(formatDateToMonthDay())
+            $('.js_shipping_tb21').text(formatDateToMonthDay(1))
+            $('.js_shipping_tb22').text(formatDateToMonthDay(2))
+            $('.js_shipping_tb31').text(formatDateToMonthDay(10))
+            $('.js_shipping_tb32').text(formatDateToMonthDay(12))
+        })
+    </script>
     <style>
     .description_img li{text-align: center;}
     </style>

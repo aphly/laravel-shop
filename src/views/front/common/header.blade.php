@@ -4,16 +4,16 @@
 <link rel="stylesheet" href="{{ URL::asset('static/base/front/css/font.css') }}">
 <style>
     :root{
-        --btn_bg: #a67b42;
+        --btn_bg:#e1a52e;
         --btn_color:#fff;
-        --btn_bg_hover: #a67b42;
+        --btn_bg_hover: #ce822e;
         --btn_color_hover:#fff;
     }
     .m_menu1111{width: 30%;}
     .header11{margin-right: 20px;}
     .text-brand {
-        --tw-gradient-from: #de922d !important;
-        --tw-gradient-to: #a67b42 !important;
+        --tw-gradient-from:var(--btn_bg) !important;
+        --tw-gradient-to: var(--btn_bg_hover) !important;
         --tw-gradient-stops: var(--tw-gradient-from),var(--tw-gradient-to,rgba(28,157,254,0));
         background-image: linear-gradient(to right,var(--tw-gradient-stops));
     }
@@ -29,11 +29,17 @@
     .pagination{ margin-top: 20px;justify-content: center;}
     .page-link{padding: 8px 16px;}
     .page-item.active .page-link{border-color:var(--btn_bg);background-color:var(--btn_bg);}
-    .form-control{color:#000}
+    .form-control{color:#000;border-radius:8px;border: none;box-shadow: 0 0 15px 0 #f1f1f1;line-height: 40px; height: 40px;}
     .price_format{color: #E36254;}
     .price_old_format{color: #787a7c;text-decoration: line-through;opacity: 0.8;font-size: 13px;margin-left: 2px;}
-    input,select{border-radius:8px;}
+    input,select,input{border-radius:8px;border: none;box-shadow: 0 0 15px 0 #f1f1f1;}
     .menu .active{color:var(--btn_bg);}
+    .list_nothing{font-size: 20px;font-weight: 500;text-align: center;  margin-top: 10%;}
+    @media (max-width: 1200px) {
+        .container {
+            max-width: 100%;
+        }
+    }
 </style>
 <header>
     <div class="header1">

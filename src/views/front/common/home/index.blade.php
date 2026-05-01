@@ -136,8 +136,18 @@
         @endforeach
     </div>
 </div>
+<div class="h_box" style="">
+    <div class="container">
+        <p>At {{config('base.title')}}, our fine jewelry is thoughtfully designed and carefully crafted to last a lifetime. We hand-pick only the most beautiful diamonds and colorful gemstones directly at the source to create timeless, high-quality jewelry for every style and budget. Discover our wide selection of beautifully crafted engagement rings, wedding bands, necklaces, rings, bracelets, and earrings.</p>
+        <p>Our professional jewelry consultants will provide you with stress-free guidance, giving you confidence as you search for the perfect accessory.</p>
+    </div>
+</div>
+
 
 <style>
+    .h_box{background: #fafafa;padding: 40px 0;font-size: 16px;margin-top: 20px;}
+    .h_box p{margin-bottom: 10px;}
+    main{padding-bottom: 0;}
     .product_option dl dd.active{border:none;}
     .product_option dl dd img{border-radius: 50%;padding: 3px;cursor: pointer;}
     .product_option dl dd.active img{padding: 1px;border: 2px solid #e59798;}

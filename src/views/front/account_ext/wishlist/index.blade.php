@@ -16,42 +16,48 @@
                 <div class="top-desc d-flex justify-content-between">
                     <h2>Wishlist</h2>
                 </div>
-                <ul class="list_index">
-                    @foreach($res['list'] as $val)
-                        <li class="">
-                            <div class="d-flex align-items-center">
-                                <div class="wishlist_img">
-                                    <a href="/product/{{$val['product_id']}}"><img src="{{$res['productData'][$val['product_id']]->image_src}}" alt=""></a>
-                                </div>
-                                <div style="margin-right: auto; width: 50%;">
-                                    <a href="/product/{{$val['product_id']}}">
-                                        <div class="wishlist_name wenzi">{{$res['productData'][$val['product_id']]->name}}</div></a>
-                                    <div class="d-flex align-items-baseline">
-                                        @if($res['productData'][$val['product_id']]->special)
-                                            <span class="normal" style="margin-right: 10px;">{{$res['productData'][$val['product_id']]->special}}</span>
-                                            <span class="special_price">{{$res['productData'][$val['product_id']]->price}}</span>
-                                        @else
-                                            @if($res['productData'][$val['product_id']]->discount)
-                                                <span class="normal" style="margin-right: 10px;">{{$res['productData'][$val['product_id']]->discount}}</span>
+                @if($res['list']->count())
+                    <ul class="list_index">
+                        @foreach($res['list'] as $val)
+                            <li class="">
+                                <div class="d-flex align-items-center">
+                                    <div class="wishlist_img">
+                                        <a href="/product/{{$val['product_id']}}"><img src="{{$res['productData'][$val['product_id']]->image_src}}" alt=""></a>
+                                    </div>
+                                    <div style="margin-right: auto; width: 50%;">
+                                        <a href="/product/{{$val['product_id']}}">
+                                            <div class="wishlist_name wenzi">{{$res['productData'][$val['product_id']]->name}}</div></a>
+                                        <div class="d-flex align-items-baseline">
+                                            @if($res['productData'][$val['product_id']]->special)
+                                                <span class="normal" style="margin-right: 10px;">{{$res['productData'][$val['product_id']]->special}}</span>
                                                 <span class="special_price">{{$res['productData'][$val['product_id']]->price}}</span>
                                             @else
-                                                <span class="normal">{{$res['productData'][$val['product_id']]->price}}</span>
+                                                @if($res['productData'][$val['product_id']]->discount)
+                                                    <span class="normal" style="margin-right: 10px;">{{$res['productData'][$val['product_id']]->discount}}</span>
+                                                    <span class="special_price">{{$res['productData'][$val['product_id']]->price}}</span>
+                                                @else
+                                                    <span class="normal">{{$res['productData'][$val['product_id']]->price}}</span>
+                                                @endif
                                             @endif
-                                        @endif
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <a href="javascript:;" data-id="{{$val['id']}}" class="delete my_btn">
+                                            <i class="common-iconfont icon-shanchu" ></i>Remove
+                                        </a>
                                     </div>
                                 </div>
-                                <div>
-                                    <a href="javascript:;" data-id="{{$val['id']}}" class="delete my_btn">
-                                        <i class="common-iconfont icon-shanchu" ></i>Remove
-                                    </a>
-                                </div>
-                            </div>
-                        </li>
-                    @endforeach
-                </ul>
-                <div>
-                    {{$res['list']->links()}}
-                </div>
+                            </li>
+                        @endforeach
+                    </ul>
+                    <div>
+                        {{$res['list']->links()}}
+                    </div>
+                @else
+                    <div class="list_nothing" style=" ">
+                        Sorry, returned no results.
+                    </div>
+                @endif
             </div>
         </div>
     </div>

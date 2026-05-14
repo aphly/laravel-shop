@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('paypal/index', 'Aphly\LaravelShop\Controllers\Front\PaypalController@index');
+Route::post('paypal/order', 'Aphly\LaravelShop\Controllers\Front\PaypalController@order');
+Route::post('paypal/capture', 'Aphly\LaravelShop\Controllers\Front\PaypalController@capture');
+
 Route::get('mail/render', 'Aphly\LaravelShop\Controllers\Front\MailController@render');
 
 Route::middleware(['web'])->group(function () {
@@ -152,10 +156,14 @@ Route::middleware(['web'])->group(function () {
         Route::post('checkout/coupon_remove', 'Aphly\LaravelShop\Controllers\Front\Checkout\AllController@couponRemove');
 
         //payment
-        Route::get('checkout/all', 'Aphly\LaravelShop\Controllers\Front\Checkout\AllController@index');
-        Route::post('checkout/payment', 'Aphly\LaravelShop\Controllers\Front\Checkout\AllController@payment');
-        Route::get('checkout/email', 'Aphly\LaravelShop\Controllers\Front\Checkout\AllController@email');
+//        Route::get('checkout/all', 'Aphly\LaravelShop\Controllers\Front\Checkout\AllController@index');
+//        Route::post('checkout/payment', 'Aphly\LaravelShop\Controllers\Front\Checkout\AllController@payment');
+//        Route::get('checkout/email', 'Aphly\LaravelShop\Controllers\Front\Checkout\AllController@email');
 
+        //payment paypal
+        Route::get('checkout/all_paypal', 'Aphly\LaravelShop\Controllers\Front\Checkout\AllController@indexPaypal');
+        Route::post('checkout/payment_paypal', 'Aphly\LaravelShop\Controllers\Front\Checkout\AllController@paymentPaypal');
+        Route::post('checkout/capture_paypal', 'Aphly\LaravelShop\Controllers\Front\Checkout\AllController@capturePaypal');
     });
 });
 

@@ -34,16 +34,16 @@ return new class extends Migration
 
             $table->unsignedTinyInteger('same')->default(1);
 
-            $table->string('billing_firstname',32);
-            $table->string('billing_lastname',32);
-            $table->string('billing_address_1',128);
+            $table->string('billing_firstname',32)->nullable();
+            $table->string('billing_lastname',32)->nullable();
+            $table->string('billing_address_1',128)->nullable();
             $table->string('billing_address_2',128)->nullable();
-            $table->string('billing_city',128);
-            $table->string('billing_postcode',10);
-            $table->string('billing_country',128);
-            $table->unsignedBigInteger('billing_country_id');
-            $table->string('billing_zone',128);
-            $table->unsignedBigInteger('billing_zone_id');
+            $table->string('billing_city',128)->nullable();
+            $table->string('billing_postcode',10)->nullable();
+            $table->string('billing_country',128)->nullable();
+            $table->unsignedBigInteger('billing_country_id')->default(0);
+            $table->string('billing_zone',128)->nullable();
+            $table->unsignedBigInteger('billing_zone_id')->default(0);
 
             $table->unsignedBigInteger('shipping_id');
             $table->string('shipping_name',32);

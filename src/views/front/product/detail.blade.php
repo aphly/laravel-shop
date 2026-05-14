@@ -15,8 +15,8 @@
     @media (max-width: 1200px) {
         .video_box{width: 100%;}
     }
-    .add_cart_btn{background: #e7a1a2;border: none;color: #fff}
-    .add_cart_btn:hover{background: #e59798;}
+    .add_cart_btn{background: #e9bf6a;border: none;color: #fff}
+    .add_cart_btn:hover{background: #d3a547;}
     .buy_btn{background: var(--btn_bg);color: #fff}
     .buy_btn:hover{background: var(--btn_bg_hover);}
     .product_detail_img .small_img .swiper-wrapper .swiper-slide.active img{border: 1px solid #d19595;}
@@ -548,7 +548,7 @@
     function detail_res(res) {
         if(!res.code){
             if(buy_now){
-                location.href = '/checkout/all'
+                location.href = '/checkout/all_paypal'
             }else{
                 div_fly($('#add_cart_btn'),$('#cart_num'),function () {
                     $('#cart_num').text(res.data.count);

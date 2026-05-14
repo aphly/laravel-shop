@@ -57,7 +57,7 @@ class OrderController extends Controller
     {
         $res['info'] = Order::where(['uid'=>CommonUser::uid(),'id'=>$request->query('id',0)])->where('delete_at',0)->where('order_status_id',1)->firstOrError();
         if($res['info']->payment_id){
-            (new Payment)->pay(true,$res['info']->payment_id);
+            (new Payment)->pay(1,$res['info']->payment_id);
         }else{
             throw new ApiException(['code'=>1,'msg'=>'order error']);
         }

@@ -88,8 +88,7 @@
                             </div>
                         </li>
                         <li><div class="info_left">Shipping Method:</div><div>{{$res['info']->shipping_name}}</div></li>
-                        <li><div class="info_left">Express Name:</div><div>{{$res['info']->express_name??'-'}}</div></li>
-                        <li><div class="info_left">Tracking Number:</div><div>{{$res['info']->express_no??'-'}}</div></li>
+                        <li><div class="info_left">Tracking Number:</div><div>{!! $res['info']->tracking_number?'<a style="color: #0ba59f;" href="/tracking/index?order_number='.$res['info']->tracking_number.'">'.$res['info']->tracking_number.'</a>':'-' !!}</div></li>
                     </ul>
                 </div>
 

@@ -57,7 +57,6 @@
                                 <li><div>Return Phone </div><div>{{$res['info']->service_phone}}</div></li>
                             @endif
                             @if($res['info']->service_status_id>=4)
-                                <li><div>Express delivery name </div><div>{{$res['info']->c_express_name}}</div></li>
                                 <li><div>Express Tracking number </div><div>{{$res['info']->c_express_no}}</div></li>
                             @endif
                         @endif
@@ -150,7 +149,6 @@
                                     <div>Express delivery information</div>
                                     <input type="hidden" name="service_id" value="{{$res['info']->id}}">
                                     <input type="hidden" name="service_action_id" value="{{$res['info']->service_action_id}}">
-                                    <input type="text" name="c_express_name" class="form-control " placeholder="Express delivery name">
                                     <input type="text" name="c_express_no" class="form-control " placeholder="Tracking number">
                                     <button type="submit" class="account_btn">Shipped</button>
                                 </form>
@@ -161,7 +159,6 @@
                                     @csrf
                                     <div>Express delivery information</div>
                                     <input type="hidden" name="service_id" value="{{$res['info']->id}}">
-                                    <input type="text" name="c_express_name" class="form-control " value="{{$res['info']->c_express_name}}">
                                     <input type="text" name="c_express_no" class="form-control " value="{{$res['info']->c_express_no}}">
                                     <button type="submit" class="account_btn">Shipped</button>
                                 </form>

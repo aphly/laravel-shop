@@ -28,19 +28,18 @@
         .service_product1 input[type="checkbox"]{ width: 20px; height: 20px;cursor: pointer;}
         .orderProductImg img{width: 100%;height: 100%;}
 
-        .orderInfo{background: #fff;padding:15px; border-radius: 8px;margin-bottom: 10px;}
-        .orderInfo li{display: flex;}
+        .orderInfo{background: #fff; border-radius: 8px;margin-bottom: 10px;}
+        .orderInfo li{display: flex;margin-top:5px; }
         .orderInfo li>div{margin-right: 20px;}
-        .orderInfo li>div:first-child{width: 100px;color:#666;}
+        .orderInfo li>div:first-child{width: 150px;color:#666;}
 
         .service_action_ul li{flex:1;color: #333;border-radius: 6px;text-align: center;border: 1px solid #f1f1f1;cursor: pointer;margin: 0 10px;padding:10px 0;display: flex;justify-content: center;align-items: center;}
         .service_action_ul li.active{color: var(--btn_bg);border: 1px solid var(--btn_bg);}
         .quantity-wrapper div, .quantity-wrapper input{height: 30px;line-height: 30px;width: 30px; min-width: 30px;padding: 0;}
         .service_action_ul_res li{display: none;}
         .service_action_ul_res li.active{display: block;color: var(--btn_bg);}
-        .service_form{margin-bottom: 10px;background: #fff;padding:15px; border-radius: 8px;}
+        .service_form{margin-bottom: 10px;background: #fff; border-radius: 8px;}
         .file_img img{width: 80px;height: 80px;margin-right: 10px;}
-
         #is_opened{display: none}
     </style>
     <div class="account_info">
@@ -56,6 +55,7 @@
                         <li><div>Order id</div><div>{{$res['orderInfo']->id}}</div></li>
                         <li><div>Order Total</div><div>{{$res['orderInfo']->total_format}}</div></li>
                         <li><div>Order Status</div><div>{{$res['orderInfo']->orderStatus->name}}</div></li>
+                        <li><div>Tracking Number:</div><div>{!! $res['orderInfo']->tracking_number?'<a style="color: #0ba59f;" href="/tracking/index?order_number='.$res['orderInfo']->tracking_number.'">'.$res['orderInfo']->tracking_number.'</a>':'-' !!}</div></li>
                     </ul>
                     <dl class="order_product">
                         @foreach($res['orderProduct'] as $val)

@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('shop_product_reward', function (Blueprint $table) {
-            $table->unsignedInteger('product_id')->index();
+            $table->unsignedBigInteger('product_id')->index();
             $table->unsignedInteger('group_id')->index();
             $table->unsignedInteger('points')->nullable();
             $table->primary(['product_id','group_id']);

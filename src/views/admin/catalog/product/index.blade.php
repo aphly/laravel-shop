@@ -9,6 +9,7 @@
     <div class="itop ">
         <form method="get" action="/shop_admin/product/index" class="select_form">
         <div class="search_box ">
+            <input type="search" name="id" placeholder="商品id" value="{{$res['search']['id']}}">
             <input type="search" name="name" placeholder="商品名称" value="{{$res['search']['name']}}">
             <input type="search" name="sku" placeholder="商品sku" value="{{$res['search']['sku']}}">
             <select name="status" >
@@ -24,6 +25,7 @@
         </form>
 
         <div class="">
+            <a data-href="/shop_admin/product/set_price" class="badge badge-info ajax_request add">重新设置价格</a>
             <a data-href="/shop_admin/product/sync" class="badge badge-info ajax_html add">OSS</a>
             <a data-href="/shop_admin/product/add" class="badge badge-info ajax_html add">新增</a>
         </div>

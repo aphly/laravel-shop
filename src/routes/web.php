@@ -150,20 +150,24 @@ Route::middleware(['web'])->group(function () {
         Route::get('cart/coupon_remove', 'Aphly\LaravelShop\Controllers\Front\Checkout\CartController@couponRemove');
 
         //all
-        //shipping
-        Route::post('checkout/shipping', 'Aphly\LaravelShop\Controllers\Front\Checkout\AllController@shipping');
-        Route::post('checkout/coupon', 'Aphly\LaravelShop\Controllers\Front\Checkout\AllController@coupon');
-        Route::post('checkout/coupon_remove', 'Aphly\LaravelShop\Controllers\Front\Checkout\AllController@couponRemove');
 
         //payment
 //        Route::get('checkout/all', 'Aphly\LaravelShop\Controllers\Front\Checkout\AllController@index');
 //        Route::post('checkout/payment', 'Aphly\LaravelShop\Controllers\Front\Checkout\AllController@payment');
-//        Route::get('checkout/email', 'Aphly\LaravelShop\Controllers\Front\Checkout\AllController@email');
+
 
         //payment paypal
-        Route::get('checkout/all_paypal', 'Aphly\LaravelShop\Controllers\Front\Checkout\AllController@indexPaypal');
-        Route::post('checkout/payment_paypal', 'Aphly\LaravelShop\Controllers\Front\Checkout\AllController@paymentPaypal');
-        Route::post('checkout/capture_paypal', 'Aphly\LaravelShop\Controllers\Front\Checkout\AllController@capturePaypal');
+        Route::get('checkout/email', 'Aphly\LaravelShop\Controllers\Front\Checkout\PaypalController@email');
+        Route::get('checkout/all_paypal', 'Aphly\LaravelShop\Controllers\Front\Checkout\PaypalController@index');
+        Route::post('checkout/payment_paypal', 'Aphly\LaravelShop\Controllers\Front\Checkout\PaypalController@payment');
+        Route::post('checkout/capture_paypal', 'Aphly\LaravelShop\Controllers\Front\Checkout\PaypalController@capture');
+        Route::post('checkout/shipping', 'Aphly\LaravelShop\Controllers\Front\Checkout\PaypalController@shipping');
+        Route::post('checkout/coupon', 'Aphly\LaravelShop\Controllers\Front\Checkout\PaypalController@coupon');
+        Route::post('checkout/coupon_remove', 'Aphly\LaravelShop\Controllers\Front\Checkout\PaypalController@couponRemove');
+
+
+        //Tracking
+        Route::match(['get', 'post'],'tracking/index', 'Aphly\LaravelShop\Controllers\Front\Common\TrackingController@index');
     });
 });
 
@@ -233,6 +237,8 @@ Route::middleware(['web'])->group(function () {
             Route::get('coupon/history', 'Aphly\LaravelShop\Controllers\Admin\Sale\CouponController@history');
 
             Route::get('product/ajax', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@ajax');
+            Route::get('product/set_price', 'Aphly\LaravelShop\Controllers\Admin\Catalog\ProductController@setPrice');
+
             Route::get('attribute/ajax', 'Aphly\LaravelShop\Controllers\Admin\Catalog\AttributeController@ajax');
             Route::get('option/ajax', 'Aphly\LaravelShop\Controllers\Admin\Catalog\OptionController@ajax');
 
@@ -241,6 +247,9 @@ Route::middleware(['web'])->group(function () {
             Route::post('order/download', 'Aphly\LaravelShop\Controllers\Admin\Sale\OrderController@download');
             Route::post('order/shipped', 'Aphly\LaravelShop\Controllers\Admin\Sale\OrderController@shipped');
             Route::get('order/sync', 'Aphly\LaravelShop\Controllers\Admin\Sale\OrderController@sync');
+            //Route::get('order/shipping', 'Aphly\LaravelShop\Controllers\Admin\Sale\OrderController@shipping');
+            Route::post('order/save_shipping', 'Aphly\LaravelShop\Controllers\Admin\Sale\OrderController@saveShipping');
+            Route::get('order/shipping_label', 'Aphly\LaravelShop\Controllers\Admin\Sale\OrderController@shippingLabel');
 
             Route::get('service/view', 'Aphly\LaravelShop\Controllers\Admin\Sale\ServiceController@view');
             Route::post('service/history_save', 'Aphly\LaravelShop\Controllers\Admin\Sale\ServiceController@historySave');

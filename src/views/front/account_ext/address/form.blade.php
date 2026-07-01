@@ -47,10 +47,15 @@
                         </div>
                         <div class="form-group">
                             <p>Country: <b>*</b></p>
+                            @if($res['info']->country_code)
+                                <input type="hidden" id="country_code" name="country_code" value="{{$res['info']->country_code}}">
+                            @else
+                                <input type="hidden" id="country_code" name="country_code" value="">
+                            @endif
                             <select name="country_id" id="input-country" required class="form-control country">
-                                <option value=""> --- Please Select --- </option>
+                                <option value="" data-country_code=""> --- Please Select --- </option>
                                 @foreach($res['country'] as $val)
-                                    <option value="{{$val['id']}}" @if($val['id']==$res['info']->country_id) selected @endif>{{$val['name']}}</option>
+                                    <option data-country_code="{{$val['iso_code_2']}}" value="{{$val['id']}}" @if($val['id']==$res['info']->country_id) selected @endif>{{$val['name']}}</option>
                                 @endforeach
                             </select>
                             <div class="invalid-feedback"></div>
@@ -108,6 +113,7 @@
     $(function () {
         $('#input-country').change(function () {
             let country_id = $(this).val();
+            $('#country_code').val($(this).find('option:selected').data('country_code'))
             if(country_id in country_zone){
                 makeZone(country_zone[country_id])
             }else{

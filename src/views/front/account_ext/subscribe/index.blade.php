@@ -10,17 +10,24 @@
 
                 <form action="/account_ext/subscribe" method="post" class="form_request" data-fn="save_res">
                     <div style="margin-top: 20px;">
-                    @if(!empty($res['info']) && $res['info']->status==1)
+                        @if(!$res['email'])
+                        <div class="form-group" >
+                            <p class="title_p">Email: <b>*</b></p>
+                            <input class="form-control" required type="email" name="email" value="">
+                        </div>
+                        @endif
+
+                        @if(!empty($res['info']) && $res['info']->status==1)
                         <input type="checkbox" id="checkbox_status" name="status" checked value="1">
                         <label for="checkbox_status">
                             General Subscription
                         </label>
-                    @else
+                        @else
                         <input type="checkbox" id="checkbox_status" name="status" value="1">
                         <label for="checkbox_status">
                             General Subscription
                         </label>
-                    @endif
+                       @endif
                     </div>
                     <div class="form-group d-flex" style="margin-top: 30px;">
                         <button class="btn btn-primary" type="submit">Save</button>

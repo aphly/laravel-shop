@@ -39,7 +39,7 @@ class Controller extends \Aphly\Laravel\Controllers\Front\Controller
                 if($count){
                     Wishlist::$product_ids = array_column($wishlist->get('product_id')->toArray(),'product_id');
                 }
-                View::share("email",CommonUser::initId());
+                View::share("email",CommonUser::getEmail());
             }else{
                 $shop_wishlist = session('shop_wishlist');
                 if($shop_wishlist){

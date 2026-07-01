@@ -20,11 +20,16 @@ class Product extends Model
         'sku','name','quantity','image','price','uid','spu','id',
         'is_shipping','stock_status_id','weight','weight_class_id',
         'length','width','height','length_class_id','subtract',
-        'status','viewed','sale','sort','date_available','url','disk','is_color_group'
+        'status','viewed','sale','sort','date_available','url','disk','is_color_group',
+        'declaration_unit_weight','declaration_name_local','declaration_name_en','declaration_hs_code','declaration_material','declaration_brand','declaration_remark'
     ];
 
     function desc(){
         return $this->hasOne(ProductDesc::class,'product_id','id');
+    }
+
+    function cost(){
+        return $this->hasOne(ProductCost::class,'product_id','id');
     }
 
     function img(){
@@ -331,6 +336,11 @@ class Product extends Model
 
     function findReward($id,$group_id){
         return ProductReward::where('product_id',$id)->where('group_id',$group_id)->first();
+    }
+
+    function findCategory($id){
+        $data = ProductCategory::where('product_id',$id)->get()->toArray();
+        return array_column($data,'category_id');
     }
 
     function findDiscount($id){

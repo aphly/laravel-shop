@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('shop_product_filter', function (Blueprint $table) {
-            $table->unsignedInteger('product_id')->index();
+            $table->unsignedBigInteger('product_id')->index();
             $table->unsignedInteger('filter_id')->index();
             $table->primary(['product_id','filter_id']);
         });

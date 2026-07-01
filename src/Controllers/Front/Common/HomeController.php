@@ -17,7 +17,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $res['title'] = 'Home';
+        $res['title'] = '';
         $res['data_products'] = [
             ['title'=>$this->shop_config['index1_k'],'product_ids'=>explode(',',$this->shop_config['index1_v'])],
             ['title'=>$this->shop_config['index2_k'],'product_ids'=>explode(',',$this->shop_config['index2_v'])],

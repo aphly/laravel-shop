@@ -26,24 +26,12 @@ return new class extends Migration
             $table->string('delivery_address_2',128)->nullable();
             $table->string('delivery_city',128);
             $table->string('delivery_postcode',10);
+            $table->string('delivery_country_code',8);
             $table->string('delivery_country',128);
             $table->unsignedBigInteger('delivery_country_id');
             $table->string('delivery_zone',128);
             $table->unsignedBigInteger('delivery_zone_id');
             $table->string('delivery_telephone',255);
-
-            $table->unsignedTinyInteger('same')->default(1);
-
-            $table->string('billing_firstname',32)->nullable();
-            $table->string('billing_lastname',32)->nullable();
-            $table->string('billing_address_1',128)->nullable();
-            $table->string('billing_address_2',128)->nullable();
-            $table->string('billing_city',128)->nullable();
-            $table->string('billing_postcode',10)->nullable();
-            $table->string('billing_country',128)->nullable();
-            $table->unsignedBigInteger('billing_country_id')->default(0);
-            $table->string('billing_zone',128)->nullable();
-            $table->unsignedBigInteger('billing_zone_id')->default(0);
 
             $table->unsignedBigInteger('shipping_id');
             $table->string('shipping_name',32);
@@ -51,8 +39,8 @@ return new class extends Migration
             $table->decimal('shipping_cost',15,2);
             $table->decimal('shipping_free_cost',15,2)->nullable();
             $table->unsignedBigInteger('shipping_geo_group_id')->nullable();
-            $table->string('express_name',255)->nullable();
-            $table->string('express_no',255)->nullable();
+            $table->string('tracking_number',64)->nullable()->index();
+            $table->unsignedBigInteger('tracking_at')->nullable();
 
             $table->unsignedBigInteger('payment_method_id')->nullable();
             $table->string('payment_method_name',32)->nullable();
@@ -65,7 +53,7 @@ return new class extends Migration
             $table->unsignedBigInteger('order_status_id')->default(1)->index();
 
             $table->string('ip',64)->nullable();
-            $table->string('user_agent',255)->nullable();
+            $table->string('user_agent',1024)->nullable();
             $table->string('accept_language',255)->nullable();
             $table->unsignedBigInteger('delete_at')->default(0);
             $table->unsignedBigInteger('created_at');

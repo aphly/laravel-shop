@@ -35,7 +35,7 @@
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-                <label >是否免邮</label>
+                <label >是否免邮 (功能作废)</label>
                 <select name="free_shipping"  class="form-control">
                     @if(isset($dict['yes_no']))
                         @foreach($dict['yes_no'] as $key=>$val)

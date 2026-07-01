@@ -3,7 +3,7 @@
     <div style="padding: 10px;">
         <div style="margin-top: 10px;font-size: 20px;margin-bottom: 20px;">Dear Customer,</div>
         <div style="margin-bottom: 5px;">We are pleased to inform you that your order has been dispatched.</div>
-        <div >You may track your shipment using the following tracking number:{{$order->express_no}}.</div>
+        <div >You may track your shipment using the following tracking number:{{$order->tracking_number}}.</div>
     </div>
     <div style="margin-bottom: 10px;font-size: 12px;padding: 10px;background: #f9f9f9;border-radius: 10px;">
         <div class="detail">
@@ -67,9 +67,8 @@
             @endif
         </div>
         <ul style="padding-left: 0;">
-            <li style=" display: flex;justify-content: space-between;margin-bottom: 5px;"><div style="width: 46%;flex-shrink: 0;color: #666;">Express Name:</div><div>{{$order->express_name}}</div></li>
-            <li style=" display: flex;justify-content: space-between;margin-bottom: 5px;"><div style="width: 46%;flex-shrink: 0;color: #666;">Tracking Number:</div><div>{{$order->express_no}}</div></li>
-            <li style=" display: flex;justify-content: space-between;margin-bottom: 5px;"><div style="width: 46%;flex-shrink: 0;color: #666;">Shipment Initiated At:</div><div>{{$order->express_at?$order->express_at->timezone('America/New_York')->format('Y-m-d h:i A (ET)'):''}}</div></li>
+            <li style=" display: flex;justify-content: space-between;margin-bottom: 5px;"><div style="width: 46%;flex-shrink: 0;color: #666;">Tracking Number:</div><div>{{$order->tracking_number}}</div></li>
+            <li style=" display: flex;justify-content: space-between;margin-bottom: 5px;"><div style="width: 46%;flex-shrink: 0;color: #666;">Shipment Initiated At:</div><div>{{$order->tracking_at?$order->tracking_at->timezone('America/New_York')->format('Y-m-d h:i A (ET)'):''}}</div></li>
         </ul>
     </div>
 

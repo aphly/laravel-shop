@@ -12,15 +12,13 @@
     .video-js .vjs-volume-vertical{background-color: rgba(43,51,63,0);}
     .video-js{font-size: 12px;width: 100%;}
     .video-js .vjs-big-play-button{background-color: rgba(43,51,63,0);border-radius: 50%; width: 2em; height: 2em; line-height: 1.9em; border: 3px solid #fff;margin-left: -1em;}
-    @media (max-width: 1200px) {
-        .video_box{width: 100%;}
-    }
+
     .add_cart_btn{background: #e9bf6a;border: none;color: #fff}
-    .add_cart_btn:hover{background: #d3a547;}
+    .add_cart_btn:hover{background: #deb35e;}
     .buy_btn{background: var(--btn_bg);color: #fff}
     .buy_btn:hover{background: var(--btn_bg_hover);}
     .product_detail_img .small_img .swiper-wrapper .swiper-slide.active img{border: 1px solid #d19595;}
-    .price_sale_detail{color: #E36254;font-weight: 600;margin-bottom: 10px;}
+    .price_sale_detail{background: #E36254;font-weight: 600;margin-bottom: 10px;display: inline-block;color: #fff;padding: 0 10px;border-radius: 8px;}
     .product_detail_info .price .normal{color: #E36254;}
 
     .info_option .flag_radio .my_radio[data-image_src="true"] label{padding:0;border: none !important;margin-right: 10px;}
@@ -28,7 +26,10 @@
     .info_option .flag_radio .my_radio[data-image_src="true"] label img{border-radius: 50%;margin-right: 0;padding: 3px;}
     .info_option .flag_radio .my_radio[data-image_src="true"] label:hover{border: none !important;}
     .info_option .flag_radio .my_radio[data-image_src="true"] label.active img{border:2px solid #e59798 !important;padding: 1px;}
-
+    @media (max-width: 1200px) {
+        .video_box{width: 100%;}
+        .product_detail_img .small_img .swiper-wrapper .swiper-slide.active img{border:none;}
+    }
 </style>
 <div class="container shop_main">
     <div>
@@ -147,9 +148,9 @@
                         @endif
                     </div>
                 </div>
-                @if($res['special_price'])
+                @if($res['special_off'])
                 <div class="price_sale_detail">
-                    Final Sale
+                    {{$res['special_off']}}% OFF
                 </div>
                 @endif
 
@@ -174,15 +175,15 @@
                 <div class="tipBoxF">
                     <div class="tipBox">
                         <img src="/static/shop/img/check-square.svg" width="17" height="16">
-                        Free Shipping over {{$res['shippingFreeCost']}}
+                        Free Shipping over {{$res['shippingFreeCost']}} , Fast worldwide shipping
                     </div>
                     <div class="tipBox">
                         <img src="/static/shop/img/check-square.svg" width="17" height="16">
-                        After-sales Service Guaranteed
+                        Free 1 Year Warranty
                     </div>
                     <div class="tipBox">
                         <img src="/static/shop/img/check-square.svg" width="17" height="16">
-                        Nickel-Free & Hypoallergenic
+                        Hypoallergenic, nickel & cadmium-free
                     </div>
                 </div>
 
@@ -222,13 +223,12 @@
                 <style>
                     .shipping_tb_x{position: absolute;width: 70%;height: 2px;background: #000;left: 15%;top: 25px;z-index: -1}
                     .shipping_tb{display: flex;position: relative;justify-content: space-between;margin-top: 40px;}
-                    .shipping_tb1{width: 30%;display: flex;flex-wrap: wrap;justify-content: center;}
+                    .shipping_tb1{width: 33%;display: flex;flex-wrap: wrap;justify-content: center;}
                     .shipping_tb1a1,.shipping_tb1b,.shipping_tb1c{width: 100%;    display: flex;justify-content: center;}
-                    .shipping_tb1b{margin-top: 10px;}
                     .shipping_tb1c{margin-top: 5px;}
                     .shipping_tb1a{width: 50px;height: 50px;background: #000;border-radius: 50%;display: flex;justify-content: center;align-items: center;}
                     .shipping_tb1a i{color:#fff;font-size: 22px;}
-                    .shipping_tb1b{font-weight: 600;}
+                    .shipping_tb1b{font-weight: 600;font-size: 10px;margin-top: 10px;}
                 </style>
             </div>
         </div>
@@ -255,7 +255,7 @@
             $('.js_shipping_tb21').text(formatDateToMonthDay(1))
             $('.js_shipping_tb22').text(formatDateToMonthDay(2))
             $('.js_shipping_tb31').text(formatDateToMonthDay(10))
-            $('.js_shipping_tb32').text(formatDateToMonthDay(12))
+            $('.js_shipping_tb32').text(formatDateToMonthDay(14))
         })
     </script>
     <style>
@@ -268,7 +268,7 @@
         </div>
         <ul class="info_attr">
             @foreach($res['info_attr'] as $v)
-                <li class="item wenzi">
+                <li class="item ">
                     {{$v['attribute']['name']}} : {{$v['text']}}
                 </li>
             @endforeach
@@ -278,6 +278,9 @@
     <div class="my_box">
         <div class="my_tab">
             <div class="my_bt active">Description</div>
+        </div>
+        <div style="font-size: 12px;color: #999;padding: 10px;">
+            Note: The dimensions are manually measured and may have slight errors. Please refer to the actual product for accuracy
         </div>
         <div class="description">
             <div>{!! $res['info']->desc->description??'' !!}</div>
@@ -312,19 +315,19 @@
             @endif
         </div>
 
-        <div class="description_img">
+        <div class="description_img aphly_viewer_js">
             @if(!empty($res['info_img'][1]))
                 <div class="">
                 @foreach($res['info_img'][1] as $k0=>$v0)
                     @if($res['info']->is_color_group)
                         <ul class="description_img_ul description_img_ul{{$k0}}" data-k0="{{$k0}}">
                             @foreach($v0 as $v)
-                                <li><img src="{{ $v['image_src'] }}" alt=""></li>
+                                <li><img src="{{ $v['image_src'] }}" class="aphly_viewer"></li>
                             @endforeach
                         </ul>
                     @else
                         <ul class="description_img_ul description_img_ul{{$k0}}" data-k0="{{$k0}}">
-                            <li><img src="{{ $v0['image_src'] }}" alt=""></li>
+                            <li><img src="{{ $v0['image_src'] }}" class="aphly_viewer"></li>
                         </ul>
                     @endif
                 @endforeach
@@ -332,17 +335,21 @@
             @endif
         </div>
 
-        <div style="font-size: 12px;color: #999;padding: 10px;">
-            Note: The dimensions are manually measured and may have slight errors. Please refer to the actual product for accuracy
+        <div class="size_guide">
+            @include('laravel-shop::front.product.aphly.size_guide_detail')
         </div>
+
         <div>
-            <div style="text-align: center;  padding: 20px 0;">
-                <p>Aphly Jewelry Customized Service</p>
-                <p>Customized service of this item is available, please contact our customer service to place orders.
+            <div style="text-align: center;  padding: 20px 0;display: none;">
+                <p style="font-size: 18px;font-weight: 600;">Aphly Jewelry Customized Service</p>
+                <p style="margin-top: 10px;">Customized service of this item is available, please contact our customer service to place orders.
                     Please notice that: the change of the stone color and plating color is available while the material of gemstones and metal cannot be accepted.</p>
-                <p>Aphly Jewelry Making Process</p>
             </div>
-            <img style="width: 100%;" src="/aphly/img/processings-destop.jpg" alt="">
+            <div style="text-align: center;  padding: 20px 0;">
+                <p style="font-size: 18px;font-weight: 600;margin-top: 20px;">Aphly Jewelry Making Process</p>
+            </div>
+            <img class="pc" style="width: 100%;" src="/aphly/img/processings-destop.jpg">
+            <img class="mobile" style="width: 100%;" src="/aphly/img/processings-destop_m.jpg">
         </div>
     </div>
 
@@ -478,23 +485,6 @@
             $('.add_photo').click(function () {
                 $('.add_photo_file').click();
             })
-            //shipping time
-            // let date = new Date();
-            // let dateArray1 = date.toDateString().split(' ');
-            // let shipping1 = dateArray1[1]+ ' ' + dateArray1[2]
-            // $('.shipping1').html(shipping1)
-            // let dateArray2 =  new Date(date.setDate(date.getDate()+1)).toDateString().split(' ');
-            // let shipping2 = dateArray2[1]+ ' ' + dateArray2[2]
-            // $('.shipping2').html(shipping2)
-            // let dateArray21 =  new Date(date.setDate(date.getDate()+1)).toDateString().split(' ');
-            // let shipping21 = dateArray21[1]+ ' ' + dateArray21[2]
-            // $('.shipping21').html(shipping21)
-            // let dateArray3 =  new Date(date.setDate(date.getDate()+6)).toDateString().split(' ');
-            // let shipping3 = dateArray3[1]+ ' ' + dateArray3[2]
-            // $('.shipping3').html(shipping3)
-            // let dateArray31 =  new Date(date.setDate(date.getDate()+22)).toDateString().split(' ');
-            // let shipping31 = dateArray31[1]+ ' ' + dateArray31[2]
-            // $('.shipping31').html(shipping31)
         })
     </script>
 
@@ -503,7 +493,7 @@
         <div class="my_tab">
             <div class="my_bt active">POPULAR</div>
         </div>
-        <ul class=" product-category" style="margin-top: 10px;">
+        <ul class=" product-category rand_p" style="margin-top: 10px;">
             @foreach($res['rand'] as $key=>$val)
                 <li class="">
                     <div class="image">
@@ -542,7 +532,16 @@
     </div>
     @endif
 </div>
-
+<style>
+    @media (max-width: 1199.98px) {
+        .rand_p.product-category > li:nth-child(5n),  .rand_p.product-category li:last-child{
+            margin-right: 10px;
+        }
+        .rand_p.product-category > li:nth-child(2n),  .rand_p.product-category li:last-child {
+            margin-right: 0;
+        }
+    }
+</style>
 <script>
     let buy_now = false;
     function detail_res(res) {
@@ -555,7 +554,7 @@
                 })
             }
         }
-        $('#buy_btn').removeAttr('disabled')
+        $('#buy_btn').removeAttr('disabled').html('Buy Now');
     }
     function buyNow(_this) {
         buy_now = true;
@@ -579,7 +578,7 @@
         }
         .swiper-button-next, .swiper-button-prev{display: none;}
         .swiper-pagination{display: block}
-        .swiper-pagination span{padding:0 5px;width: 20px;  border-radius: 4px;background: var(--btn_bg);}
+        .swiper-pagination span{padding:0 5px;width: 20px;  border-radius: 4px;background: #fff;}
     }
 </style>
 <script>
@@ -646,7 +645,12 @@
             }
             let input = $(this).siblings('input')
             if(input.data('image_src')){
-                $('.product_detail_img .swiper-slide[data-image_id="'+input.data('image_id')+'"]').click()
+                let p_obj = $('.product_detail_img .swiper-slide[data-image_id="'+input.data('image_id')+'"]')
+                if(p_obj){
+                    p_obj.click()
+                    let p_str = p_obj.attr('aria-label').split(' / ')
+                    detailSwiper.slideTo(p_str[0]-1)
+                }
             }
         })
         $('.flag_radio').on('click','input',function () {

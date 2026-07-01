@@ -19,7 +19,7 @@ class Shipping extends Model
     //public $timestamps = false;
 
     protected $fillable = [
-        'name','desc','cost','free_cost','geo_group_id','sort','status','default'
+        'name','desc','cost','free_cost','geo_group_id','sort','status','default','shipping_code'
     ];
 
 
@@ -93,16 +93,16 @@ class Shipping extends Model
             $subTotal = $cart->getSubTotal();
             $shipping = (new Shipping())->findAll();
             foreach ($shipping as $val) {
-                if(($val['free_cost']>0?($subTotal>=$val['free_cost']):false) || ($val['cost']==0 && Cart::$free_shipping)){
-                    $val['free']=true;
-                }else{
-                    $val['free']=false;
-                }
-                if($val['cost']==0 && !$val['free']){
-                    $val['disabled']=true;
+                if($val['cost']==0){
+                    if(($val['free_cost']>0?($subTotal>=$val['free_cost']):false)){
+                        $val['disabled']=false;
+                    }else{
+                        $val['disabled']=true;
+                    }
                 }else{
                     $val['disabled']=false;
                 }
+
                 $val['cost_format'] = Currency::format($val['cost']);
                 $val['free_cost_format'] = Currency::format($val['free_cost']);
                 if($shipping_id && $val['id']==$shipping_id){
@@ -138,19 +138,23 @@ class Shipping extends Model
                 'value_old'      => 0,
                 'value_old_format' => '',
                 'sort' => 3,
-                'ext'=>''
+                'ext'=>'Coupon'
             ];
         }else{
-            $shipping = $this->getListGuest();
             $shop_shipping_id = session('shop_shipping_id');
+            $shipping = $this->getListGuest();
             if(!$shop_shipping_id){
                 foreach ($shipping as $k=>$v){
-                    $shop_shipping_id = $k;
-                    break;
+                    if(!$v['disabled']){
+                        $shop_shipping_id = $k;
+                        break;
+                    }
                 }
             }
-            if(!empty($shipping[$shop_shipping_id])){
-                if($shipping[$shop_shipping_id]['free']){
+
+            if(!empty($shipping[$shop_shipping_id]) && !$shipping[$shop_shipping_id]['disabled']){
+                $price = $shipping[$shop_shipping_id]['cost'];
+                if($price==0){
                     $total_data['totals']['shipping'] = [
                         'title'      => $shipping[$shop_shipping_id]['name'],
                         'value'      => 0,
@@ -161,11 +165,10 @@ class Shipping extends Model
                         'ext'=>$shop_shipping_id
                     ];
                 }else{
-                    $price = $shipping[$shop_shipping_id]['cost'];
                     $total_data['totals']['shipping'] = [
                         'title'      => $shipping[$shop_shipping_id]['name'],
                         'value'      => $price,
-                        'value_format'      => $price?Currency::format($price):'Free',
+                        'value_format'      => Currency::format($price),
                         'value_old'      => 0,
                         'value_old_format' => '',
                         'sort' => 3,
@@ -179,4 +182,8 @@ class Shipping extends Model
         }
 
     }
+
+
+
+
 }

@@ -18,7 +18,7 @@
 
         <div class="form-group " >
             <label >内容</label>
-            <textarea  readonly class="form-control ">{{$res['info']->content}}</textarea>
+            <textarea  readonly class="form-control " style="height: 200px;">{{$res['info']->content}}</textarea>
             <div class="invalid-feedback"></div>
         </div>
         <div class="form-group d-none" >

@@ -42,6 +42,15 @@ return new class extends Migration
             $table->unsignedInteger('viewed')->nullable();
             $table->unsignedInteger('sale')->nullable();
             $table->unsignedInteger('sort')->nullable();
+
+            $table->float('declaration_unit_weight',8,3)->nullable();
+            $table->string('declaration_name_local',50)->nullable();
+            $table->string('declaration_name_en',50)->nullable();
+            $table->string('declaration_hs_code',50)->nullable();
+            $table->string('declaration_material',50)->nullable();
+            $table->string('declaration_brand',50)->nullable();
+            $table->string('declaration_remark',50)->nullable();
+
             $table->unsignedBigInteger('created_at');
             $table->unsignedBigInteger('updated_at');
             $table->engine = 'InnoDB';

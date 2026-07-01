@@ -181,7 +181,6 @@ class ServiceController extends Controller
     public function returnExchange4(Request $request){
         $input = $request->all();
         $info = Service::where(['uid'=>CommonUser::uid(),'id'=>$input['service_id']])->firstOrError();
-        $info->c_express_name = $input['c_express_name'];
         $info->c_express_no = $input['c_express_no'];
         $info->save();
         throw new ApiException(['code'=>0,'msg'=>'Request success','data'=>['redirect'=>'/account_ext/service/detail?id='.$info->id]]);

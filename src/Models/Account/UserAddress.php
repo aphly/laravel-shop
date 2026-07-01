@@ -14,7 +14,7 @@ class UserAddress extends Model
     protected $table = 'shop_user_address';
 
     protected $fillable = [
-        'uid','firstname','lastname','address_1','address_2','city','postcode','country_id','zone_id','telephone','default'
+        'uid','firstname','lastname','address_1','address_2','city','postcode','country_id','zone_id','telephone','default','country_code'
     ];
 
 
@@ -37,6 +37,7 @@ class UserAddress extends Model
                 'zone_code'      => $zone[$info['zone_id']]['code']??'',
                 'country_id'     => $info['country_id'],
                 'country_name'   => $country[$info['country_id']]['name']??'',
+                'country_code'   => $country[$info['country_id']]['iso_code_2']??'',
                 'iso_code_2'     => $country[$info['country_id']]['iso_code_2']??'',
                 'iso_code_3'     => $country[$info['country_id']]['iso_code_3']??'',
                 'address_format' => $country[$info['country_id']]['address_format']??'',
@@ -72,6 +73,7 @@ class UserAddress extends Model
                 'zone_code'      => $zone[$v['zone_id']]['code']??'',
                 'country_id'     => $v['country_id'],
                 'country_name'   => $country[$v['country_id']]['name']??'',
+                'country_code'   => $country[$v['country_id']]['iso_code_2']??'',
                 'iso_code_2'     => $country[$v['country_id']]['iso_code_2']??'',
                 'iso_code_3'     => $country[$v['country_id']]['iso_code_3']??'',
                 'address_format' => $country[$v['country_id']]['address_format']??'',

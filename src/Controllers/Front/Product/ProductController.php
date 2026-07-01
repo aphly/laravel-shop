@@ -9,6 +9,7 @@ use Aphly\LaravelShop\Controllers\Front\Controller;
 use Aphly\LaravelShop\Models\Account\Review;
 use Aphly\LaravelShop\Models\Account\ReviewImage;
 use Aphly\LaravelShop\Models\Account\Wishlist;
+use Aphly\LaravelShop\Models\Catalog\Category;
 use Aphly\LaravelShop\Models\Catalog\FilterGroup;
 use Aphly\LaravelShop\Models\Catalog\Option;
 use Aphly\LaravelShop\Models\Catalog\Product;
@@ -32,8 +33,14 @@ class ProductController extends Controller
         $res['list']->transform(function ($item) use (&$product_ids){
             $product_ids[] = $item->id;
             $item->image_src= CommonUploadFile::getPath($item->image,$item->disk);
+            if($item->special && floatval($item->price)){
+                $item->special_off = 100-intval(floatval($item->special)/floatval($item->price)*100);
+                $item->special= Currency::format($item->special);
+            }else{
+                $item->special= 0;
+                $item->special_off = 0;
+            }
             $item->price= Currency::format($item->price);
-            $item->special= $item->special?Currency::format($item->special):0;
             $item->discount= $item->discount?Currency::format($item->discount):0;
             return $item;
         });
@@ -58,19 +65,31 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $res['title'] = 'Index';
-        $res['breadcrumb'] = Breadcrumb::render([
-            ['name'=>'Home','href'=>'/'],
-            ['name'=>'All','href'=>''],
-        ],false);
         $res['filter_data'] = $filter_data = [
             'name'      => $request->query('name',false),
             'sku'      => $request->query('sku',false),
             'category_id' => $request->query('category_id',false),
             'filter'      => $request->query('filter',false),
-            'sort'      => $request->query('sort',false),
+            'sort'      => $request->query('sort','new_desc'),
             'price'      => $request->query('price',false),
             'option_value'      => $request->query('option_value',false),
         ];
+        if($filter_data['category_id']){
+            $cate = Category::where('id',$filter_data['category_id'])->first();
+            if(!$cate){
+                return redirect('/product');
+            }
+            $res['breadcrumb'] = Breadcrumb::render([
+                ['name'=>'Home','href'=>'/'],
+                ['name'=>$cate->name,'href'=>''],
+            ],false);
+            $res['title'] = $cate->name;
+        }else{
+            $res['breadcrumb'] = Breadcrumb::render([
+                ['name'=>'Home','href'=>'/'],
+                ['name'=>'All','href'=>''],
+            ],false);
+        }
         $res['filte_filter'] = $filter_data['filter']?explode(',',$filter_data['filter']):[];
         $res['filte_option_value'] = $filter_data['option_value']?explode(',',$filter_data['option_value']):[];
 
@@ -85,12 +104,7 @@ class ProductController extends Controller
 
     public function detail(Request $request)
     {
-        if (is_numeric($request->id)) {
-            $id = $request->id;
-        }else{
-            $id = (new Product)->strToId($request->id);
-        }
-        $res['info'] = Product::where('id', $id)->where('status', 1)->where('date_available', '<', time())->with('desc')->firstOr404();
+        $res['info'] = Product::where('id', $request->id)->where('status', 1)->where('date_available', '<', time())->with('desc')->firstOr404();
 
         $res['title'] = $res['info']->name;
         $res['description'] = $res['info']->name;
@@ -103,8 +117,15 @@ class ProductController extends Controller
         $res['color'] = $request->query('color',0);
             //$group_id = CommonUser::groupId();
         $res['info_attr'] = $res['info']->findAttribute($res['info']->id);
+        $res['info_category'] = $res['info']->findCategory($res['info']->id);
         $res['info_option'] = $res['info']->findOption($res['info']->id,true);
         list($res['special_price'],$res['special_price_format']) = $res['info']->findSpecial($res['info']->id);
+        if($res['special_price'] && floatval($res['info']->price)){
+            $res['special_off'] =  100-intval(floatval($res['special_price'])/floatval($res['info']->price)*100);
+        }else{
+            $res['special_off'] = 0;
+        }
+
         $res['info_discount'] = $res['info']->findDiscount($res['info']->id);
         $res['info_img'] = $res['info']->imgById($res['info']->id,$res['info']->is_color_group);
         $res['info_video'] = $res['info']->videoById($res['info']->id);

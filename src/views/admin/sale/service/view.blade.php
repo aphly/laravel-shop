@@ -75,7 +75,6 @@
                         <li><div>退货邮编:</div><div>{{$res['info']->service_postcode}}</div></li>
                         <li><div>退货电话:</div><div>{{$res['info']->service_phone}}</div></li>
 
-                        <li><div>客户快递名称:</div><div>{{$res['info']->c_express_name}}</div></li>
                         <li><div>客户快递号码:</div><div>{{$res['info']->c_express_no}}</div></li>
                     </ul>
                 </div>

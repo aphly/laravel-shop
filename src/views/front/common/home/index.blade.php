@@ -1,50 +1,62 @@
 @include('laravel-shop::front.common.header')
 <div>
-    @if(!empty($res['banner']['home']))
-        <div class="home_carousel">
-            <div id="carouselCaptionsHome" class="carousel slide carousel-fade" data-ride="carousel">
-                <ol class="carousel-indicators">
-                    @foreach($res['banner']['home'] as $key=>$val)
-                        <li data-target="#carouselCaptionsHome" data-slide-to="{{$key}}" class="@if(!$key) active @endif" ></li>
-                    @endforeach
-                </ol>
-                <div class="carousel-inner">
-                    @foreach($res['banner']['home'] as $key=>$val)
-                        <div class="carousel-item @if(!$key) active @endif">
-                            <a href="{{ $val['url'] }}">
-                                <img src="{{ $val['img'] }}" class="w-100 carousel_pc">
-                                <img src="{{ $val['img_m'] }}" class="w-100 carousel_m">
-                            </a>
-                            @if(0)
-                                <div class="carousel-caption d-none d-md-block">
-                                    <h5>{{$val['title']}}</h5>
-                                </div>
-                            @endif
-                        </div>
-                    @endforeach
+    <div class="home_carousel">
+        <div id="carouselCaptionsHome" class="carousel slide carousel-fade" data-ride="carousel" >
+            <ol class="carousel-indicators">
+                <li data-target="#carouselCaptionsHome" data-slide-to="0" class="active" ></li>
+                <li data-target="#carouselCaptionsHome" data-slide-to="1" class="" ></li>
+            </ol>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <a href="/product?category_id=5">
+                        <img src="/banner/pc_banner2.jpg" class="w-100 carousel_pc">
+                        <img src="/banner/m_banner2.jpg" class="w-100 carousel_m">
+                    </a>
+                    <div class="banner_word banner_word2">
+                        <div class="banner_title">Where Heritage Meets Modern Luxury</div>
+                        <div class="banner_desc">Featuring a statement necklace and matching drop earrings, <br>this set is perfect for weddings, anniversaries, or any event where you want to shine. </div>
+                    </div>
+
                 </div>
-                @if(0)
-                    <button class="carousel-control-prev" type="button" data-target="#carouselCaptionsHome" data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-target="#carouselCaptionsHome" data-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
-                    </button>
-                @endif
+                <div class="carousel-item ">
+                    <a href="/product?category_id=5">
+                        <img src="/banner/pc_banner1.jpg" class="w-100 carousel_pc">
+                        <img src="/banner/m_banner1.jpg" class="w-100 carousel_m">
+                    </a>
+                    <div class="banner_word ">
+                        <div class="banner_title">Sparkle Like Never Before</div>
+                        <div class="banner_desc">Designed for the modern woman who appreciates understated luxury, <br> this set elevates both everyday looks and special occasions. </div>
+                    </div>
+                </div>
             </div>
+            @if(0)
+                <button class="carousel-control-prev" type="button" data-target="#carouselCaptionsHome" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-target="#carouselCaptionsHome" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </button>
+            @endif
         </div>
-    @endif
+    </div>
 </div>
 <style>
+    .banner_word{position: absolute; top: 40%;color: #fff;left: 5%;width: 40%;}
+    .banner_word2{right: 5%;left:auto;}
+    .banner_title{font-size: 40px;font-weight: 600;margin-bottom: 20px;}
+    .banner_desc{font-size:20px;font-weight: 600;}
     .home_carousel .carousel-item img{ height: 600px;border-radius: 0}
     .product-category li .product_image img{height: 100%;width: 100%;}
     .carousel-indicators li{height: 8px;border-radius: 4px;background-clip:inherit;border-top:none;border-bottom: none;}
     .carousel_pc{display: block}
     .carousel_m{display: none}
-    .product-category li{width:calc((100% - 40px) / 5);margin:0px 10px 10px 0px;background:#fff;transition: box-shadow .2s ease-in-out;border-radius: 6px;}
+    /*.product-category li{width:calc((100% - 40px) / 5);margin:0px 10px 10px 0px;background:#fff;transition: box-shadow .2s ease-in-out;border-radius: 6px;}*/
     .product-category > li:nth-child(5n),.product-category li:last-child{margin-right:0}
+    .home_category li{margin-top: 10px; }
+    .home_category{ justify-content: space-around;text-align: center;flex-wrap: wrap;font-weight: 600}
+    .special_color {color: #E36254;}
     @media (max-width: 1499.98px) {
         .product-category li{width:calc((100% - 30px) / 4);margin:0px 10px 10px 0px;background:#fff;transition: box-shadow .2s ease-in-out;border-radius: 6px;}
         .product-category > li:nth-child(5n){margin-right:10px;}
@@ -52,20 +64,77 @@
         .home_carousel .carousel-item img{height: 450px; }
     }
     @media (max-width: 1199.98px) {
-        .home_carousel .carousel-item img{height: 500px; }
+        .home_category li{ width: 30%;}
+        .home_carousel .carousel-item img{height: 101vw; }
         .product-category li{width:calc((100% - 10px) / 2);margin:0px 10px 10px 0px;background:#fff;transition: box-shadow .2s ease-in-out;border-radius: 6px;}
         .product-category > li:nth-child(5n){margin-right:10px;}
         .product-category > li:nth-child(4n){margin-right:10px}
         .product-category > li:nth-child(2n){margin-right:0}
         .carousel_pc{display: none}
         .carousel_m{display: block}
+
+        .banner_word{position: absolute;top:auto; bottom: 12%;color: #fff;text-align: center;opacity: 0.9;width: 90%;left: 5%;right: 5%;}
+        .banner_title{font-size: 16px;font-weight: 600;margin-bottom: 0px;}
+        .banner_desc{font-size:10px;display: none;}
     }
 </style>
 <div>
     <div class="container">
+        <div>
+            <div class="home_title">CATEGORY</div>
+            <ul class="home_category d-flex">
+                <li>
+                    <a href="/product?category_id=5" class="pc_menu_lv1_a wenzi ">
+                        <img src="/static/shop/home/bridal.png" alt="">
+                        <div>Jewelry Set</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/product?category_id=2" class="pc_menu_lv1_a wenzi ">
+                        <img src="/static/shop/home/ring.png" alt="">
+                        <div>Rings</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/product?category_id=3" class="pc_menu_lv1_a wenzi ">
+                        <img src="/static/shop/home/bracelets.png" alt="">
+                        <div>Bracelets</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/product?category_id=4" class="pc_menu_lv1_a wenzi ">
+                        <img src="/static/shop/home/earrings.png" alt="">
+                        <div>Earrings</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/product?category_id=1" class="pc_menu_lv1_a wenzi ">
+                        <img src="/static/shop/home/necklaces.png" alt="">
+                        <div>Necklaces</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/product?category_id=6" class="pc_menu_lv1_a wenzi ">
+                        <img src="/static/shop/home/anklet.png" alt="">
+                        <div>Anklet</div>
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+
         @foreach($res['data_products'] as $val)
+            @if($val['title']!='Bracelets')
             <div>
-                <div class="home_title">{{$val['title']}}</div>
+                @if($val['title']=='Necklaces')
+
+                    <div>
+                        <div class="home_title">{{$val['title']}}</div>
+                    </div>
+                @else
+                    <div class="home_title">{{$val['title']}}</div>
+                @endif
+
                 <ul class=" product-category">
                     @foreach($val['product_ids'] as $product_id)
                         @if(!empty($res['products'][$product_id]))
@@ -100,12 +169,12 @@
                                 <div class="p_name_x d-flex justify-content-between ">
                                     <div class="d-flex price">
                                         @if($res['products'][$product_id]->special)
-                                            <span class="normal">{{$res['products'][$product_id]->special}}</span>
-                                            <span class="special_price">{{$res['products'][$product_id]->price}}</span>
+                                            <span class="normal special_color">{{$res['products'][$product_id]->special}}</span>
+                                            <span class="special_price ">{{$res['products'][$product_id]->price}}</span>
                                             <span class="price_sale">Sale</span>
                                         @else
                                             @if($res['products'][$product_id]->discount)
-                                                <span class="normal">{{$res['products'][$product_id]->discount}}</span>
+                                                <span class="normal special_color">{{$res['products'][$product_id]->discount}}</span>
                                                 <span class="special_price">{{$res['products'][$product_id]->price}}</span>
                                                 <span class="price_sale">Sale</span>
                                             @else
@@ -133,6 +202,7 @@
                     @endforeach
                 </ul>
             </div>
+            @endif
         @endforeach
     </div>
 </div>
@@ -142,8 +212,6 @@
         <p>Our professional jewelry consultants will provide you with stress-free guidance, giving you confidence as you search for the perfect accessory.</p>
     </div>
 </div>
-
-
 <style>
     .h_box{background: #fafafa;padding: 40px 0;font-size: 16px;margin-top: 20px;}
     .h_box p{margin-bottom: 10px;}

@@ -10,7 +10,9 @@ use Aphly\LaravelShop\Controllers\Admin\Controller;
 use Aphly\LaravelShop\Models\Sale\Order;
 use Aphly\LaravelShop\Models\Sale\OrderHistory;
 use Aphly\LaravelShop\Models\Sale\OrderProduct;
+use Aphly\LaravelShop\Models\Sale\OrderShipping;
 use Aphly\LaravelShop\Models\Sale\OrderStatus;
+use Aphly\LaravelShop\Services\Yuntu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
@@ -56,6 +58,8 @@ class OrderController extends Controller
         $res['orderProduct'] = OrderProduct::where('order_id',$res['info']->id)->with('orderOption')->get();
         $res['orderHistory'] = OrderHistory::where('order_id',$res['info']->id)->with('orderStatus')->orderBy('created_at','asc')->get();
         $res['orderStatus'] = OrderStatus::get();
+        //$res['orderShipping'] = OrderShipping::where('order_id',$res['info']->id)->first();
+        $res['orderShipping'] = OrderShipping::where('order_id',$res['info']->id)->firstOrNew();
         $res['breadcrumb'] = Breadcrumb::render([
             ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
             ['name'=>'详情','href'=>'/shop_admin/'.$this->currArr['key'].'/view?id='.$res['info']->id]
@@ -86,7 +90,7 @@ class OrderController extends Controller
 //        $res['order'] = Order::where('id',$order_id)->firstOrNew();
 //        return $this->makeView('laravel-shop::admin.sale.order.form',['res'=>$res]);
 //    }
-//
+
 //    public function save(Request $request){
 //        $input = $request->all();
 //        $input['date_add'] = $input['date_add']??time();
@@ -124,7 +128,7 @@ class OrderController extends Controller
                     $query->where('order_status_id', $search['status']);
                 }
             })
-            ->with('orderHistory')->with('orderShipping')->get();
+            ->with('orderHistory')->with('shipping')->get();
         $res['orderStatus'] = OrderStatus::get()->keyBy('id')->toArray();
         $header = ["ID", "email", "total_format", "items", "status","paid time",'shipping_id','快递号'];
         $listData = [];
@@ -179,8 +183,7 @@ class OrderController extends Controller
                     if ($row[0]) {
                         $input['notify']=1;
                         $input['override']=1;
-                        $input['express_name'] = $row[7];
-                        $input['express_no'] = $row[8];
+                        $input['express_no'] = $row[7];
                         $res['info'] = Order::where(['id'=>$row[0]])->whereIn('order_status_id',[2,3])->first();
                         if(!empty($res['info'])){
                             $res['info']->addOrderHistory($res['info'], 3,$input);
@@ -194,4 +197,67 @@ class OrderController extends Controller
         throw new ApiException(['code'=>0,'msg'=>'操作成功']);
     }
 
+//    public function shipping(Request $request)
+//    {
+//        $res['info'] = Order::where(['id'=>$request->query('order_id',0)])->with('orderStatus')
+//            ->firstOrError();
+//        $res['orderProduct'] = OrderProduct::where('order_id',$res['info']->id)->with('orderOption')->get();
+//        $res['orderStatus'] = OrderStatus::get();
+//        $res['breadcrumb'] = Breadcrumb::render([
+//            ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
+//            ['name'=>'详情','href'=>'/shop_admin/'.$this->currArr['key'].'/shipping?order_id='.$res['info']->id]
+//        ]);
+//        $res['orderShipping'] = OrderShipping::where('order_id',$res['info']->id)->firstOrNew();
+//        return $this->makeView('laravel-shop::admin.sale.order.shipping',['res'=>$res]);
+//    }
+
+    public function saveShipping(Request $request)
+    {
+        $orderInfo = Order::where(['id'=>$request->query('order_id',0)])->with('shipping')->first();
+        if($orderInfo && $orderInfo->order_status_id==2){
+            $orderShipping = OrderShipping::where(['order_id'=>$orderInfo->id])->first();
+            if(!$orderShipping){
+                $input = $request->all();
+                $input['order_id'] = $orderInfo->id;
+                $info = OrderShipping::create($input);
+                if($info->id){
+                    $orderProduct = OrderProduct::where(['order_id'=>$orderInfo->id])->with('product')->get();
+                    $res = (new Yuntu())->createOrder($orderInfo->shipping->shipping_code,$orderInfo,$info,$orderProduct);
+                    if(isset($res['success']) && $res['success']){
+                        $info->waybill_number = $res['result']['waybill_number'];
+                        $info->save();
+                        throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>'/shop_admin/order/view?id='.$orderInfo->id]]);
+                    }else{
+                        $info->delete();
+                        throw new ApiException(['code'=>1,'msg'=>$res['msg']]);
+                    }
+                }else{
+                    throw new ApiException(['code'=>2,'msg'=>'fail']);
+                }
+            }else{
+                throw new ApiException(['code'=>3,'msg'=>'已存在']);
+            }
+        }else{
+            throw new ApiException(['code'=>1,'msg'=>'fail']);
+        }
+
+    }
+
+    public function shippingLabel(Request $request)
+    {
+        $orderShipping = OrderShipping::where(['order_id'=>$request->query('order_id',0)])->first();
+        $waybill_number = $request->query('waybill_number',0);
+        if($orderShipping && $waybill_number ){
+            $res = (new Yuntu())->createLabel($waybill_number);
+            if(isset($res['success']) && $res['success']){
+                Log::debug(json_encode($res));
+                $orderShipping->label_url = $res['result']['url'];
+                $orderShipping->save();
+                throw new ApiException(['code'=>0,'msg'=>'success']);
+            }
+        }else{
+            throw new ApiException(['code'=>1,'msg'=>'fail']);
+        }
+
+    }
 }

@@ -27,6 +27,14 @@
                                 <label >Content</label>
                                 <textarea name="content" class="form-control" required style="height: 200px;"></textarea>
                             </div>
+                            <div id="code_img" class="form-group">
+                                <label>Captcha</label>
+                                <div class="code_img">
+                                    <input type="text" name="code" class="form-control" value="" autocomplete="off" placeholder="Enter code">
+                                    <img src="/center/seccode" onclick="code_img(this)" >
+                                </div>
+                                <div class="invalid-feedback"></div>
+                            </div>
                             <button class="btn btn-primary text-brand" type="submit">Send Message</button>
                         </div>
                     </form>
@@ -47,6 +55,9 @@
 <script>
     function contact_us(res) {
         alert_res(res)
+        if(!res.code){
+            window.location.reload()
+        }
     }
 </script>
 @include('laravel-shop::front.common.footer')

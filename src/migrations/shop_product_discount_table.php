@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('shop_product_discount', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('product_id')->index();
+            $table->unsignedBigInteger('product_id')->index();
             $table->unsignedInteger('group_id')->nullable();
             $table->unsignedInteger('priority')->default(1);
             $table->unsignedInteger('quantity')->default(0);

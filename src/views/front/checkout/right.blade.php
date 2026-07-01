@@ -11,6 +11,7 @@
 .checkout_coupon_form{display: flex;justify-content: space-between;}
 .price_new{display: flex;font-size: 12px;}
 .items-info-list-all{padding: 0 0 10px;}
+.edit_cart{box-shadow: 0 0 15px 0 #dadada;color: #000;text-align: center; border-radius: 8px; line-height: 30px; margin-bottom: 20px;}
 @media (max-width: 1199.99px) {
     .checkout{flex-direction:column-reverse}
     .items-info-list-all{display: none;}
@@ -20,6 +21,7 @@
     .items-total-price{font-size: 16px;}
     .checkout_cart span{font-weight: 600;}
     .checkout_cart i.uni{font-size: 12px;}
+    .edit_cart{ }
 }
 </style>
 <div class="checkout_cart">
@@ -85,6 +87,7 @@
             </div>
         @endforeach
     </div>
+    <a href="/cart"><div class="edit_cart">Edit Cart</div></a>
     <div class="checkout-coupon">
         <div class="form_request checkout_coupon_form"  style="width: 100%;">
             <input class="cart-code-input coupon-code-input" type="text" placeholder="Discount code" name="coupon_code" value="" autocomplete="off">
@@ -174,6 +177,7 @@
                 console.log(res)
                 if(!res.code){
                     $('.summarytip').show()
+                    $('.summarytip').find('.coupon-code').text(res.data.total_data.totals.coupon.ext)
                     if(res.data.total_data.totals.total.value==res.data.total_data.totals.total.value_old){
                         $('.js-total_all').html(`<span class="items-right js-total-amount">${res.data.total_data.totals.total.value_format}</span>`)
                     }else{

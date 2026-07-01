@@ -52,8 +52,7 @@
                                 {{$res['info']->delivery_postcode}}, {{$res['info']->delivery_telephone}}
                             </div></li>
                         <li><div>物流方式:</div><div>{{$res['info']->shipping_name}}</div></li>
-                        <li><div>物流名称:</div><div>{{$res['info']->express_name??'-'}}</div></li>
-                        <li><div>物流单号:</div><div>{{$res['info']->express_no??'-'}}</div></li>
+                        <li><div>物流单号:</div><div>{{$res['info']->tracking_number??'-'}}</div></li>
                     </ul>
                 </div>
                 <div class="info">
@@ -62,7 +61,6 @@
                         <li><div>支付方式:</div><div>{{$res['info']->payment_method_name}}</div></li>
                         <li><div>支付流水号:</div><div>{{$res['info']->payment_id}}</div></li>
                         <li><div>货币代码:</div><div>{{$res['info']->currency_code}}</div></li>
-                        <li><div>货币汇率比例:</div><div>{{$res['info']->currency_value}}</div></li>
                     </ul>
                 </div>
                 <div class="info">
@@ -123,6 +121,49 @@
                 </div>
             </div>
         </div>
+
+        <div class="detail">
+            <div class="title">物流表单</div>
+            <div class="detail_info">
+                <form method="post" action="/shop_admin/order/save_shipping?order_id={{$res['info']->id}}" class="save_form">
+                    @csrf
+                    <div>
+                        <div class="form-group ">
+                            <label >运单号</label>
+                            <a target="_blank" href="/tracking/index?order_number={{$res['orderShipping']->waybill_number}}" class="badge badge-primary">
+                                {{$res['orderShipping']->waybill_number}}
+                            </a>
+                            <div class="invalid-feedback"></div>
+                        </div>
+
+                        @if($res['orderShipping']->waybill_number)
+                            <div class="form-group ">
+                                <label >面单</label>
+                                <div style="display: flex;justify-content: space-between;">
+                                    @if($res['orderShipping']->label_url)
+                                        <a target="_blank" href="{{$res['orderShipping']->label_url}}" class="badge badge-primary">
+                                            面单图片
+                                        </a>
+                                    @endif
+                                    <a class="badge badge-primary ajax_request" data-load="/shop_admin/order/view?id={{$res['info']->id}}"
+                                       data-href="/shop_admin/order/shipping_label?waybill_number={{$res['orderShipping']->waybill_number}}&order_id={{$res['info']->id}}">获取面单</a>
+                                </div>
+                                <div class="invalid-feedback"></div>
+                            </div>
+                        @endif
+
+                        <div class="form-group ">
+                            <label >包裹重量</label>
+                            <input type="text" name="weight" class="form-control" value="{{$res['orderShipping']->weight}}">
+                            <div class="invalid-feedback"></div>
+                        </div>
+
+                        <button class="btn btn-primary" type="submit">保存</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
         <div class="detail">
             <div class="title">状态记录</div>
             <div class="detail_info">
@@ -176,14 +217,10 @@
                             <input type="number" name="fee" class="form-control" value="5">
                             <div class="invalid-feedback"></div>
                         </div>
-                        <div class="form-group d-none" id="express_name">
-                            <label >运单名称</label>
-                            <input type="text" name="express_name" class="form-control" value="">
-                            <div class="invalid-feedback"></div>
-                        </div>
-                        <div class="form-group d-none" id="express_no">
-                            <label >运单</label>
-                            <input type="text" name="express_no" class="form-control" value="">
+
+                        <div class="form-group d-none" id="tracking_number">
+                            <label >运单号</label>
+                            <input type="text" name="tracking_number" class="form-control" value="{{$res['orderShipping']->waybill_number??''}}">
                             <div class="invalid-feedback"></div>
                         </div>
                         <div class="form-group">
@@ -197,6 +234,7 @@
             </div>
         </div>
 
+
     </div>
 </div>
 <style>
@@ -207,15 +245,12 @@ $(function () {
     $('#order_status_id').change(function () {
         if($(this).val()==='3') {
             $('#fee').addClass('d-none')
-            $('#express_name').removeClass('d-none')
-            $('#express_no').removeClass('d-none')
+            $('#tracking_number').removeClass('d-none')
         }else if($(this).val()==='7'){
-            $('#express_name').addClass('d-none')
-            $('#express_no').addClass('d-none')
+            $('#tracking_number').addClass('d-none')
             $('#fee').removeClass('d-none')
         }else{
-            $('#express_name').addClass('d-none')
-            $('#express_no').addClass('d-none')
+            $('#tracking_number').addClass('d-none')
             $('#fee').addClass('d-none')
         }
     })

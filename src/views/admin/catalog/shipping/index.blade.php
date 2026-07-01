@@ -20,7 +20,7 @@
                     <li >名称</li>
                     <li >价格</li>
                     <li >满免邮</li>
-                    <li >geo</li>
+                    <li >物流编码</li>
                     <li >默认</li>
                     <li >状态</li>
                     <li >操作</li>
@@ -37,11 +37,7 @@
                             {{ $v->free_cost }}
                         </li>
                         <li>
-                            @if($v->geoGroup)
-                                {{ $v->geoGroup->name }}
-                            @else
-                                无
-                            @endif
+                            {{ $v->shipping_code }}
                         </li>
                         <li>
                             @if($dict['yes_no'])

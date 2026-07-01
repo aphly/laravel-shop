@@ -10,6 +10,7 @@ use Aphly\LaravelShop\Controllers\Admin\Controller;
 use Aphly\LaravelShop\Models\Sale\AfterSales;
 use Aphly\LaravelShop\Models\Sale\AfterSalesHistory;
 use Aphly\LaravelShop\Models\Sale\OrderProduct;
+use Aphly\LaravelShop\Models\Sale\OrderShipping;
 use Aphly\LaravelShop\Models\Sale\Service;
 use Aphly\LaravelShop\Models\Sale\ServiceHistory;
 use Aphly\LaravelShop\Models\Sale\ServiceProduct;
@@ -85,6 +86,7 @@ class AfterSalesController extends Controller
             ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
             ['name'=>$res['refund']->id?'编辑':'新增','href'=>'/shop_admin/'.$this->currArr['key'].($res['refund']->id?'/form?id='.$res['refund']->id:'/form')]
         ]);
+        $res['orderShipping'] = OrderShipping::where('order_id',$res['info']->id)->first();
         return $this->makeView('laravel-shop::admin.sale.after_sales.form',['res'=>$res]);
     }
 

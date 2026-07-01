@@ -156,6 +156,16 @@ class Coupon extends Model
                     );
                     //$total_data['total'] -= $discount_total;
                     $total_data['total'] = Math::sub($total_data['total'],$discount_total);
+                }else{
+                    $total_data['totals']['coupon'] = array(
+                        'title'      => 'Coupon',
+                        'value'      => 0,
+                        'value_format' => '-'.Currency::format(0),
+                        'value_old'      => 0,
+                        'value_old_format' => '',
+                        'sort_order' => 2,
+                        'ext' => $coupon
+                    );
                 }
             }
         }

@@ -133,7 +133,7 @@ class CheckoutController extends Controller
 
         $input['id'] = app('Snowflake')->nextId();
         $input['uid'] = $this->user->uid;
-        $input['email'] = $this->user->initId();
+        $input['email'] = $this->user->getEmail();
         if($cart->hasShipping()) {
             $input['address_id'] = $userAddress['id'];
             $input['delivery_firstname'] = $userAddress['firstname'];
@@ -489,7 +489,7 @@ class CheckoutController extends Controller
             }
             $input['id'] = app('Snowflake')->nextId();
             $input['uid'] = $this->user->uid;
-            $input['email'] = $this->user->initId();
+            $input['email'] = $this->user->getEmail();
             if($res['hasShipping']) {
                 $input['address_id'] = $res['address']['id'];
                 $input['address_firstname'] = $res['address']['firstname'];
@@ -519,7 +519,6 @@ class CheckoutController extends Controller
 
             $input['currency_id'] = $currency['id'];
             $input['currency_code'] = $currency['code'];
-            $input['currency_value'] = $currency['value'];
 
             $input['ip'] = $request->ip();
             $input['user_agent'] = $request->header('user-agent');

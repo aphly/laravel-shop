@@ -35,13 +35,24 @@
     input,select,input{border-radius:8px;border: none;box-shadow: 0 0 15px 0 #f1f1f1;}
     .menu .active{color:var(--btn_bg);}
     .list_nothing{font-size: 20px;font-weight: 500;text-align: center;  margin-top: 10%;}
+    .header1{top: 30px;}
+    .coupon_h{background: #000;color: #fff;font-weight:600;text-align: center;line-height: 30px;position: fixed;top: 0;height: 30px;width: 100%;z-index: 2000;}
+    main {
+        padding: 110px 0;
+    }
     @media (max-width: 1200px) {
         .container {
             max-width: 100%;
         }
+        main {
+            padding: 85px 0 40px;
+        }
     }
 </style>
 <header>
+    <div class="coupon_h">
+        30% OFF Sitewide , CODE : G-30
+    </div>
     <div class="header1">
         <div class="container header10">
             <div class="d-flex header101">
@@ -237,5 +248,5 @@
 
 <main>
 <script src="{{ URL::asset('static/shop/js/shop.js') }}" type="text/javascript"></script>
-<link rel="stylesheet" href="{{ URL::asset('static/shop/css/shop.css') }}">
+<link rel="stylesheet" href="{{ URL::asset('static/shop/css/shop.css?v=1') }}">
 

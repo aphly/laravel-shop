@@ -6,6 +6,12 @@
         @csrf
         <div class="review">
             <div class="form-group">
+                <label >物流编码</label>
+                <input type="text" name="shipping_code" required class="form-control " value="{{$res['info']->shipping_code}}">
+                <div class="invalid-feedback"></div>
+            </div>
+
+            <div class="form-group">
                 <label >名称</label>
                 <input type="text" name="name" required class="form-control " value="{{$res['info']->name}}">
                 <div class="invalid-feedback"></div>

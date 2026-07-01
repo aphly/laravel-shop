@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name',64);
             $table->string('cn_name',64)->nullable();
+            $table->string('shipping_code',64)->nullable();
             $table->string('desc',255)->nullable();
             $table->decimal('cost',15,2)->nullable();
             $table->decimal('free_cost',15,2)->nullable();

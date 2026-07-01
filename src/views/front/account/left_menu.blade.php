@@ -5,7 +5,7 @@
         $uri = request()->path()
         @endphp
         <div class="sidebar-menu-title">My Account
-            <i class="uni app-guanbi" onclick="$('.sidebar-menu').hide()"></i>
+            <i class="uni app-guanbi" onclick="$('.account_menu').hide()"></i>
         </div>
         <ul class="sidebar-menu-content">
             <li><a href="/account/index" @if('account/index'==$uri) class="active" @endif>Dashboard</a></li>

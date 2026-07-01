@@ -3,6 +3,7 @@
 namespace Aphly\LaravelShop\Models\Sale;
 
 use Aphly\Laravel\Models\Model;
+use Aphly\LaravelShop\Models\Catalog\Product;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class OrderProduct extends Model
@@ -19,5 +20,9 @@ class OrderProduct extends Model
 
     function orderOption(){
         return $this->hasMany(OrderOption::class,'order_product_id','id');
+    }
+
+    function product(){
+        return $this->hasOne(Product::class,'id','product_id');
     }
 }

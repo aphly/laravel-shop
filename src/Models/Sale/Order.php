@@ -27,12 +27,10 @@ class Order extends Model
 
     protected $fillable = [
         'id','uid','email','address_id','delivery_firstname','delivery_lastname','delivery_address_1','delivery_address_2',
-		'delivery_city','delivery_postcode','delivery_country','delivery_country_id','delivery_zone','delivery_zone_id','delivery_telephone',
-        'same','billing_firstname','billing_lastname','billing_address_1','billing_address_2',
-        'billing_city','billing_postcode','billing_country','billing_country_id','billing_zone','billing_zone_id',
+		'delivery_city','delivery_postcode','delivery_country','delivery_country_code','delivery_country_id','delivery_zone','delivery_zone_id','delivery_telephone',
 		'shipping_id','shipping_name','shipping_desc','shipping_cost','shipping_free_cost','shipping_geo_group_id','payment_method_id',
 		'payment_method_name','items','total','total_format','currency_code','comment','order_status_id',
-		'ip','user_agent','accept_language','express_name','express_no','express_at'
+		'ip','user_agent','accept_language','tracking_number','tracking_at'
     ];
 
     function orderStatus(){
@@ -52,7 +50,27 @@ class Order extends Model
     }
 
     function orderShipping(){
+        return $this->hasOne(OrderShipping::class,'order_id','id');
+    }
+
+    function shipping(){
         return $this->hasOne(Shipping::class,'id','shipping_id');
+    }
+
+    function checkPostcode($postcode, $country_code)
+    {
+        $rule = [
+            'CN' => '/^\d{6}$/',
+            'US' => '/^\d{5}(-\d{4})?$/',
+            'CA' => '/^[A-Z]\d[A-Z] \d[A-Z]\d$/i',
+            'AU' => '/^\d{4}$/',
+            'JP' => '/^\d{3}-\d{4}$/',
+            'KR' => '/^\d{5}$/',
+            'SG' => '/^\d{6}$/',
+            'GB' => '/^[A-Z0-9 ]{5,8}$/i'
+        ];
+        if (!isset($rule[$country_code])) return true;
+        return preg_match($rule[$country_code], trim($postcode));
     }
 
     public function notify($payment)
@@ -99,9 +117,8 @@ class Order extends Model
             $this->handle($info);
         }else if($order_status_id==3){
             //Shipped
-            $info->express_name = $input['express_name']??'';
-            $info->express_no = $input['express_no']??'';
-            $info->express_at = time();
+            $info->tracking_number = $input['tracking_number']??'';
+            $info->tracking_at = time();
         }else if($order_status_id==6){
             //Canceled
             $notify = 1;
@@ -159,7 +176,7 @@ class Order extends Model
                     ]);
                 }else if($order_status_id==3){
                     //Shipped
-                    $info->express_at = Carbon::createFromTimestamp($info->express_at);
+                    $info->tracking_at = Carbon::createFromTimestamp($info->tracking_at);
                     (new RemoteEmail())->send([
                         'email'=>$info->email,
                         'title'=>'Order Shipped',

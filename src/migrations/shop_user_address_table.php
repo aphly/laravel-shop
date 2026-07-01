@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('postcode',10);
             $table->string('telephone',32)->nullable();
             $table->integer('country_id');
+            $table->string('country_code',16)->nullable();
             $table->integer('zone_id');
             $table->tinyInteger('default')->default(0);
             $table->unsignedBigInteger('created_at');

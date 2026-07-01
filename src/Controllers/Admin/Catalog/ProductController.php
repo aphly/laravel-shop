@@ -14,6 +14,7 @@ use Aphly\LaravelShop\Models\Catalog\OptionValue;
 use Aphly\LaravelShop\Models\Catalog\Product;
 use Aphly\LaravelShop\Models\Catalog\ProductAttribute;
 use Aphly\LaravelShop\Models\Catalog\ProductCategory;
+use Aphly\LaravelShop\Models\Catalog\ProductCost;
 use Aphly\LaravelShop\Models\Catalog\ProductDesc;
 use Aphly\LaravelShop\Models\Catalog\ProductDiscount;
 use Aphly\LaravelShop\Models\Catalog\ProductFilter;
@@ -33,12 +34,16 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
+        $res['search']['id'] = $request->query('id','');
         $res['search']['name'] = $request->query('name','');
         $res['search']['sku'] = $request->query('sku','');
         $res['search']['status'] = $request->query('status','');
         $res['search']['string'] = http_build_query($request->query());
         $res['list'] = Product::when($res['search'],
             function($query,$search) {
+                if($search['id']!==''){
+                    $query->where('id', $search['id']);
+                }
                 if($search['name']!==''){
                     $query->where('name', 'like', '%'.$search['name'].'%');
                 }
@@ -79,11 +84,40 @@ class ProductController extends Controller
             $input = $request->all();
             $input['id'] = app('Snowflake')->nextId();
             $input['uid'] = $this->manager->uid;
+            $cost_price = $input['cost_price']/0.7;
+            $s_price = false;
+            if($input['price']){
+            }else{
+                $mb = mt_rand(15,30);
+                if($mb>20){
+                    $input['price'] = $cost_price*$mb/10;
+                    $s_price = true;
+                }else{
+                    $input['price'] = $cost_price;
+                }
+            }
             $input['date_available'] = $input['date_available']?strtotime($input['date_available']):time();
-            Product::create($input);
+            $product = Product::create($input);
+            if($product){
+                ProductCost::updateOrCreate(
+                    ['product_id' => $input['id']],
+                    [
+                        'price'=>$input['cost_price']
+                    ]
+                );
+                if($s_price){
+                    ProductSpecial::create([
+                        'product_id'=>$input['id'],
+                        'priority'=>2,
+                        'price'=> $cost_price,
+                        'date_start'=>0,
+                        'date_end'=>0
+                    ]);
+                }
+            }
             throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
         }else{
-            $res['product'] = Product::where('id',$request->query('product_id',0))->firstOrNew();
+            $res['product'] = Product::where('id',$request->query('product_id',0))->with('cost')->firstOrNew();
             $res['breadcrumb'] = Breadcrumb::render([
                 ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
                 ['name'=>'新增','href'=>'/shop_admin/'.$this->currArr['key'].'/add']
@@ -97,8 +131,35 @@ class ProductController extends Controller
         $res['product'] = Product::where('id',$request->query('product_id',0))->firstOrError();
         if($request->isMethod('post')){
             $input = $request->all();
+            $s_price = false;
+            $cost_price = $input['cost_price']/0.7;
+            if(floatval($input['price'])){
+            }else{
+                $mb = mt_rand(15,30);
+                if($mb>20){
+                    $input['price'] = $cost_price*$mb/10;
+                    $s_price = true;
+                }else{
+                    $input['price'] = $cost_price;
+                }
+            }
             $input['date_available'] = $input['date_available']?strtotime($input['date_available']):time();
             $res['product']->update($input);
+            ProductCost::updateOrCreate(
+                ['product_id' => $res['product']->id],
+                [
+                    'price'=>$input['cost_price']
+                ]
+            );
+            if($s_price){
+                ProductSpecial::create([
+                    'product_id'=>$res['product']->id,
+                    'priority'=>2,
+                    'price'=> $cost_price,
+                    'date_start'=>0,
+                    'date_end'=>0
+                ]);
+            }
             throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
         }else{
             $res['breadcrumb'] = Breadcrumb::render([
@@ -561,5 +622,38 @@ class ProductController extends Controller
             $res['title'] = '同步';
             return $this->makeView('laravel-shop::admin.catalog.product.sync',['res'=>$res]);
         }
+    }
+
+    function setPrice(Request $request){
+        ProductSpecial::truncate();
+        $res['list'] = Product::with('cost')->get();
+
+        foreach ($res['list'] as $v){
+            if(!$v->cost){
+                continue;
+            }
+            $cost_price = $v->cost->price/0.7;
+            $s_price = false;
+            $mb = mt_rand(15,30);
+            if($mb>20){
+                $input['price'] = $cost_price*$mb/10;
+                $s_price = true;
+            }else{
+                $input['price'] = $cost_price;
+            }
+            $res = Product::where('id', $v->id)->update($input);
+            if($res){
+                if($s_price){
+                    ProductSpecial::create([
+                        'product_id'=>$v->id,
+                        'priority'=>3,
+                        'price'=> $cost_price,
+                        'date_start'=>0,
+                        'date_end'=>0
+                    ]);
+                }
+            }
+        }
+        throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
     }
 }

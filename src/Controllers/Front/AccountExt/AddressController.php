@@ -5,6 +5,7 @@ namespace Aphly\LaravelShop\Controllers\Front\AccountExt;
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\LaravelShop\Controllers\Front\Controller;
 use Aphly\Laravel\Requests\FormRequest;
+use Aphly\LaravelShop\Models\Sale\Order;
 use Aphly\LaravelShop\Models\Setting\Country;
 use Aphly\Laravel\Models\CommonUser;
 use Aphly\LaravelShop\Models\Account\UserAddress;
@@ -46,6 +47,9 @@ class AddressController extends Controller
                 'country_id' => 'required|numeric',
                 'zone_id' => 'required|numeric',
             ]);
+            if(!(new Order())->checkPostcode($input['postcode'],$input['country_code'])){
+                throw new ApiException(['code'=>11000,'msg'=>'Postcode Code','data'=>['postcode'=>['The postal code format is incorrect']]]);
+            }
             if(!$address_id){
                 $input['uid'] = CommonUser::uid();
             }

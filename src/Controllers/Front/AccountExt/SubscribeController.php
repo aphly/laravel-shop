@@ -12,16 +12,20 @@ class SubscribeController extends Controller
 {
     public function index(Request $request)
     {
-        $email = CommonUser::initId();
-        $res['info'] = Subscribe::where(['email'=>$email])->first();
+        $res['email'] = CommonUser::getEmail();
+        $res['info'] = Subscribe::where(['email'=>$res['email']])->first();
         if($request->isMethod('post')){
+            $res['email'] = $res['email']?:$request->input('email','');
+            if(!$res['email']){
+                throw new ApiException(['code'=>1,'msg'=>'email error']);
+            }
             $status = $request->input('status',0);
             $status = $status?1:0;
             if(!empty($res['info'])){
                 $res['info']->status = $status;
                 $res['info']->save();
             }else{
-                Subscribe::create(['email'=>$email,'status'=>$status]);
+                Subscribe::create(['email'=>$res['email'],'status'=>$status]);
             }
             throw new ApiException(['code'=>0,'msg'=>'success']);
         }else{

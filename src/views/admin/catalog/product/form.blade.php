@@ -45,11 +45,19 @@
                 </select>
                 <div class="invalid-feedback"></div>
             </div>
+
             <div class="form-group">
-                <label >价格</label>
+                <label >成本价格(人民币)</label>
+                <input type="text" name="cost_price" class="form-control"  value="{{$res['product']->cost->price??0}}">
+                <div class="invalid-feedback"></div>
+            </div>
+
+            <div class="form-group">
+                <label >价格(美元)</label>
                 <input type="text" name="price" class="form-control"  value="{{$res['product']->price??0}}">
                 <div class="invalid-feedback"></div>
             </div>
+
             <div class="form-group">
                 <label >是否需要配送</label>
                 <select name="is_shipping"  class="form-control">
@@ -140,6 +148,42 @@
             <div class="form-group">
                 <label >排序</label>
                 <input type="number" name="sort"  class="form-control " value="{{$res['product']->sort??0}}">
+                <div class="invalid-feedback"></div>
+            </div>
+
+            <div class="form-group">
+                <label >申报单重*</label>
+                <input type="text" name="declaration_unit_weight" class="form-control"  value="{{$res['product']->declaration_unit_weight??0}}">
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="form-group">
+                <label >申报名称*</label>
+                <input type="text" name="declaration_name_local" class="form-control"  value="{{$res['product']->declaration_name_local??''}}">
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="form-group">
+                <label >申报名称英文*</label>
+                <input type="text" name="declaration_name_en" class="form-control"  value="{{$res['product']->declaration_name_en??''}}">
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="form-group">
+                <label >hs海关编码</label>
+                <input type="text" name="declaration_hs_code" class="form-control"  value="{{$res['product']->declaration_hs_code??''}}">
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="form-group">
+                <label >申报材质</label>
+                <input type="text" name="declaration_material" class="form-control"  value="{{$res['product']->declaration_material??''}}">
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="form-group">
+                <label >申报品牌</label>
+                <input type="text" name="declaration_brand" class="form-control"  value="{{$res['product']->declaration_brand??''}}">
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="form-group">
+                <label >申报备注</label>
+                <input type="text" name="declaration_remark" class="form-control"  value="{{$res['product']->declaration_remark??''}}">
                 <div class="invalid-feedback"></div>
             </div>
         </div>

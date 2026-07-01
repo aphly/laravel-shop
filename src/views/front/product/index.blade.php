@@ -1,6 +1,9 @@
 @include('laravel-shop::front.common.header')
 <style>
-
+    .special_color{color: #E36254;}
+    .product-category li{position: relative;}
+    .special_off{border: 1px solid #E36254;background: #E36254;position: absolute;top: 5px;left: 5px;height: 24px;
+        line-height: 24px;border-radius: 16px;font-size: 12px;z-index: 100;color: #fff;padding: 0 10px;}
 </style>
 <script>
     $(function () {
@@ -207,6 +210,11 @@
                 <ul class=" product-category">
                     @foreach($res['list'] as $key=>$val)
                         <li class="">
+                            @if($val->special)
+                                <div class="special_off" data-special="">
+                                    {{$val->special_off}}% OFF
+                                </div>
+                            @endif
                             @if(!empty($res['product_option_value_image'][$val->id]))
                                 <div class="image">
                                     <a href="/product/{{$val->id}}">
@@ -236,7 +244,7 @@
                             <div class="p_name_x d-flex justify-content-between">
                                 <div class="d-flex price">
                                     @if($val->special)
-                                        <span class="normal">{{$val->special}}</span>
+                                        <span class="normal special_color">{{$val->special}}</span>
                                         <span class="special_price">{{$val->price}}</span>
                                         <span class="price_sale">Sale</span>
                                     @else

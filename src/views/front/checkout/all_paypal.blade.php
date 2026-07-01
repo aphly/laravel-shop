@@ -4,6 +4,8 @@
     .ext_login a{background: #000; color: #fff; padding: 10px 20px;border-radius: 8px;}
     .checkout_info,.shipping_method .checkout_ul li,.checkout_ul li{border:none;box-shadow: 0 0 15px 0 #f1f1f1;font-weight: 600;margin-bottom: 10px;border-radius: 8px;}
     .checkout_ul li[data-disabled="true"]{color: #ccc;cursor: inherit;}
+    .shipping_address .checkout_ul li{display: block}
+    .email_active{border: 1px solid var(--btn_bg);border-radius: 8px;box-shadow: 0 0 15px 0 #f1f1f1;}
 </style>
 <div class="container shop_main">
     <div class="">
@@ -18,18 +20,26 @@
                         <div>
                             Contact
                         </div>
-                        @if(!$email)
+                        @if(!$user)
                         <div style="font-size: 14px;">
                             Have an account? <a href="{{route('login')}}?redirect={{urlencode(request()->url())}}" style="color:var(--btn_bg)">Log in</a>
                         </div>
                         @endif
                     </div>
-                    @if(!$email)
-                        <div class="form-group checkout_group">
+                    @if($user)
+                        <div class="form-group checkout_group form-group_show ">
                             <label class="">Email</label>
-                            <input type="text" name="email" onblur="guestEmail(this)" placeholder="Email" class="form-control" autocomplete="off">
+                            <input type="email" name="email" value="{{$email}}" placeholder="Email" class="email_active form-control" autocomplete="off">
                             <div class="invalid-feedback"></div>
                         </div>
+                    @else
+                        <div class="form-group checkout_group ">
+                            <label class="">Email</label>
+                            <input type="email" name="email" onblur="guestEmail(this)" placeholder="Email" class="email_active form-control" autocomplete="off">
+                            <div class="invalid-feedback"></div>
+                        </div>
+                    @endif
+                    @if(!$user)
                         <div class="ext_login">
                             <a class="google" href="/oauth/google">
                                 <div class="d-flex justify-content-between">
@@ -43,19 +53,20 @@
                                             </g>
                                         </svg>
                                     </div>
-                                    <div class="" style="line-height: 22px;margin-left: 10px;">Sign in with Google</div>
+                                    <div class="" style="line-height: 22px;margin-left: 10px;">Google</div>
+                                    <div></div>
+                                </div>
+                            </a>
+                            <a class="google" href="/oauth/facebook" style="margin-left: 20px;">
+                                <div class="d-flex justify-content-between">
+                                    <div class="ext_icon">
+                                        <svg  t="1780923527719" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5062" width="22" height="22"><path d="M725.333333 149.333333a21.333333 21.333333 0 0 0-21.333333-21.333333H597.333333a203.52 203.52 0 0 0-213.333333 192v115.2H277.333333a21.333333 21.333333 0 0 0-21.333333 21.333333v110.933334a21.333333 21.333333 0 0 0 21.333333 21.333333H384v285.866667a21.333333 21.333333 0 0 0 21.333333 21.333333h128a21.333333 21.333333 0 0 0 21.333334-21.333333v-285.866667h111.786666a21.333333 21.333333 0 0 0 20.906667-15.786667l30.72-110.933333a21.333333 21.333333 0 0 0-20.48-26.88H554.666667V320a42.666667 42.666667 0 0 1 42.666666-38.4h106.666667a21.333333 21.333333 0 0 0 21.333333-21.333333z" fill="#0065e1" p-id="5063"></path></svg>
+                                    </div>
+                                    <div class="" style="line-height: 22px;margin-left: 10px;">Facebook</div>
                                     <div></div>
                                 </div>
                             </a>
                         </div>
-                    @else
-                    <ul class="checkout_info" style="padding: 15px ;border-radius: 8px;">
-                        <li>
-                            <span>Email</span>
-                            <span>{{$email}}</span>
-                            <span></span>
-                        </li>
-                    </ul>
                     @endif
                 </div>
                 <div class="checkout_box shipping_address">
@@ -65,10 +76,7 @@
                     <input type="hidden" name="address_id" value="{{$res['my_address_first']['id']}}">
                     <ul class="checkout_ul">
                         @foreach($res['my_address'] as $val)
-                            <li data-id="{{$val['id']}}" data-firstname="{{$val['firstname']}}" data-lastname="{{$val['lastname']}}"
-                                data-address_1="{{$val['address_1']}}" data-address_2="{{$val['address_2']}}"
-                                data-city="{{$val['city']}}" data-postcode="{{$val['postcode']}}" data-zone_id="{{$val['zone_id']}}" data-country_id="{{$val['country_id']}}"
-                                data-telephone="{{$val['telephone']}}" >
+                            <li data-id="{{$val['id']}}"  >
                                 <div class="lix">
                                     <div class="custom-radio"><div></div></div>
                                     <div style="margin-right: auto;width: calc(100% - 60px);">
@@ -113,9 +121,14 @@
                                 </div>
                                 <div class="form-group checkout_group">
                                     <label class="">Country </label>
+                                    @if($res['country_first'])
+                                        <input type="hidden" id="country_code" name="country_code" value="{{$res['country_first']['iso_code_2']}}">
+                                    @else
+                                        <input type="hidden" id="country_code" name="country_code" value="">
+                                    @endif
                                     <select name="country_id"  required class="form-control input-country">
                                         @foreach($res['country'] as $val)
-                                            <option class="country_option" data-name="{{$val['name']}}" value="{{$val['id']}}">{{$val['name']}}</option>
+                                            <option class="country_option" data-country_code="{{$val['iso_code_2']}}" value="{{$val['id']}}">{{$val['name']}}</option>
                                         @endforeach
                                     </select>
                                     <div class="invalid-feedback"></div>
@@ -172,7 +185,7 @@
 
                     <ul class="checkout_ul ">
                         @foreach($res['shipping'] as $val)
-                            <li data-id="{{$val['id']}}" @if($val['disabled']) data-disabled="true" @endif class="@if($val['id']==$res['shipping_first']['id']) active @endif">
+                            <li @if($val['desc']=='coupon') style="display: none" @endif data-id="{{$val['id']}}" @if($val['disabled']) data-disabled="true" @endif class="@if($val['id']==$res['shipping_first']['id']) active @endif">
                                 <div class="lix">
                                     <div class="custom-radio_r" >
                                         <div>
@@ -180,26 +193,23 @@
                                         </div>
                                         <div class="desc" style="">
                                             @if($val['cost']==0)
-                                                FREE On Orders Over {{$val['free_cost_format']}}
+                                                @if($val['desc']=='coupon')
+                                                    The coupon includes free shipping
+                                                @else
+                                                    Free shipping for orders over {{$val['free_cost_format']}}
+                                                @endif
                                             @else
                                                 {{$val['desc']}}
                                             @endif
                                         </div>
                                         <div>
-                                            @if($val['free'])
-                                                <span>Free</span>
-                                                @if($val['cost']>0)
-                                                    <span class="old_price">{{$val['cost_format']}}</span>
-                                                @endif
+                                            <span>
+                                            @if($val['cost']>0)
+                                                {{$val['cost_format']}}
                                             @else
-                                                <span>
-                                                @if($val['cost']>0)
-                                                    {{$val['cost_format']}}
-                                                @else
-                                                    Free
-                                                @endif
-                                                </span>
+                                                Free
                                             @endif
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="custom_right"><i class="uni app-zhengque"></i></div>
@@ -217,8 +227,22 @@
                         All transactions are secure and encrypted.
                     </div>
                 </div>
+                <div style="display: flex;justify-content: center;font-weight: 600;margin-bottom: 20px;font-size: 18px;">
+                    <div style="margin-right: 10px;">Order Total:</div>
+                    <div class="js-total_all">
+                        @if($res['total_data']['totals']['total']['value_old']!=$res['total_data']['totals']['total']['value'])
+                            <span class="items-right js-total-amount  price_format">{{$res['total_data']['totals']['total']['value_format']}}</span>
+                            <span class="price_old_format js-total-amount_old">{{$res['total_data']['totals']['total']['value_old_format']}}</span>
+                        @else
+                            <span class="items-right js-total-amount">{{$res['total_data']['totals']['total']['value_format']}}</span>
+                        @endif
+                    </div>
+                </div>
+
                 <div id="paypal-button-container" class="paypal-button-container"></div>
             </div>
+
+
         </div>
         <div class="checkout_r">
             @include('laravel-shop::front.checkout.right')
@@ -258,7 +282,6 @@
     .prev_item{border-bottom: none !important;}
     .next_item{border-top: none !important;}
 
-    .billing_address .checkout_ul li,.shipping_address .checkout_ul li{flex-wrap: wrap;}
     .lix_t{background: #f5f5f5;width: 100%; padding: 15px;display: none}
     .checkout_ul .active .lix_t{display: block}
 
@@ -286,6 +309,7 @@
     .active .custom_right .app-zhengque{color:var(--btn_bg);}
     .custom_right{display: none;position: absolute;right: 20px;top:calc(50% - 12px);}
     label span{color: darkred;}
+
     @media (max-width: 1200px) {
         .shipping_method .checkout_ul li{
             width: 100%;
@@ -296,65 +320,112 @@
 </style>
 <script src="https://www.paypal.com/sdk/js?client-id={{$res['ClientID']}}&locale=en_US"></script>
 <script >
-    window.paypal
-        .Buttons({
-            style: {
-                shape: "pill",
-                layout: "vertical",
-                color: "gold",
-                label: "buynow",
-            },
-            async createOrder() {
-                let that = $('#checkout_payment')
-                const response = await fetch("/checkout/payment_paypal", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(that.serializeArray().reduce((obj, item) => ({ ...obj, [item.name]: item.value }), {})),
-                });
-                const res = await response.json();
-                if (!res.code) {
-                    return res.data.paypal_id;
-                }else if(res.code===11000){
-                    form_err_11000(res,that);
-                }else if(res.code===2){
-                    alert_msg(res.msg)
-                }else{
-                    alert_msg(res.msg)
-                }
-            },
-            onCancel(data, actions) {
-                actions.redirect('{{url('/account_ext/order')}}')
-            },
-            async onApprove(data, actions) {
-                //console.log('onApprove',data, actions)
-                const response = await fetch(`/checkout/capture_paypal`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    body: JSON.stringify({
-                        paypal_id: data.orderID,
-                    }),
-                });
-                const res = await response.json();
-                if(res.code){
-                    alert_msg(res.msg)
-                }
-                const errorDetail = res.data?.details?.[0];
-                if (errorDetail?.issue === "INSTRUMENT_DECLINED") {
-                    return actions.restart();
-                } else if (errorDetail) {
-                    alert_msg(`${errorDetail.description} (${res.data.debug_id})`)
-                } else if (!res.data.purchase_units) {
-                    alert_msg(res.msg)
-                } else {
+    function form_err_11000(res,that) {
+        let input_group = that.find('.input_group');
+        input_group.removeClass('group_is-invalid')
+        let first_ms = ''
+        for(let i in res.data){
+            let str = ''
+            res.data[i].forEach((elem, index)=>{
+                str = str+elem+'<br>'
+            })
+            form_err(that,i,str)
+            if(!first_ms){
+                first_ms = res.data[i][0]
+                let offsetTop = that.find('*[name="'+i+'"]').offset().top - 150
+                $('html, body').animate({ scrollTop: offsetTop }, 600);
+            }
+        }
+        alert_msg(first_ms)
+    }
+    let paypalButtonsInstance = null;
+    function renderPayPalButton() {
+        if (paypalButtonsInstance) {
+            paypalButtonsInstance.close();
+        }
+        paypalButtonsInstance = paypal.Buttons({
+                onInit: function(data, actions) {
+                    paypalButtonInstance = actions;
+                },
+                style: {
+                    shape: "pill",
+                    layout: "vertical",
+                    color: "gold",
+                    label: "buynow",
+                    disableMaxWidth: true
+                },
+                async createOrder() {
+                    let that = $('#checkout_payment')
+                    try{
+                        const response = await fetch("/checkout/payment_paypal", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify(that.serializeArray().reduce((obj, item) => ({
+                                ...obj,
+                                [item.name]: item.value
+                            }), {})),
+                        });
+                        const res = await response.json();
+                        console.log('res:',res);
+                        if (!res.code) {
+                            return res.data.paypal_id;
+                        } else {
+                            if (res.code === 11000) {
+                                form_err_11000(res, that);
+                            } else if (res.code === 2) {
+                                alert_msg(res.msg)
+                            } else if (res.code === 11) {
+                                alert_msg(res.msg)
+                            } else {
+                                alert_msg(res.msg)
+                            }
+                        }
+                        throw new Error(res.msg);
+                    }catch (e) {
+                        throw e
+                    }
+                },
+                onCancel(data, actions) {
+                    console.log("PayPal onCancel");
                     actions.redirect('{{url('/account_ext/order')}}')
-                }
-            },
-        }).render("#paypal-button-container");
+                },
+                onError: function(error) {
+                    console.log("PayPal onError：", error);
+                    renderPayPalButton();
+                },
+                async onApprove(data, actions) {
+                    //console.log('onApprove',data, actions)
+                    const response = await fetch(`/checkout/capture_paypal`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        body: JSON.stringify({
+                            paypal_id: data.orderID,
+                        }),
+                    });
+                    const res = await response.json();
+                    if(res.code){
+                        alert_msg(res.msg)
+                    }
+                    const errorDetail = res.data?.details?.[0];
+                    if (errorDetail?.issue === "INSTRUMENT_DECLINED") {
+                        return actions.restart();
+                    } else if (errorDetail) {
+                        alert_msg(`${errorDetail.description} (${res.data.debug_id})`)
+                    } else if (!res.data.purchase_units) {
+                        alert_msg(res.msg)
+                    } else {
+                        actions.redirect('{{url('/account_ext/order')}}')
+                    }
+                },
+            })
+        paypalButtonsInstance.render('#paypal-button-container');
+    }
+    renderPayPalButton()
 </script>
 
 <script>
@@ -388,6 +459,7 @@
 
         $('.input-country').change(function () {
             let country_id = $(this).val();
+            $('#country_code').val($(this).find('option:selected').data('country_code'))
             setCountry(country_id,false,false,this)
         })
 
@@ -407,8 +479,6 @@
                     success: function(res){
                         $('.shipping_method li').removeClass('active').removeClass('prev_item').removeClass('next_item')
                         _this.addClass('active')
-                        // _this.prev().addClass('prev_item')
-                        // _this.next().addClass('next_item')
                         $('.shipping_id_'+id).click()
 
                         $('.totals_shipping .items-left').text(res.data.total_data.totals.shipping.title)
@@ -425,19 +495,6 @@
         })
         //$('.shipping_method li:first').find('.lix').click()
 
-        $('.billing_address').on('click','li',function () {
-            $('.billing_address li').removeClass('active')
-            $(this).addClass('active')
-            let same = $(this).data('val')
-            $('#same').val(same)
-            if(same){
-                $('.billing_address input').attr('required',false)
-                $('.billing_address select').attr('required',false)
-            }else{
-                $('.billing_address input:not([name="billing_address_2"])').attr('required',true)
-                $('.billing_address select').attr('required',true)
-            }
-        })
     })
 
     function setZone(res,country_id,zone_id,_this) {
@@ -520,6 +577,8 @@
                 success:function (res) {
                     if(res.code===11000){
                         form_err_11000(res,that);
+                    }else if(res.code===1){
+                        location.reload()
                     }
                 }
             })

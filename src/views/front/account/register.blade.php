@@ -119,8 +119,8 @@
             </div>
             <div class="ext_login">
                 <a class="google" href="/oauth/google">
-                    <div class="d-flex justify-content-between">
-                        <div class="ext_icon">
+                    <div class="d-flex justify-content-center">
+                        <div class="" style="margin-right: 10px;position: relative;top: -2px;">
                             <svg width="22" height="22" xmlns="http://www.w3.org/2000/svg">
                                 <g fill="none" fill-rule="evenodd">
                                     <path d="M20.6 11.227c0-.709-.064-1.39-.182-2.045H11v3.868h5.382a4.6 4.6 0 0 1-1.996 3.018v2.51h3.232c1.891-1.742 2.982-4.305 2.982-7.35z" fill="#4285F4"></path>
@@ -130,17 +130,26 @@
                                 </g>
                             </svg>
                         </div>
-                        <div class="">Continue with Google</div>
+                        <div class="">Google</div>
                         <div></div>
                     </div>
                 </a>
-
+                <a class="google" href="/oauth/facebook">
+                    <div class="d-flex justify-content-center">
+                        <div class="" style="margin-right: 10px;position: relative;top: -2px;">
+                            <svg  t="1780923527719" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5062" width="22" height="22"><path d="M725.333333 149.333333a21.333333 21.333333 0 0 0-21.333333-21.333333H597.333333a203.52 203.52 0 0 0-213.333333 192v115.2H277.333333a21.333333 21.333333 0 0 0-21.333333 21.333333v110.933334a21.333333 21.333333 0 0 0 21.333333 21.333333H384v285.866667a21.333333 21.333333 0 0 0 21.333333 21.333333h128a21.333333 21.333333 0 0 0 21.333334-21.333333v-285.866667h111.786666a21.333333 21.333333 0 0 0 20.906667-15.786667l30.72-110.933333a21.333333 21.333333 0 0 0-20.48-26.88H554.666667V320a42.666667 42.666667 0 0 1 42.666666-38.4h106.666667a21.333333 21.333333 0 0 0 21.333333-21.333333z" fill="#0065e1" p-id="5063"></path></svg>
+                        </div>
+                        <div class="">Facebook</div>
+                        <div></div>
+                    </div>
+                </a>
             </div>
         </div>
     </div>
 </section>
 <style>
-
+    .ext_login{display: flex;justify-content: center}
+    .ext_login a{background: #000; color: #fff; border-radius: 8px;width: 100%;}
 </style>
 <script>
     function register_res(res,_this) {

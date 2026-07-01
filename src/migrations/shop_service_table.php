@@ -27,10 +27,8 @@ return new class extends Migration
             $table->unsignedTinyInteger('refund_fee')->default(0);
             $table->decimal('refund_amount',15,2)->nullable();
             $table->string('refund_amount_format',255)->nullable();
-            $table->string('c_express_name',255)->nullable();
             $table->string('c_express_no',255)->nullable();
             $table->unsignedBigInteger('shipping_id')->nullable();
-            $table->string('b_express_name',255)->nullable();
             $table->string('b_express_no',255)->nullable();
             $table->string('service_address',255)->nullable();
             $table->string('service_name',64)->nullable();

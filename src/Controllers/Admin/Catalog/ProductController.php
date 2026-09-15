@@ -414,6 +414,7 @@ class ProductController extends Controller
                     $arr['option_id'] = $k;
                     $arr['value'] = $v['value']??'';
                     $arr['price'] = $v['price']??0;
+                    $arr['url'] = $v['url']??'';
                     $arr['required'] = $v['required']??0;
                     $option_value = $v['option_value']??[];
                 }
@@ -433,7 +434,7 @@ class ProductController extends Controller
                         $arr_v['option_id'] = $productOption->option_id;
                         $product_option_value_update[] = $arr_v;
                     }
-                    ProductOptionValue::upsert($product_option_value_update,['id'],['product_option_id','product_id','option_id','option_value_id','product_image_id','quantity','subtract','price','sort']);
+                    ProductOptionValue::upsert($product_option_value_update,['id'],['product_option_id','product_id','option_id','option_value_id','product_image_id','quantity','subtract','price','url','sort']);
                 }
             }
             throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->listHref('option').'?product_id='.$res['product']->id]]);

@@ -83,7 +83,12 @@ class ProductController extends Controller
                 ['name'=>'Home','href'=>'/'],
                 ['name'=>$cate->name,'href'=>''],
             ],false);
-            $res['title'] = $cate->name;
+            if(!empty($cate->meta_title)){
+                $res['title'] = $cate->meta_title;
+            }else{
+                $res['title'] = $cate->name;
+            }
+            $res['description'] = $cate->meta_description;
         }else{
             $res['breadcrumb'] = Breadcrumb::render([
                 ['name'=>'Home','href'=>'/'],
@@ -105,9 +110,10 @@ class ProductController extends Controller
     public function detail(Request $request)
     {
         $res['info'] = Product::where('id', $request->id)->where('status', 1)->where('date_available', '<', time())->with('desc')->firstOr404();
-
         $res['title'] = $res['info']->name;
-        $res['description'] = $res['info']->name;
+        if($res['info']->desc){
+            $res['description'] = $res['info']->desc->meta_description;
+        }
         $res['breadcrumb'] = Breadcrumb::render([
             ['name'=>'Home','href'=>'/'],
             ['name'=>$res['info']->name,'href'=>'']

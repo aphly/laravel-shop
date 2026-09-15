@@ -57,7 +57,7 @@ class PaypalController extends Controller
     {
         $paypalC = new Client();
         $res['ClientID'] = $paypalC->client_id;
-        session(['shop_coupon'=>'G-30']);
+        session(['shop_coupon'=>$this->shop_config['coupon']]);
 
         $cart = new Cart;
         //shipping
@@ -237,6 +237,8 @@ class PaypalController extends Controller
         $input['ip'] = $request->ip();
         $input['user_agent'] = $request->header('user-agent');
         $input['accept_language'] = $request->header('accept-language');
+        $shop_salesperson_id = session('shop_salesperson_id');
+        $input['salesperson_id'] = $shop_salesperson_id?:0;
         $order = $orderObj->create($input);
         if($order->id){
             $orderTotal_input = [];

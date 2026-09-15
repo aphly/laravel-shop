@@ -90,6 +90,7 @@ class Init extends Command
                 $data[] =['name' => '售后','route' =>'shop_admin/after_sales/index','pid'=>$menu22->id,'uid'=>$manager->uid,'type'=>2,'sort'=>0,'module'=>$this->module];
                 $data[] =['name' => '优惠券','route' =>'shop_admin/coupon/index','pid'=>$menu22->id,'uid'=>$manager->uid,'type'=>2,'sort'=>0,'module'=>$this->module];
                 $data[] =['name' => '联系我们','route' =>'shop_admin/contact_us/index','pid'=>$menu22->id,'uid'=>$manager->uid,'type'=>2,'sort'=>0,'module'=>$this->module];
+                $data[] =['name' => '销售员','route' =>'shop_admin/salesperson/index','pid'=>$menu22->id,'uid'=>$manager->uid,'type'=>2,'sort'=>0,'module'=>$this->module];
                 DB::table('admin_menu')->insert($data);
             }
             $menu23 = AdminMenu::create(['name' => '设置','route' =>'','pid'=>$menu->id,'uid'=>$manager->uid,'type'=>1,'sort'=>8,'module'=>$this->module]);

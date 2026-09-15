@@ -18,6 +18,7 @@ Route::post('paypal/order', 'Aphly\LaravelShop\Controllers\Front\PaypalControlle
 Route::post('paypal/capture', 'Aphly\LaravelShop\Controllers\Front\PaypalController@capture');
 
 Route::get('mail/render', 'Aphly\LaravelShop\Controllers\Front\MailController@render');
+Route::get('sitemap', 'Aphly\LaravelShop\Controllers\Front\SitemapController@index');
 
 Route::middleware(['web'])->group(function () {
 
@@ -132,6 +133,7 @@ Route::middleware(['web'])->group(function () {
     Route::middleware(['guest'])->group(function () {
         Route::get('/', 'Aphly\LaravelShop\Controllers\Front\Common\HomeController@index');
         Route::match(['post'],'contact_us', 'Aphly\LaravelShop\Controllers\Front\Common\ContactUsController@index');
+        Route::match(['get'],'information/index', 'Aphly\LaravelShop\Controllers\Front\Common\InformationController@index');
         Route::match(['get'],'information/{id}', 'Aphly\LaravelShop\Controllers\Front\Common\InformationController@detail');
         Route::match(['get'],'size_guide', 'Aphly\LaravelShop\Controllers\Front\Product\AphlyController@sizeGuide');
 
@@ -165,7 +167,6 @@ Route::middleware(['web'])->group(function () {
         Route::post('checkout/coupon', 'Aphly\LaravelShop\Controllers\Front\Checkout\PaypalController@coupon');
         Route::post('checkout/coupon_remove', 'Aphly\LaravelShop\Controllers\Front\Checkout\PaypalController@couponRemove');
 
-
         //Tracking
         Route::match(['get', 'post'],'tracking/index', 'Aphly\LaravelShop\Controllers\Front\Common\TrackingController@index');
     });
@@ -179,11 +180,11 @@ Route::middleware(['web'])->group(function () {
             $route_arr = [
                 ['attribute','\Catalog\AttributeController'],['option','\Catalog\OptionController'],['filter','\Catalog\FilterController'],
                 ['shipping','\Catalog\ShippingController'],['coupon','\Sale\CouponController'],['order','\Sale\OrderController'],['service','\Sale\ServiceController'],['after_sales','\Sale\AfterSalesController'],
-                ['information','\Common\InformationController'],['contact_us','\Common\ContactUsController'],
+                ['information','\Common\InformationController'],['information_category','\Common\InformationCategoryController'],['contact_us','\Common\ContactUsController'],
                 ['country','\Setting\CountryController'],['geo','\Setting\GeoController'],['zone','\Setting\ZoneController'],
                 ['group','\Account\GroupController'],['user_address','\Account\UserAddressController'],
                 ['review','\Account\ReviewController'],['wishlist','\Account\WishlistController'],['subscribe','\Account\SubscribeController'],
-                ['banner','\Common\BannerController'],
+                ['banner','\Common\BannerController'],['salesperson','\Sale\SalespersonController'],
             ];
 
             foreach ($route_arr as $val){

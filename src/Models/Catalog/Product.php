@@ -396,12 +396,14 @@ class Product extends Model
         $productOptionValue = ProductOptionValue::whereIn('product_option_id',$product_option_ids)->with('option_value')->with('productImage')->orderBy('sort','desc')->get()->keyBy('id')->toArray();
         $productOptionValueGroup = [] ;
         foreach ($productOptionValue as $key=>$val){
-            $val['price_format'] = Currency::format($val['price']);
-            $val['option_value']['image_src'] = CommonUploadFile::getPath($val['option_value']['image'],$val['option_value']['disk']);
-            if($val['product_image']){
-                $val['product_image']['image_src'] = CommonUploadFile::getPath($val['product_image']['image'],$val['product_image']['disk']);
+            if($val['option_value']){
+                $val['price_format'] = Currency::format($val['price']);
+                $val['option_value']['image_src'] = CommonUploadFile::getPath($val['option_value']['image'],$val['option_value']['disk']);
+                if($val['product_image']){
+                    $val['product_image']['image_src'] = CommonUploadFile::getPath($val['product_image']['image'],$val['product_image']['disk']);
+                }
+                $productOptionValueGroup[$val['product_option_id']][$key] = $val;
             }
-            $productOptionValueGroup[$val['product_option_id']][$key] = $val;
         }
         $res = [];
         foreach ($productOption as $key=>$val){
@@ -437,10 +439,20 @@ class Product extends Model
                             $img = '';
                         }
                     }else{
-                        $img = $v['option_value']['image']?'<img src="'.$v['option_value']['image_src'].'" />':'';
+                        if($v['option_value']['image']){
+                            $img = '<img src="'.$v['option_value']['image_src'].'" />';
+                            $data_image_src = 'data-image_src="true"';
+                        }else{
+                            $img = '';
+                        }
                     }
-                    $html .= '<div class="position-relative my_radio" '.$data_image_src.'><input '.($val['required']==1?'required':'').' data-image_id="'.$v['product_image_id'].'" '.$data_image_src.' data-price="'.$v['price'].'" type="radio" name="option['.$val['id'].']" id="option_'.$val['id'].'_'.$v['id'].'" value="'.$v['id'].'" />
+                    if($v['url']){
+                        $html .= '<div class="position-relative my_radio" '.$data_image_src.'>
+                            <a href="'.$v['url'].'"><label data-option_value_id="'.$v['option_value_id'].'"  >'.$img.'<span>'.$v['option_value']['name'].'</span></label></a></div>';
+                    }else{
+                        $html .= '<div class="position-relative my_radio" '.$data_image_src.'><input '.($val['required']==1?'required':'').' data-image_id="'.$v['product_image_id'].'" '.$data_image_src.' data-price="'.$v['price'].'" type="radio" name="option['.$val['id'].']" id="option_'.$val['id'].'_'.$v['id'].'" value="'.$v['id'].'" />
                             <label data-option_value_id="'.$v['option_value_id'].'" for="option_'.$val['id'].'_'.$v['id'].'" >'.$img.'<span>'.$v['option_value']['name'].'</span></label></div>';
+                    }
                 }
                 $html .= '</div></div>';
             }else if($val['option']['type']=='checkbox'){

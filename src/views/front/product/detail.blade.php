@@ -20,12 +20,15 @@
     .product_detail_img .small_img .swiper-wrapper .swiper-slide.active img{border: 1px solid #d19595;}
     .price_sale_detail{background: #E36254;font-weight: 600;margin-bottom: 10px;display: inline-block;color: #fff;padding: 0 10px;border-radius: 8px;}
     .product_detail_info .price .normal{color: #E36254;}
-
-    .info_option .flag_radio .my_radio[data-image_src="true"] label{padding:0;border: none !important;margin-right: 10px;}
-    .info_option .flag_radio .my_radio[data-image_src="true"] label span{display: block;}
-    .info_option .flag_radio .my_radio[data-image_src="true"] label img{border-radius: 50%;margin-right: 0;padding: 3px;}
-    .info_option .flag_radio .my_radio[data-image_src="true"] label:hover{border: none !important;}
-    .info_option .flag_radio .my_radio[data-image_src="true"] label.active img{border:2px solid #e59798 !important;padding: 1px;}
+    .flag_radio .my_radio[data-image_src="true"]{width: auto;}
+    .info_option .flag_radio .my_radio[data-image_src="true"] label{box-sizing: border-box;box-shadow: 0 0 15px 0 #f1f1f1;padding: 0 5px 0 0;border-radius: 6px;margin:0 10px 10px 0;display: flex;align-items: center;}
+    .info_option .flag_radio .my_radio[data-image_src="true"] label span{display: block;padding: 0 10px;}
+    .info_option .flag_radio .my_radio[data-image_src="true"] label img{margin-right:0;padding: 0;}
+    .info_option .flag_radio .my_radio[data-image_src="true"] label:hover{}
+    .info_option .flag_radio .my_radio[data-image_src="true"] label.active img,.info_option .flag_radio .my_radio[data-image_src="true"] label:hover img{width: 48px; height: 48px;}
+    .info_option label{height: 50px;line-height: 50px;padding: 0 20px;}
+    .info_option label.active{}
+    .info_option label:hover{}
     @media (max-width: 1200px) {
         .video_box{width: 100%;}
         .product_detail_img .small_img .swiper-wrapper .swiper-slide.active img{border:none;}
@@ -551,6 +554,7 @@
             }else{
                 div_fly($('#add_cart_btn'),$('#cart_num'),function () {
                     $('#cart_num').text(res.data.count);
+                    {!! $Fb_AddToCart !!}
                 })
             }
         }
@@ -559,6 +563,7 @@
     function buyNow(_this) {
         buy_now = true;
         $('#add_cart_btn').click()
+        {!! $Fb_InitiateCheckout !!}
         $(_this).attr('disabled',true).html('<i class="btn_loading app-jiazai uni"></i>');
     }
 </script>

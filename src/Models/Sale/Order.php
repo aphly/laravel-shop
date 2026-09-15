@@ -30,7 +30,7 @@ class Order extends Model
 		'delivery_city','delivery_postcode','delivery_country','delivery_country_code','delivery_country_id','delivery_zone','delivery_zone_id','delivery_telephone',
 		'shipping_id','shipping_name','shipping_desc','shipping_cost','shipping_free_cost','shipping_geo_group_id','payment_method_id',
 		'payment_method_name','items','total','total_format','currency_code','comment','order_status_id',
-		'ip','user_agent','accept_language','tracking_number','tracking_at'
+		'ip','user_agent','accept_language','tracking_number','tracking_at','salesperson_id'
     ];
 
     function orderStatus(){
@@ -55,6 +55,10 @@ class Order extends Model
 
     function shipping(){
         return $this->hasOne(Shipping::class,'id','shipping_id');
+    }
+
+    function salesperson(){
+        return $this->hasOne(Salesperson::class,'id','salesperson_id');
     }
 
     function checkPostcode($postcode, $country_code)

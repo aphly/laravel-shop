@@ -51,7 +51,7 @@
 </style>
 <header>
     <div class="coupon_h">
-        30% OFF Sitewide , CODE : G-30
+        30% OFF Sitewide , CODE : {{$shop_config['coupon']}}
     </div>
     <div class="header1">
         <div class="container header10">

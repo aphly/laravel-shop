@@ -37,6 +37,7 @@
                 <div class="info">
                     <div class="ititle">基础</div>
                     <ul>
+                        <li><div>销售员:</div><div>{{$res['info']->salesperson?$res['info']->salesperson->name:'-'}}</div></li>
                         <li><div>订单id:</div><div>{{$res['info']->id}}</div></li>
                         <li><div>邮箱:</div><div>{{$res['info']->email}}</div></li>
                         <li><div>用户uid:</div><div>{{$res['info']->uid}}</div></li>

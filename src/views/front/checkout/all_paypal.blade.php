@@ -370,6 +370,7 @@
                         const res = await response.json();
                         console.log('res:',res);
                         if (!res.code) {
+                            {!! $Fb_AddPaymentInfo !!}
                             return res.data.paypal_id;
                         } else {
                             if (res.code === 11000) {
@@ -419,6 +420,7 @@
                     } else if (!res.data.purchase_units) {
                         alert_msg(res.msg)
                     } else {
+                        {!! $Fb_Purchase !!}
                         actions.redirect('{{url('/account_ext/order')}}')
                     }
                 },

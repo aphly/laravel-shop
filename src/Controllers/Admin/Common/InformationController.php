@@ -8,6 +8,7 @@ use Aphly\Laravel\Models\Breadcrumb;
 use Aphly\Laravel\Models\CommonUploadFile;
 use Aphly\LaravelShop\Controllers\Admin\Controller;
 use Aphly\LaravelShop\Models\Common\Information;
+use Aphly\LaravelShop\Models\Common\InformationCategory;
 use Illuminate\Http\Request;
 
 class InformationController extends Controller
@@ -43,6 +44,8 @@ class InformationController extends Controller
             ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
             ['name'=>$res['info']->id?'编辑':'新增','href'=>'/shop_admin/'.$this->currArr['key'].($res['info']->id?'/form?id='.$res['info']->id:'/form')]
         ]);
+        $res['informationCategory'] = InformationCategory::get();
+
         $res['imgSize'] = $this->imgSize;
         return $this->makeView('laravel-shop::admin.common.information.form',['res'=>$res]);
     }

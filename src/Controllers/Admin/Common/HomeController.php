@@ -3,6 +3,7 @@
 namespace Aphly\LaravelShop\Controllers\Admin\Common;
 
 use Aphly\LaravelShop\Controllers\Admin\Controller;
+use Aphly\LaravelShop\Models\Checkout\Cart;
 use Aphly\LaravelShop\Models\Sale\AfterSales;
 use Aphly\LaravelShop\Models\Sale\Order;
 use Illuminate\Http\Request;
@@ -12,6 +13,18 @@ class HomeController extends Controller
 
     public function index(Request $request)
     {
+        //购物车
+        $res['guestCart48'] = Cart::where('uid', 0)->selectRaw('
+            count(*) AS count_product_id,
+            SUM(IFNULL(quantity,0)) AS sum_quantity
+        ')->first();
+        $res['userCart'] = Cart::where('uid','>', 0)->selectRaw('
+            count(*) AS count_product_id,
+            SUM(IFNULL(quantity,0)) AS sum_quantity
+        ')->first();
+
+
+        //订单
         $res['order24Count'] = Order::where('created_at', '>=',(time()-24*3600))->count();
         $res['orderCount'] = Order::count();
 

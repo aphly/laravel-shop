@@ -17,7 +17,7 @@ class CartController extends Controller
 {
     public function index()
     {
-        session(['shop_coupon'=>'G-30']);
+        session(['shop_coupon'=>$this->shop_config['coupon']]);
         $res['title'] = 'Cart';
         $res['breadcrumb'] = Breadcrumb::render([
             ['name'=>'Home','href'=>'/'],

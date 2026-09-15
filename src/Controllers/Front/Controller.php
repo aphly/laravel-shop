@@ -8,6 +8,7 @@ use Aphly\LaravelShop\Models\Account\Wishlist;
 use Aphly\LaravelShop\Models\Checkout\Cart;
 use Aphly\LaravelShop\Models\Setting\Config;
 use Aphly\LaravelShop\Models\Setting\Ipv4;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
 
 class Controller extends \Aphly\Laravel\Controllers\Front\Controller
@@ -52,6 +53,61 @@ class Controller extends \Aphly\Laravel\Controllers\Front\Controller
                 View::share("email",'');
             }
             View::share("wishlist_num",$count);
+            $salesperson_id = $request->query('salesperson_id',false);
+            $sp_id = $request->query('sp_id',false);
+            if($salesperson_id || $sp_id){
+                session(['shop_salesperson_id' => $salesperson_id]);
+            }
+
+            if(config('shop.facebook_analytics')){
+                $fb_code = <<<EOT
+                    <!-- Meta Pixel Code -->
+                    <script>
+                    !function(f,b,e,v,n,t,s)
+                    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+                    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+                    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+                    n.queue=[];t=b.createElement(e);t.async=!0;
+                    t.src=v;s=b.getElementsByTagName(e)[0];
+                    s.parentNode.insertBefore(t,s)}(window, document,'script',
+                    'https://connect.facebook.net/en_US/fbevents.js');
+                    fbq('init', '1944599702889203');
+                    fbq('track', 'PageView');
+                    </script>
+                    <noscript><img height="1" width="1" style="display:none"
+                    src="https://www.facebook.com/tr?id=1944599702889203&ev=PageView&noscript=1"
+                    /></noscript>
+                    <!-- End Meta Pixel Code -->
+                EOT;
+
+                View::share("Fb_Code",$fb_code);
+                View::share("Fb_AddToCart","fbq('track', 'AddToCart');");
+                View::share("Fb_InitiateCheckout","fbq('track', 'InitiateCheckout');");
+                View::share("Fb_AddPaymentInfo","fbq('track', 'AddPaymentInfo');");
+                View::share("Fb_Purchase","fbq('track', 'Purchase', {value: 1.00, currency: 'USD'});");
+            }else{
+                View::share("Fb_Code",'');
+                View::share("Fb_AddToCart","");
+                View::share("Fb_InitiateCheckout","");
+                View::share("Fb_AddPaymentInfo","");
+                View::share("Fb_Purchase","");
+            }
+
+            if(config('shop.google_analytics')){
+                $Google_Code = <<<EOT
+                    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DT0RF3XJTH"></script>
+                    <script>
+                        window.dataLayer = window.dataLayer || [];
+                        function gtag(){dataLayer.push(arguments);}
+                        gtag('js', new Date());
+                        gtag('config', 'G-DT0RF3XJTH');
+                    </script>
+                EOT;
+                View::share("Google_Code",$Google_Code);
+            }else{
+                View::share("Google_Code",'');
+            }
+            Paginator::defaultView('laravel-shop::front.common.pagination');
             return $next($request);
         });
     }

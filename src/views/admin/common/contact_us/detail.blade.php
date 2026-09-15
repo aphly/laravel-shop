@@ -5,6 +5,7 @@
 <div class="imain">
 
     <div class="">
+
         <div class="form-group">
             <label >uid</label>
             <input type="text"  readonly class="form-control " value="{{$res['info']->uid}}">
@@ -26,6 +27,11 @@
             <input type="text"  readonly class="form-control " value="{{$res['info']->created_at}}">
             <div class="invalid-feedback"></div>
         </div>
+        <form method="post" action="/shop_admin/contact_us/del" class="del_form" data-confirm="true">
+            @csrf
+            <input style="display: none" type="checkbox" class="delete_box" name="delete[]" checked value="{{$res['info']->id}}">
+            <button class="badge badge-danger del" type="submit">删除</button>
+        </form>
     </div>
 
     <div>

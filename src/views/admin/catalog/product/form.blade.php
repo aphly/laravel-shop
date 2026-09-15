@@ -16,7 +16,7 @@
             </div>
             <div class="form-group">
                 <label >采购地址</label>
-                <input type="text" name="url" class="form-control " value="{{$res['product']->url}}" >
+                <textarea name="url" class="form-control " style="height: 85px;">{{$res['product']->url}}</textarea>
                 <div class="invalid-feedback"></div>
             </div>
             <div class="form-group">

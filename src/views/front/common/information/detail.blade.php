@@ -5,7 +5,7 @@
         <div class="d-flex all_breadcrumb">
             <a href="{{url('/')}}"><span>Home</span></a>
             <i class="common-iconfont icon-xiangb"></i>
-            <a href="{{url('/information/'.$res['info']->id)}}"><span>{{$res['info']->title}}</span></a>
+            <a href="{{url('/information/index?category_id='.$res['info']->category->id)}}"><span>{{$res['info']->category->name}}</span></a>
         </div>
         <div class="d-flex ">
             @include('laravel-shop::front.common.information.left')
@@ -46,10 +46,12 @@
 </section>
 
 <style>
-    .information h2{margin-bottom: 20px;text-align: center;font-size: 24px;}
+    .information h2{margin: 20px 0 10px 0;text-align: center;font-size: 24px;}
+    .information h3{margin: 10px 0 5px 0;}
     .information{margin-top: 20px}
     .contact_us{margin-top: 20px;}
     .information img{max-width: 100%;}
+    img[data-href]{cursor: pointer}
 </style>
 
 <script>
@@ -59,5 +61,13 @@
             window.location.reload()
         }
     }
+    $(function () {
+        $('img[data-href]').click(function () {
+            let href = $(this).data('href')
+            if(href){
+                location.href = href
+            }
+        })
+    })
 </script>
 @include('laravel-shop::front.common.footer')

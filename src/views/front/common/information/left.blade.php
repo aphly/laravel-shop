@@ -1,3 +1,4 @@
+@if(request()->id<8)
 <ul class="information_left">
     @php
         $path = parse_url(request()->url(), PHP_URL_PATH)
@@ -17,6 +18,7 @@
     .information_right{width: calc(100% - 260px);padding:0 20px;}
     @media (max-width: 1200px) {
         .information_left{display: none}
-        .information_right{width: 100%;}
+        .information_right{width: 100%;padding:0;}
     }
 </style>
+@endif

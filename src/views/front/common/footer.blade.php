@@ -6,26 +6,26 @@
 <div class="container">
     <div class="footerFollow" >
         <a href="https://www.instagram.com/aphlyjewelry/" target="_blank" title="Follow us on Instagram"
-           class="footer_social d-none" rel="nofollow">
+           class="footer_social" rel="nofollow">
             <i class="common-iconfont icon-instagram" ></i>
         </a>
         <a href="https://www.facebook.com/aphlyjewelry" target="_blank" title="Follow us on Facebook"
             class="footer_social" rel="nofollow" >
             <i class="common-iconfont icon-facebook1" ></i>
         </a>
-        <a href="https://twitter.com/aphlyjewelry" target="_blank" title="Follow us on Twitter" class="footer_social d-none"
+        <a href="https://twitter.com/aphlyjewelry" target="_blank" title="Follow us on Twitter" class="footer_social"
             rel="nofollow" >
             <i class="common-iconfont icon-a-XCOM" ></i>
         </a>
         <a href="https://www.pinterest.com/aphlyjewelry/" target="_blank" title="Follow us on Pinterest"
-            class="footer_social d-none" rel="nofollow" >
+            class="footer_social" rel="nofollow" >
             <i class="common-iconfont icon-pinterest" ></i>
         </a>
-        <a href="https://www.youtube.com/" target="_blank"
-            title="Follow us on Youtube" class="footer_social d-none" rel="nofollow" >
+        <a href="https://www.youtube.com/@AphlyJewelry" target="_blank"
+            title="Follow us on Youtube" class="footer_social" rel="nofollow" >
             <i class="common-iconfont icon-youtube" ></i>
         </a>
-        <a href="https://www.tiktok.com/@aphlyjewelry" target="_blank" title="Follow us on Tiktok" class="footer_social d-none"
+        <a href="https://www.tiktok.com/@aphlyjewelry" target="_blank" title="Follow us on Tiktok" class="footer_social"
             rel="nofollow" >
             <i class="common-iconfont icon-tiktok" ></i>
         </a>
@@ -45,6 +45,7 @@
                         <a href="{{config('shop.menu.privacy_policy.url')}}">{{config('shop.menu.privacy_policy.name')}}</a>
                     </li>
                     <li><a href="{{config('shop.menu.faq.url')}}">{{config('shop.menu.faq.name')}}</a></li>
+                    <li><a href="/information/index?category_id=2">Introduction to Gemstones</a></li>
                 </ul>
                 <ul style="margin-right: auto">
                     <li>Support</li>

@@ -2,7 +2,7 @@
     <h5 class="nav-title">{!! $res['breadcrumb'] !!}</h5>
 </div>
 <style>
-    .table_scroll .table_header li:nth-child(2),.table_scroll .table_tbody li:nth-child(2){flex: 0 0 300px;}
+    .table_scroll .table_header li:nth-child(2),.table_scroll .table_tbody li:nth-child(2){flex: 0 0 30%;}
 </style>
 <div class="imain">
     <div class="itop ">
@@ -35,6 +35,7 @@
                     <li >总计</li>
                     <li >国家</li>
                     <li >日期</li>
+                    <li >销售员</li>
                     <li >状态</li>
                     <li >操作</li>
                 </ul>
@@ -46,6 +47,7 @@
                         <li>{{ $v['total_format'] }}</li>
                         <li>{{ $v['delivery_country'] }}</li>
                         <li >{{ $v->created_at->timezone('Asia/Shanghai') }}</li>
+                        <li>{{ $v->salesperson?$v->salesperson->name:'-' }}</li>
                         <li>{{ $v->orderStatus->name }}</li>
                         <li>
                             <a class="badge badge-info ajax_html" data-href="/shop_admin/order/view?id={{$v['id']}}">查看</a>

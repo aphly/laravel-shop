@@ -1,3 +1,6 @@
+@php
+$noIndex = true;
+@endphp
 @include('laravel-shop::front.common.header')
 <section class="pt20" >
     <div class="container d-flex justify-content-center">

@@ -259,7 +259,7 @@
                         <div class="cart-coupon-conent">
                             <a href="javascript:;" data-toggle="modal" data-target="#sale-after">
                                 <img class="Guarantee" src="{{ URL::asset('static/shop/img/cart/return-icon.svg') }}">
-                                <p>30-Day Free Return</p>
+                                <p>60-Day Free Return</p>
                             </a>
                         </div>
                         <div class="cart-coupon-conent">
@@ -286,6 +286,7 @@
 <script>
     $(function () {
         $('.proceed-to-checkout').click(function () {
+            {!! $Fb_InitiateCheckout !!}
             location.href = '/checkout/all_paypal?redirect='+urlencode('{{url('/cart')}}')
         })
 

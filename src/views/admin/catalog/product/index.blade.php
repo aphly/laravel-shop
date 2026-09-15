@@ -3,7 +3,7 @@
 </div>
 <style>
     .table_scroll .table_header li:nth-child(3),.table_scroll .table_tbody li:nth-child(3){flex: 0 0 100px;}
-    .table ul.table_header li:last-child, .table ul.table_tbody li:last-child{flex: 0 0 500px;}
+    .table ul.table_header li:last-child, .table ul.table_tbody li:last-child{flex: 0 0 50%;}
 </style>
 <div class="imain">
     <div class="itop ">
@@ -34,7 +34,7 @@
     <form method="post"  @if($res['search']['string']) action="/shop_admin/product/del?{{$res['search']['string']}}" @else action="/shop_admin/product/del" @endif  class="del_form">
     @csrf
         <div class="table_scroll">
-            <div class="table">
+            <div class="table ">
                 <ul class="table_header">
                     <li >ID</li>
                     <li >图片</li>
@@ -47,9 +47,9 @@
                     @foreach($res['list'] as $v)
                     <ul class="table_tbody">
                         <li><input type="checkbox" class="delete_box" name="delete[]" value="{{$v['id']}}">{{$v['id']}}</li>
-                        <li>
+                        <li class="aphly_viewer_js">
                             @if($v['image_src'])
-                                <img style="width: 30px;height: 30px;" src="{{$v['image_src']}}" />
+                                <img style="width: 30px;height: 30px;" src="{{$v['image_src']}}" class="aphly_viewer" />
                             @endif
                         </li>
                         <li><a href="/product/{{$v['id']}}">{{$v['name']}}</a></li>
@@ -91,4 +91,26 @@
 
     </form>
 </div>
+<script>
+    var aphly_viewerjs = document.querySelectorAll('.aphly_viewer_js');
+    if (aphly_viewerjs) {
+        aphly_viewerjs.forEach(function (item, index) {
+            new Viewer(item, {
+                url: 'data-original',
+                toolbar: false,
+                title: false,
+                rotatable: false,
+                scalable: false,
+                keyboard: false,
+                filter(image) {
+                    if (image.className.indexOf("aphly_viewer") !== -1) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            });
+        })
+    }
+</script>
 

@@ -11,7 +11,11 @@ class Information extends Model
     protected $table = 'shop_information';
     //public $timestamps = false;
     protected $fillable = [
-        'title','content','viewed','status'
+        'title','content','viewed','status','information_category_id'
     ];
+
+    function category(){
+        return $this->hasOne(InformationCategory::class,'id','information_category_id');
+    }
 
 }

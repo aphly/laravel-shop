@@ -1,7 +1,8 @@
 <?php
 return [
     'email'=>'service@aphly.com',
-    'rate'=>6.783, // 人民币对美元汇率
+    'google_analytics'=>false,
+    'facebook_analytics'=>false,
     'menu'=>[
         'about_us'=>[
             'name'=>'About Us',

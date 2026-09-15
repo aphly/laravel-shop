@@ -66,6 +66,11 @@
                         </select>
                         <div class="invalid-feedback"></div>
                     </div>
+                    <div class="form-group">
+                        <label >全站优惠券</label>
+                        <input type="text" name="setting[coupon]" class="form-control " value="{{$res['setting']['coupon']['value']??''}}">
+                        <div class="invalid-feedback"></div>
+                    </div>
 {{--                    <div class="form-group">--}}
 {{--                        <label >退换货姓名(默认)</label>--}}
 {{--                        <input type="text" name="setting[service_name]" class="form-control " value="{{$res['setting']['service_name']['value']??''}}">--}}

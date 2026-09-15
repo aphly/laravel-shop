@@ -13,7 +13,7 @@ class ProductOptionValue extends Model
 
     protected $fillable = [
         'product_option_id','product_id','option_id','option_value_id','product_image_id',
-        'quantity','subtract','price','sort'
+        'quantity','subtract','price','sort','url'
     ];
 
     function option_value(){

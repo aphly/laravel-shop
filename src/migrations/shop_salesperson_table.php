@@ -13,16 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('shop_information', function (Blueprint $table) {
+        Schema::create('shop_salesperson', function (Blueprint $table) {
             $table->id();
-            $table->string('title',128);
-            $table->text('content');
-            $table->unsignedInteger('viewed')->default(1);
+            $table->string('name',64);
+            $table->string('platform',64);
             $table->tinyInteger('status')->default(1);
-            $table->unsignedBigInteger('information_category_id')->nullable()->default(0);
             $table->unsignedBigInteger('created_at');
             $table->unsignedBigInteger('updated_at');
-            $table->index(['information_category_id','status']);
         });
     }
 
@@ -33,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shop_information');
+        Schema::dropIfExists('shop_salesperson');
     }
 };

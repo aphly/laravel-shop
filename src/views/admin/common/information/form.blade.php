@@ -6,6 +6,17 @@
     <form method="post" @if($res['info']->id) action="/shop_admin/information/save?id={{$res['info']->id}}" @else action="/shop_admin/information/save" @endif class="save_form">
         @csrf
         <div class="">
+
+            <div class="form-group" id="status">
+                <label >分类</label>
+                <select name="information_category_id" class="form-control">
+                    @foreach($res['informationCategory'] as $key=>$val)
+                        <option value="{{$val['id']}}" @if($val['id']===$res['info']->information_category_id) selected @endif>{{$val['name']}}</option>
+                    @endforeach
+                </select>
+                <div class="invalid-feedback"></div>
+            </div>
+
             <div class="form-group">
                 <label >标题</label>
                 <input type="text" name="title" required class="form-control " value="{{$res['info']->title}}">
@@ -35,6 +46,8 @@
                 </select>
                 <div class="invalid-feedback"></div>
             </div>
+
+
 
             <div class="form-group">
                 <label >查看数</label>

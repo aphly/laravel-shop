@@ -17,7 +17,7 @@ class ShopServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__.'/config/shop.php', 'shop'
+            dirname(__DIR__).'/config/shop.php', 'shop'
         );
     }
 
@@ -30,7 +30,7 @@ class ShopServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__.'/public' => public_path('static/shop'),
-            __DIR__.'/config/shop_init.sql' => storage_path('app/private/shop_init.sql'),
+            dirname(__DIR__).'/config/shop_init.sql' => storage_path('app/private/shop_init.sql'),
         ]);
         $this->loadMigrationsFrom(__DIR__.'/migrations');
         $this->loadViewsFrom(__DIR__.'/views', 'laravel-shop');

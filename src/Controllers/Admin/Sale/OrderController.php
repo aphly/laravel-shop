@@ -41,7 +41,7 @@ class OrderController extends Controller
                         $query->where('order_status_id', $search['status']);
                     }
                 })
-            ->with('orderStatus')->orderBy('created_at','desc')->Paginate(config('base.perPage'))->withQueryString();
+            ->with('orderStatus')->with('salesperson')->orderBy('created_at','desc')->Paginate(config('base.perPage'))->withQueryString();
         $res['orderStatus'] = OrderStatus::get();
         $res['breadcrumb'] = Breadcrumb::render([
             ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url]
@@ -51,7 +51,7 @@ class OrderController extends Controller
 
     public function view(Request $request)
     {
-        $res['info'] = Order::where(['id'=>$request->query('id',0)])->with('orderStatus')
+        $res['info'] = Order::where(['id'=>$request->query('id',0)])->with('orderStatus')->with('salesperson')
             ->with(['orderTotal'=>function ($query) {
                 $query->orderBy('sort', 'asc');
             }])->firstOrError();

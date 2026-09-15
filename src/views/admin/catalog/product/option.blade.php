@@ -44,7 +44,7 @@
                             <div class="option_value_list">
                                 @if($res['option'][$val['option_id']]['type']=='radio' || $res['option'][$val['option_id']]['type']=='select' || $res['option'][$val['option_id']]['type']=='checkbox')
                                 <ul>
-                                    <li><span>选项值</span> @if($res['option'][$val['option_id']]['type']=='radio' || $res['option'][$val['option_id']]['type']=='select') <span>关联图片</span> @endif <span>数量</span><span>减少库存</span><span>价格</span>
+                                    <li><span>选项值</span> @if($res['option'][$val['option_id']]['type']=='radio' || $res['option'][$val['option_id']]['type']=='select') <span>关联图片</span> @endif <span>数量</span><span>减少库存</span><span>价格</span><span>链接</span>
                                         <span>排序</span><span data-option_id="{{$val['option_id']}}" onclick="add_option_value(this,'{{$val['id']}}','{{$res['option'][$val['option_id']]['type']}}')"><i class="uni app-jia"></i></span></li>
                                     @foreach($val['value_arr'] as $k=>$v)
                                         <li>
@@ -81,6 +81,7 @@
                                                 </select>
                                             </span>
                                             <span><input type="text" name="product_option[{{$val['id']}}][{{$val['option_id']}}][option_value][{{$v['id']}}][price]" value="{{$v['price']}}"></span>
+                                            <span><input type="text" name="product_option[{{$val['id']}}][{{$val['option_id']}}][option_value][{{$v['id']}}][url]" value="{{$v['url']}}"></span>
                                             <span><input type="text" name="product_option[{{$val['id']}}][{{$val['option_id']}}][option_value][{{$v['id']}}][sort]" value="{{$v['sort']}}"></span>
                                             <span><i class="uni app-jian option_value_jian"></i></span>
                                         </li>
@@ -242,12 +243,12 @@
         if(type=='select' || type=='radio' || type=='checkbox'){
             if(type=='radio'){
                 html += `<ul>
-                    <li><span>选项值</span><span>关联图片</span><span>数量</span><span>减少库存</span><span>价格</span>
+                    <li><span>选项值</span><span>关联图片</span><span>数量</span><span>减少库存</span><span>价格</span><span>链接</span>
                     <span>排序</span><span data-option_id="${option_id}" onclick="add_option_value(this,'${id}','${type}')"><i class="uni app-jia"></i></span></li>
                 </ul>`
             }else{
                 html += `<ul>
-                    <li><span>选项值</span><span>数量</span><span>减少库存</span><span>价格</span>
+                    <li><span>选项值</span><span>数量</span><span>减少库存</span><span>价格</span><span>链接</span>
                     <span>排序</span><span data-option_id="${option_id}" onclick="add_option_value(this,'${id}','${type}')"><i class="uni app-jia"></i></span></li>
                 </ul>`
             }
@@ -308,6 +309,7 @@
                         </select>
                     </span>
                     <span><input type="text" name="product_option[${id}][${option_id}][option_value][${vid}][price]" value="0"></span>
+                    <span><input type="text" name="product_option[${id}][${option_id}][option_value][${vid}][url]" value=""></span>
                     <span><input type="text" name="product_option[${id}][${option_id}][option_value][${vid}][sort]" value="0"></span>
                     <span><i class="uni app-jian option_value_jian"></i></span>
                 </li>`

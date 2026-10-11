@@ -68,7 +68,7 @@ class HomeController extends Controller
             }
         }
         //$res['product_image'] = $product->imgByIds($product_ids);
-        return $this->makeView('laravel-shop::front.common.home.index',['res'=>$res]);
+        return $this->makeView('laravel-'.config('shop.pre').'::front.common.home.index',['res'=>$res]);
     }
 
 

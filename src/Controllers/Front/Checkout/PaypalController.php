@@ -71,7 +71,7 @@ class PaypalController extends Controller
             }
         }
         //dd($res['shipping']);
-        list($res['count'], $res['list'], $res['total_data']) = $cart->totalData();
+        list($res['count'], $res['list'], $res['totals']) = $cart->totalData();
         if (!$res['count']) {
             throw new ApiException(['code' => 11, 'msg' => 'no cart', 'data' => ['redirect' => '/cart']]);
         }
@@ -97,14 +97,14 @@ class PaypalController extends Controller
         }
         $res['zone'] = (new Zone)->findAllByCountry($res['country_first']['id']);
 
-        return $this->makeView('laravel-shop::front.checkout.all_paypal', ['res' => $res]);
+        return $this->makeView('laravel-'.config('shop.pre').'::front.checkout.all_paypal', ['res' => $res]);
     }
 
     public function payment(FormRequest $request)
     {
         $orderObj = new Order;
         $cart = new Cart;
-        list($res['count'], $res['list'], $res['total_data']) = $cart->totalData();
+        list($res['count'], $res['list'], $res['totals']) = $cart->totalData();
         if (!$res['count']) {
             throw new ApiException(['code' => 11, 'msg' => 'no cart', 'data' => ['redirect' => '/cart']]);
         }
@@ -229,9 +229,9 @@ class PaypalController extends Controller
         }
         $input['payment_method_id'] = 1;
         $input['items'] = $res['count'];
-        $input['total'] = $res['total_data']['totals']['total']['value'];
-        $input['currency_code'] = $res['total_data']['payment_currency_code'];
-        $input['total_format'] = $res['total_data']['totals']['total']['value_format'];
+        $input['total'] = $res['totals']['list']['total']['value'];
+        $input['currency_code'] = $res['totals']['currency_code'];
+        $input['total_format'] = $res['totals']['list']['total']['value_format'];
 
         $input['comment'] = '';
         $input['ip'] = $request->ip();
@@ -242,7 +242,7 @@ class PaypalController extends Controller
         $order = $orderObj->create($input);
         if($order->id){
             $orderTotal_input = [];
-            foreach ($res['total_data']['totals'] as $val){
+            foreach ($res['totals']['list'] as $val){
                 $val['order_id'] = $order->id;
                 $orderTotal_input[] = $val;
             }
@@ -282,8 +282,8 @@ class PaypalController extends Controller
             }
             $order->addOrderHistory($order, 1);
             $payment_input['method_id'] = 1;
-            $payment_input['amount'] = $res['total_data']['payment_total'];
-            $payment_input['currency_code'] =  $res['total_data']['payment_currency_code'];
+            $payment_input['amount'] = $res['totals']['total'];
+            $payment_input['currency_code'] =  $res['totals']['currency_code'];
             $payment_input['cancel_url'] = url('/checkout/all');
             $payment_input['notify_func'] = '\Aphly\LaravelShop\Models\Sale\Order@notify';
             $payment_input['success_url'] = url('/checkout/success?redirect='.urlencode(url('/account_ext/order')));
@@ -324,11 +324,11 @@ class PaypalController extends Controller
                 if ($key == $shipping_id && !$val['disabled']) {
                     session(['shop_shipping_id'=> $key]);
                     $cart = new Cart;
-                    list($res['count'],$res['list'],$res['total_data']) = $cart->totalData();
+                    list($res['count'],$res['list'],$res['totals']) = $cart->totalData();
                     if(!$res['count']){
                         throw new ApiException(['code'=>11,'msg'=>'no cart','data'=>['redirect'=>'/cart']]);
                     }
-                    throw new ApiException(['code' => 0, 'msg' => 'shipping method success', 'data' => ['total_data' => $res['total_data']]]);
+                    throw new ApiException(['code' => 0, 'msg' => 'shipping method success', 'data' => ['totals' => $res['totals']]]);
                 }
             }
         }
@@ -341,11 +341,11 @@ class PaypalController extends Controller
         if(!empty($res['info'])){
             session(['shop_coupon'=>$res['info']['code']]);
             $cart = new Cart;
-            list($res['count'],$res['list'],$res['total_data']) = $cart->totalData();
+            list($res['count'],$res['list'],$res['totals']) = $cart->totalData();
             if(!$res['count']){
                 throw new ApiException(['code'=>11,'msg'=>'no cart']);
             }
-            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['total_data' => $res['total_data']]]);
+            throw new ApiException(['code'=>0,'msg'=>'success','data'=>['totals' => $res['totals']]]);
         }else{
             session()->forget('shop_coupon');
             throw new ApiException(['code'=>1,'msg'=>'fail']);
@@ -356,11 +356,11 @@ class PaypalController extends Controller
     {
         session()->forget('shop_coupon');
         $cart = new Cart;
-        list($res['count'],$res['list'],$res['total_data']) = $cart->totalData();
+        list($res['count'],$res['list'],$res['totals']) = $cart->totalData();
         if(!$res['count']){
             throw new ApiException(['code'=>11,'msg'=>'no cart']);
         }
-        throw new ApiException(['code'=>0,'msg'=>'success','data'=>['total_data' => $res['total_data']]]);
+        throw new ApiException(['code'=>0,'msg'=>'success','data'=>['totals' => $res['totals']]]);
     }
 
 

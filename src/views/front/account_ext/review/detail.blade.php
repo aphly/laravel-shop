@@ -1,4 +1,4 @@
-@include('laravel-shop::front.common.header')
+@include('laravel-'.config('shop.pre').'::front.common.header')
 <section class="container">
     <style>
         .order ul li{display: flex;margin-bottom: 5px;}
@@ -13,7 +13,7 @@
         .total_data li:last-child{font-weight: 600}
     </style>
     <div class="account_info">
-        @include('laravel-shop::front.account.left_menu')
+        @include('laravel-'.config('shop.pre').'::front.account.left_menu')
         <div class="account-main-section">
             <div class="order">
                 <div class="top-desc d-flex justify-content-between">
@@ -61,4 +61,4 @@ $(function () {
 
 })
 </script>
-@include('laravel-shop::front.common.footer')
+@include('laravel-'.config('shop.pre').'::front.common.footer')

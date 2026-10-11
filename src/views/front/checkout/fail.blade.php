@@ -1,4 +1,4 @@
-@include('laravel-shop::front.common.header')
+@include('laravel-'.config('shop.pre').'::front.common.header')
 <link rel="stylesheet" href="{{ URL::asset('static/common/css/account.css') }}">
 <style>
     .checkout_res{margin: 10% 0;}
@@ -47,4 +47,4 @@
         }
     },1000)
 </script>
-@include('laravel-shop::front.common.footer')
+@include('laravel-'.config('shop.pre').'::front.common.footer')

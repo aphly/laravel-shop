@@ -1,4 +1,4 @@
-@include('laravel-shop::front.common.header')
+@include('laravel-'.config('shop.pre').'::front.common.header')
 
 <section class="information">
     <div class=" container">
@@ -8,7 +8,7 @@
             <a href="{{url('/information/index?category_id='.$res['info']->category->id)}}"><span>{{$res['info']->category->name}}</span></a>
         </div>
         <div class="d-flex ">
-            @include('laravel-shop::front.common.information.left')
+            @include('laravel-'.config('shop.pre').'::front.common.information.left')
             <div class="information_right">
                 <h2 class="">{{$res['info']->title}}</h2>
                 <div class="content">
@@ -70,4 +70,4 @@
         })
     })
 </script>
-@include('laravel-shop::front.common.footer')
+@include('laravel-'.config('shop.pre').'::front.common.footer')

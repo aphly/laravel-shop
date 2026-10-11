@@ -1,4 +1,4 @@
-@include('laravel-shop::front.common.header')
+@include('laravel-'.config('shop.pre').'::front.common.header')
 <link rel="stylesheet" href="{{ URL::asset('static/base/front/css/account.css') }}">
 <section class="container">
     <style>
@@ -8,7 +8,7 @@
 
     </style>
     <div class="account_info">
-        @include('laravel-shop::front.account.left_menu')
+        @include('laravel-'.config('shop.pre').'::front.account.left_menu')
         <div class="account-main-section">
             <div class="top-desc d-flex justify-content-between">
                 <h2>Dashboard</h2>
@@ -115,4 +115,4 @@
     })
 
 </script>
-@include('laravel-shop::front.common.footer')
+@include('laravel-'.config('shop.pre').'::front.common.footer')

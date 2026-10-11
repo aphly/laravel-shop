@@ -76,10 +76,10 @@ class Cart extends Model
             $cart_data = self::when($uid, function ($query, $uid) {
                 return $query->where('uid', $uid);
             })->where(['guest' => session('guest')])->with('product')->get()->toArray();
-
+            //Log::info($cart_data);
             foreach ($cart_data as $cart) {
                 $stock = true;
-                if ($cart['product']['status'] == 1 && $cart['product']['date_available'] < time() && $cart['quantity'] > 0) {
+                if ($cart['product'] && $cart['product']['status'] == 1 && $cart['product']['date_available'] < time() && $cart['quantity'] > 0) {
                     $option_price = 0;
                     $option_value_arr = [];
                     $cart['option'] = json_decode($cart['option'], true);
@@ -257,23 +257,20 @@ class Cart extends Model
         self::where('uid',0)->where('created_at','<',time()-3600*24*2)->delete();
     }
 
-    public static $total = [
-        'shipping','coupon','sub_total','total'
+
+    public static $totals = [
+        'list'=>[],
+        'total'=>0,
+        'total_old'=>0,
+        'currency_code'=>''
     ];
 
     public static $free_shipping = false;
 
     public function totalData($refresh=false) {
         list($count,$list,$sub_total,$sub_total_old) = $this->countListSubTotal($refresh);
-        $totals = [];
-        $total = $total_old = 0;
-        $total_data = [
-            'totals' => &$totals,
-            'total'  => &$total,
-            'total_old'  => &$total_old,
-        ];
 
-        $total_data['totals']['sub_total'] = [
+        self::$totals['list']['sub_total'] = [
             'title'      => 'SubTotal',
             'value'      => $sub_total,
             'value_format'      => Currency::format($sub_total),
@@ -282,30 +279,32 @@ class Cart extends Model
             'sort' => 1,
             'ext'=>$count
         ];
-        //$total_data['total'] += $sub_total;
-        $total_data['total'] = Math::add($total_data['total'],$sub_total);
-        $total_data['total_old'] = Math::add($total_data['total_old'],$sub_total_old);
 
-        $cart_ext = (new Coupon)->getTotal($total_data);
+        self::$totals['total'] = Math::add(self::$totals['total'],$sub_total);
+        self::$totals['total_old'] = Math::add(self::$totals['total_old'],$sub_total_old);
 
-		(new Shipping)->getTotal($total_data);
-        list($payment_total,$payment_total_format,$currency_code) = Currency::format($total_data['total'],3);
-        $total_data['totals']['total'] = [
+
+        self::$totals['list']['coupon'] = (new Coupon)->getTotalSelf();
+        //dd(Cart::$list);
+        self::$totals['total'] = Math::sub(self::$totals['total'],self::$totals['list']['coupon']['value']);
+
+        self::$totals['list']['shipping'] = (new Shipping)->getTotalSelf();
+        self::$totals['total'] = Math::add(self::$totals['total'],self::$totals['list']['shipping']['value']);
+        self::$totals['total_old'] = Math::add(self::$totals['total_old'],self::$totals['list']['shipping']['value_old']);
+
+        self::$totals['list']['total'] = [
             'title'      => 'Total',
-            'value'      => $total_data['total'],
-            'value_format'      => $payment_total_format,
-            'value_old'      => $total_data['total_old'],
-            'value_old_format'      => Currency::format($total_data['total_old']),
+            'value'      => self::$totals['total'],
+            'value_format'      => Currency::format(self::$totals['total']),
+            'value_old'      => self::$totals['total_old'],
+            'value_old_format'      => Currency::format(self::$totals['total_old']),
             'sort' => 99,
             'ext'=>''
         ];
-        if(!empty($cart_ext)){
-            foreach ($list as $key=>$val){
-                $list[$key] = array_merge($val,$cart_ext[$key]);
-            }
-        }
-        $total_data['payment_total'] = $payment_total;
-        $total_data['payment_currency_code'] = $currency_code;
-        return [$count,$list,$total_data];
+
+        self::$totals['currency_code'] = Currency::$allDefaultCurr[2]['code'];
+        return [$count,$list,self::$totals];
     }
+
+
 }

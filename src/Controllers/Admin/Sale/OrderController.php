@@ -46,7 +46,7 @@ class OrderController extends Controller
         $res['breadcrumb'] = Breadcrumb::render([
             ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url]
         ]);
-        return $this->makeView('laravel-shop::admin.sale.order.index',['res'=>$res]);
+        return $this->makeView('laravel-'.config('shop.pre').'::admin.sale.order.index',['res'=>$res]);
     }
 
     public function view(Request $request)
@@ -64,7 +64,7 @@ class OrderController extends Controller
             ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
             ['name'=>'详情','href'=>'/shop_admin/'.$this->currArr['key'].'/view?id='.$res['info']->id]
         ]);
-        return $this->makeView('laravel-shop::admin.sale.order.view',['res'=>$res]);
+        return $this->makeView('laravel-'.config('shop.pre').'::admin.sale.order.view',['res'=>$res]);
     }
 
     public function sync(Request $request)
@@ -88,7 +88,7 @@ class OrderController extends Controller
 //    {
 //        $order_id = $request->query('id',0);
 //        $res['order'] = Order::where('id',$order_id)->firstOrNew();
-//        return $this->makeView('laravel-shop::admin.sale.order.form',['res'=>$res]);
+//        return $this->makeView('laravel-'.config('shop.pre').'::admin.sale.order.form',['res'=>$res]);
 //    }
 
 //    public function save(Request $request){
@@ -208,7 +208,7 @@ class OrderController extends Controller
 //            ['name'=>'详情','href'=>'/shop_admin/'.$this->currArr['key'].'/shipping?order_id='.$res['info']->id]
 //        ]);
 //        $res['orderShipping'] = OrderShipping::where('order_id',$res['info']->id)->firstOrNew();
-//        return $this->makeView('laravel-shop::admin.sale.order.shipping',['res'=>$res]);
+//        return $this->makeView('laravel-'.config('shop.pre').'::admin.sale.order.shipping',['res'=>$res]);
 //    }
 
     public function saveShipping(Request $request)

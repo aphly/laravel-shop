@@ -1,4 +1,4 @@
-@include('laravel-shop::front.common.header')
+@include('laravel-'.config('shop.pre').'::front.common.header')
 <div class="container">
     <div style="font-weight: 600;font-size: 18px;margin-top: 10px;">
         {{$res['title']}}
@@ -212,4 +212,4 @@
     // })
     // $('#track_events').html(h1)
 </script>
-@include('laravel-shop::front.common.footer')
+@include('laravel-'.config('shop.pre').'::front.common.footer')

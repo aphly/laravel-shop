@@ -1,4 +1,4 @@
-@include('laravel-shop::front.common.header')
+@include('laravel-'.config('shop.pre').'::front.common.header')
 <style>
     .special_color{color: #E36254;}
     .product-category li{position: relative;}
@@ -314,4 +314,4 @@
     })
 </script>
 
-@include('laravel-shop::front.common.footer')
+@include('laravel-'.config('shop.pre').'::front.common.footer')

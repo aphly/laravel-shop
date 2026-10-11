@@ -104,7 +104,7 @@ class ProductController extends Controller
         }
         $res['filterGroup'] = FilterGroup::where('status',1)->with('filter')->get();
         $res['option'] = Option::where(['status'=>1,'is_filter'=>1])->with('value')->get();
-        return $this->makeView('laravel-shop::front.product.index',['res'=>$res]);
+        return $this->makeView('laravel-'.config('shop.pre').'::front.product.index',['res'=>$res]);
     }
 
     public function detail(Request $request)
@@ -164,7 +164,7 @@ class ProductController extends Controller
             return $item;
         });
         $res['shippingFreeCost'] = (new Shipping)->getFree();
-        return $this->makeView('laravel-shop::front.product.detail',['res'=>$res]);
+        return $this->makeView('laravel-'.config('shop.pre').'::front.product.detail',['res'=>$res]);
     }
 
     public function reviewAdd(Request $request)

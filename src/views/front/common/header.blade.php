@@ -1,4 +1,4 @@
-@include('laravel-shop::front.common.header_common')
+@include('laravel-'.config('shop.pre').'::front.common.header_common')
 <link rel="stylesheet" href="{{ URL::asset('static/base/front/css/iconfont.css') }}">
 <link rel="stylesheet" href="{{ URL::asset('static/base/front/css/common.css') }}">
 <link rel="stylesheet" href="{{ URL::asset('static/base/front/css/font.css') }}">
@@ -40,6 +40,7 @@
     main {
         padding: 110px 0;
     }
+    .search_m12 input{box-shadow: none;}
     @media (max-width: 1200px) {
         .container {
             max-width: 100%;
@@ -205,7 +206,7 @@
         </div>
     </div>
     <div class="account_menu">
-        @include('laravel-shop::front.account.left_menu')
+        @include('laravel-'.config('shop.pre').'::front.account.left_menu')
     </div>
 </header>
 <style>

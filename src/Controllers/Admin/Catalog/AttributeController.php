@@ -30,7 +30,7 @@ class AttributeController extends Controller
         $res['breadcrumb'] = Breadcrumb::render([
             ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url]
         ]);
-        return $this->makeView('laravel-shop::admin.catalog.attribute.index',['res'=>$res]);
+        return $this->makeView('laravel-'.config('shop.pre').'::admin.catalog.attribute.index',['res'=>$res]);
     }
 
     public function form(Request $request)
@@ -44,7 +44,7 @@ class AttributeController extends Controller
             ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
             ['name'=>$res['attributeGroup']->id?'编辑':'新增','href'=>'/shop_admin/'.$this->currArr['key'].($res['attributeGroup']->id?'/form?id='.$res['attributeGroup']->id:'/form')]
         ]);
-        return $this->makeView('laravel-shop::admin.catalog.attribute.form',['res'=>$res]);
+        return $this->makeView('laravel-'.config('shop.pre').'::admin.catalog.attribute.form',['res'=>$res]);
     }
 
     public function save(Request $request){

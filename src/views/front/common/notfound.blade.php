@@ -1,7 +1,7 @@
 @php
 $noIndex = true;
 @endphp
-@include('laravel-shop::front.common.header')
+@include('laravel-'.config('shop.pre').'::front.common.header')
 <section class="pt20" >
     <div class="container d-flex justify-content-center">
         <div class="">
@@ -11,4 +11,4 @@ $noIndex = true;
 </section>
 <script>
 </script>
-@include('laravel-shop::front.common.footer')
+@include('laravel-'.config('shop.pre').'::front.common.footer')

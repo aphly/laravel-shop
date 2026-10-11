@@ -46,7 +46,7 @@ class AfterSalesController extends Controller
         $res['breadcrumb'] = Breadcrumb::render([
             ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url]
         ]);
-        return $this->makeView('laravel-shop::admin.sale.after_sales.index',['res'=>$res]);
+        return $this->makeView('laravel-'.config('shop.pre').'::admin.sale.after_sales.index',['res'=>$res]);
     }
 
     public function view(Request $request)
@@ -62,7 +62,7 @@ class AfterSalesController extends Controller
             ['name'=>'详情','href'=>'/shop_admin/'.$this->currArr['key'].'/view?id='.$res['info']->id]
         ]);
         $res['shop_config'] = Config::findAll();
-        return $this->makeView('laravel-shop::admin.sale.after_sales.view',['res'=>$res]);
+        return $this->makeView('laravel-'.config('shop.pre').'::admin.sale.after_sales.view',['res'=>$res]);
     }
 
     public function historySave(Request $request)
@@ -87,7 +87,7 @@ class AfterSalesController extends Controller
             ['name'=>$res['refund']->id?'编辑':'新增','href'=>'/shop_admin/'.$this->currArr['key'].($res['refund']->id?'/form?id='.$res['refund']->id:'/form')]
         ]);
         $res['orderShipping'] = OrderShipping::where('order_id',$res['info']->id)->first();
-        return $this->makeView('laravel-shop::admin.sale.after_sales.form',['res'=>$res]);
+        return $this->makeView('laravel-'.config('shop.pre').'::admin.sale.after_sales.form',['res'=>$res]);
     }
 
     public function save(Request $request){

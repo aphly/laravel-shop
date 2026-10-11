@@ -8,17 +8,17 @@
         <div class="size_guide_title">
             Size Guide
         </div>
-        @include('laravel-shop::front.product.aphly.size_guide_necklace')
+        @include('laravel-'.config('shop.pre').'::front.product.aphly.size_guide_necklace')
     @elseif(in_array(2,$res['info_category']))
         <div class="size_guide_title">
             Size Guide
         </div>
-        @include('laravel-shop::front.product.aphly.size_guide_ring')
+        @include('laravel-'.config('shop.pre').'::front.product.aphly.size_guide_ring')
     @elseif(in_array(3,$res['info_category']))
         <div class="size_guide_title">
             Size Guide
         </div>
-        @include('laravel-shop::front.product.aphly.size_guide_bracelet')
+        @include('laravel-'.config('shop.pre').'::front.product.aphly.size_guide_bracelet')
     @else
         <div style="text-align: center;">
             <a href="/size_guide" style="font-weight: 600; padding: 10px;background: #d9d9d9; border-radius: 8px;">Size Guide Link</a>

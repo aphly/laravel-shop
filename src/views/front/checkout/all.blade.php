@@ -1,4 +1,4 @@
-@include('laravel-shop::front.common.header')
+@include('laravel-'.config('shop.pre').'::front.common.header')
 <style>
     .ext_login{display: flex;justify-content: center}
     .ext_login a{background: #000; color: #fff; padding: 10px 20px;border-radius: 8px;}
@@ -326,7 +326,7 @@
             </form>
         </div>
         <div class="checkout_r">
-            @include('laravel-shop::front.checkout.right')
+            @include('laravel-'.config('shop.pre').'::front.checkout.right')
         </div>
     </div>
 
@@ -576,4 +576,4 @@
         },400)
     }
 </script>
-@include('laravel-shop::front.common.footer')
+@include('laravel-'.config('shop.pre').'::front.common.footer')

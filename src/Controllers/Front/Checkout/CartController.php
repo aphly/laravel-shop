@@ -25,8 +25,8 @@ class CartController extends Controller
         ],false);
         $cart = new Cart;
         $cart->initCart();
-        list($res['count'],$res['list'],$res['total_data']) = $cart->totalData();
-        return $this->makeView('laravel-shop::front.checkout.cart',['res'=>$res]);
+        list($res['count'],$res['list'],$res['totals']) = $cart->totalData();
+        return $this->makeView('laravel-'.config('shop.pre').'::front.checkout.cart',['res'=>$res]);
     }
 
     public function add(Request $request)
@@ -55,7 +55,7 @@ class CartController extends Controller
         $quantity = $request->input('quantity',1);
         $cartInfo->quantity = $quantity>1?$quantity:1;
         if($cartInfo->save()){
-            list($res['count'],$res['list'],$res['total_data']) = $cart->totalData(true);
+            list($res['count'],$res['list'],$res['totals']) = $cart->totalData(true);
             throw new ApiException(['code'=>0,'msg'=>'success','data'=>$res]);
         }else{
             throw new ApiException(['code'=>1,'msg'=>'fail']);

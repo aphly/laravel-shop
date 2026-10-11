@@ -1,4 +1,4 @@
-@include('laravel-shop::front.common.header')
+@include('laravel-'.config('shop.pre').'::front.common.header')
 <div>
     <div class="home_carousel">
         <div id="carouselCaptionsHome" class="carousel slide carousel-fade" data-ride="carousel" >
@@ -238,4 +238,4 @@
         $('.product_option dd:first-child').click();
     })
 </script>
-@include('laravel-shop::front.common.footer')
+@include('laravel-'.config('shop.pre').'::front.common.footer')

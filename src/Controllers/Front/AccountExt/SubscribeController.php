@@ -30,7 +30,7 @@ class SubscribeController extends Controller
             throw new ApiException(['code'=>0,'msg'=>'success']);
         }else{
             $res['title'] = 'Subscribe';
-            return $this->makeView('laravel-shop::front.account_ext.subscribe.index',['res'=>$res]);
+            return $this->makeView('laravel-'.config('shop.pre').'::front.account_ext.subscribe.index',['res'=>$res]);
         }
     }
 

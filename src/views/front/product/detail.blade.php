@@ -1,4 +1,4 @@
-@include('laravel-shop::front.common.header')
+@include('laravel-'.config('shop.pre').'::front.common.header')
 <link rel="stylesheet" href="{{ URL::asset('static/shop/css/swiper-bundle.min.css') }}"/>
 <link rel="stylesheet" href="{{ URL::asset('static/base/admin/css/video-js.min.css') }}">
 <script src='{{ URL::asset('static/base/admin/js/video.min.js') }}' type='text/javascript'></script>
@@ -339,7 +339,7 @@
         </div>
 
         <div class="size_guide">
-            @include('laravel-shop::front.product.aphly.size_guide_detail')
+            @include('laravel-'.config('shop.pre').'::front.product.aphly.size_guide_detail')
         </div>
 
         <div>
@@ -790,4 +790,4 @@
 
 </script>
 
-@include('laravel-shop::front.common.footer')
+@include('laravel-'.config('shop.pre').'::front.common.footer')

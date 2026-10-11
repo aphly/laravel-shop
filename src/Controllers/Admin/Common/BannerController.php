@@ -33,7 +33,7 @@ class BannerController extends Controller
         $res['breadcrumb'] = Breadcrumb::render([
             ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url]
         ]);
-        return $this->makeView('laravel-shop::admin.common.banner.index', ['res' => $res]);
+        return $this->makeView('laravel-'.config('shop.pre').'::admin.common.banner.index', ['res' => $res]);
     }
 
     public function form(Request $request)
@@ -44,7 +44,7 @@ class BannerController extends Controller
             ['name'=>$res['info']->id?'编辑':'新增','href'=>'/shop_admin/'.$this->currArr['key'].($res['info']->id?'/form?id='.$res['info']->id:'/form')]
         ]);
         $res['imgSize'] = $this->imgSize;
-        return $this->makeView('laravel-shop::admin.common.banner.form',['res'=>$res]);
+        return $this->makeView('laravel-'.config('shop.pre').'::admin.common.banner.form',['res'=>$res]);
     }
 
     public function save(Request $request){

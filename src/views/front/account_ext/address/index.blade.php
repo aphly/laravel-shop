@@ -1,4 +1,4 @@
-@include('laravel-shop::front.common.header')
+@include('laravel-'.config('shop.pre').'::front.common.header')
 <style>
     .address_info{margin-bottom: 0px;}
     .address_info span{font-weight: 600;margin-left: 10px;}
@@ -11,7 +11,7 @@
 </style>
 <div class="container">
     <div class="d-flex justify-content-between account_info">
-        @include('laravel-shop::front.account.left_menu')
+        @include('laravel-'.config('shop.pre').'::front.account.left_menu')
         <div class="account-main-section">
             <div class="">
                 <div class="top-desc d-flex justify-content-between">
@@ -78,4 +78,4 @@ $(function () {
     })
 })
 </script>
-@include('laravel-shop::front.common.footer')
+@include('laravel-'.config('shop.pre').'::front.common.footer')

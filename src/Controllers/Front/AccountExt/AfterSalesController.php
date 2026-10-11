@@ -24,7 +24,7 @@ class AfterSalesController extends Controller
         $res['list'] = AfterSales::where(['uid'=>CommonUser::uid()])->where('delete_at',0)->with('order')
             ->orderBy('created_at','desc')->Paginate(config('base.perPage'))->withQueryString();
         $res['title'] = 'My After Sales';
-        return $this->makeView('laravel-shop::front.account_ext.after_sales.index',['res'=>$res]);
+        return $this->makeView('laravel-'.config('shop.pre').'::front.account_ext.after_sales.index',['res'=>$res]);
     }
 
     public function detail(Request $request){
@@ -36,7 +36,7 @@ class AfterSalesController extends Controller
         foreach ($res['info']->img as $val){
             $val->image_src = CommonUploadFile::getPath($val->image,$val->disk);
         }
-        return $this->makeView('laravel-shop::front.account_ext.after_sales.detail',['res'=>$res]);
+        return $this->makeView('laravel-'.config('shop.pre').'::front.account_ext.after_sales.detail',['res'=>$res]);
     }
 
     public function form(Request $request){
@@ -44,7 +44,7 @@ class AfterSalesController extends Controller
         $res['orderInfo'] = Order::where(['uid'=>CommonUser::uid(),'id'=>$request->query('order_id',0)])->where('delete_at',0)->firstOr404();
         $res['orderProduct'] = OrderProduct::where('order_id',$res['orderInfo']->id)->with('orderOption')->get();
         $res['info'] = AfterSales::where('id',$request->query('id',0))->with('product')->firstOrNew();
-        return $this->makeView('laravel-shop::front.account_ext.after_sales.form',['res'=>$res]);
+        return $this->makeView('laravel-'.config('shop.pre').'::front.account_ext.after_sales.form',['res'=>$res]);
     }
 
     public function save(Request $request){

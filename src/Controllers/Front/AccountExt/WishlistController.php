@@ -28,7 +28,7 @@ class WishlistController extends Controller
             $val->special= $val->special?Currency::format($val->special):0;
             $val->discount= $val->discount?Currency::format($val->discount):0;
         }
-        return $this->makeView('laravel-shop::front.account_ext.wishlist.index',['res'=>$res]);
+        return $this->makeView('laravel-'.config('shop.pre').'::front.account_ext.wishlist.index',['res'=>$res]);
     }
 
     public function product(Request $request){

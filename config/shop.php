@@ -1,6 +1,7 @@
 <?php
 return [
     'email'=>'service@aphly.com',
+    'pre'=>'shop',
     'google_analytics'=>false,
     'facebook_analytics'=>false,
     'menu'=>[

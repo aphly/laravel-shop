@@ -10,14 +10,14 @@ class StatusController extends Controller
     public function notfound()
     {
         $res['title'] = '404';
-        return $this->makeView('laravel-shop::front.common.notfound',['res'=>$res]);
+        return $this->makeView('laravel-'.config('shop.pre').'::front.common.notfound',['res'=>$res]);
     }
 
 
     public function blocked()
     {
         $res['title'] = 'blocked';
-        return $this->makeView('laravel-shop::front.common.blocked',['res'=>$res]);
+        return $this->makeView('laravel-'.config('shop.pre').'::front.common.blocked',['res'=>$res]);
     }
 
 }

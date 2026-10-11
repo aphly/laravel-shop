@@ -1,4 +1,4 @@
-@include('laravel-shop::front.common.header')
+@include('laravel-'.config('shop.pre').'::front.common.header')
 
 <style>
     .cart-content{display: flex;flex-wrap: wrap;}
@@ -191,11 +191,11 @@
 
                         <div class="summarytip">
                             <div class="coupon-used text-left  hide-item">
-                                @if(isset($res['total_data']['totals']['coupon']))
+                                @if(isset($res['totals']['list']['coupon']))
                                 <div class="d-flex justify-content-between">
                                     <div>
                                         Applied Coupon:
-                                        <strong class="coupon-code cart-list-coupon-code">{{$res['total_data']['totals']['coupon']['ext']}}</strong>
+                                        <strong class="coupon-code cart-list-coupon-code">{{$res['totals']['list']['coupon']['ext']}}</strong>
                                     </div>
                                     <div class="coupon-remove" onclick="couponRemove()">Remove</div>
                                 </div>
@@ -212,16 +212,16 @@
                                 <dd>
                                     <span>Subtotal:</span>
                                     <div>
-                                    @if($res['total_data']['totals']['sub_total']['value_old']!=$res['total_data']['totals']['sub_total']['value'])
-                                        <span class=" cart-order-total-items cart_sub_total_js price_format">{{$res['total_data']['totals']['sub_total']['value_format']}}</span>
-                                        <span class="cart_sub_total_old_js price_old_format">{{$res['total_data']['totals']['sub_total']['value_old_format']}}</span>
+                                    @if($res['totals']['list']['sub_total']['value_old']!=$res['totals']['list']['sub_total']['value'])
+                                        <span class=" cart-order-total-items cart_sub_total_js price_format">{{$res['totals']['list']['sub_total']['value_format']}}</span>
+                                        <span class="cart_sub_total_old_js price_old_format">{{$res['totals']['list']['sub_total']['value_old_format']}}</span>
                                     @else
-                                        <span class=" cart-order-total-items cart_sub_total_js">{{$res['total_data']['totals']['sub_total']['value_format']}}</span>
+                                        <span class=" cart-order-total-items cart_sub_total_js">{{$res['totals']['list']['sub_total']['value_format']}}</span>
                                     @endif
                                     </div>
                                 </dd>
-                                @if(isset($res['total_data']['totals']))
-                                    @foreach($res['total_data']['totals'] as $key=>$val)
+                                @if(isset($res['totals']['list']))
+                                    @foreach($res['totals']['list'] as $key=>$val)
                                         @if($key=='coupon')
                                         <dd class="{{$key}}_js"><span>{{$val['title']}}:</span><span class="cart-order-total-items">{{$val['value_format']}}</span> </dd>
                                         @endif
@@ -234,11 +234,11 @@
                             <dd class="cart-order-total">
                                 <span>Order Total:</span>
                                 <div>
-                                @if($res['total_data']['totals']['total']['value_old']!=$res['total_data']['totals']['total']['value'])
-                                    <span class="cart-order-grand-total cart_total_js price_format">{{$res['total_data']['totals']['total']['value_format']}}</span>
-                                    <span class="cart-order-grand-total cart_total_old_js price_old_format">{{$res['total_data']['totals']['total']['value_old_format']}}</span>
+                                @if($res['totals']['list']['total']['value_old']!=$res['totals']['list']['total']['value'])
+                                    <span class="cart-order-grand-total cart_total_js price_format">{{$res['totals']['list']['total']['value_format']}}</span>
+                                    <span class="cart-order-grand-total cart_total_old_js price_old_format">{{$res['totals']['list']['total']['value_old_format']}}</span>
                                 @else
-                                    <span class="cart-order-grand-total cart_total_js ">{{$res['total_data']['totals']['total']['value_format']}}</span>
+                                    <span class="cart-order-grand-total cart_total_js ">{{$res['totals']['list']['total']['value_format']}}</span>
                                 @endif
                                 </div>
                             </dd>
@@ -344,16 +344,16 @@
                         }
                         $('#cart_num').text(res.data.count)
                         $('.cart_count_js').text(res.data.count)
-                        $('.cart_sub_total_js').text(res.data.total_data.totals.sub_total.value_format)
-                        $('.cart_sub_total_old_js').text(res.data.total_data.totals.sub_total.value_old_format)
-                        if(res.data.total_data.totals.coupon){
-                            $('.coupon_js .cart-order-total-items').text(res.data.total_data.totals.coupon.value_format)
+                        $('.cart_sub_total_js').text(res.data.totals.list.sub_total.value_format)
+                        $('.cart_sub_total_old_js').text(res.data.totals.list.sub_total.value_old_format)
+                        if(res.data.totals.list.coupon){
+                            $('.coupon_js .cart-order-total-items').text(res.data.totals.list.coupon.value_format)
                         }
-                        if(res.data.total_data.totals.shipping){
-                            $('.shipping_js .cart-order-total-items').text(res.data.total_data.totals.shipping.value_format)
+                        if(res.data.totals.list.shipping){
+                            $('.shipping_js .cart-order-total-items').text(res.data.totals.list.shipping.value_format)
                         }
-                        $('.cart_total_js').text(res.data.total_data.totals.total.value_format)
-                        $('.cart_total_old_js').text(res.data.total_data.totals.total.value_old_format)
+                        $('.cart_total_js').text(res.data.totals.list.total.value_format)
+                        $('.cart_total_old_js').text(res.data.totals.list.total.value_old_format)
                     }
                 }
             })
@@ -378,4 +378,4 @@
     }
 
 </script>
-@include('laravel-shop::front.common.footer')
+@include('laravel-'.config('shop.pre').'::front.common.footer')

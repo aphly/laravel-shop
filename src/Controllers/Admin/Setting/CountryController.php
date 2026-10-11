@@ -29,7 +29,7 @@ class CountryController extends Controller
         $res['breadcrumb'] = Breadcrumb::render([
             ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url]
         ]);
-        return $this->makeView('laravel-shop::admin.setting.country.index',['res'=>$res]);
+        return $this->makeView('laravel-'.config('shop.pre').'::admin.setting.country.index',['res'=>$res]);
     }
 
     public function form(Request $request)
@@ -39,7 +39,7 @@ class CountryController extends Controller
             ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
             ['name'=>$res['info']->id?'编辑':'新增','href'=>'/shop_admin/'.$this->currArr['key'].($res['info']->id?'/form?id='.$res['info']->id:'/form')]
         ]);
-        return $this->makeView('laravel-shop::admin.setting.country.form',['res'=>$res]);
+        return $this->makeView('laravel-'.config('shop.pre').'::admin.setting.country.form',['res'=>$res]);
     }
 
     public function save(Request $request){

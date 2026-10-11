@@ -31,11 +31,11 @@
         <i class="uni app-xiangxiajiantou"></i>
     </div>
     <div class="js-total_all">
-        @if($res['total_data']['totals']['total']['value_old']!=$res['total_data']['totals']['total']['value'])
-            <span class="items-right js-total-amount  price_format">{{$res['total_data']['totals']['total']['value_format']}}</span>
-            <span class="price_old_format js-total-amount_old">{{$res['total_data']['totals']['total']['value_old_format']}}</span>
+        @if($res['totals']['list']['total']['value_old']!=$res['totals']['list']['total']['value'])
+            <span class="items-right js-total-amount  price_format">{{$res['totals']['list']['total']['value_format']}}</span>
+            <span class="price_old_format js-total-amount_old">{{$res['totals']['list']['total']['value_old_format']}}</span>
         @else
-            <span class="items-right js-total-amount">{{$res['total_data']['totals']['total']['value_format']}}</span>
+            <span class="items-right js-total-amount">{{$res['totals']['list']['total']['value_format']}}</span>
         @endif
     </div>
 </div>
@@ -94,13 +94,13 @@
             <button class="btn btn-apply-code" onclick="coupon_apply()">Apply</button>
         </div>
         <div class="summarytip" style="border-bottom: none;padding-bottom: 0;
-            @if(isset($res['total_data']['totals']['coupon'])) display:block; @else display:none; @endif">
+            @if(isset($res['totals']['list']['coupon'])) display:block; @else display:none; @endif">
             <div class="coupon-used text-left  hide-item">
                 <div class="d-flex justify-content-between">
                     <div style="padding: 0 5px;color: #666;">
                         Applied Coupon:
-                        @if(isset($res['total_data']['totals']['coupon']))
-                            <strong class="coupon-code cart-list-coupon-code">{{$res['total_data']['totals']['coupon']['ext']}}</strong>
+                        @if(isset($res['totals']['list']['coupon']))
+                            <strong class="coupon-code cart-list-coupon-code">{{$res['totals']['list']['coupon']['ext']}}</strong>
                         @else
                             <strong class="coupon-code cart-list-coupon-code"></strong>
                         @endif
@@ -112,29 +112,29 @@
     </div>
     <div class="checkout-totals">
         <div class="items-price">
-            @if(isset($res['total_data']['totals']))
+            @if(isset($res['totals']['list']))
                 <ul>
                     <li class="order-list">
                         <span class="sub-total subtotal-subtotal">SubTotal</span>
                         <div>
-                        @if($res['total_data']['totals']['sub_total']['value_old']!=$res['total_data']['totals']['sub_total']['value'])
-                            <span class="items-right price_format">{{$res['total_data']['totals']['sub_total']['value_format']}}</span>
-                            <span class="items-right price_old_format">{{$res['total_data']['totals']['sub_total']['value_old_format']}}</span>
+                        @if($res['totals']['list']['sub_total']['value_old']!=$res['totals']['list']['sub_total']['value'])
+                            <span class="items-right price_format">{{$res['totals']['list']['sub_total']['value_format']}}</span>
+                            <span class="items-right price_old_format">{{$res['totals']['list']['sub_total']['value_old_format']}}</span>
                         @else
-                            <span class="items-right prices price-symbol">{{$res['total_data']['totals']['sub_total']['value_format']}}</span>
+                            <span class="items-right prices price-symbol">{{$res['totals']['list']['sub_total']['value_format']}}</span>
                         @endif
                         </div>
                     </li>
                     <li class="order-list totals_coupon">
-                        @if(!empty($res['total_data']['totals']['coupon']))
-                        <span class="items-left">{{$res['total_data']['totals']['coupon']['title']}}</span>
-                        <span class="items-right prices price-symbol">{{$res['total_data']['totals']['coupon']['value_format']}}</span>
+                        @if(!empty($res['totals']['list']['coupon']))
+                        <span class="items-left">{{$res['totals']['list']['coupon']['title']}}</span>
+                        <span class="items-right prices price-symbol">{{$res['totals']['list']['coupon']['value_format']}}</span>
                         @endif
                     </li>
                     <li class="order-list totals_shipping">
-                        @if(!empty($res['total_data']['totals']['shipping']))
-                        <span class="items-left">{{$res['total_data']['totals']['shipping']['title']}}</span>
-                        <span class="items-right prices price-symbol">{{$res['total_data']['totals']['shipping']['value_format']}}</span>
+                        @if(!empty($res['totals']['list']['shipping']))
+                        <span class="items-left">{{$res['totals']['list']['shipping']['title']}}</span>
+                        <span class="items-right prices price-symbol">{{$res['totals']['list']['shipping']['value_format']}}</span>
                         @endif
                     </li>
                 </ul>
@@ -143,11 +143,11 @@
         <div class="items-total-price order-list">
             <span>Order Total:</span>
             <div class="js-total_all">
-            @if($res['total_data']['totals']['total']['value_old']!=$res['total_data']['totals']['total']['value'])
-                <span class="items-right js-total-amount price_format">{{$res['total_data']['totals']['total']['value_format']}}</span>
-                <span class="price_old_format js-total-amount_old">{{$res['total_data']['totals']['total']['value_old_format']}}</span>
+            @if($res['totals']['list']['total']['value_old']!=$res['totals']['list']['total']['value'])
+                <span class="items-right js-total-amount price_format">{{$res['totals']['list']['total']['value_format']}}</span>
+                <span class="price_old_format js-total-amount_old">{{$res['totals']['list']['total']['value_old_format']}}</span>
             @else
-                <span class="items-right js-total-amount">{{$res['total_data']['totals']['total']['value_format']}}</span>
+                <span class="items-right js-total-amount">{{$res['totals']['list']['total']['value_format']}}</span>
             @endif
             </div>
         </div>
@@ -177,15 +177,15 @@
                 console.log(res)
                 if(!res.code){
                     $('.summarytip').show()
-                    $('.summarytip').find('.coupon-code').text(res.data.total_data.totals.coupon.ext)
-                    if(res.data.total_data.totals.total.value==res.data.total_data.totals.total.value_old){
-                        $('.js-total_all').html(`<span class="items-right js-total-amount">${res.data.total_data.totals.total.value_format}</span>`)
+                    $('.summarytip').find('.coupon-code').text(res.data.totals.list.coupon.ext)
+                    if(res.data.totals.list.total.value==res.data.totals.list.total.value_old){
+                        $('.js-total_all').html(`<span class="items-right js-total-amount">${res.data.totals.list.total.value_format}</span>`)
                     }else{
-                        $('.js-total_all').html(`<span class="items-right js-total-amount price_format">${res.data.total_data.totals.total.value_format}</span>
-                        <span class="price_old_format js-total-amount_old">${res.data.total_data.totals.total.value_old_format}</span>`)
+                        $('.js-total_all').html(`<span class="items-right js-total-amount price_format">${res.data.totals.list.total.value_format}</span>
+                        <span class="price_old_format js-total-amount_old">${res.data.totals.list.total.value_old_format}</span>`)
                     }
                     $('.totals_coupon').html(`<span class="items-left">Coupon</span>
-                        <span class="items-right prices price-symbol">${res.data.total_data.totals.coupon.value_format}</span>`)
+                        <span class="items-right prices price-symbol">${res.data.totals.list.coupon.value_format}</span>`)
                 }
             }
         })
@@ -198,11 +198,11 @@
                 console.log(res)
                 if(!res.code){
                     $('.summarytip').hide()
-                    if(res.data.total_data.totals.total.value==res.data.total_data.totals.total.value_old){
-                        $('.js-total_all').html(`<span class="items-right js-total-amount">${res.data.total_data.totals.total.value_format}</span>`)
+                    if(res.data.totals.list.total.value==res.data.totals.list.total.value_old){
+                        $('.js-total_all').html(`<span class="items-right js-total-amount">${res.data.totals.list.total.value_format}</span>`)
                     }else{
-                        $('.js-total_all').html(`<span class="items-right js-total-amount price_format">${res.data.total_data.totals.total.value_format}</span>
-                        <span class="price_old_format js-total-amount_old">${res.data.total_data.totals.total.value_old_format}</span>`)
+                        $('.js-total_all').html(`<span class="items-right js-total-amount price_format">${res.data.totals.list.total.value_format}</span>
+                        <span class="price_old_format js-total-amount_old">${res.data.totals.list.total.value_old_format}</span>`)
                     }
                     $('.totals_coupon').html('')
                 }

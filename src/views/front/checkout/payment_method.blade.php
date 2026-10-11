@@ -1,4 +1,4 @@
-@include('laravel-shop::front.common.header')
+@include('laravel-'.config('shop.pre').'::front.common.header')
 <script src="https://js.stripe.com/v3/"></script>
 <style>
 .checkout_ul_payment li{display: flex;justify-content: space-between;align-items: center;padding: 0;}
@@ -81,7 +81,7 @@
             </form>
         </div>
         <div class="checkout_r">
-            @include('laravel-shop::front.checkout.right')
+            @include('laravel-'.config('shop.pre').'::front.checkout.right')
         </div>
     </div>
 
@@ -212,4 +212,4 @@
 </style>
 @endif
 
-@include('laravel-shop::front.common.footer')
+@include('laravel-'.config('shop.pre').'::front.common.footer')

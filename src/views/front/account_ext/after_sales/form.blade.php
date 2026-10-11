@@ -1,4 +1,4 @@
-@include('laravel-shop::front.common.header')
+@include('laravel-'.config('shop.pre').'::front.common.header')
 <section class="container">
     <style>
         .order_product{margin-top: 10px;}
@@ -43,7 +43,7 @@
         #is_opened{display: none}
     </style>
     <div class="account_info">
-        @include('laravel-shop::front.account.left_menu')
+        @include('laravel-'.config('shop.pre').'::front.account.left_menu')
         <div class="account-main-section" style="background: transparent;">
             <div class="order">
                 <div class="top-desc d-flex justify-content-between">
@@ -153,4 +153,4 @@ $(function () {
 })
 </script>
 
-@include('laravel-shop::front.common.footer')
+@include('laravel-'.config('shop.pre').'::front.common.footer')

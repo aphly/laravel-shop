@@ -1,4 +1,4 @@
-@include('laravel-shop::front.common.header')
+@include('laravel-'.config('shop.pre').'::front.common.header')
 <style>
 </style>
 <div class="container shop_main">
@@ -111,7 +111,7 @@
             </form>
         </div>
         <div class="checkout_r">
-            @include('laravel-shop::front.checkout.right')
+            @include('laravel-'.config('shop.pre').'::front.checkout.right')
         </div>
     </div>
 
@@ -234,4 +234,4 @@
         }
     }
 </script>
-@include('laravel-shop::front.common.footer')
+@include('laravel-'.config('shop.pre').'::front.common.footer')

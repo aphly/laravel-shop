@@ -1,4 +1,4 @@
-@include('laravel-shop::front.common.header')
+@include('laravel-'.config('shop.pre').'::front.common.header')
 <style>
     .ext_login{display: flex;justify-content: center}
     .ext_login a{background: #000; color: #fff; padding: 10px 20px;border-radius: 8px;}
@@ -230,11 +230,11 @@
                 <div style="display: flex;justify-content: center;font-weight: 600;margin-bottom: 20px;font-size: 18px;">
                     <div style="margin-right: 10px;">Order Total:</div>
                     <div class="js-total_all">
-                        @if($res['total_data']['totals']['total']['value_old']!=$res['total_data']['totals']['total']['value'])
-                            <span class="items-right js-total-amount  price_format">{{$res['total_data']['totals']['total']['value_format']}}</span>
-                            <span class="price_old_format js-total-amount_old">{{$res['total_data']['totals']['total']['value_old_format']}}</span>
+                        @if($res['totals']['list']['total']['value_old']!=$res['totals']['list']['total']['value'])
+                            <span class="items-right js-total-amount  price_format">{{$res['totals']['list']['total']['value_format']}}</span>
+                            <span class="price_old_format js-total-amount_old">{{$res['totals']['list']['total']['value_old_format']}}</span>
                         @else
-                            <span class="items-right js-total-amount">{{$res['total_data']['totals']['total']['value_format']}}</span>
+                            <span class="items-right js-total-amount">{{$res['totals']['list']['total']['value_format']}}</span>
                         @endif
                     </div>
                 </div>
@@ -245,7 +245,7 @@
 
         </div>
         <div class="checkout_r">
-            @include('laravel-shop::front.checkout.right')
+            @include('laravel-'.config('shop.pre').'::front.checkout.right')
         </div>
     </div>
 
@@ -483,11 +483,11 @@
                         _this.addClass('active')
                         $('.shipping_id_'+id).click()
 
-                        $('.totals_shipping .items-left').text(res.data.total_data.totals.shipping.title)
-                        $('.totals_shipping .items-right').text(res.data.total_data.totals.shipping.value_format)
+                        $('.totals_shipping .items-left').text(res.data.totals.list.shipping.title)
+                        $('.totals_shipping .items-right').text(res.data.totals.list.shipping.value_format)
 
-                        $('.js-total-amount').text(res.data.total_data.totals.total.value_format)
-                        $('.js-total-amount_old').text(res.data.total_data.totals.total.value_old_format)
+                        $('.js-total-amount').text(res.data.totals.list.total.value_format)
+                        $('.js-total-amount_old').text(res.data.totals.list.total.value_old_format)
                     },
                     complete:function () {
                         shipping_method_flag = false
@@ -587,4 +587,4 @@
         },400)
     }
 </script>
-@include('laravel-shop::front.common.footer')
+@include('laravel-'.config('shop.pre').'::front.common.footer')

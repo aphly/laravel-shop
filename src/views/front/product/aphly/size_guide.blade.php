@@ -1,4 +1,4 @@
-@include('laravel-shop::front.common.header')
+@include('laravel-'.config('shop.pre').'::front.common.header')
 
 <div class="container " style="margin-top: 20px;">
     <div style="line-height: 50px;text-align: center;font-size: 22px;margin-bottom: 20px;font-weight: 600;">Size Guide</div>
@@ -10,9 +10,9 @@
         </ul>
         <div class="separator">&nbsp;</div>
         <div class="size-guide-content">
-            @include('laravel-shop::front.product.aphly.size_guide_ring')
-            @include('laravel-shop::front.product.aphly.size_guide_bracelet')
-            @include('laravel-shop::front.product.aphly.size_guide_necklace')
+            @include('laravel-'.config('shop.pre').'::front.product.aphly.size_guide_ring')
+            @include('laravel-'.config('shop.pre').'::front.product.aphly.size_guide_bracelet')
+            @include('laravel-'.config('shop.pre').'::front.product.aphly.size_guide_necklace')
         </div>
     </div>
 </div>
@@ -57,4 +57,4 @@
         $('.size-guide-navs .nav-items:first').click()
     });''
 </script>
-@include('laravel-shop::front.common.footer')
+@include('laravel-'.config('shop.pre').'::front.common.footer')

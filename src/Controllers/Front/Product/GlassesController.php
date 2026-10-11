@@ -185,7 +185,7 @@ class GlassesController extends Controller
         foreach ($product_img_arr as $k=>$v){
             $res['product_img'][$k] = array_slice($v,0,2);
         }
-        return $this->makeView('laravel-shop::front.glasses.index',['res'=>$res]);
+        return $this->makeView('laravel-'.config('shop.pre').'::front.glasses.index',['res'=>$res]);
     }
 
     function detail(Request $request){
@@ -196,7 +196,7 @@ class GlassesController extends Controller
         $res['filter_arr'] = $this->getFilter();
         $res['product']['size'] = $this->size($res['product']['size']);
         $res['product']['color'] = $this->color($res['product']['color'],$res['filter_arr']);
-        return $this->makeView('laravel-shop::front.glasses.detail',['res'=>$res]);
+        return $this->makeView('laravel-'.config('shop.pre').'::front.glasses.detail',['res'=>$res]);
     }
 
     function size($val){
@@ -238,7 +238,7 @@ class GlassesController extends Controller
         }
         $res['lens']['prism'] =  $dictionary->getDictionaryTreeById(42);
         //dd($res['lens']['thickness']);
-        return $this->makeView('laravel-shop::product.lens',['res'=>$res]);
+        return $this->makeView('laravel-'.config('shop.pre').'::product.lens',['res'=>$res]);
     }
 
     function getThickness($type,&$res){

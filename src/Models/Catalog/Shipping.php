@@ -128,10 +128,9 @@ class Shipping extends Model
         return '';
     }
 
-
-    public function getTotal($total_data) {
-        if(Cart::$free_shipping && 0){
-            $total_data['totals']['shipping'] = [
+    public function getTotalSelf() {
+        if(Coupon::$free_shipping){
+            return [
                 'title'      => 'Shipping',
                 'value'      => 0,
                 'value_format'      => 'Free (Coupon)',
@@ -155,7 +154,7 @@ class Shipping extends Model
             if(!empty($shipping[$shop_shipping_id]) && !$shipping[$shop_shipping_id]['disabled']){
                 $price = $shipping[$shop_shipping_id]['cost'];
                 if($price==0){
-                    $total_data['totals']['shipping'] = [
+                    return [
                         'title'      => $shipping[$shop_shipping_id]['name'],
                         'value'      => 0,
                         'value_format'      => 'Free',
@@ -165,7 +164,7 @@ class Shipping extends Model
                         'ext'=>$shop_shipping_id
                     ];
                 }else{
-                    $total_data['totals']['shipping'] = [
+                    return [
                         'title'      => $shipping[$shop_shipping_id]['name'],
                         'value'      => $price,
                         'value_format'      => Currency::format($price),
@@ -174,16 +173,11 @@ class Shipping extends Model
                         'sort' => 3,
                         'ext'=>$shop_shipping_id
                     ];
-                    //$total_data['total'] += $value;
-                    $total_data['total'] = Math::add($total_data['total'],$price);
-                    $total_data['total_old'] = Math::add($total_data['total_old'],$price);
                 }
             }
+            return [];
         }
-
     }
-
-
 
 
 }

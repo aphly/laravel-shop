@@ -1,4 +1,4 @@
-@include('laravel-shop::front.common.header')
+@include('laravel-'.config('shop.pre').'::front.common.header')
 <link rel="stylesheet" href="{{ URL::asset('static/base/front/css/account.css') }}">
 <section class="" >
     <div class="forget container">
@@ -44,4 +44,4 @@
         }
     }
 </script>
-@include('laravel-shop::front.common.footer')
+@include('laravel-'.config('shop.pre').'::front.common.footer')

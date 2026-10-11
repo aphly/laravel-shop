@@ -1,4 +1,4 @@
-@include('laravel-shop::front.common.header')
+@include('laravel-'.config('shop.pre').'::front.common.header')
 <section class="container">
     <style>
         .title_p{margin-bottom: 5px;}
@@ -42,7 +42,7 @@
         .file_img img{width: 80px;height: 80px;margin-right: 10px;}
     </style>
     <div class="account_info">
-        @include('laravel-shop::front.account.left_menu')
+        @include('laravel-'.config('shop.pre').'::front.account.left_menu')
         <div class="account-main-section" style="background: transparent;">
             <div class="order">
                 <div class="top-desc d-flex justify-content-between">
@@ -270,4 +270,4 @@ $(function () {
 })
 </script>
 
-@include('laravel-shop::front.common.footer')
+@include('laravel-'.config('shop.pre').'::front.common.footer')

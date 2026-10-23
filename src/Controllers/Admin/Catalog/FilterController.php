@@ -30,7 +30,7 @@ class FilterController extends Controller
         $res['breadcrumb'] = Breadcrumb::render([
             ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url]
         ]);
-        return $this->makeView('laravel-'.config('shop.pre').'::admin.catalog.filter.index',['res'=>$res]);
+        return $this->makeView(config('shop.pre').'::admin.catalog.filter.index',['res'=>$res]);
     }
 
     public function form(Request $request)
@@ -44,7 +44,7 @@ class FilterController extends Controller
             ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
             ['name'=>$res['filterGroup']->id?'编辑':'新增','href'=>'/shop_admin/'.$this->currArr['key'].($res['filterGroup']->id?'/form?id='.$res['filterGroup']->id:'/form')]
         ]);
-        return $this->makeView('laravel-'.config('shop.pre').'::admin.catalog.filter.form',['res'=>$res]);
+        return $this->makeView(config('shop.pre').'::admin.catalog.filter.form',['res'=>$res]);
     }
 
     public function save(Request $request){

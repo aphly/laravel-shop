@@ -31,7 +31,7 @@ class OptionController extends Controller
         $res['breadcrumb'] = Breadcrumb::render([
             ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url]
         ]);
-        return $this->makeView('laravel-'.config('shop.pre').'::admin.catalog.option.index',['res'=>$res]);
+        return $this->makeView(config('shop.pre').'::admin.catalog.option.index',['res'=>$res]);
     }
 
     public function form(Request $request)
@@ -48,7 +48,7 @@ class OptionController extends Controller
             ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
             ['name'=>$res['option']->id?'编辑':'新增','href'=>'/shop_admin/'.$this->currArr['key'].($res['option']->id?'/form?id='.$res['option']->id:'/form')]
         ]);
-        return $this->makeView('laravel-'.config('shop.pre').'::admin.catalog.option.form',['res'=>$res]);
+        return $this->makeView(config('shop.pre').'::admin.catalog.option.form',['res'=>$res]);
     }
 
     public function save(Request $request){

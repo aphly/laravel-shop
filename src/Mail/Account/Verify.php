@@ -33,6 +33,6 @@ class Verify extends Mailable
      */
     public function build()
     {
-        return $this->view('laravel-shop::mail.account.verify');
+        return $this->view(config('shop.pre').'::mail.account.verify');
     }
 }

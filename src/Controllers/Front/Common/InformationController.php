@@ -25,7 +25,7 @@ class InformationController extends Controller
             $res['info']->content = str_replace('HOSTEMAIL',config('base.email'),
                 str_replace('HOSTNAME',config('base.hostname'),$res['info']->content));
             $res['title'] = $res['info']->title;
-            return $this->makeView('laravel-'.config('shop.pre').'::front.common.information.detail',['res'=>$res]);
+            return $this->makeView(config('shop.pre').'::front.common.information.detail',['res'=>$res]);
         }
     }
 
@@ -49,7 +49,7 @@ class InformationController extends Controller
             $item->content = $this->get_article_summary($item->content,90);
             return $item;
         });
-        return $this->makeView('laravel-'.config('shop.pre').'::front.common.information.index',['res'=>$res]);
+        return $this->makeView(config('shop.pre').'::front.common.information.index',['res'=>$res]);
     }
 
     function get_article_summary(string $html, int $len = 30): string

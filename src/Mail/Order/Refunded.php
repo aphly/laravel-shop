@@ -35,6 +35,6 @@ class Refunded extends Mailable
      */
     public function build()
     {
-        return $this->view('laravel-shop::mail.order.refunded');
+        return $this->view(config('shop.pre').'::mail.order.refunded');
     }
 }

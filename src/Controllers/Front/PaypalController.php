@@ -16,7 +16,7 @@ class PaypalController extends Controller
         $paypalC = new Client();
         $res['title'] = 'xxx';
         $res['ClientID'] = $paypalC->client_id;
-        return $this->makeView('laravel-'.config('shop.pre').'::front.paypal',['res'=>$res]);
+        return $this->makeView(config('shop.pre').'::front.paypal',['res'=>$res]);
     }
 
     function order()

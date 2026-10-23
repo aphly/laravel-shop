@@ -97,7 +97,7 @@ class PaypalController extends Controller
         }
         $res['zone'] = (new Zone)->findAllByCountry($res['country_first']['id']);
 
-        return $this->makeView('laravel-'.config('shop.pre').'::front.checkout.all_paypal', ['res' => $res]);
+        return $this->makeView(config('shop.pre').'::front.checkout.all_paypal', ['res' => $res]);
     }
 
     public function payment(FormRequest $request)

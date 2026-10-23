@@ -7,6 +7,7 @@ use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Models\CommonUploadFile;
 use Aphly\LaravelPayment\Models\Currency;
 use Aphly\LaravelShop\Controllers\Front\Controller;
+use Aphly\LaravelShop\Models\Account\Wishlist;
 use Aphly\LaravelShop\Models\Catalog\Product;
 use Aphly\LaravelShop\Models\Common\Banner;
 use Aphly\LaravelShop\Models\Sale\Order;
@@ -67,8 +68,9 @@ class HomeController extends Controller
                 }
             }
         }
+        $res['wishlist_product_ids'] = Wishlist::$product_ids;
         //$res['product_image'] = $product->imgByIds($product_ids);
-        return $this->makeView('laravel-'.config('shop.pre').'::front.common.home.index',['res'=>$res]);
+        return $this->makeView(config('shop.pre').'::front.common.home.index',['res'=>$res]);
     }
 
 

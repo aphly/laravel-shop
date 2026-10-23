@@ -35,6 +35,6 @@ class Agree extends Mailable
     public function build()
     {
         return $this->subject('Your after-sales request has been approved')
-            ->view('laravel-shop::mail.service.agree');
+            ->view(config('shop.pre').'::mail.service.agree');
     }
 }

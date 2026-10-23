@@ -303,7 +303,7 @@ class CheckoutController extends Controller
         $res['paymentMethod'] = (new PaymentMethod)->findAll();
         //$res['stripe'] =  new Stripe;
 
-        return $this->makeView('laravel-'.config('shop.pre').'::front.checkout.guest', ['res' => $res]);
+        return $this->makeView(config('shop.pre').'::front.checkout.guest', ['res' => $res]);
     }
 
     public function address(FormRequest $request)
@@ -342,7 +342,7 @@ class CheckoutController extends Controller
                 $res['curr_address_id'] = session('shop_address_id', 0);
                 $res['my_address'] = (new UserAddress)->getAddresses();
                 $res['country'] = (new Country)->findAll();
-                return $this->makeView('laravel-'.config('shop.pre').'::front.checkout.address', ['res' => $res]);
+                return $this->makeView(config('shop.pre').'::front.checkout.address', ['res' => $res]);
             }
         }else{
             throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>'/checkout/payment']]);
@@ -433,7 +433,7 @@ class CheckoutController extends Controller
 			$res['shipping'] = (new Shipping)->getList();
             $res['shipping_default_id'] = Func::defaultId($res['shipping']);
             $res['free_shipping'] = Cart::$free_shipping;
-			return $this->makeView('laravel-'.config('shop.pre').'::front.checkout.shipping',['res'=>$res]);
+			return $this->makeView(config('shop.pre').'::front.checkout.shipping',['res'=>$res]);
 		}
     }
 
@@ -597,7 +597,7 @@ class CheckoutController extends Controller
 			$res['paymentMethod'] = (new PaymentMethod)->findAll();
             $res['paymentMethod_default_id'] = Func::defaultId($res['paymentMethod']);
             $res['stripe'] =  new Stripe;
-			return $this->makeView('laravel-'.config('shop.pre').'::front.checkout.payment_method',['res'=>$res]);
+			return $this->makeView(config('shop.pre').'::front.checkout.payment_method',['res'=>$res]);
 		}
     }
 
@@ -616,7 +616,7 @@ class CheckoutController extends Controller
         if($res['redirect']){
             $res['redirect']= urldecode($res['redirect']);
         }
-        return $this->makeView('laravel-'.config('shop.pre').'::front.checkout.success',['res'=>$res]);
+        return $this->makeView(config('shop.pre').'::front.checkout.success',['res'=>$res]);
     }
 
     public function fail(Request $request)
@@ -627,6 +627,6 @@ class CheckoutController extends Controller
         if($res['redirect']){
             $res['redirect']= urldecode($res['redirect']);
         }
-        return $this->makeView('laravel-'.config('shop.pre').'::front.checkout.fail',['res'=>$res]);
+        return $this->makeView(config('shop.pre').'::front.checkout.fail',['res'=>$res]);
     }
 }

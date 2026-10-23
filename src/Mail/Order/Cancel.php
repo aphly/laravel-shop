@@ -31,6 +31,6 @@ class Cancel extends Mailable
      */
     public function build()
     {
-        return $this->view('laravel-shop::mail.order.cancel');
+        return $this->view(config('shop.pre').'::mail.order.cancel');
     }
 }

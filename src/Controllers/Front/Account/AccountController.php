@@ -47,7 +47,7 @@ class AccountController extends Controller
             }
         }else{
             $res['title'] = 'Account index';
-            return $this->makeView('laravel-'.config('shop.pre').'::front.account.index',['res'=>$res]);
+            return $this->makeView(config('shop.pre').'::front.account.index',['res'=>$res]);
         }
     }
 
@@ -137,7 +137,7 @@ class AccountController extends Controller
         }else{
             $res['title'] = 'Login';
             $res['seccode'] = $this->limiter($key);
-            return $this->makeView('laravel-'.config('shop.pre').'::front.account.login',['res'=>$res]);
+            return $this->makeView(config('shop.pre').'::front.account.login',['res'=>$res]);
         }
     }
 
@@ -192,7 +192,7 @@ class AccountController extends Controller
         }else{
             $res['title'] = 'Register';
             $res['seccode'] = $this->limiter($key);
-            return $this->makeView('laravel-'.config('shop.pre').'::front.account.register',['res'=>$res]);
+            return $this->makeView(config('shop.pre').'::front.account.register',['res'=>$res]);
         }
     }
 
@@ -205,7 +205,7 @@ class AccountController extends Controller
     public function emailVerify(Request $request)
     {
         $res['title'] = 'Confirm Email';
-        return $this->makeView('laravel-'.config('shop.pre').'::front.account.email_verify',['res'=>$res]);
+        return $this->makeView(config('shop.pre').'::front.account.email_verify',['res'=>$res]);
     }
 
     public function emailVerifySend(Request $request)
@@ -258,7 +258,7 @@ class AccountController extends Controller
         } catch (DecryptException $e) {
             $res['msg'] =  'Token Error';
         }
-        return $this->makeView('laravel-'.config('shop.pre').'::front.account.email_check',['res'=>$res]);
+        return $this->makeView(config('shop.pre').'::front.account.email_check',['res'=>$res]);
     }
 
     public function forget(AccountRequest $request)
@@ -282,14 +282,14 @@ class AccountController extends Controller
             }
         }else{
             $res['title'] = 'Forget your password';
-            return $this->makeView('laravel-'.config('shop.pre').'::front.account.forget',['res'=>$res]);
+            return $this->makeView(config('shop.pre').'::front.account.forget',['res'=>$res]);
         }
     }
 
     public function forgetConfirmation(Request $request)
     {
         $res['title'] = 'Forget password confirmation';
-        return $this->makeView('laravel-'.config('shop.pre').'::front.account.forget_confirmation',['res'=>$res]);
+        return $this->makeView(config('shop.pre').'::front.account.forget_confirmation',['res'=>$res]);
     }
 
     public function forgetPassword(AccountRequest $request)
@@ -310,7 +310,7 @@ class AccountController extends Controller
                         $res['title'] = 'Reset Password';
                         $res['token'] = $request->token;
                         $res['userAuth'] = $userAuth;
-                        return $this->makeView('laravel-'.config('shop.pre').'::front.account.forget-password', ['res' => $res]);
+                        return $this->makeView(config('shop.pre').'::front.account.forget-password', ['res' => $res]);
                     }
                 }else{
                     throw new ApiException(['code'=>3,'msg'=>'User error','data'=>['redirect'=>route('login')]]);
@@ -326,7 +326,7 @@ class AccountController extends Controller
     public function blocked(Request $request)
     {
         $res['title'] = 'Account Blocked';
-        return $this->makeView('laravel-'.config('shop.pre').'::front.account.blocked',['res'=>$res]);
+        return $this->makeView(config('shop.pre').'::front.account.blocked',['res'=>$res]);
     }
 
 

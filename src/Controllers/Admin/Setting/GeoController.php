@@ -32,7 +32,7 @@ class GeoController extends Controller
         $res['breadcrumb'] = Breadcrumb::render([
             ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url]
         ]);
-        return $this->makeView('laravel-'.config('shop.pre').'::admin.setting.geo.index',['res'=>$res]);
+        return $this->makeView(config('shop.pre').'::admin.setting.geo.index',['res'=>$res]);
     }
 
     public function form(Request $request)
@@ -52,7 +52,7 @@ class GeoController extends Controller
             ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
             ['name'=>$res['geoGroup']->id?'编辑':'新增','href'=>'/shop_admin/'.$this->currArr['key'].($res['geoGroup']->id?'/form?id='.$res['geoGroup']->id:'/form')]
         ]);
-        return $this->makeView('laravel-'.config('shop.pre').'::admin.setting.geo.form',['res'=>$res]);
+        return $this->makeView(config('shop.pre').'::admin.setting.geo.form',['res'=>$res]);
     }
 
     public function save(Request $request){

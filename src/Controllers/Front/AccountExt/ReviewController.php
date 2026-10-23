@@ -24,7 +24,7 @@ class ReviewController extends Controller
             $item->product->image_src = CommonUploadFile::getPath($item->product->image,$item->product->disk);
             return $item;
         });
-        return $this->makeView('laravel-'.config('shop.pre').'::front.account_ext.review.index',['res'=>$res]);
+        return $this->makeView(config('shop.pre').'::front.account_ext.review.index',['res'=>$res]);
     }
 
     public function detail(Request $request){
@@ -34,7 +34,7 @@ class ReviewController extends Controller
         foreach ($res['reviewImage'] as $val){
             $val->image_src = CommonUploadFile::getPath($val->image,$val->disk);
         }
-        return $this->makeView('laravel-'.config('shop.pre').'::front.account_ext.review.detail',['res'=>$res]);
+        return $this->makeView(config('shop.pre').'::front.account_ext.review.detail',['res'=>$res]);
     }
 
 }

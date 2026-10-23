@@ -26,7 +26,7 @@ class CartController extends Controller
         $cart = new Cart;
         $cart->initCart();
         list($res['count'],$res['list'],$res['totals']) = $cart->totalData();
-        return $this->makeView('laravel-'.config('shop.pre').'::front.checkout.cart',['res'=>$res]);
+        return $this->makeView(config('shop.pre').'::front.checkout.cart',['res'=>$res]);
     }
 
     public function add(Request $request)

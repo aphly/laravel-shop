@@ -107,7 +107,7 @@ class Controller extends \Aphly\Laravel\Controllers\Front\Controller
             }else{
                 View::share("Google_Code",'');
             }
-            Paginator::defaultView('laravel-shop::front.common.pagination');
+            Paginator::defaultView(config('shop.pre').'::front.common.pagination');
             return $next($request);
         });
     }

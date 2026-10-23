@@ -283,14 +283,17 @@ class Cart extends Model
         self::$totals['total'] = Math::add(self::$totals['total'],$sub_total);
         self::$totals['total_old'] = Math::add(self::$totals['total_old'],$sub_total_old);
 
-
         self::$totals['list']['coupon'] = (new Coupon)->getTotalSelf();
-        //dd(Cart::$list);
-        self::$totals['total'] = Math::sub(self::$totals['total'],self::$totals['list']['coupon']['value']);
+
+        if(self::$totals['list']['coupon']){
+            self::$totals['total'] = Math::sub(self::$totals['total'],self::$totals['list']['coupon']['value']);
+        }
 
         self::$totals['list']['shipping'] = (new Shipping)->getTotalSelf();
-        self::$totals['total'] = Math::add(self::$totals['total'],self::$totals['list']['shipping']['value']);
-        self::$totals['total_old'] = Math::add(self::$totals['total_old'],self::$totals['list']['shipping']['value_old']);
+        if(self::$totals['list']['shipping']){
+            self::$totals['total'] = Math::add(self::$totals['total'],self::$totals['list']['shipping']['value']);
+            self::$totals['total_old'] = Math::add(self::$totals['total_old'],self::$totals['list']['shipping']['value_old']);
+        }
 
         self::$totals['list']['total'] = [
             'title'      => 'Total',

@@ -178,7 +178,7 @@ class Coupon extends Model
                 }
             }
         }
-        return [];
+        return false;
     }
 
     public function getCouponHistoriesByCoupon($coupon) {

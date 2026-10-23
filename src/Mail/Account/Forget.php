@@ -33,6 +33,6 @@ class Forget extends Mailable
      */
     public function build()
     {
-        return $this->view('laravel-shop::mail.account.forget');
+        return $this->view(config('shop.pre').'::mail.account.forget');
     }
 }

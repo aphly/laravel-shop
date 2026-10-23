@@ -33,7 +33,7 @@ class ShopServiceProvider extends ServiceProvider
             dirname(__DIR__).'/config/shop_init.sql' => storage_path('app/private/shop_init.sql'),
         ]);
         $this->loadMigrationsFrom(__DIR__.'/migrations');
-        $this->loadViewsFrom(__DIR__.'/views', 'laravel-shop');
+        $this->loadViewsFrom(__DIR__.'/views/'.config('shop.pre'), config('shop.pre'));
         $this->loadRoutesFrom(__DIR__.'/routes/web.php');
         $this->addRouteMiddleware('guest', Guest::class);
         if ($this->app->runningInConsole()) {

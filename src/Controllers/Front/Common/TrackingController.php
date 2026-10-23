@@ -29,7 +29,7 @@ class TrackingController extends Controller
                 throw new ApiException(['code' => 1, 'msg' => 'Fail']);
             }
         }else{
-            return $this->makeView('laravel-'.config('shop.pre').'::front.common.tracking.index',['res'=>$res]);
+            return $this->makeView(config('shop.pre').'::front.common.tracking.index',['res'=>$res]);
         }
     }
 

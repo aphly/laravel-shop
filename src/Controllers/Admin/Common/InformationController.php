@@ -34,7 +34,7 @@ class InformationController extends Controller
         $res['breadcrumb'] = Breadcrumb::render([
             ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url]
         ]);
-        return $this->makeView('laravel-'.config('shop.pre').'::admin.common.information.index', ['res' => $res]);
+        return $this->makeView(config('shop.pre').'::admin.common.information.index', ['res' => $res]);
     }
 
     public function form(Request $request)
@@ -47,7 +47,7 @@ class InformationController extends Controller
         $res['informationCategory'] = InformationCategory::get();
 
         $res['imgSize'] = $this->imgSize;
-        return $this->makeView('laravel-'.config('shop.pre').'::admin.common.information.form',['res'=>$res]);
+        return $this->makeView(config('shop.pre').'::admin.common.information.form',['res'=>$res]);
     }
 
     public function save(Request $request){

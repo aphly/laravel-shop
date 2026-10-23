@@ -62,7 +62,7 @@ class ProductController extends Controller
         $res['breadcrumb'] = Breadcrumb::render([
             ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url]
         ]);
-        return $this->makeView('laravel-'.config('shop.pre').'::admin.catalog.product.index',['res'=>$res]);
+        return $this->makeView(config('shop.pre').'::admin.catalog.product.index',['res'=>$res]);
     }
 
     public function ajax(Request $request)
@@ -122,7 +122,7 @@ class ProductController extends Controller
                 ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
                 ['name'=>'新增','href'=>'/shop_admin/'.$this->currArr['key'].'/add']
             ]);
-            return $this->makeView('laravel-'.config('shop.pre').'::admin.catalog.product.form',['res'=>$res]);
+            return $this->makeView(config('shop.pre').'::admin.catalog.product.form',['res'=>$res]);
         }
     }
 
@@ -166,7 +166,7 @@ class ProductController extends Controller
                 ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
                 ['name'=>'编辑','href'=>'/shop_admin/'.$this->currArr['key'].'/edit?product_id='.$res['product']->id]
             ]);
-            return $this->makeView('laravel-'.config('shop.pre').'::admin.catalog.product.form',['res'=>$res]);
+            return $this->makeView(config('shop.pre').'::admin.catalog.product.form',['res'=>$res]);
         }
     }
 
@@ -177,7 +177,7 @@ class ProductController extends Controller
             ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
             ['name'=>$res['product']->id?'编辑':'新增','href'=>'/shop_admin/'.$this->currArr['key'].($res['product']->id?'/form?id='.$res['product']->id:'/form')]
         ]);
-        return $this->makeView('laravel-'.config('shop.pre').'::admin.catalog.product.form',['res'=>$res]);
+        return $this->makeView(config('shop.pre').'::admin.catalog.product.form',['res'=>$res]);
     }
 
     public function save(Request $request){
@@ -230,7 +230,7 @@ class ProductController extends Controller
                 ['name'=>$res['product']->name],
                 ['name'=>'描述','href'=>$this->listHref('desc').'?product_id='.$res['product']->id]
             ]);
-            return $this->makeView('laravel-'.config('shop.pre').'::admin.catalog.product.desc',['res'=>$res]);
+            return $this->makeView(config('shop.pre').'::admin.catalog.product.desc',['res'=>$res]);
         }
     }
 
@@ -271,7 +271,7 @@ class ProductController extends Controller
             }else{
                 $res['info_option_value'] = [];
             }
-            return $this->makeView('laravel-'.config('shop.pre').'::admin.catalog.product.img',['res'=>$res]);
+            return $this->makeView(config('shop.pre').'::admin.catalog.product.img',['res'=>$res]);
         }
     }
 
@@ -344,7 +344,7 @@ class ProductController extends Controller
                 $item->video_src = CommonUploadFile::getPath($item->video,$item->disk);
                 return $item;
             });
-            return $this->makeView('laravel-'.config('shop.pre').'::admin.catalog.product.video',['res'=>$res]);
+            return $this->makeView(config('shop.pre').'::admin.catalog.product.video',['res'=>$res]);
         }
     }
 
@@ -391,7 +391,7 @@ class ProductController extends Controller
                 ['name'=>$res['product']->name],
                 ['name'=>'属性','href'=>$this->listHref('attribute').'?product_id='.$res['product']->id]
             ]);
-            return $this->makeView('laravel-'.config('shop.pre').'::admin.catalog.product.attribute',['res'=>$res]);
+            return $this->makeView(config('shop.pre').'::admin.catalog.product.attribute',['res'=>$res]);
         }
     }
 
@@ -452,7 +452,7 @@ class ProductController extends Controller
                 ['name'=>$res['product']->name],
                 ['name'=>'选项','href'=>$this->listHref('option').'?product_id='.$res['product']->id]
             ]);
-            return $this->makeView('laravel-'.config('shop.pre').'::admin.catalog.product.option',['res'=>$res]);
+            return $this->makeView(config('shop.pre').'::admin.catalog.product.option',['res'=>$res]);
         }
     }
 
@@ -495,7 +495,7 @@ class ProductController extends Controller
                 ['name'=>$res['product']->name],
                 ['name'=>'链接','href'=>$this->listHref('links').'?product_id='.$res['product']->id]
             ]);
-            return $this->makeView('laravel-'.config('shop.pre').'::admin.catalog.product.links',['res'=>$res]);
+            return $this->makeView(config('shop.pre').'::admin.catalog.product.links',['res'=>$res]);
         }
     }
 
@@ -516,7 +516,7 @@ class ProductController extends Controller
 //        }else{
 //            $res['group'] = Group::get()->keyBy('id')->toArray();
 //            $res['product_reward'] = ProductReward::where('product_id',$product_id)->get()->keyBy('group_id')->toArray();
-//            return $this->makeView('laravel-'.config('shop.pre').'::admin.catalog.product.reward',['res'=>$res]);
+//            return $this->makeView(config('shop.pre').'::admin.catalog.product.reward',['res'=>$res]);
 //        }
 //    }
 
@@ -549,7 +549,7 @@ class ProductController extends Controller
                 ['name'=>$res['product']->name],
                 ['name'=>'特价','href'=>$this->listHref('special').'?product_id='.$res['product']->id]
             ]);
-            return $this->makeView('laravel-'.config('shop.pre').'::admin.catalog.product.special',['res'=>$res]);
+            return $this->makeView(config('shop.pre').'::admin.catalog.product.special',['res'=>$res]);
         }
     }
 
@@ -580,7 +580,7 @@ class ProductController extends Controller
                 ['name'=>$res['product']->name],
                 ['name'=>'批发价','href'=>$this->listHref('discount').'?product_id='.$res['product']->id]
             ]);
-            return $this->makeView('laravel-'.config('shop.pre').'::admin.catalog.product.discount',['res'=>$res]);
+            return $this->makeView(config('shop.pre').'::admin.catalog.product.discount',['res'=>$res]);
         }
     }
 
@@ -621,7 +621,7 @@ class ProductController extends Controller
             throw new ApiException(['code'=>0,'msg'=>'success','data'=>['redirect'=>$this->index_url]]);
         }else{
             $res['title'] = '同步';
-            return $this->makeView('laravel-'.config('shop.pre').'::admin.catalog.product.sync',['res'=>$res]);
+            return $this->makeView(config('shop.pre').'::admin.catalog.product.sync',['res'=>$res]);
         }
     }
 

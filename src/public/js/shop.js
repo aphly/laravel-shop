@@ -1,7 +1,6 @@
 $(function () {
     $('.wishlist_one').on('click','i', function () {
         let product_id = $(this).data('product_id')
-        product_id = parseInt(product_id);
         let _this = this
         debounce_fn(function () {
             wishlist_one(product_id,_this)
@@ -23,6 +22,8 @@ function wishlist_one(product_id,_this) {
                         $(_this).removeClass('icon-aixin').addClass('icon-aixin_shixin')
                     }
                     $('#wishlist_num').text(res.data.count)
+                }else{
+                    alert_msg(res.msg)
                 }
             }
         })

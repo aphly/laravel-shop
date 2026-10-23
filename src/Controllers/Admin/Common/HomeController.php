@@ -47,7 +47,7 @@ class HomeController extends Controller
         $res['afterSales24Count1'] = AfterSales::where('status',1)->where('created_at', '>=',(time()-24*3600))->count();
         $res['afterSalesCount1'] = AfterSales::where('status', 1)->count();
 
-        return $this->makeView('laravel-'.config('shop.pre').'::admin.common.home.index', ['res' => $res]);
+        return $this->makeView(config('shop.pre').'::admin.common.home.index', ['res' => $res]);
     }
 
 

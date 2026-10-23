@@ -31,6 +31,6 @@ class AfterSales extends Mailable
      */
     public function build()
     {
-        return $this->view('laravel-shop::mail.order.after_sales');
+        return $this->view(config('shop.pre').'::mail.order.after_sales');
     }
 }

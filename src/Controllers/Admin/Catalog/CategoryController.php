@@ -37,7 +37,7 @@ class CategoryController extends Controller
         $res['breadcrumb'] = Breadcrumb::render([
             ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url]
         ]);
-        return $this->makeView('laravel-'.config('shop.pre').'::admin.catalog.category.index',['res'=>$res]);
+        return $this->makeView(config('shop.pre').'::admin.catalog.category.index',['res'=>$res]);
     }
 
     public function form(Request $request)
@@ -46,7 +46,7 @@ class CategoryController extends Controller
         if(!empty($res['info']) && $res['info']->pid){
             $res['parent_info'] = Category::where('id',$res['info']->pid)->first();
         }
-        return $this->makeView('laravel-'.config('shop.pre').'::admin.catalog.category.form',['res'=>$res]);
+        return $this->makeView(config('shop.pre').'::admin.catalog.category.form',['res'=>$res]);
     }
 
     public function tree()
@@ -56,7 +56,7 @@ class CategoryController extends Controller
             ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
             ['name'=>'树','href'=>'/shop_admin/category/tree']
         ]);
-        return $this->makeView('laravel-'.config('shop.pre').'::admin.catalog.category.tree',['res'=>$res]);
+        return $this->makeView(config('shop.pre').'::admin.catalog.category.tree',['res'=>$res]);
     }
 
     public function save(Request $request){
@@ -90,7 +90,7 @@ class CategoryController extends Controller
                 ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
                 ['name'=>'新增','href'=>'/shop_admin/category/add']
             ]);
-			return $this->makeView('laravel-'.config('shop.pre').'::admin.catalog.category.form',['res'=>$res]);
+			return $this->makeView(config('shop.pre').'::admin.catalog.category.form',['res'=>$res]);
 		}
 	}
 
@@ -110,7 +110,7 @@ class CategoryController extends Controller
                 ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
                 ['name'=>'编辑','href'=>'/shop_admin/category/edit?id='.$res['info']->id]
             ]);
-			return $this->makeView('laravel-'.config('shop.pre').'::admin.catalog.category.form',['res'=>$res]);
+			return $this->makeView(config('shop.pre').'::admin.catalog.category.form',['res'=>$res]);
 		}
 	}
 

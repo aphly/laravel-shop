@@ -30,7 +30,7 @@ class ContactUsController extends Controller
         $res['breadcrumb'] = Breadcrumb::render([
             ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url]
         ]);
-        return $this->makeView('laravel-'.config('shop.pre').'::admin.common.contact_us.index', ['res' => $res]);
+        return $this->makeView(config('shop.pre').'::admin.common.contact_us.index', ['res' => $res]);
     }
 
     public function form(Request $request)
@@ -43,7 +43,7 @@ class ContactUsController extends Controller
         ContactUs::where('id',$res['info']->id)->update([
             'is_view'=>1
         ]);
-        return $this->makeView('laravel-'.config('shop.pre').'::admin.common.contact_us.detail',['res'=>$res]);
+        return $this->makeView(config('shop.pre').'::admin.common.contact_us.detail',['res'=>$res]);
     }
 
     public function save(Request $request){

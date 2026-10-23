@@ -31,6 +31,6 @@ class Shipped extends Mailable
      */
     public function build()
     {
-        return $this->view('laravel-shop::mail.order.shipped');
+        return $this->view(config('shop.pre').'::mail.order.shipped');
     }
 }

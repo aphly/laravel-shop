@@ -26,7 +26,7 @@ class OrderController extends Controller
 //        foreach ($res['list'] as $val){
 //            list($val->cancelAmount,$val->cancelAmountFormat) = Currency::codeFormat((100 - $cancel_fee)/100*$val->total,$val->currency_code);
 //        }
-        return $this->makeView('laravel-'.config('shop.pre').'::front.account_ext.order.index',['res'=>$res]);
+        return $this->makeView(config('shop.pre').'::front.account_ext.order.index',['res'=>$res]);
     }
 
     public function detail(Request $request){
@@ -50,7 +50,7 @@ class OrderController extends Controller
             }
         }
         list($res['cancelAmount'],$res['cancelAmountFormat']) = Currency::codeFormat((100 - $cancel_fee)/100*$res['info']->total,$res['info']->currency_code);
-        return $this->makeView('laravel-'.config('shop.pre').'::front.account_ext.order.detail',['res'=>$res]);
+        return $this->makeView(config('shop.pre').'::front.account_ext.order.detail',['res'=>$res]);
     }
 
     public function pay(Request $request)

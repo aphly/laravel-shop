@@ -25,7 +25,7 @@ class ServiceController extends Controller
         $res['list'] = Service::where(['uid'=>CommonUser::uid()])->where('delete_at',0)->with('product')->with('order')
             ->orderBy('created_at','desc')->Paginate(config('base.perPage'))->withQueryString();
         $res['title'] = 'My Service';
-        return $this->makeView('laravel-'.config('shop.pre').'::front.account_ext.service.index',['res'=>$res]);
+        return $this->makeView(config('shop.pre').'::front.account_ext.service.index',['res'=>$res]);
     }
 
     public function detail(Request $request){
@@ -40,7 +40,7 @@ class ServiceController extends Controller
         foreach ($res['info']->img as $val){
             $val->image_src = CommonUploadFile::getPath($val->image,$val->disk);
         }
-        return $this->makeView('laravel-'.config('shop.pre').'::front.account_ext.service.detail',['res'=>$res]);
+        return $this->makeView(config('shop.pre').'::front.account_ext.service.detail',['res'=>$res]);
     }
 
     public function service_pre($request){
@@ -70,7 +70,7 @@ class ServiceController extends Controller
         }
         list($refund_amount,$res['refund_amount_format']) = Currency::codeFormat($total_all,$res['orderInfo']->currency_code);
         $res['info'] = Service::where('id',$request->query('id',0))->with('product')->firstOrNew();
-        return $this->makeView('laravel-'.config('shop.pre').'::front.account_ext.service.form',['res'=>$res]);
+        return $this->makeView(config('shop.pre').'::front.account_ext.service.form',['res'=>$res]);
     }
 
     public function save(Request $request){

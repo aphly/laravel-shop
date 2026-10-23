@@ -34,7 +34,7 @@ class CouponController extends Controller
         $res['breadcrumb'] = Breadcrumb::render([
             ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url]
         ]);
-        return $this->makeView('laravel-'.config('shop.pre').'::admin.sale.coupon.index',['res'=>$res]);
+        return $this->makeView(config('shop.pre').'::admin.sale.coupon.index',['res'=>$res]);
     }
 
     public function form(Request $request)
@@ -51,7 +51,7 @@ class CouponController extends Controller
             ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
             ['name'=>$res['coupon']->id?'编辑':'新增','href'=>'/shop_admin/'.$this->currArr['key'].($res['coupon']->id?'/form?id='.$res['coupon']->id:'/form')]
         ]);
-        return $this->makeView('laravel-'.config('shop.pre').'::admin.sale.coupon.form',['res'=>$res]);
+        return $this->makeView(config('shop.pre').'::admin.sale.coupon.form',['res'=>$res]);
     }
 
     public function save(Request $request){
@@ -104,7 +104,7 @@ class CouponController extends Controller
             ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
             ['name'=>'历史记录','href'=>'/shop_admin/'.$this->currArr['key'].'/history?id='.$res['info']->id]
         ]);
-        return $this->makeView('laravel-'.config('shop.pre').'::admin.sale.coupon.history',['res'=>$res]);
+        return $this->makeView(config('shop.pre').'::admin.sale.coupon.history',['res'=>$res]);
     }
 
 }

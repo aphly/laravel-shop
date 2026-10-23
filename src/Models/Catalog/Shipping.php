@@ -175,7 +175,7 @@ class Shipping extends Model
                     ];
                 }
             }
-            return [];
+            return false;
         }
     }
 

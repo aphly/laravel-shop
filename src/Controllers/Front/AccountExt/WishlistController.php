@@ -28,7 +28,7 @@ class WishlistController extends Controller
             $val->special= $val->special?Currency::format($val->special):0;
             $val->discount= $val->discount?Currency::format($val->discount):0;
         }
-        return $this->makeView('laravel-'.config('shop.pre').'::front.account_ext.wishlist.index',['res'=>$res]);
+        return $this->makeView(config('shop.pre').'::front.account_ext.wishlist.index',['res'=>$res]);
     }
 
     public function product(Request $request){
@@ -40,9 +40,14 @@ class WishlistController extends Controller
                 $count = Wishlist::where(['uid'=>$uid])->count();
                 throw new ApiException(['code'=>0,'msg'=>'remove_success','data'=>['count'=>$count]]);
             }else{
-                Wishlist::create(['product_id'=>$request->id,'uid'=>$uid]);
-                $count = Wishlist::where(['uid'=>$uid])->count();
-                throw new ApiException(['code'=>0,'msg'=>'add_success','data'=>['count'=>$count]]);
+                $product = Product::where('id',$request->id)->first();
+                if($product){
+                    Wishlist::create(['product_id'=>$product->id,'uid'=>$uid]);
+                    $count = Wishlist::where(['uid'=>$uid])->count();
+                    throw new ApiException(['code'=>0,'msg'=>'add_success','data'=>['count'=>$count]]);
+                }else{
+                    throw new ApiException(['code'=>1,'msg'=>'The product does not exist.']);
+                }
             }
         }else{
             $shop_wishlist = session('shop_wishlist');

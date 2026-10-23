@@ -55,7 +55,7 @@ class ServiceController extends Controller
         $res['breadcrumb'] = Breadcrumb::render([
             ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url]
         ]);
-        return $this->makeView('laravel-'.config('shop.pre').'::admin.sale.service.index',['res'=>$res]);
+        return $this->makeView(config('shop.pre').'::admin.sale.service.index',['res'=>$res]);
     }
 
     public function view(Request $request)
@@ -73,7 +73,7 @@ class ServiceController extends Controller
             ['name'=>'详情','href'=>'/shop_admin/'.$this->currArr['key'].'/view?id='.$res['info']->id]
         ]);
         $res['shop_config'] = Config::findAll();
-        return $this->makeView('laravel-'.config('shop.pre').'::admin.sale.service.view',['res'=>$res]);
+        return $this->makeView(config('shop.pre').'::admin.sale.service.view',['res'=>$res]);
     }
 
     public function historySave(Request $request)
@@ -91,7 +91,7 @@ class ServiceController extends Controller
             ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
             ['name'=>$res['refund']->id?'编辑':'新增','href'=>'/shop_admin/'.$this->currArr['key'].($res['refund']->id?'/form?id='.$res['refund']->id:'/form')]
         ]);
-        return $this->makeView('laravel-'.config('shop.pre').'::admin.sale.service.form',['res'=>$res]);
+        return $this->makeView(config('shop.pre').'::admin.sale.service.form',['res'=>$res]);
     }
 
     public function save(Request $request){

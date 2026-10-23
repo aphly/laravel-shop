@@ -26,7 +26,7 @@ class AddressController extends Controller
 
         $res['country'] = (new Country)->findAllIds($country_ids);
         $res['zone'] = (new Zone)->findAllIds($zone_ids);
-        return $this->makeView('laravel-'.config('shop.pre').'::front.account_ext.address.index',['res'=>$res]);
+        return $this->makeView(config('shop.pre').'::front.account_ext.address.index',['res'=>$res]);
     }
 
     public function save(FormRequest $request){
@@ -37,13 +37,15 @@ class AddressController extends Controller
                 throw new ApiException(['code'=>0,'msg'=>'limit 5','data'=>['redirect'=>'/account_ext/address']]);
             }
             $input = $request->all();
-            $request->validate($input,[
+
+            $request->validate($input, [
                 'firstname' => 'required|between:2,32',
                 'lastname' => 'required|between:2,32',
                 'address_1' => 'required|between:2,255',
-                'city' => 'required|between:2,128',
+                'city' => 'required|alpha|between:2,128',
                 'postcode' => 'required|numeric',
                 'telephone' => 'required|numeric',
+                'country_code' => 'required|alpha|between:2,2',
                 'country_id' => 'required|numeric',
                 'zone_id' => 'required|numeric',
             ]);
@@ -81,7 +83,7 @@ class AddressController extends Controller
             }else{
                 $res['zone'] = [];
             }
-            return $this->makeView('laravel-'.config('shop.pre').'::front.account_ext.address.form',['res'=>$res]);
+            return $this->makeView(config('shop.pre').'::front.account_ext.address.form',['res'=>$res]);
         }
     }
 

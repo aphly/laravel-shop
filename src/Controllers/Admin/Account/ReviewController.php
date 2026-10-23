@@ -34,7 +34,7 @@ class ReviewController extends Controller
         $res['breadcrumb'] = Breadcrumb::render([
             ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url]
         ]);
-        return $this->makeView('laravel-'.config('shop.pre').'::admin.account.review.index',['res'=>$res]);
+        return $this->makeView(config('shop.pre').'::admin.account.review.index',['res'=>$res]);
     }
 
     public function form(Request $request)
@@ -53,7 +53,7 @@ class ReviewController extends Controller
             ['name'=>$this->currArr['name'].'管理','href'=>$this->index_url],
             ['name'=>$res['review']->id?'编辑':'新增','href'=>'/shop_admin/'.$this->currArr['key'].($res['review']->id?'/form?id='.$res['review']->id:'/form')]
         ]);
-        return $this->makeView('laravel-'.config('shop.pre').'::admin.account.review.form',['res'=>$res]);
+        return $this->makeView(config('shop.pre').'::admin.account.review.form',['res'=>$res]);
     }
 
     public function save(Request $request){

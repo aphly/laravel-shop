@@ -63,5 +63,10 @@ class InformationController extends Controller
         return mb_substr($text, 0, $len, 'UTF-8') . '…';
     }
 
+    function cookiePolicy(Request $request)
+    {
+        $res['title'] = 'Cookie Policy';
+        return $this->makeView(config('shop.pre').'::front.common.information.cookie_policy',['res'=>$res]);
+    }
 
 }

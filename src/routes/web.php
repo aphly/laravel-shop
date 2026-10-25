@@ -133,10 +133,12 @@ Route::middleware(['web'])->group(function () {
         Route::match(['get'],'information/index', 'Aphly\LaravelShop\Controllers\Front\Common\InformationController@index');
         Route::match(['get'],'information/{id}', 'Aphly\LaravelShop\Controllers\Front\Common\InformationController@detail');
         Route::match(['get'],'size_guide', 'Aphly\LaravelShop\Controllers\Front\Product\AphlyController@sizeGuide');
+        Route::match(['get'],'cookie-policy', 'Aphly\LaravelShop\Controllers\Front\Common\InformationController@cookiePolicy');
 
         //product
         Route::get('product', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@index');
         Route::get('product/{id}', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@detail');
+        Route::get('product/{id}/review', 'Aphly\LaravelShop\Controllers\Front\Product\ProductController@reviewAjax');
         Route::redirect('product/new', '/product?sort=sale');
         Route::redirect('product/best', '/product?sort=new');
 

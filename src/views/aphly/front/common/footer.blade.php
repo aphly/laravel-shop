@@ -173,6 +173,7 @@
     <script src="{{ URL::asset('static/statistics/js/statistics.js') }}"
             data-appid="{{config('base.statistics_appid')}}" id="statistics"></script>
 @endif
+@include(config('shop.pre').'::front.common.cookie')
 <script src="{{ URL::asset('static/base/admin/js/bootstrap.bundle.min.js') }}"></script>
 <script>
     var aphly_viewerjs = document.querySelectorAll('.aphly_viewer_js');

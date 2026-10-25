@@ -119,7 +119,7 @@
 </section>
 <style>
     .ext_login{display: flex;justify-content: center}
-    .ext_login a{background: #000; color: #fff; border-radius: 8px;width: 100%;}
+    .ext_login a{background: #000; color: #fff; border-radius: 10px;width: 100%;}
 </style>
 <script>
     function login_res(res,_this) {

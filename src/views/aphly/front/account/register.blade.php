@@ -44,7 +44,7 @@
                     </div>
                     <div class="">
                         <label class="d-flex">
-                            <input type="checkbox" name="agree" value="1" onclick="return false;" checked="checked">
+                            <input style="box-shadow: none;" type="checkbox" name="agree" value="1" onclick="return false;" checked="checked">
                             <span class="agree">I have read and agree to <a class="underline" target="_blank" href="{{config('shop.menu.privacy_policy.url')}}">Privacy Policy</a> .</span>
                         </label>
                     </div>
@@ -149,7 +149,7 @@
 </section>
 <style>
     .ext_login{display: flex;justify-content: center}
-    .ext_login a{background: #000; color: #fff; border-radius: 8px;width: 100%;}
+    .ext_login a{background: #000; color: #fff; border-radius: 10px;width: 100%;}
 </style>
 <script>
     function register_res(res,_this) {

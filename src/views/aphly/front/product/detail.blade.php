@@ -21,7 +21,7 @@
     .price_sale_detail{background: #E36254;font-weight: 600;margin-bottom: 10px;display: inline-block;color: #fff;padding: 0 10px;border-radius: 8px;}
     .product_detail_info .price .normal{color: #E36254;}
     .flag_radio .my_radio[data-image_src="true"]{width: auto;}
-    .info_option .flag_radio .my_radio[data-image_src="true"] label{box-sizing: border-box;box-shadow: 0 0 15px 0 #f1f1f1;padding: 0 5px 0 0;border-radius: 6px;margin:0 10px 10px 0;display: flex;align-items: center;}
+    .info_option .flag_radio .my_radio[data-image_src="true"] label{box-sizing: border-box;box-shadow: 0 0 15px 0 #f1f1f1;padding: 0 5px 0 0;border-radius: 10px;margin:0 10px 10px 0;display: flex;align-items: center;}
     .info_option .flag_radio .my_radio[data-image_src="true"] label span{display: block;padding: 0 10px;}
     .info_option .flag_radio .my_radio[data-image_src="true"] label img{margin-right:0;padding: 0;}
     .info_option .flag_radio .my_radio[data-image_src="true"] label:hover{}
@@ -360,7 +360,7 @@
 
     @if(isset($shop_config['review']) && $shop_config['review']==1)
         <div class="my_tab">
-            <div class="my_bt active">Reviews ({{$res['review']->total()}})</div>
+            <div class="my_bt active">Reviews (<span id="review_total"></span>)  </div>
         </div>
         <div class="review">
         <div class="review1">
@@ -368,24 +368,20 @@
                 <div class="write_a_review_pre1">Overall Rating : </div>
                 <div class="grade-star-bg">
                     <div class="star-progress" style="width: {{$res['reviewRatingAvg_100']}}%;">
-                        <i class="common-iconfont icon-xingxing"></i>
-                        <i class="common-iconfont icon-xingxing"></i>
-                        <i class="common-iconfont icon-xingxing"></i>
-                        <i class="common-iconfont icon-xingxing"></i>
+                        <i class="common-iconfont icon-xingxing"></i><i class="common-iconfont icon-xingxing"></i>
+                        <i class="common-iconfont icon-xingxing"></i><i class="common-iconfont icon-xingxing"></i>
                         <i class="common-iconfont icon-xingxing"></i>
                     </div>
                     <div class="star-bg">
-                        <i class="common-iconfont icon-xingxing"></i>
-                        <i class="common-iconfont icon-xingxing"></i>
-                        <i class="common-iconfont icon-xingxing"></i>
-                        <i class="common-iconfont icon-xingxing"></i>
+                        <i class="common-iconfont icon-xingxing"></i><i class="common-iconfont icon-xingxing"></i>
+                        <i class="common-iconfont icon-xingxing"></i><i class="common-iconfont icon-xingxing"></i>
                         <i class="common-iconfont icon-xingxing"></i>
                     </div>
                 </div>
                 <div class="write_a_review_pre2">{{$res['reviewRatingAvg']}}/5</div>
             </div>
 
-            <div class="write_a_review" data-toggle="modal" data-target="#reviewModal">
+            <div class="write_a_review" data-toggle="modal" data-target="#reviewModal" style="border-radius: 10px;">
                 Write a review
             </div>
         </div>
@@ -417,59 +413,108 @@
                                 <input type="file" style="display: none" accept="image/gif,image/jpeg,image/jpg,image/png" data-img_list="file_img"
                                        class="input_file_img add_photo_file" multiple="multiple">
                                 <div class="file_img"></div>
-                                <button class="" type="submit">Submit Review</button>
+                                <button class="" type="submit" style="border-radius: 10px;">Submit Review</button>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-        @if($res['review'])
-            <ul class="review_list">
-                @foreach($res['review'] as $val)
-                    <li>
-                        <div class="review_left" style="text-align: center;">
-                            @if($val->avatar_src)
-                                <div style="width: 50px;height: 50px;align-items: center;justify-content: center;display: inline-flex;"><img style="width: 100%;height:100%;border-radius: 50%;" src="{{$val->avatar_src}}" alt=""></div>
-                            @else
-                                <div class="css_avatar" data-text="{{$val->avatar_css}}" style="width: 50px;height: 50px;"></div>
-                            @endif
-                            <div class="wenzi" style="margin-top: 5px;">{{$val->author}}</div>
-                            <div class="created_at utc_time" data-utc_time="{{$val->created_at->timestamp}}" data-format="1"></div>
-                        </div>
-                        <div class="review_right">
-                            <div>
-                                <div class="review_content" style="min-height: 66px;">{{$val->text}}</div>
-                                <div class="grade-star-bg" style="margin-bottom: 0">
-                                    <div class="star-progress" style="width: {{$val->rating*20}}%;">
-                                        <i class="common-iconfont icon-xingxing"></i>
-                                        <i class="common-iconfont icon-xingxing"></i>
-                                        <i class="common-iconfont icon-xingxing"></i>
-                                        <i class="common-iconfont icon-xingxing"></i>
-                                        <i class="common-iconfont icon-xingxing"></i>
+
+        <ul class="review_list" id="review_list"></ul>
+        <div class="ajax_more" onclick="getList.get();" style="display: flex;justify-content: center;">
+            <div style="border-radius: 20px;padding: 8px 100px;background: #000;color: #fff;cursor: pointer;">more</div>
+        </div>
+
+        <script>
+            function makeHtml(res,that){
+                let html = '';
+                for(let i in res.data.list.data){
+                    let img_html = ``;
+                    for(let j in res.data.list.data[i].img){
+                        img_html += `<img src="${res.data.list.data[i].img[j].image_src}"  class="aphly_viewer">`
+                    }
+                    let avatar_html = ``
+                    if(res.data.list.data[i].avatar_src){
+                        avatar_html = `<div style="width: 50px;height: 50px;align-items: center;justify-content: center;display: inline-flex;"><img style="width: 100%;height:100%;border-radius: 50%;" src="${res.data.list.data[i].avatar_src}" alt=""></div>`
+                    }else{
+                        avatar_html = `<div class="css_avatar" data-text="${res.data.list.data[i].avatar_css}" style="width: 50px;height: 50px;"></div>`
+                    }
+                    html += `<li>
+                                <div class="review_left" style="text-align: center;">
+                                    ${avatar_html}
+                                <div class="wenzi" style="margin-top: 5px;font-weight: 600">${res.data.list.data[i].author}</div>
+                                    <div class="created_at utc_time" data-utc_time="${res.data.list.data[i].timestamp}" data-format="1"></div>
+                                </div>
+                                <div class="review_right">
+                                    <div>
+                                        <div class="review_content" style="min-height: 66px;">${res.data.list.data[i].text}</div>
+                                        <div class="grade-star-bg" style="margin-bottom: 0">
+                                            <div class="star-progress" style="width: ${res.data.list.data[i].rating_20}%;">
+                                                <i class="common-iconfont icon-xingxing"></i>
+                                                <i class="common-iconfont icon-xingxing"></i>
+                                                <i class="common-iconfont icon-xingxing"></i>
+                                                <i class="common-iconfont icon-xingxing"></i>
+                                                <i class="common-iconfont icon-xingxing"></i>
+                                            </div>
+                                            <div class="star-bg">
+                                                <i class="common-iconfont icon-xingxing"></i>
+                                                <i class="common-iconfont icon-xingxing"></i>
+                                                <i class="common-iconfont icon-xingxing"></i>
+                                                <i class="common-iconfont icon-xingxing"></i>
+                                                <i class="common-iconfont icon-xingxing"></i>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="star-bg">
-                                        <i class="common-iconfont icon-xingxing"></i>
-                                        <i class="common-iconfont icon-xingxing"></i>
-                                        <i class="common-iconfont icon-xingxing"></i>
-                                        <i class="common-iconfont icon-xingxing"></i>
-                                        <i class="common-iconfont icon-xingxing"></i>
-                                    </div>
+                                    <div class="review_list_img aphly_viewer_js" style="margin-top: 10px;">
+                                        ${img_html}
                                 </div>
                             </div>
-                            <div class="review_list_img aphly_viewer_js" style="margin-top: 10px;">
-                                @foreach($val->img as $v)
-                                    <img src="{{$v->image_src}}"  class="aphly_viewer">
-                                @endforeach
-                            </div>
-                        </div>
-                    </li>
-                @endforeach
-            </ul>
-            <div>
-                {{$res['review']->links()}}
-            </div>
-        @endif
+                        </li>`
+                }
+                that.last_page= res.data.list.last_page;
+                $(that.data_div).append(html)
+                $('.utc_time').text(function () {
+                    return formatLocalTime($(this).data('utc_time'), 1)
+                })
+                if(res.data.list.last_page===res.data.list.current_page){
+                    $('.ajax_more').hide()
+                }
+
+                if(res.data.list.total){
+                    $('#review_total').text(res.data.list.total)
+                }else{
+                    $('#review_total').text(0)
+                }
+
+                var aphly_viewerjs = document.querySelectorAll('.aphly_viewer_js');
+                if (aphly_viewerjs) {
+                    aphly_viewerjs.forEach(function (item, index) {
+                        new Viewer(item, {
+                            url: 'data-original',
+                            toolbar: false,
+                            title: false,
+                            rotatable: false,
+                            scalable: false,
+                            keyboard: false,
+                            filter(image) {
+                                if (image.className.indexOf("aphly_viewer") !== -1) {
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            }
+                        });
+                    })
+                }
+            }
+
+            $(function () {
+                getList.init({data_div:'#review_list',page:1,last_page:1,
+                    url:'/product/{{$res['info']->id}}/review?page='
+                },false)
+            })
+        </script>
     </div>
     @endif
     <script>
@@ -491,7 +536,7 @@
         })
     </script>
 
-    @if($res['rand']->count())
+    @if($res['rand'])
     <div class="my_box">
         <div class="my_tab">
             <div class="my_bt active">POPULAR</div>
@@ -500,32 +545,32 @@
             @foreach($res['rand'] as $key=>$val)
                 <li class="">
                     <div class="image">
-                        <a href="/product/{{$val->id}}">
-                            <img src="{{ URL::asset('static/base/admin/img/none.png') }}" data-original="{{ $val->image_src }}"  class="img-responsive lazy" >
+                        <a href="/product/{{$val['id']}}">
+                            <img src="{{ URL::asset('static/base/admin/img/none.png') }}" data-original="{{$val['image_src']}}"  class="img-responsive lazy" >
                         </a>
                     </div>
-                    <a href="/product/{{$val->id}}"><div class="p_name">{{$val->name}}</div></a>
+                    <a href="/product/{{$val['id']}}"><div class="p_name">{{$val['name']}}</div></a>
                     <div class="p_name_x d-flex justify-content-between">
                         <div class="d-flex price">
-                            @if($val->special)
-                                <span class="normal">{{$val->special}}</span>
-                                <span class="special_price">{{$val->price}}</span>
+                            @if($val['special'])
+                                <span class="normal">{{$val['special']}}</span>
+                                <span class="special_price">{{$val['price']}}</span>
                                 <span class="price_sale">Sale</span>
                             @else
-                                @if($val->discount)
-                                    <span class="normal">{{$val->discount}}</span>
-                                    <span class="special_price">{{$val->price}}</span>
+                                @if($val['discount'])
+                                    <span class="normal">{{$val['discount']}}</span>
+                                    <span class="special_price">{{$val['price']}}</span>
                                     <span class="price_sale">Sale</span>
                                 @else
-                                    <span class="normal">{{$val->price}}</span>
+                                    <span class="normal">{{$val['price']}}</span>
                                 @endif
                             @endif
                         </div>
                         <div class="wishlist_one">
-                            @if(in_array($val->id,$res['wishlist_product_ids']))
-                                <i class="common-iconfont icon-aixin_shixin" data-product_id="{{$val->id}}" data-csrf="{{csrf_token()}}"></i>
+                            @if(in_array($val['id'],$res['wishlist_product_ids']))
+                                <i class="common-iconfont icon-aixin_shixin" data-product_id="{{$val['id']}}" data-csrf="{{csrf_token()}}"></i>
                             @else
-                                <i class="common-iconfont icon-aixin" data-product_id="{{$val->id}}" data-csrf="{{csrf_token()}}"></i>
+                                <i class="common-iconfont icon-aixin" data-product_id="{{$val['id']}}" data-csrf="{{csrf_token()}}"></i>
                             @endif
                         </div>
                     </div>
@@ -534,8 +579,44 @@
         </ul>
     </div>
     @endif
+
+    <div class="addCartFixed">
+        <div class="addCartFixed1"><img src="{{$res['info']->image_src}}" alt=""></div>
+        <div class="addCartFixed2">
+            <div class="wenzi">{{$res['info']->name}}</div>
+            <div class="d-flex price ">
+                @if($res['special_price'])
+                    <span class="normal price_js" data-price="{{$res['special_price']}}">{{$res['special_price_format']}}</span>
+                    <span class="special_price">{{$res['info']->price_format}}</span>
+                @else
+                    @if($res['info_discount'])
+                        <span class="normal price_js" data-price="{{$res['info']->price}}">{{$res['info']->price_format}}</span>
+                        <ul class="d-flex discount_js">
+                            @foreach($res['info_discount'] as $v)
+                                <li class="item" style="margin-right: 10px;" data-price="{{$v['price']}}" data-quantity="{{$v['quantity']}}">
+                                    {{$v['quantity']}} {{$v['price_format']}}
+                                </li>
+                            @endforeach
+                        </ul>
+                    @else
+                        <span class="normal price_js" data-price="{{$res['info']->price}}">{{$res['info']->price_format}}</span>
+                    @endif
+                @endif
+            </div>
+        </div>
+        <div class="addCartFixed4" onclick="fixedAddCart()"><span class="common-iconfont icon-31gouwuche"></span><div>Add to cart</div></div>
+    </div>
 </div>
 <style>
+    .addCartFixed{font-size: 12px;display:flex;justify-content:space-between;position:fixed;bottom:10px;box-shadow:0 0 15px 0 #f1f1f1;width:calc(100% - 20px);background:#fff;left:10px;right:10px;border-radius:10px;padding:10px;height:70px;z-index: 1100;}
+    .addCartFixed1{width: 50px;height: 50px;}
+    .addCartFixed1 img{width: 100%;height: 100%;}
+    .addCartFixed2{width: calc(100% - 190px);  display: flex;flex-direction: column;justify-content: center;}
+    .addCartFixed4 span{font-size: 12px;margin-right: 5px;}
+    .addCartFixed4{background: #000;border-radius: 10px;color:#fff;width: 120px;display: flex;justify-content: center;align-items: center;cursor: pointer}
+    .addCartFixed2 .price{font-size: 12px;align-items: baseline;}
+    .addCartFixed2 .price .normal { color: #E36254;}
+    .addCartFixed2 .price .special_price {font-size: 10px;}
     @media (max-width: 1199.98px) {
         .rand_p.product-category > li:nth-child(5n),  .rand_p.product-category li:last-child{
             margin-right: 10px;
@@ -546,6 +627,12 @@
     }
 </style>
 <script>
+    let addCartFixed4 = ``
+    function fixedAddCart() {
+        addCartFixed4 = $('.addCartFixed4').html()
+        $('.addCartFixed4').html('<span class="common-iconfont icon-check2"></span>')
+        $('#add_cart_btn').click()
+    }
     let buy_now = false;
     function detail_res(res) {
         if(!res.code){
@@ -559,6 +646,7 @@
             }
         }
         $('#buy_btn').removeAttr('disabled').html('Buy Now');
+        $('.addCartFixed4').html(addCartFixed4)
     }
     function buyNow(_this) {
         buy_now = true;

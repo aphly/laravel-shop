@@ -42,7 +42,7 @@ class AddressController extends Controller
                 'firstname' => 'required|between:2,32',
                 'lastname' => 'required|between:2,32',
                 'address_1' => 'required|between:2,255',
-                'city' => 'required|alpha|between:2,128',
+                'city' => 'required|between:2,128',
                 'postcode' => 'required|numeric',
                 'telephone' => 'required|numeric',
                 'country_code' => 'required|alpha|between:2,2',

@@ -24,7 +24,7 @@
     .cart-total-summary dl dd{width: 100%;display: flex;justify-content: space-between;margin-bottom: 5px;}
     .total-summary{margin-bottom:10px;font-weight:600}
     .cart-total-detail{border-top:1px solid #f1f1f1;margin-top:15px;padding-top:20px;font-size:16px;font-weight:700}
-    .btn-checkout{background:var(--btn_bg);border-radius:4px;color:var(--btn_color);font-size:16px;height:45px;width:100%; line-height: 38px;font-weight: 600;}
+    .btn-checkout{background:var(--btn_bg);border-radius:10px;color:var(--btn_color);font-size:16px;height:45px;width:100%; line-height: 38px;font-weight: 600;}
     .btn-checkout:hover{background:var(--btn_bg_hover);color:var(--btn_color_hover)}
     .btn-checkout:disabled{background: #b6b6b6!important;}
     .cart-order-total{display: flex;justify-content: space-between;margin-bottom: 10px;}

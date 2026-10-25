@@ -5,6 +5,7 @@ namespace Aphly\LaravelShop\Controllers\Front\Product;
 use Aphly\Laravel\Exceptions\ApiException;
 use Aphly\Laravel\Models\Breadcrumb;
 use Aphly\Laravel\Models\CommonUploadFile;
+use Aphly\Laravel\Models\UploadFile;
 use Aphly\LaravelShop\Controllers\Front\Controller;
 use Aphly\LaravelShop\Models\Account\Review;
 use Aphly\LaravelShop\Models\Account\ReviewImage;
@@ -13,11 +14,15 @@ use Aphly\LaravelShop\Models\Catalog\Category;
 use Aphly\LaravelShop\Models\Catalog\FilterGroup;
 use Aphly\LaravelShop\Models\Catalog\Option;
 use Aphly\LaravelShop\Models\Catalog\Product;
+use Aphly\LaravelShop\Models\Catalog\ProductDiscount;
+use Aphly\LaravelShop\Models\Catalog\ProductSpecial;
 use Aphly\LaravelShop\Models\Catalog\Shipping;
 use Aphly\LaravelShop\Models\Checkout\Cart;
 use Aphly\LaravelShop\Models\Sale\OrderProduct;
 use Aphly\LaravelPayment\Models\Currency;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -110,6 +115,7 @@ class ProductController extends Controller
     public function detail(Request $request)
     {
         $res['info'] = Product::where('id', $request->id)->where('status', 1)->where('date_available', '<', time())->with('desc')->firstOr404();
+        $res['info']->image_src= CommonUploadFile::getPath($res['info']->image,$res['info']->disk);
         $res['title'] = $res['info']->name;
         if($res['info']->desc){
             $res['description'] = $res['info']->desc->meta_description;
@@ -139,32 +145,79 @@ class ProductController extends Controller
         //$res['info_reward'] = $res['info']->findReward($res['info']->id,$group_id);
         //$res['shipping'] = Shipping::where('cost',0)->firstToArray();
         $res['wishlist_product_ids'] = Wishlist::$product_ids;
-        $res['review'] = Review::where('product_id',$res['info']->id)->where('status',1)->with('img')->with('user')->orderBy('created_at','desc')
-            ->Paginate(10)->withQueryString();
+
         $res['reviewRatingAvg'] = Review::where('product_id',$res['info']->id)->avg('rating');
         $res['reviewRatingAvg'] = intval($res['reviewRatingAvg']*10)/10;
         $res['reviewRatingAvg_100'] = $res['reviewRatingAvg']/5*100;
-        foreach ($res['review'] as $val){
-            $val->avatar_src = CommonUploadFile::getPath($val->avatar,$val->disk,false);
-            if(!$val->avatar_src){
-                $val->avatar_css = substr($val->author, 0, 1);
-            }
-            foreach ($val->img as $v){
-                $v->image_src = CommonUploadFile::getPath($v->image,$v->disk);
-            }
-        }
+
         $res['review_image_length'] = $this->review_image_length;
         $res['review_image_size'] = $this->review_image_size;
-        $res['rand'] = Product::where('status',1)->whereNot('id',$res['info']->id)->where('date_available','<',time())->inRandomOrder()->limit(15)->get();
-        $res['rand']->transform(function ($item) use (&$product_ids){
-            $item->image_src= CommonUploadFile::getPath($item->image,$item->disk);
-            $item->price= Currency::format($item->price);
-            $item->special= $item->special?Currency::format($item->special):0;
-            $item->discount= $item->discount?Currency::format($item->discount):0;
-            return $item;
+
+        $res['rand'] = Cache::remember('rand_'.$res['info']->id,7200, function () use ($res) {
+            $time = time();
+            $rand= DB::table('shop_product as p')->where('status',1)->whereNot('id',$res['info']->id)->where('date_available','<',time())
+                ->inRandomOrder()->select('p.id','p.sale','p.viewed','p.date_available','p.price','p.name','p.quantity','p.image',
+                    'p.spu','p.sku','p.disk','p.is_color_group')
+                ->addSelect([
+                    'special'=>ProductSpecial::whereColumn('product_id','p.id')
+                        ->where(function ($query) use ($time){
+                            $query->where('date_start',0)->orWhere('date_start','<',$time);
+                        })->where(function ($query) use ($time){
+                            $query->where('date_end',0)->orWhere('date_end','>',$time);
+                        })->orderBy('priority','desc')
+                        ->select('price')->limit(1),
+                    'discount'=>ProductDiscount::whereColumn('product_id','p.id')
+                        ->where('quantity',1)
+                        ->select('price')->limit(1)
+                ])->limit(12)->get();
+            $rand->transform(function ($item) use (&$product_ids){
+                $item->image_src= CommonUploadFile::getPath($item->image,$item->disk);
+                if($item->special && floatval($item->price)){
+                    $item->special_off = 100-intval(floatval($item->special)/floatval($item->price)*100);
+                    $item->special= Currency::format($item->special);
+                }else{
+                    $item->special= 0;
+                    $item->special_off = 0;
+                }
+                $item->price= Currency::format($item->price);
+                $item->discount= $item->discount?Currency::format($item->discount):0;
+                return $item;
+            });
+            return json_decode(json_encode($rand), true);
         });
+
         $res['shippingFreeCost'] = (new Shipping)->getFree();
         return $this->makeView(config('shop.pre').'::front.product.detail',['res'=>$res]);
+    }
+
+    public function reviewAjax(Request $request)
+    {
+        $res['info'] = Product::where('id', $request->id)->where('status', 1)->where('date_available', '<', time())->first();
+        if(empty($res['info'])){
+            throw new ApiException(['code'=>1,'msg'=>'The product does not exist.']);
+        }
+        $list = [];
+        $reviewSql = Review::where('product_id',$res['info']->id)->where('status',1);
+        $count = $reviewSql->count();
+        if($count){
+            $list = $reviewSql->with('img')->with('user')->orderBy('created_at','desc')
+                ->Paginate(1, ['*'], 'page', $request->query('page'));
+            $list->transform(function ($item) {
+                $item->avatar_src = CommonUploadFile::getPath($item->user->avatar,$item->user->disk,false);
+                if(!$item->avatar_src){
+                    $item->avatar_css = substr($item->author, 0, 1);
+                }
+                foreach ($item->img as $v){
+                    $v->image_src = CommonUploadFile::getPath($v->image,$v->disk);
+                }
+                $item->timestamp = $item->created_at->timestamp;
+                $item->rating_20 = $item->rating*20;
+                $item->user = [];
+                return $item;
+            });
+            $list = $list->toArray();
+        }
+        throw new ApiException(['code'=>0,'msg'=>'ok','data'=>['list'=>$list]]);
     }
 
     public function reviewAdd(Request $request)

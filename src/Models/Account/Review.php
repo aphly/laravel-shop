@@ -20,6 +20,12 @@ class Review extends Model
         'product_id','uid','author','text','rating','status','id'
     ];
 
+    protected $casts = [
+        'id' => 'string',
+        'product_id' => 'string',
+        'uid' => 'string',
+    ];
+
     function product(){
         return $this->hasOne(Product::class,'id','product_id');
     }
